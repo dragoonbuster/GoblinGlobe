@@ -1,0 +1,40 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 60
+      arrivalRate: 2
+      name: "Warm-up"
+    - duration: 120
+      arrivalRate: 10
+      name: "Sustained load"
+    - duration: 60
+      arrivalRate: 20
+      name: "Peak load"
+  processor: "./load-test-processor.js"
+
+scenarios:
+  - name: "Generate domains"
+    weight: 70
+    flow:
+      - post:
+          url: "/api/generate"
+          json:
+            prompt: "{{ randomPrompt }}"
+            count: 5
+            extensions: [".com", ".net"]
+          expect:
+            - statusCode: 200
+            - contentType: json
+            - hasProperty: success
+      - think: 5
+
+  - name: "Check domains"
+    weight: 30
+    flow:
+      - post:
+          url: "/api/check"
+          json:
+            domains: ["example123.com", "test456.net"]
+          expect:
+            - statusCode: 200
+      - think: 3
