@@ -4,12 +4,12 @@
   "type": "module",
   "main": "src/server.js",
   "scripts": {
-    "start": "NODE_ENV=production node src/server-production.js",
+    "start": "NODE_ENV=production node src/server-production-final.js",
     "dev": "node --watch src/server.js",
     "test": "node --test",
     "test:load": "artillery run tests/load-test.yml",
     "test:security": "npm audit && npm run test:headers",
-    "test:headers": "node tests/security-headers-test.js",
+    "test:headers": "node tests/security-headers-test-final.js",
     "build": "npm ci --production",
     "logs": "tail -f logs/app-*.log"
   },
