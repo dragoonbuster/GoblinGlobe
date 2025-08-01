@@ -244,7 +244,14 @@ export function createApp() {
     res.json({ 
       status: 'healthy',
       timestamp: new Date().toISOString(),
-      uptime: process.uptime()
+      uptime: process.uptime(),
+      env: {
+        NODE_ENV: process.env.NODE_ENV || 'not set',
+        PORT: process.env.PORT || 'not set',
+        OPENAI_KEY_SET: !!process.env.OPENAI_API_KEY,
+        OPENAI_KEY_PREFIX: process.env.OPENAI_API_KEY ? process.env.OPENAI_API_KEY.substring(0, 7) + '...' : 'not set',
+        ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || 'not set'
+      }
     });
   });
 
