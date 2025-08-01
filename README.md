@@ -57,6 +57,18 @@ npm start
 - DNS/WHOIS lookups: Free
 - Hosting: Can run on free tier services (Railway, Render, etc.)
 
+## Security
+
+This application implements comprehensive security measures including:
+- Input validation and sanitization
+- DNS rebinding and SSRF protection
+- Prompt injection detection
+- Rate limiting
+- Security headers
+- Secure logging
+
+For detailed security information, see [SECURITY.md](SECURITY.md).
+
 ## Improvements You Could Make
 
 1. Add caching to avoid re-checking the same domains

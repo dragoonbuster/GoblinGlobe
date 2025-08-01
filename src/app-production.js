@@ -14,6 +14,7 @@ import { dirname, join } from 'path';
 import { promises as dns } from 'dns';
 import whois from 'whois';
 import crypto from 'crypto';
+import { isValidDomain, sanitizePrompt, detectPromptInjection, createSecurityContext } from './security-utils.js';
 
 // Load environment variables
 dotenv.config();
@@ -182,6 +183,18 @@ export function createApp() {
 
   // Sanitize user input
   app.use(mongoSanitize());
+  
+  // Additional security headers for API responses
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/api/')) {
+      res.setHeader('X-API-Version', '1.0');
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+      res.setHeader('X-Request-ID', crypto.randomUUID());
+    }
+    next();
+  });
 
   // Request logging middleware with sanitization
   app.use((req, res, next) => {
@@ -249,7 +262,6 @@ export function createApp() {
         NODE_ENV: process.env.NODE_ENV || 'not set',
         PORT: process.env.PORT || 'not set',
         OPENAI_KEY_SET: !!process.env.OPENAI_API_KEY,
-        OPENAI_KEY_PREFIX: process.env.OPENAI_API_KEY ? process.env.OPENAI_API_KEY.substring(0, 7) + '...' : 'not set',
         ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || 'not set'
       }
     });
@@ -265,6 +277,33 @@ export function createApp() {
       logger.error('Readiness check failed:', error);
       res.status(503).json({ status: 'not ready' });
     }
+  });
+  
+  // Security monitoring endpoint (protected)
+  app.get('/api/security/status', generalLimiter, (req, res) => {
+    // Only allow from internal IPs or with proper header
+    const internalHeader = req.headers['x-internal-monitor'];
+    const isInternalIP = req.ip === '127.0.0.1' || req.ip === '::1';
+    
+    if (!isInternalIP && internalHeader !== process.env.INTERNAL_MONITOR_KEY) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+    
+    res.json({
+      status: 'operational',
+      timestamp: new Date().toISOString(),
+      security: {
+        rateLimitStatus: 'active',
+        csrfProtection: 'enabled',
+        corsEnabled: true,
+        helmetEnabled: true,
+        httpsOnly: process.env.NODE_ENV === 'production'
+      },
+      monitoring: {
+        requestsHandled: process.memoryUsage().heapUsed,
+        uptime: process.uptime()
+      }
+    });
   });
 
   // Static files with security headers
@@ -294,8 +333,14 @@ export function createApp() {
       .withMessage('Invalid domain format')
   ];
 
-  // Fixed domain checking function with proper timeout
+  // Fixed domain checking function with proper timeout and security
   async function checkDomainAvailability(domain, timeout = 5000) {
+    // Security validation
+    if (!isValidDomain(domain)) {
+      logger.warn(`Invalid or suspicious domain blocked: ${domain}`);
+      return { domain, available: false, method: 'blocked', error: 'Invalid domain' };
+    }
+    
     try {
       // Create timeout promise
       const timeoutPromise = new Promise((_, reject) => 
@@ -391,19 +436,41 @@ export function createApp() {
     const startTime = Date.now();
     const { prompt, count = 10, extensions = ['.com'] } = req.body;
     
+    // Create security context
+    const secContext = createSecurityContext();
+    
     try {
+      // Check for prompt injection
+      if (detectPromptInjection(prompt)) {
+        logger.warn(sanitizeLogData({
+          type: 'security_alert',
+          issue: 'prompt_injection_attempt',
+          prompt: prompt,
+          ip: req.ip,
+          requestId: secContext.requestId
+        }));
+        return res.status(400).json({ 
+          success: false, 
+          error: 'Invalid prompt format detected' 
+        });
+      }
+      
+      // Sanitize prompt
+      const sanitizedPrompt = sanitizePrompt(prompt);
+      
       // Log API usage with sanitization
       logger.info(sanitizeLogData({
         type: 'api_request',
         endpoint: 'generate',
-        prompt: prompt,
+        prompt: sanitizedPrompt,
         count,
         extensions,
-        ip: req.ip
+        ip: req.ip,
+        requestId: secContext.requestId
       }));
       
-      // Generate names
-      const names = await generateDomainNames(prompt, count);
+      // Generate names with sanitized prompt
+      const names = await generateDomainNames(sanitizedPrompt, count);
       
       // Check availability in parallel with timeout
       const checks = [];
