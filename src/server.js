@@ -318,7 +318,7 @@ app.post('/api/generate', developmentLimiter, validateGenerateRequest, async (re
       }
     });
   } catch (error) {
-    console.error('Error:', error);
+    logger.error('API request error:', error);
     res.status(500).json({
       success: false,
       error: error.message
@@ -353,7 +353,7 @@ app.post('/api/check', developmentLimiter, validateCheckRequest, async (req, res
       results: sortedResults
     });
   } catch (error) {
-    console.error('Error:', error);
+    logger.error('API request error:', error);
     res.status(500).json({
       success: false,
       error: error.message
@@ -367,7 +367,7 @@ await initializeCache();
 
 const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => {
-  console.log(`Domain Finder API running on http://localhost:${PORT}`);
+  logger.info(`Domain Finder API running on http://localhost:${PORT}`);
 });
 
 // Graceful shutdown

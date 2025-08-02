@@ -263,7 +263,7 @@ export function createApp() {
 
   // Different rate limits for different endpoints
   const rateLimitWindow = (parseInt(process.env.RATE_LIMIT_WINDOW_MINUTES) || 15) * 60 * 1000;
-  
+
   const generateLimiter = createRateLimiter(
     rateLimitWindow,
     parseInt(process.env.RATE_LIMIT_GENERATE_MAX) || 5,

@@ -25,12 +25,10 @@
   "dependencies": {
     "compression": "^1.8.1",
     "cors": "^2.8.5",
-    "dns-socket": "^4.2.2",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^8.0.1",
-    "express-session": "^1.18.2",
     "express-validator": "^7.2.1",
     "helmet": "^8.1.0",
     "openai": "^4.24.0",
@@ -40,8 +38,6 @@
     "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
-    "@types/jest": "^30.0.0",
-    "@types/node": "^24.1.0",
     "artillery": "^2.0.23",
     "eslint": "^9.32.0",
     "jest": "^30.0.5",

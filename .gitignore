@@ -19,3 +19,10 @@ logs/
 .env.test
 coverage/
 *.coverage
+
+# Deployment tools
+doctl*
+
+# Temporary files
+*.tmp
+*.bak
