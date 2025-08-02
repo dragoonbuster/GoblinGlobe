@@ -9,6 +9,7 @@ import whois from 'whois';
 import { calculateDomainQualityScore, getQualityGrade, sortDomainsByQuality } from './domain-scoring.js';
 import { cacheManager, initializeCache, shutdownCache } from './cache-manager.js';
 import { logger } from './logger.js';
+import { isValidDomain } from './security-utils.js';
 
 dotenv.config();
 
@@ -22,7 +23,55 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(join(__dirname, '../public')));
 
-async function checkDomainAvailability(domain, prompt = '') {
+async function checkWHOISWithCache(domain, qualityScore, qualityGrade, timeout) {
+  const cachedWHOIS = await cacheManager.getWHOISResult(domain);
+  if (cachedWHOIS) {
+    return {
+      domain,
+      available: cachedWHOIS.available,
+      method: `${cachedWHOIS.method}-cached`,
+      qualityScore,
+      qualityGrade
+    };
+  }
+
+  try {
+    const whoisResult = await Promise.race([
+      new Promise((resolve) => {
+        whois.lookup(domain, (err, data) => {
+          if (err) {
+            resolve({ available: true, method: 'whois-error' });
+            return;
+          }
+          
+          const lowerData = data.toLowerCase();
+          const isAvailable =
+            lowerData.includes('no match') ||
+            lowerData.includes('not found') ||
+            lowerData.includes('no data found') ||
+            lowerData.includes('no entries found');
+          
+          resolve({ available: isAvailable, method: 'whois' });
+        });
+      }),
+      new Promise((resolve) =>
+        setTimeout(() => resolve({ available: true, method: 'whois-timeout' }), timeout)
+      )
+    ]);
+
+    // Cache the WHOIS result
+    await cacheManager.setWHOISResult(domain, whoisResult);
+    return { domain, ...whoisResult, qualityScore, qualityGrade };
+  } catch (whoisError) {
+    logger.warn(`WHOIS check failed for ${domain}:`, whoisError.message);
+    const result = { available: true, method: 'whois-error', qualityScore, qualityGrade };
+    // Cache the error result briefly
+    await cacheManager.setWHOISResult(domain, { available: true, method: 'whois-error' });
+    return { domain, ...result };
+  }
+}
+
+async function checkDomainAvailability(domain, prompt = '', timeout = 5000) {
   // Check cache first for complete availability result
   const cachedResult = await cacheManager.getDomainAvailability(domain);
   if (cachedResult) {
@@ -36,42 +85,62 @@ async function checkDomainAvailability(domain, prompt = '') {
   const qualityScore = calculateDomainQualityScore(domain, prompt);
   const qualityGrade = getQualityGrade(qualityScore.overall);
 
-  let result;
-  try {
-    // First try DNS lookup (faster)
-    await dns.resolve4(domain);
-    result = { domain, available: false, method: 'dns', qualityScore, qualityGrade };
-  } catch (error) {
-    if (error.code === 'ENOTFOUND') {
-      // Double-check with WHOIS for accuracy
-      try {
-        const whoisResult = await new Promise((resolve) => {
-          whois.lookup(domain, (err, data) => {
-            if (err || !data) {
-              resolve({ domain, available: true, method: 'whois-error', qualityScore, qualityGrade });
-              return;
-            }
-
-            const lowerData = data.toLowerCase();
-            const isAvailable =
-              lowerData.includes('no match') ||
-              lowerData.includes('not found') ||
-              lowerData.includes('no data found') ||
-              lowerData.includes('no entries found');
-
-            resolve({ domain, available: isAvailable, method: 'whois', qualityScore, qualityGrade });
-          });
-        });
-        result = whoisResult;
-      } catch {
-        result = { domain, available: true, method: 'dns-only', qualityScore, qualityGrade };
-      }
-    } else {
-      result = { domain, available: false, method: 'error', qualityScore, qualityGrade };
-    }
+  // Security validation
+  if (!isValidDomain(domain)) {
+    logger.warn(`Invalid or suspicious domain blocked: ${domain}`);
+    const result = { domain, available: false, method: 'blocked', error: 'Invalid domain', qualityScore, qualityGrade };
+    // Don't cache blocked domains
+    return result;
   }
 
-  // Cache the result
+  // Check for cached DNS result first
+  let result;
+  const cachedDNS = await cacheManager.getDNSResult(domain);
+
+  try {
+    if (cachedDNS) {
+      // Use cached DNS result
+      if (cachedDNS.resolved) {
+        result = { domain, available: false, method: 'dns-cached', qualityScore, qualityGrade };
+      } else {
+        // DNS was not found, check WHOIS (might be cached too)
+        result = await checkWHOISWithCache(domain, qualityScore, qualityGrade, timeout);
+      }
+    } else {
+      // Perform fresh DNS lookup with timeout protection
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('DNS timeout')), timeout)
+      );
+
+      try {
+        await Promise.race([
+          dns.resolve4(domain),
+          timeoutPromise
+        ]);
+
+        // Cache the successful DNS result
+        await cacheManager.setDNSResult(domain, { resolved: true });
+        result = { domain, available: false, method: 'dns', qualityScore, qualityGrade };
+      } catch (dnsError) {
+        if (dnsError.message === 'DNS timeout') {
+          logger.warn(`DNS timeout for ${domain}`);
+          result = { domain, available: false, method: 'timeout', qualityScore, qualityGrade };
+        } else if (dnsError.code === 'ENOTFOUND') {
+          // Cache the DNS not found result
+          await cacheManager.setDNSResult(domain, { resolved: false });
+          // Try WHOIS as fallback
+          result = await checkWHOISWithCache(domain, qualityScore, qualityGrade, timeout);
+        } else {
+          result = { domain, available: false, method: 'error', qualityScore, qualityGrade };
+        }
+      }
+    }
+  } catch (error) {
+    logger.error(`Domain availability check failed for ${domain}:`, error.message);
+    result = { domain, available: false, method: 'error', qualityScore, qualityGrade };
+  }
+
+  // Cache the final result
   await cacheManager.setDomainAvailability(domain, {
     domain: result.domain,
     available: result.available,
