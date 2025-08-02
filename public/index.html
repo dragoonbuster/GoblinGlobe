@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goblin Globe - UI Selector</title>
+    <title>Goblin Globe - Domain Finder</title>
     <script>
         // Simple router for UI variations
         const path = window.location.pathname;
@@ -11,13 +11,14 @@
         
         if (match) {
             const uiNumber = parseInt(match[1]);
-            if (uiNumber >= 1 && uiNumber <= 25) {
+            if (uiNumber === 2) {
                 window.location.replace(`/ui/${uiNumber}/index.html`);
             } else {
-                window.location.replace('/ui/1/index.html');
+                // Redirect any other UI number to the main UI #2
+                window.location.replace('/ui/2/index.html');
             }
         } else if (path === '/' || path === '/index.html') {
-            window.location.replace('/ui/1/index.html');
+            window.location.replace('/ui/2/index.html');
         }
     </script>
 </head>
