@@ -220,24 +220,45 @@ function displayResults(results) {
         const qualityScore = item.qualityScore?.overall || 'N/A';
         const qualityGrade = item.qualityGrade?.grade || '';
         
-        row.innerHTML = `
-            <td width="40%" style="font-family: 'Courier New', monospace; font-weight: bold;">
-                ${item.domain}
-            </td>
-            <td width="30%" style="text-align: center;">
-                Score: ${qualityScore}/100
-                ${qualityGrade ? `<br><small>(Grade: ${qualityGrade})</small>` : ''}
-            </td>
-            <td width="30%" style="text-align: center;">
-                <a href="https://www.namecheap.com/domains/registration/results/?domain=${item.domain}" 
-                   target="_blank" 
-                   style="color: #000080; font-weight: bold; text-decoration: underline;">
-                    REGISTER NOW!
-                </a>
-                <br>
-                <small style="color: #008000;">AVAILABLE!</small>
-            </td>
-        `;
+        // Create cells safely to prevent XSS
+        const domainCell = document.createElement('td');
+        domainCell.width = '40%';
+        domainCell.style.fontFamily = 'Courier New, monospace';
+        domainCell.style.fontWeight = 'bold';
+        domainCell.textContent = item.domain;
+        
+        const scoreCell = document.createElement('td');
+        scoreCell.width = '30%';
+        scoreCell.style.textAlign = 'center';
+        scoreCell.textContent = `Score: ${qualityScore}/100`;
+        if (qualityGrade) {
+            const gradeSmall = document.createElement('small');
+            gradeSmall.textContent = `(Grade: ${qualityGrade})`;
+            scoreCell.appendChild(document.createElement('br'));
+            scoreCell.appendChild(gradeSmall);
+        }
+        
+        const actionCell = document.createElement('td');
+        actionCell.width = '30%';
+        actionCell.style.textAlign = 'center';
+        
+        const registerLink = document.createElement('a');
+        registerLink.href = `https://www.namecheap.com/domains/registration/results/?domain=${encodeURIComponent(item.domain)}`;
+        registerLink.target = '_blank';
+        registerLink.style.cssText = 'color: #000080; font-weight: bold; text-decoration: underline;';
+        registerLink.textContent = 'REGISTER NOW!';
+        
+        const availableText = document.createElement('small');
+        availableText.style.color = '#008000';
+        availableText.textContent = 'AVAILABLE!';
+        
+        actionCell.appendChild(registerLink);
+        actionCell.appendChild(document.createElement('br'));
+        actionCell.appendChild(availableText);
+        
+        row.appendChild(domainCell);
+        row.appendChild(scoreCell);
+        row.appendChild(actionCell);
         availableList.appendChild(row);
     });
     
@@ -254,20 +275,43 @@ function displayResults(results) {
         const qualityScore = item.qualityScore?.overall || 'N/A';
         const qualityGrade = item.qualityGrade?.grade || '';
         
-        row.innerHTML = `
-            <td width="40%" style="font-family: 'Courier New', monospace; font-weight: bold;">
-                ${item.domain}
-            </td>
-            <td width="30%" style="text-align: center;">
-                Score: ${qualityScore}/100
-                ${qualityGrade ? `<br><small>(Grade: ${qualityGrade})</small>` : ''}
-            </td>
-            <td width="30%" style="text-align: center;">
-                <small style="color: #FFFFFF;">UNAVAILABLE</small>
-                <br>
-                <small style="color: #FFB6C1;">Someone beat you to it!</small>
-            </td>
-        `;
+        // Create cells safely to prevent XSS
+        const domainCell = document.createElement('td');
+        domainCell.width = '40%';
+        domainCell.style.fontFamily = 'Courier New, monospace';
+        domainCell.style.fontWeight = 'bold';
+        domainCell.textContent = item.domain;
+        
+        const scoreCell = document.createElement('td');
+        scoreCell.width = '30%';
+        scoreCell.style.textAlign = 'center';
+        scoreCell.textContent = `Score: ${qualityScore}/100`;
+        if (qualityGrade) {
+            const gradeSmall = document.createElement('small');
+            gradeSmall.textContent = `(Grade: ${qualityGrade})`;
+            scoreCell.appendChild(document.createElement('br'));
+            scoreCell.appendChild(gradeSmall);
+        }
+        
+        const statusCell = document.createElement('td');
+        statusCell.width = '30%';
+        statusCell.style.textAlign = 'center';
+        
+        const unavailableText = document.createElement('small');
+        unavailableText.style.color = '#FFFFFF';
+        unavailableText.textContent = 'UNAVAILABLE';
+        
+        const takenText = document.createElement('small');
+        takenText.style.color = '#FFB6C1';
+        takenText.textContent = 'Someone beat you to it!';
+        
+        statusCell.appendChild(unavailableText);
+        statusCell.appendChild(document.createElement('br'));
+        statusCell.appendChild(takenText);
+        
+        row.appendChild(domainCell);
+        row.appendChild(scoreCell);
+        row.appendChild(statusCell);
         takenList.appendChild(row);
     });
     
@@ -314,7 +358,11 @@ function showStatus(message, type) {
         prefix = '❌ ERROR: ';
     }
     
-    statusDiv.innerHTML = `<b>${prefix}${message}</b>`;
+    // Safely set status message to prevent XSS
+    statusDiv.textContent = '';
+    const boldElement = document.createElement('b');
+    boldElement.textContent = prefix + message;
+    statusDiv.appendChild(boldElement);
     statusDiv.style.display = 'block';
     statusDiv.style.backgroundColor = bgColor;
     statusDiv.style.color = textColor;

@@ -1,5 +1,8 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import { body, validationResult } from 'express-validator';
 import { promises as dns } from 'dns';
 import OpenAI from 'openai';
 import dotenv from 'dotenv';
@@ -17,11 +20,74 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+  timeout: 30000 // 30 second timeout
+});
 
-app.use(cors());
-app.use(express.json());
+// Security middleware (relaxed for development)
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ['\'self\''],
+      styleSrc: ['\'self\'', '\'unsafe-inline\''], // Allow inline styles for 90s theme
+      scriptSrc: ['\'self\'', '\'unsafe-inline\''], // Allow inline scripts for 90s theme
+      imgSrc: ['\'self\'', 'data:', 'https:'],
+      connectSrc: ['\'self\'']
+    }
+  },
+  crossOriginEmbedderPolicy: false // Relaxed for development
+}));
+
+// CORS configuration for development
+app.use(cors({
+  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  credentials: true,
+  optionsSuccessStatus: 200
+}));
+
+// Body parsing with reasonable limits
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+
+// Additional security headers for API responses
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/')) {
+    res.setHeader('X-API-Version', '1.0');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+  }
+  next();
+});
+
+// Request logging middleware for development
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    logger.info({
+      method: req.method,
+      url: req.url,
+      status: res.statusCode,
+      duration,
+      ip: req.ip?.substring(0, 8) + '***', // Partially mask IP for privacy
+      userAgent: req.get('user-agent')?.split('/')[0] || 'Unknown'
+    });
+  });
+  next();
+});
+
 app.use(express.static(join(__dirname, '../public')));
+
+// Rate limiting (more relaxed for development)
+const developmentLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 50, // More generous for development
+  message: 'Too many requests from this IP, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false
+});
 
 async function checkWHOISWithCache(domain, qualityScore, qualityGrade, timeout) {
   const cachedWHOIS = await cacheManager.getWHOISResult(domain);
@@ -43,14 +109,14 @@ async function checkWHOISWithCache(domain, qualityScore, qualityGrade, timeout) 
             resolve({ available: true, method: 'whois-error' });
             return;
           }
-          
+
           const lowerData = data.toLowerCase();
           const isAvailable =
             lowerData.includes('no match') ||
             lowerData.includes('not found') ||
             lowerData.includes('no data found') ||
             lowerData.includes('no entries found');
-          
+
           resolve({ available: isAvailable, method: 'whois' });
         });
       }),
@@ -191,7 +257,30 @@ async function generateDomainNames(prompt, count = 10) {
   return result;
 }
 
-app.post('/api/generate', async (req, res) => {
+// Input validation middleware
+const validateGenerateRequest = [
+  body('prompt').isString().trim().isLength({ min: 3, max: 500 })
+    .withMessage('Prompt must be between 3 and 500 characters'),
+  body('count').optional().isInt({ min: 1, max: 20 })
+    .withMessage('Count must be between 1 and 20'),
+  body('extensions').optional().isArray({ max: 10 })
+    .withMessage('Maximum 10 extensions allowed'),
+  body('extensions.*').optional().isIn(['.com', '.net', '.org', '.io', '.co', '.dev', '.app'])
+    .withMessage('Invalid extension')
+];
+
+const validateCheckRequest = [
+  body('domains').isArray({ min: 1, max: 50 })
+    .withMessage('Must provide 1-50 domains'),
+  body('domains.*').matches(/^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,}$/)
+    .withMessage('Invalid domain format')
+];
+
+app.post('/api/generate', developmentLimiter, validateGenerateRequest, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     const { prompt, count = 10, extensions = ['.com'] } = req.body;
 
@@ -235,7 +324,12 @@ app.post('/api/generate', async (req, res) => {
   }
 });
 
-app.post('/api/check', async (req, res) => {
+app.post('/api/check', developmentLimiter, validateCheckRequest, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     const { domains } = req.body;
 

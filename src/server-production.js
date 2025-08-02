@@ -647,8 +647,14 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   // Create Express app
   const app = createApp();
 
-  // Graceful shutdown handler
-  let server;
+  // Start server
+  const PORT = process.env.PORT || 8080;
+  const server = app.listen(PORT, () => {
+    logger.info(`Production server running on port ${PORT}`);
+    logger.info(`Environment: ${process.env.NODE_ENV}`);
+    logger.info(`CORS origins: ${process.env.ALLOWED_ORIGINS || 'localhost only'}`);
+    logger.info(`Log sensitive data: ${process.env.LOG_SENSITIVE_DATA === 'true'}`);
+  });
 
   const gracefulShutdown = async () => {
     logger.info('Received shutdown signal, closing server...');
@@ -680,14 +686,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     logger.error('Unhandled Rejection at:', promise, 'reason:', reason);
   });
 
-  // Start server
-  const PORT = process.env.PORT || 8080;
-  server = app.listen(PORT, () => {
-    logger.info(`Production server running on port ${PORT}`);
-    logger.info(`Environment: ${process.env.NODE_ENV}`);
-    logger.info(`CORS origins: ${process.env.ALLOWED_ORIGINS || 'localhost only'}`);
-    logger.info(`Log sensitive data: ${process.env.LOG_SENSITIVE_DATA === 'true'}`);
-  });
+  // Server startup moved up to resolve const declaration
 
   // Handle server startup errors
   server.on('error', (err) => {
