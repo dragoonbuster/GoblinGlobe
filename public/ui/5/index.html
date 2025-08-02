@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goblin Globe</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-weight: 400;
+            color: #5A6B83;
+            background: #E0E5EC;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+        }
+
+        /* Neumorphic Color System */
+        :root {
+            --neuro-base: #E0E5EC;
+            --neuro-shadow: #A3B1C6;
+            --neuro-highlight: #FFFFFF;
+            --neuro-text: #5A6B83;
+            --neuro-text-dark: #3E4B5C;
+            --neuro-text-light: #8B9BB8;
+            --neuro-accent: #667A94;
+            --neuro-success: #88C999;
+            --neuro-warning: #F4C2A1;
+            --neuro-error: #F2A1A1;
+        }
+
+        /* Neumorphic Mixins */
+        .neuro-raised {
+            background: var(--neuro-base);
+            box-shadow: 
+                8px 8px 16px var(--neuro-shadow),
+                -8px -8px 16px var(--neuro-highlight);
+            border-radius: 16px;
+        }
+
+        .neuro-pressed {
+            background: var(--neuro-base);
+            box-shadow: 
+                inset 6px 6px 12px var(--neuro-shadow),
+                inset -6px -6px 12px var(--neuro-highlight);
+            border-radius: 16px;
+        }
+
+        .neuro-flat {
+            background: linear-gradient(145deg, #EAEEF7, #D6DBE8);
+            border-radius: 16px;
+        }
+
+        .neuro-floating {
+            background: var(--neuro-base);
+            box-shadow: 
+                12px 12px 24px var(--neuro-shadow),
+                -12px -12px 24px var(--neuro-highlight);
+            border-radius: 20px;
+        }
+
+        /* Container and Grid */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .main-surface {
+            min-height: 100vh;
+            padding: 60px 0;
+            background: var(--neuro-base);
+        }
+
+        /* Typography with embossed effect */
+        .title-embossed {
+            font-size: 48px;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            color: var(--neuro-text);
+            text-shadow: 
+                2px 2px 4px var(--neuro-shadow),
+                -1px -1px 2px var(--neuro-highlight);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--neuro-text-light);
+            text-align: center;
+            margin-bottom: 60px;
+            text-shadow: 
+                1px 1px 2px var(--neuro-shadow),
+                -1px -1px 2px var(--neuro-highlight);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--neuro-text-dark);
+            margin-bottom: 30px;
+            text-shadow: 
+                1px 1px 2px var(--neuro-shadow),
+                -1px -1px 2px var(--neuro-highlight);
+        }
+
+        /* Form Elements with Soft Neumorphism */
+        .form-section {
+            max-width: 600px;
+            margin: 0 auto 60px;
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: var(--neuro-text-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-shadow: 
+                1px 1px 2px var(--neuro-highlight),
+                -1px -1px 1px var(--neuro-shadow);
+        }
+
+        .form-textarea,
+        .form-input {
+            width: 100%;
+            padding: 20px 24px;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--neuro-text);
+            background: var(--neuro-base);
+            border: none;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            resize: none;
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            font-family: inherit;
+        }
+
+        .form-input {
+            width: 100px;
+        }
+
+        .form-textarea:focus,
+        .form-input:focus {
+            box-shadow: 
+                inset 8px 8px 16px var(--neuro-shadow),
+                inset -8px -8px 16px var(--neuro-highlight),
+                0 0 0 2px var(--neuro-accent);
+        }
+
+        .form-textarea::placeholder,
+        .form-input::placeholder {
+            color: var(--neuro-text-light);
+        }
+
+        /* Checkbox Group with Soft Design */
+        .checkbox-group {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 16px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 12px 20px;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .checkbox-item:hover {
+            transform: translateY(-1px);
+            box-shadow: 
+                6px 6px 12px var(--neuro-shadow),
+                -6px -6px 12px var(--neuro-highlight);
+        }
+
+        .checkbox-input {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .checkbox-input:checked {
+            background: linear-gradient(135deg, var(--neuro-accent), var(--neuro-text));
+            box-shadow: 
+                inset 2px 2px 4px rgba(0,0,0,0.1),
+                inset -2px -2px 4px rgba(255,255,255,0.2);
+        }
+
+        .checkbox-input:checked::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 7px;
+            width: 4px;
+            height: 8px;
+            border: solid #FFFFFF;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--neuro-text);
+            cursor: pointer;
+            text-shadow: 
+                1px 1px 2px var(--neuro-highlight),
+                -1px -1px 1px var(--neuro-shadow);
+        }
+
+        /* Soft Pressed Button Effect */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px 40px;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--neuro-text);
+            background: var(--neuro-base);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-shadow: 
+                1px 1px 2px var(--neuro-highlight),
+                -1px -1px 1px var(--neuro-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                10px 10px 20px var(--neuro-shadow),
+                -10px -10px 20px var(--neuro-highlight);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 
+                inset 4px 4px 8px var(--neuro-shadow),
+                inset -4px -4px 8px var(--neuro-highlight);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--neuro-text);
+            background: var(--neuro-base);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-shadow: 
+                1px 1px 2px var(--neuro-highlight),
+                -1px -1px 1px var(--neuro-shadow);
+            margin: 6px;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            box-shadow: 
+                6px 6px 12px var(--neuro-shadow),
+                -6px -6px 12px var(--neuro-highlight);
+        }
+
+        .btn-secondary:active {
+            transform: translateY(0);
+            box-shadow: 
+                inset 3px 3px 6px var(--neuro-shadow),
+                inset -3px -3px 6px var(--neuro-highlight);
+        }
+
+        /* Loading Spinner with Soft Effect */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid var(--neuro-accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Progress Bar with Soft Design */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: var(--neuro-base);
+            box-shadow: 
+                inset 4px 4px 8px var(--neuro-shadow),
+                inset -4px -4px 8px var(--neuro-highlight);
+            border-radius: 20px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neuro-accent), var(--neuro-text));
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 20px;
+            box-shadow: 
+                2px 2px 4px rgba(0,0,0,0.1),
+                -1px -1px 2px rgba(255,255,255,0.2);
+        }
+
+        /* Results as Soft Floating Cards */
+        .results-section {
+            margin-top: 80px;
+        }
+
+        .results-actions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .domain-card {
+            padding: 24px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .domain-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                16px 16px 32px var(--neuro-shadow),
+                -16px -16px 32px var(--neuro-highlight);
+        }
+
+        .domain-card.available {
+            background: linear-gradient(135deg, var(--neuro-base), #E8EDF5);
+        }
+
+        .domain-card.taken {
+            background: linear-gradient(135deg, var(--neuro-base), #DDE2E9);
+            opacity: 0.8;
+        }
+
+        .domain-name {
+            font-family: 'JetBrains Mono', 'Monaco', 'Menlo', monospace;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--neuro-text-dark);
+            margin-bottom: 12px;
+            word-break: break-all;
+            text-shadow: 
+                1px 1px 2px var(--neuro-highlight),
+                -1px -1px 1px var(--neuro-shadow);
+        }
+
+        .domain-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .domain-method {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--neuro-text-light);
+            padding: 4px 8px;
+            border-radius: 6px;
+            background: var(--neuro-base);
+            box-shadow: 
+                inset 2px 2px 4px var(--neuro-shadow),
+                inset -2px -2px 4px var(--neuro-highlight);
+        }
+
+        .domain-score {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--neuro-text-dark);
+            text-shadow: 
+                1px 1px 2px var(--neuro-highlight),
+                -1px -1px 1px var(--neuro-shadow);
+        }
+
+        .domain-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .link-register {
+            flex: 1;
+            text-align: center;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--neuro-text);
+            text-decoration: none;
+            background: var(--neuro-base);
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                4px 4px 8px var(--neuro-shadow),
+                -4px -4px 8px var(--neuro-highlight);
+            text-shadow: 
+                1px 1px 2px var(--neuro-highlight),
+                -1px -1px 1px var(--neuro-shadow);
+        }
+
+        .link-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                6px 6px 12px var(--neuro-shadow),
+                -6px -6px 12px var(--neuro-highlight);
+            color: var(--neuro-accent);
+        }
+
+        .link-register:active {
+            transform: translateY(0);
+            box-shadow: 
+                inset 3px 3px 6px var(--neuro-shadow),
+                inset -3px -3px 6px var(--neuro-highlight);
+        }
+
+        /* Loading Container with Soft Design */
+        .loading-container {
+            text-align: center;
+            padding: 60px 40px;
+            margin: 40px auto;
+            max-width: 400px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--neuro-base);
+            border-top: 3px solid var(--neuro-accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+            box-shadow: 
+                4px 4px 8px var(--neuro-shadow),
+                -4px -4px 8px var(--neuro-highlight);
+        }
+
+        .loading-message {
+            font-size: 16px;
+            color: var(--neuro-text);
+            margin-bottom: 16px;
+            text-shadow: 
+                1px 1px 2px var(--neuro-highlight),
+                -1px -1px 1px var(--neuro-shadow);
+        }
+
+        .progress-text {
+            font-size: 14px;
+            color: var(--neuro-text-light);
+            text-shadow: 
+                1px 1px 2px var(--neuro-highlight),
+                -1px -1px 1px var(--neuro-shadow);
+        }
+
+        /* Error Messages with Soft Design */
+        .error-message {
+            padding: 24px;
+            margin: 40px auto;
+            max-width: 600px;
+            color: var(--neuro-error);
+            background: linear-gradient(135deg, var(--neuro-base), #F5E8E8);
+            border-radius: 16px;
+            box-shadow: 
+                8px 8px 16px var(--neuro-shadow),
+                -8px -8px 16px var(--neuro-highlight);
+            text-shadow: 
+                1px 1px 2px var(--neuro-highlight),
+                -1px -1px 1px var(--neuro-shadow);
+        }
+
+        /* Toast Notifications with Soft Design */
+        .toast-container {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .toast {
+            padding: 16px 20px;
+            min-width: 300px;
+            font-size: 14px;
+            background: var(--neuro-base);
+            border-radius: 12px;
+            box-shadow: 
+                8px 8px 16px var(--neuro-shadow),
+                -8px -8px 16px var(--neuro-highlight);
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--neuro-text);
+            text-shadow: 
+                1px 1px 2px var(--neuro-highlight),
+                -1px -1px 1px var(--neuro-shadow);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background: linear-gradient(135deg, var(--neuro-base), #E8F5EA);
+            color: var(--neuro-success);
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, var(--neuro-base), #F5E8E8);
+            color: var(--neuro-error);
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Organic Transitions */
+        * {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Responsive Design with Soft Approach */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            .title-embossed {
+                font-size: 36px;
+            }
+
+            .form-section {
+                padding: 30px 20px;
+            }
+
+            .checkbox-group {
+                flex-direction: column;
+                align-items: center;
+                gap: 16px;
+            }
+
+            .domain-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .domain-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Subtle Hover Effects for Interactive Elements */
+        .interactive:hover {
+            filter: brightness(1.02);
+        }
+
+        /* Focus States with Soft Glow */
+        .btn-primary:focus,
+        .btn-secondary:focus,
+        .form-textarea:focus,
+        .form-input:focus {
+            outline: none;
+            box-shadow: 
+                inset 6px 6px 12px var(--neuro-shadow),
+                inset -6px -6px 12px var(--neuro-highlight),
+                0 0 0 3px rgba(102, 122, 148, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="main-surface">
+        <div class="container">
+            <!-- Embossed Header -->
+            <div class="text-center">
+                <h1 class="title-embossed">Goblin Globe</h1>
+                <p class="subtitle">Domain name finder with mathematical precision</p>
+            </div>
+
+            <!-- Soft Form Surface -->
+            <div class="form-section neuro-raised">
+                <form id="generateForm">
+                    <div class="form-group">
+                        <label for="prompt" class="form-label">Domain Description</label>
+                        <textarea 
+                            id="prompt" 
+                            class="form-textarea neuro-pressed"
+                            placeholder="Describe your domain concept..."
+                            required
+                        ></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="count" class="form-label">Quantity</label>
+                        <input 
+                            type="number" 
+                            id="count" 
+                            class="form-input neuro-pressed" 
+                            min="1" 
+                            max="20" 
+                            value="10"
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Extensions</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item neuro-flat">
+                                <input type="checkbox" name="extensions" value=".com" checked class="checkbox-input neuro-pressed">
+                                <span class="checkbox-label">.com</span>
+                            </label>
+                            <label class="checkbox-item neuro-flat">
+                                <input type="checkbox" name="extensions" value=".net" class="checkbox-input neuro-pressed">
+                                <span class="checkbox-label">.net</span>
+                            </label>
+                            <label class="checkbox-item neuro-flat">
+                                <input type="checkbox" name="extensions" value=".org" class="checkbox-input neuro-pressed">
+                                <span class="checkbox-label">.org</span>
+                            </label>
+                            <label class="checkbox-item neuro-flat">
+                                <input type="checkbox" name="extensions" value=".io" class="checkbox-input neuro-pressed">
+                                <span class="checkbox-label">.io</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" id="generateButton" class="btn-primary neuro-raised">
+                            <span id="buttonText">Generate Domains</span>
+                            <div id="buttonSpinner" class="spinner hidden"></div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Soft Loading State -->
+            <div id="loading" class="loading-container neuro-floating hidden">
+                <div class="loading-spinner"></div>
+                <p id="loadingMessage" class="loading-message">Generating domain ideas...</p>
+                <div id="progressBar" class="progress-container hidden">
+                    <div id="progressFill" class="progress-bar"></div>
+                </div>
+                <p id="progressText" class="progress-text hidden">Step 1 of 3</p>
+            </div>
+
+            <!-- Soft Error Container -->
+            <div id="error" class="error-message hidden">
+                <p></p>
+            </div>
+
+            <!-- Soft Results Section -->
+            <div id="results" class="results-section hidden">
+                <div class="results-actions">
+                    <button id="exportBtn" class="btn-secondary neuro-raised">Export CSV</button>
+                    <button id="copyAllBtn" class="btn-secondary neuro-raised">Copy Available</button>
+                    <button id="newSearchBtn" class="btn-secondary neuro-raised">New Search</button>
+                </div>
+                
+                <div>
+                    <h2 class="section-title">Available</h2>
+                    <div id="availableList" class="domain-grid"></div>
+                </div>
+                
+                <div>
+                    <h2 class="section-title">Taken</h2>
+                    <div id="takenList" class="domain-grid"></div>
+                </div>
+            </div>
+
+            <!-- Soft Toast Container -->
+            <div id="toastContainer" class="toast-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const form = document.getElementById('generateForm');
+        const generateButton = document.getElementById('generateButton');
+        const buttonText = document.getElementById('buttonText');
+        const buttonSpinner = document.getElementById('buttonSpinner');
+        const loading = document.getElementById('loading');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const results = document.getElementById('results');
+        const error = document.getElementById('error');
+        const availableList = document.getElementById('availableList');
+        const takenList = document.getElementById('takenList');
+        const exportBtn = document.getElementById('exportBtn');
+        const copyAllBtn = document.getElementById('copyAllBtn');
+        const newSearchBtn = document.getElementById('newSearchBtn');
+        const toastContainer = document.getElementById('toastContainer');
+
+        // Global state
+        let currentResults = { available: [], taken: [] };
+        let currentSummary = {};
+
+        // Initialize event listeners
+        form.addEventListener('submit', handleFormSubmit);
+        exportBtn.addEventListener('click', handleExport);
+        copyAllBtn.addEventListener('click', handleCopyAll);
+        newSearchBtn.addEventListener('click', handleNewSearch);
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key) {
+                    case 'Enter':
+                        if (!generateButton.disabled) {
+                            form.dispatchEvent(new Event('submit'));
+                        }
+                        break;
+                    case 'c':
+                        if (currentResults.available.length > 0) {
+                            e.preventDefault();
+                            handleCopyAll();
+                        }
+                        break;
+                    case 's':
+                        if (currentResults.available.length > 0) {
+                            e.preventDefault();
+                            handleExport();
+                        }
+                        break;
+                    case 'r':
+                        e.preventDefault();
+                        handleNewSearch();
+                        break;
+                }
+            }
+        });
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const prompt = document.getElementById('prompt').value.trim();
+            const count = parseInt(document.getElementById('count').value);
+            const extensions = Array.from(document.querySelectorAll('input[name="extensions"]:checked'))
+                .map(cb => cb.value);
+            
+            // Validation
+            if (!prompt) {
+                showToast('Please enter a prompt', 'error');
+                return;
+            }
+            
+            if (extensions.length === 0) {
+                showToast('Please select at least one extension', 'error');
+                return;
+            }
+            
+            // Start loading state
+            setLoadingState(true);
+            showProgressStep('Generating domain ideas...', 1, 3, 10);
+            
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt, count, extensions })
+                });
+                
+                showProgressStep('Checking domain availability...', 2, 3, 50);
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || `HTTP ${response.status}`);
+                }
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to generate domains');
+                }
+                
+                // Complete progress
+                showProgressStep('Analyzing results...', 3, 3, 90);
+                
+                // Brief delay to show completion
+                await new Promise(resolve => setTimeout(resolve, 500));
+                showProgressStep('Complete!', 3, 3, 100);
+                
+                // Store results and display
+                currentResults = data.results;
+                currentSummary = data.summary;
+                
+                displayResults(data.results, data.summary);
+                showToast(`Found ${data.results.available.length} available domains!`, 'success');
+                
+            } catch (err) {
+                console.error('Generation error:', err);
+                showError(getErrorMessage(err));
+                showToast('Failed to generate domains', 'error');
+            } finally {
+                setLoadingState(false);
+            }
+        }
+
+        function setLoadingState(isLoading) {
+            generateButton.disabled = isLoading;
+            
+            if (isLoading) {
+                buttonText.textContent = 'Generating...';
+                buttonSpinner.classList.remove('hidden');
+                loading.classList.remove('hidden');
+                results.classList.add('hidden');
+                error.classList.add('hidden');
+                progressBar.classList.remove('hidden');
+                progressText.classList.remove('hidden');
+            } else {
+                buttonText.textContent = 'Generate Domains';
+                buttonSpinner.classList.add('hidden');
+                loading.classList.add('hidden');
+                progressBar.classList.add('hidden');
+                progressText.classList.add('hidden');
+            }
+        }
+
+        function showProgressStep(message, step, totalSteps, percentage) {
+            loadingMessage.textContent = message;
+            progressText.textContent = `Step ${step} of ${totalSteps}`;
+            progressFill.style.width = `${percentage}%`;
+        }
+
+        function displayResults(results, summary) {
+            availableList.innerHTML = '';
+            takenList.innerHTML = '';
+            
+            if (results.available.length === 0 && results.taken.length === 0) {
+                showError('No domains were generated. Please try a different prompt.');
+                return;
+            }
+            
+            // Display available domains
+            results.available.forEach(item => {
+                const div = createDomainCard(item.domain, true, item.method, item.qualityScore, item.qualityGrade);
+                availableList.appendChild(div);
+            });
+            
+            // Display taken domains
+            results.taken.forEach(item => {
+                const div = createDomainCard(item.domain, false, item.method, item.qualityScore, item.qualityGrade);
+                takenList.appendChild(div);
+            });
+            
+            // Show results section
+            results.classList.remove('hidden');
+            
+            // Scroll to results
+            results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function createDomainCard(domain, isAvailable, method, qualityScore = null, qualityGrade = null) {
+            const div = document.createElement('div');
+            div.className = `domain-card neuro-floating ${isAvailable ? 'available' : 'taken'}`;
+            
+            // Domain name
+            const domainName = document.createElement('div');
+            domainName.className = 'domain-name';
+            domainName.textContent = domain;
+            
+            // Domain meta
+            const domainMeta = document.createElement('div');
+            domainMeta.className = 'domain-meta';
+            
+            const methodSpan = document.createElement('span');
+            methodSpan.className = 'domain-method';
+            methodSpan.textContent = method;
+            
+            const scoreSpan = document.createElement('span');
+            scoreSpan.className = 'domain-score';
+            if (qualityScore && qualityGrade) {
+                scoreSpan.textContent = `${qualityGrade.grade} (${qualityScore.overall}/100)`;
+            } else {
+                scoreSpan.textContent = 'No score';
+            }
+            
+            domainMeta.appendChild(methodSpan);
+            domainMeta.appendChild(scoreSpan);
+            
+            div.appendChild(domainName);
+            div.appendChild(domainMeta);
+            
+            // Actions for available domains
+            if (isAvailable) {
+                const actions = document.createElement('div');
+                actions.className = 'domain-actions';
+                
+                const registerLink = document.createElement('a');
+                registerLink.href = `https://www.namecheap.com/domains/registration/results/?domain=${domain}`;
+                registerLink.target = '_blank';
+                registerLink.className = 'link-register';
+                registerLink.textContent = 'Register Domain';
+                
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'btn-secondary neuro-raised';
+                copyBtn.textContent = 'Copy';
+                copyBtn.style.flex = 'none';
+                copyBtn.addEventListener('click', () => copyToClipboard(domain));
+                
+                actions.appendChild(registerLink);
+                actions.appendChild(copyBtn);
+                div.appendChild(actions);
+            }
+            
+            return div;
+        }
+
+        function handleCopyAll() {
+            if (currentResults.available.length === 0) {
+                showToast('No available domains to copy', 'error');
+                return;
+            }
+            
+            const domains = currentResults.available.map(item => item.domain).join('\n');
+            copyToClipboard(domains, `Copied ${currentResults.available.length} available domains!`);
+        }
+
+        function handleExport() {
+            if (currentResults.available.length === 0 && currentResults.taken.length === 0) {
+                showToast('No results to export', 'error');
+                return;
+            }
+            
+            const timestamp = new Date().toISOString().split('T')[0];
+            const prompt = document.getElementById('prompt').value;
+            
+            // Create CSV content
+            const csvContent = [
+                'Domain,Status,Quality Score,Quality Grade,Method,Registrar Link',
+                ...currentResults.available.map(item => 
+                    `"${item.domain}","Available","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method}","https://www.namecheap.com/domains/registration/results/?domain=${item.domain}"`
+                ),
+                ...currentResults.taken.map(item => 
+                    `"${item.domain}","Taken","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method}","N/A"`
+                )
+            ].join('\n');
+            
+            // Create and download file
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `domain-search-${timestamp}-${prompt.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            
+            showToast('Results exported successfully!', 'success');
+        }
+
+        function handleNewSearch() {
+            // Clear form
+            document.getElementById('prompt').value = '';
+            document.getElementById('count').value = '10';
+            
+            // Reset results
+            currentResults = { available: [], taken: [] };
+            results.classList.add('hidden');
+            error.classList.add('hidden');
+            
+            // Focus on prompt input
+            document.getElementById('prompt').focus();
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            showToast('Ready for new search!', 'success');
+        }
+
+        async function copyToClipboard(text, successMessage = 'Copied to clipboard!') {
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast(successMessage, 'success');
+            } catch (err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                textArea.style.top = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    showToast(successMessage, 'success');
+                } catch (err) {
+                    showToast('Failed to copy to clipboard', 'error');
+                }
+                
+                document.body.removeChild(textArea);
+            }
+        }
+
+        function showToast(message, type = 'info', duration = 3000) {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            
+            toastContainer.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // Auto remove
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.remove();
+                    }
+                }, 400);
+            }, duration);
+        }
+
+        function showError(message) {
+            error.querySelector('p').textContent = message;
+            error.classList.remove('hidden');
+            results.classList.add('hidden');
+        }
+
+        function getErrorMessage(error) {
+            const message = error.message || 'An unexpected error occurred';
+            
+            // Provide user-friendly error messages
+            if (message.includes('rate limit') || message.includes('429')) {
+                return 'Too many requests. Please wait a moment and try again.';
+            }
+            
+            if (message.includes('timeout') || message.includes('ENOTFOUND')) {
+                return 'Connection timeout. Please check your internet connection and try again.';
+            }
+            
+            if (message.includes('401') || message.includes('403')) {
+                return 'Authentication error. Please refresh the page and try again.';
+            }
+            
+            if (message.includes('500')) {
+                return 'Server error. Please try again in a few moments.';
+            }
+            
+            if (message.includes('Invalid prompt')) {
+                return 'Your prompt contains invalid content. Please try a different description.';
+            }
+            
+            // Return the original message if no specific case matches
+            return message;
+        }
+    </script>
+</body>
+</html>

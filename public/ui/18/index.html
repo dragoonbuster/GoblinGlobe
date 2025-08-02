@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goblin Globe</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        body {
+            font-family: 'Times New Roman', serif;
+            font-weight: 400;
+            color: #2a1810;
+            background: radial-gradient(ellipse at center, #8b7355 0%, #5d4e37 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Leather texture background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(
+                    45deg,
+                    rgba(139, 115, 85, 0.1) 0px,
+                    rgba(139, 115, 85, 0.1) 1px,
+                    transparent 1px,
+                    transparent 8px
+                ),
+                repeating-linear-gradient(
+                    -45deg,
+                    rgba(93, 78, 55, 0.1) 0px,
+                    rgba(93, 78, 55, 0.1) 1px,
+                    transparent 1px,
+                    transparent 8px
+                );
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Main container with wooden frame */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0;
+            position: relative;
+        }
+
+        .wooden-frame {
+            background: linear-gradient(135deg, #8b4513 0%, #a0522d 25%, #8b4513 50%, #654321 100%);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 
+                inset 0 0 20px rgba(0, 0, 0, 0.3),
+                inset 0 0 40px rgba(0, 0, 0, 0.1),
+                0 15px 35px rgba(0, 0, 0, 0.4),
+                0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        /* Wood grain texture */
+        .wooden-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(139, 69, 19, 0.3) 0px,
+                    rgba(160, 82, 45, 0.2) 2px,
+                    rgba(139, 69, 19, 0.3) 4px,
+                    rgba(101, 67, 33, 0.4) 6px
+                );
+            border-radius: 15px;
+            pointer-events: none;
+        }
+
+        /* Decorative corner elements */
+        .wooden-frame::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid rgba(139, 69, 19, 0.6);
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        .content-area {
+            background: linear-gradient(135deg, #d2b48c 0%, #deb887 50%, #d2b48c 100%);
+            border-radius: 10px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 
+                inset 0 2px 10px rgba(0, 0, 0, 0.2),
+                inset 0 -2px 10px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Parchment texture */
+        .content-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(210, 180, 140, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(160, 82, 45, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(139, 69, 19, 0.1) 0%, transparent 50%);
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        /* Header with engraved effect */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .title {
+            font-size: 48px;
+            font-weight: bold;
+            color: #8b4513;
+            text-shadow: 
+                2px 2px 0px rgba(139, 69, 19, 0.8),
+                4px 4px 8px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(139, 69, 19, 0.2);
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        /* Engraved wood effect for title */
+        .title::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            color: rgba(0, 0, 0, 0.3);
+            z-index: -1;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #654321;
+            font-style: italic;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Leather-bound form container */
+        .form-container {
+            background: linear-gradient(135deg, #8b4513 0%, #654321 50%, #5d4e37 100%);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 
+                inset 0 0 15px rgba(0, 0, 0, 0.4),
+                0 8px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        /* Leather stitching effect */
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 2px dashed rgba(210, 180, 140, 0.6);
+            border-radius: 8px;
+            pointer-events: none;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #d2b48c;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Realistic input fields with metal appearance */
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 3px solid #4a4a4a;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #e8e8e8 0%, #c0c0c0 50%, #a8a8a8 100%);
+            font-family: inherit;
+            font-size: 16px;
+            color: #2a1810;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 2px 2px 8px rgba(0, 0, 0, 0.3),
+                inset -1px -1px 4px rgba(255, 255, 255, 0.6),
+                0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            border-color: #cd853f;
+            background: linear-gradient(135deg, #f0f0f0 0%, #d0d0d0 50%, #b8b8b8 100%);
+            box-shadow: 
+                inset 2px 2px 8px rgba(0, 0, 0, 0.2),
+                inset -1px -1px 4px rgba(255, 255, 255, 0.8),
+                0 0 10px rgba(205, 133, 63, 0.4);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-number {
+            width: 100px;
+        }
+
+        /* Checkbox group with metal checkboxes */
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            background: linear-gradient(135deg, #8b4513 0%, #654321 100%);
+            padding: 8px 12px;
+            border-radius: 6px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-item:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .checkbox-input {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            border: 2px solid #4a4a4a;
+            border-radius: 3px;
+            background: linear-gradient(135deg, #e8e8e8 0%, #c0c0c0 50%, #a8a8a8 100%);
+            cursor: pointer;
+            position: relative;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            box-shadow: 
+                inset 1px 1px 3px rgba(0, 0, 0, 0.3),
+                inset -1px -1px 2px rgba(255, 255, 255, 0.6);
+        }
+
+        .checkbox-input:checked {
+            background: linear-gradient(135deg, #cd853f 0%, #daa520 50%, #b8860b 100%);
+            border-color: #8b4513;
+        }
+
+        .checkbox-input:checked::after {
+            content: '✓';
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            font-size: 14px;
+            color: #2a1810;
+            font-weight: bold;
+            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #d2b48c;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 3D pressable buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #cd853f 0%, #daa520 30%, #b8860b 100%);
+            color: #2a1810;
+            border: 3px solid #8b4513;
+            border-radius: 12px;
+            padding: 15px 30px;
+            font-family: inherit;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            box-shadow: 
+                0 6px 0 #654321,
+                0 8px 15px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #daa520 0%, #ffd700 30%, #cd853f 100%);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 0 #654321,
+                0 12px 20px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(4px);
+            box-shadow: 
+                0 2px 0 #654321,
+                0 4px 8px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary:disabled {
+            background: linear-gradient(135deg, #a0a0a0 0%, #888888 100%);
+            border-color: #666666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 
+                0 3px 0 #555555,
+                0 5px 10px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #8b4513 0%, #654321 100%);
+            color: #d2b48c;
+            border: 2px solid #5d4e37;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            box-shadow: 
+                0 4px 0 #3d2f1f,
+                0 6px 12px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(210, 180, 140, 0.2);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #a0522d 0%, #8b4513 100%);
+            transform: translateY(-1px);
+            box-shadow: 
+                0 5px 0 #3d2f1f,
+                0 8px 15px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(210, 180, 140, 0.3);
+        }
+
+        .btn-secondary:active {
+            transform: translateY(3px);
+            box-shadow: 
+                0 1px 0 #3d2f1f,
+                0 3px 6px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(210, 180, 140, 0.1);
+        }
+
+        /* Loading spinner with metallic appearance */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid transparent;
+            border-top: 3px solid #2a1810;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 5px rgba(42, 24, 16, 0.3);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Progress bar with bronze appearance */
+        .progress-container {
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(135deg, #654321 0%, #5d4e37 100%);
+            border-radius: 6px;
+            margin: 20px 0;
+            border: 2px solid #3d2f1f;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, #cd853f 0%, #daa520 50%, #b8860b 100%);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+            box-shadow: 
+                0 0 8px rgba(205, 133, 63, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        /* Results section with wooden panels */
+        .results-section {
+            margin-top: 40px;
+        }
+
+        .results-header {
+            margin-bottom: 30px;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #8b4513;
+            text-shadow: 
+                2px 2px 0px rgba(139, 69, 19, 0.8),
+                3px 3px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, #cd853f, transparent);
+            border-radius: 2px;
+        }
+
+        .domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        /* Domain cards with leather binding */
+        .domain-card {
+            background: linear-gradient(135deg, #8b4513 0%, #654321 50%, #5d4e37 100%);
+            border: 3px solid #3d2f1f;
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 6px 15px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(210, 180, 140, 0.1);
+        }
+
+        .domain-card::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px dashed rgba(210, 180, 140, 0.4);
+            border-radius: 6px;
+            pointer-events: none;
+        }
+
+        .domain-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 10px 25px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(210, 180, 140, 0.2);
+        }
+
+        .domain-card.available {
+            border-color: #cd853f;
+            background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #654321 100%);
+        }
+
+        .domain-card.taken {
+            background: linear-gradient(135deg, #696969 0%, #555555 50%, #404040 100%);
+            border-color: #2f2f2f;
+        }
+
+        .domain-name {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #d2b48c;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            word-break: break-all;
+            background: rgba(42, 24, 16, 0.2);
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+        .domain-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .domain-method {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #d2b48c;
+            background: rgba(42, 24, 16, 0.3);
+            padding: 3px 6px;
+            border-radius: 3px;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+        }
+
+        .domain-score {
+            font-size: 13px;
+            font-weight: bold;
+            color: #daa520;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .domain-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .link-register {
+            background: linear-gradient(135deg, #cd853f 0%, #daa520 50%, #b8860b 100%);
+            color: #2a1810;
+            text-decoration: none;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            flex: 1;
+            text-align: center;
+            border: 2px solid #8b4513;
+            box-shadow: 
+                0 3px 0 #654321,
+                0 5px 10px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.3);
+        }
+
+        .link-register:hover {
+            background: linear-gradient(135deg, #daa520 0%, #ffd700 50%, #cd853f 100%);
+            transform: translateY(-1px);
+            box-shadow: 
+                0 4px 0 #654321,
+                0 7px 15px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .link-register:active {
+            transform: translateY(2px);
+            box-shadow: 
+                0 1px 0 #654321,
+                0 3px 6px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        /* Error messages with parchment appearance */
+        .error-message {
+            background: linear-gradient(135deg, #f4e4bc 0%, #e6d3a3 100%);
+            border: 3px solid #8b4513;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+            color: #8b0000;
+            box-shadow: 
+                0 5px 15px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .loading-container {
+            text-align: center;
+            padding: 60px 0;
+            color: #8b4513;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(139, 69, 19, 0.2);
+            border-top: 4px solid #8b4513;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 10px rgba(139, 69, 19, 0.3);
+        }
+
+        /* Toast notifications with leather appearance */
+        .toast-container {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: linear-gradient(135deg, #8b4513 0%, #654321 100%);
+            border: 2px solid #3d2f1f;
+            border-radius: 8px;
+            padding: 15px 20px;
+            min-width: 300px;
+            color: #d2b48c;
+            font-size: 14px;
+            font-weight: bold;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            box-shadow: 
+                0 5px 15px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(210, 180, 140, 0.2);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-color: #cd853f;
+            background: linear-gradient(135deg, #8b4513 0%, #a0522d 100%);
+        }
+
+        .toast.error {
+            border-color: #8b0000;
+            background: linear-gradient(135deg, #654321 0%, #5d4e37 100%);
+            color: #ffb3b3;
+        }
+
+        /* Utility classes */
+        .hidden {
+            display: none;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px auto;
+            }
+
+            .wooden-frame {
+                padding: 15px;
+            }
+
+            .content-area {
+                padding: 20px;
+            }
+
+            .title {
+                font-size: 36px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .checkbox-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .domain-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-actions {
+                flex-direction: column;
+            }
+
+            .btn-secondary {
+                margin-right: 0;
+            }
+
+            .toast {
+                min-width: 250px;
+            }
+        }
+
+        /* Special decorative elements */
+        .metal-corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #c0c0c0 0%, #a8a8a8 50%, #808080 100%);
+            border: 1px solid #666666;
+            box-shadow: 
+                inset 1px 1px 2px rgba(255, 255, 255, 0.6),
+                inset -1px -1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .metal-corner.top-left {
+            top: 10px;
+            left: 10px;
+            border-radius: 0 0 50% 0;
+        }
+
+        .metal-corner.top-right {
+            top: 10px;
+            right: 10px;
+            border-radius: 0 0 0 50%;
+        }
+
+        .metal-corner.bottom-left {
+            bottom: 10px;
+            left: 10px;
+            border-radius: 0 50% 0 0;
+        }
+
+        .metal-corner.bottom-right {
+            bottom: 10px;
+            right: 10px;
+            border-radius: 50% 0 0 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="wooden-frame">
+            <!-- Decorative metal corners -->
+            <div class="metal-corner top-left"></div>
+            <div class="metal-corner top-right"></div>
+            <div class="metal-corner bottom-left"></div>
+            <div class="metal-corner bottom-right"></div>
+            
+            <div class="content-area">
+                <!-- Header -->
+                <div class="header">
+                    <h1 class="title" data-text="Goblin Globe">Goblin Globe</h1>
+                    <p class="subtitle">Domain name finder with mathematical precision</p>
+                </div>
+
+                <!-- Leather-bound Form -->
+                <div class="form-container">
+                    <form id="generateForm">
+                        <div class="form-group">
+                            <label for="prompt" class="form-label">Domain Description</label>
+                            <textarea 
+                                id="prompt" 
+                                class="form-textarea"
+                                placeholder="Describe your domain concept..."
+                                required
+                            ></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="count" class="form-label">Quantity</label>
+                            <input 
+                                type="number" 
+                                id="count" 
+                                class="form-input form-number" 
+                                min="1" 
+                                max="20" 
+                                value="10"
+                            >
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Extensions</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="extensions" value=".com" checked class="checkbox-input">
+                                    <span class="checkbox-label">.com</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="extensions" value=".net" class="checkbox-input">
+                                    <span class="checkbox-label">.net</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="extensions" value=".org" class="checkbox-input">
+                                    <span class="checkbox-label">.org</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="extensions" value=".io" class="checkbox-input">
+                                    <span class="checkbox-label">.io</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" id="generateButton" class="btn-primary">
+                            <span id="buttonText">Generate Domains</span>
+                            <div id="buttonSpinner" class="spinner hidden"></div>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Loading -->
+                <div id="loading" class="loading-container hidden">
+                    <div class="loading-spinner"></div>
+                    <p id="loadingMessage">Generating domain ideas...</p>
+                    <div id="progressBar" class="progress-container hidden">
+                        <div id="progressFill" class="progress-bar"></div>
+                    </div>
+                    <p id="progressText" class="hidden">Step 1 of 3</p>
+                </div>
+
+                <!-- Error -->
+                <div id="error" class="error-message hidden">
+                    <p></p>
+                </div>
+
+                <!-- Results -->
+                <div id="results" class="results-section hidden">
+                    <div class="results-header">
+                        <div class="results-actions">
+                            <button id="exportBtn" class="btn-secondary">Export CSV</button>
+                            <button id="copyAllBtn" class="btn-secondary">Copy Available</button>
+                            <button id="newSearchBtn" class="btn-secondary">New Search</button>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h2 class="section-title">Available</h2>
+                        <div id="availableList" class="domain-grid"></div>
+                    </div>
+                    
+                    <div>
+                        <h2 class="section-title">Taken</h2>
+                        <div id="takenList" class="domain-grid"></div>
+                    </div>
+                </div>
+
+                <!-- Toast Container -->
+                <div id="toastContainer" class="toast-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

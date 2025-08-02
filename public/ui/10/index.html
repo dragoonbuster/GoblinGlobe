@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goblin Globe - Domain Names</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --white: #ffffff;
+            --cream: #faf9f7;
+            --beige: #f5f1eb;
+            --light-wood: #e8ddd4;
+            --warm-gray: #9b8b7a;
+            --dark-gray: #5a524a;
+            --charcoal: #2d2a26;
+            --sage: #89967a;
+            --forest: #5f6b52;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            font-weight: 300;
+            background-color: var(--cream);
+            color: var(--charcoal);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 120px;
+        }
+
+        .brand {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--charcoal);
+            letter-spacing: 0.2em;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 0.875rem;
+            color: var(--warm-gray);
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .form-container {
+            background-color: var(--white);
+            border: 1px solid var(--light-wood);
+            padding: 60px;
+            margin-bottom: 80px;
+            transition: all 0.3s ease;
+        }
+
+        .form-container:hover {
+            border-color: var(--warm-gray);
+        }
+
+        .form-group {
+            margin-bottom: 48px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--dark-gray);
+            font-weight: 400;
+            margin-bottom: 16px;
+            letter-spacing: 0.05em;
+        }
+
+        .input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid var(--light-wood);
+            background-color: transparent;
+            padding: 16px 0;
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--charcoal);
+            transition: border-color 0.3s ease;
+        }
+
+        .input:focus {
+            outline: none;
+            border-bottom-color: var(--sage);
+        }
+
+        .textarea {
+            resize: vertical;
+            min-height: 80px;
+            padding-top: 8px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .number-input {
+            width: 80px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: var(--dark-gray);
+        }
+
+        .checkbox {
+            width: 16px;
+            height: 16px;
+            border: 1px solid var(--warm-gray);
+            background-color: transparent;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox:checked {
+            background-color: var(--sage);
+            border-color: var(--sage);
+        }
+
+        .checkbox:checked::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            width: 4px;
+            height: 8px;
+            border: solid var(--white);
+            border-width: 0 1px 1px 0;
+            transform: rotate(45deg);
+        }
+
+        .submit-button {
+            width: 100%;
+            background-color: var(--sage);
+            color: var(--white);
+            border: none;
+            padding: 20px 0;
+            font-size: 0.875rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 40px;
+            font-family: inherit;
+        }
+
+        .submit-button:hover:not(:disabled) {
+            background-color: var(--forest);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 60px 0;
+            color: var(--warm-gray);
+        }
+
+        .loading.visible {
+            display: block;
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--light-wood);
+            border-top-color: var(--sage);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.visible {
+            display: block;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--charcoal);
+            margin-bottom: 16px;
+        }
+
+        .results-count {
+            font-size: 0.875rem;
+            color: var(--warm-gray);
+            letter-spacing: 0.05em;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+
+        .action-button {
+            background-color: transparent;
+            border: 1px solid var(--warm-gray);
+            color: var(--dark-gray);
+            padding: 12px 24px;
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .action-button:hover {
+            border-color: var(--sage);
+            color: var(--sage);
+        }
+
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--dark-gray);
+            margin-bottom: 32px;
+            text-align: center;
+            letter-spacing: 0.05em;
+        }
+
+        .domain-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .domain-card {
+            background-color: var(--white);
+            border: 1px solid var(--light-wood);
+            padding: 32px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .domain-card:hover {
+            border-color: var(--warm-gray);
+        }
+
+        .domain-card.available {
+            border-left: 4px solid var(--sage);
+        }
+
+        .domain-card.taken {
+            border-left: 4px solid var(--warm-gray);
+        }
+
+        .domain-name {
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--charcoal);
+            margin-bottom: 16px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .domain-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .domain-method {
+            font-size: 0.75rem;
+            color: var(--warm-gray);
+            background-color: var(--beige);
+            padding: 4px 12px;
+            letter-spacing: 0.05em;
+        }
+
+        .domain-score {
+            font-size: 0.75rem;
+            color: var(--dark-gray);
+            font-weight: 400;
+        }
+
+        .domain-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .domain-button {
+            flex: 1;
+            background-color: transparent;
+            border: 1px solid var(--warm-gray);
+            color: var(--dark-gray);
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .domain-button.primary {
+            background-color: var(--sage);
+            border-color: var(--sage);
+            color: var(--white);
+        }
+
+        .domain-button:hover {
+            border-color: var(--sage);
+            color: var(--sage);
+        }
+
+        .domain-button.primary:hover {
+            background-color: var(--forest);
+            border-color: var(--forest);
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--warm-gray);
+            cursor: pointer;
+            padding: 8px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .domain-card:hover .copy-button {
+            opacity: 1;
+        }
+
+        .copy-button:hover {
+            color: var(--sage);
+        }
+
+        .error {
+            display: none;
+            background-color: var(--white);
+            border: 1px solid var(--light-wood);
+            border-left: 4px solid var(--warm-gray);
+            padding: 32px;
+            text-align: center;
+            color: var(--dark-gray);
+            margin-bottom: 40px;
+        }
+
+        .error.visible {
+            display: block;
+        }
+
+        .toast {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            background-color: var(--white);
+            border: 1px solid var(--light-wood);
+            border-left: 4px solid var(--sage);
+            padding: 16px 24px;
+            font-size: 0.875rem;
+            color: var(--dark-gray);
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        .toast.visible {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast.error {
+            border-left-color: var(--warm-gray);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+
+            .form-container {
+                padding: 40px 24px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .brand {
+                font-size: 2rem;
+            }
+
+            .actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-button {
+                min-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="brand">Goblin Globe</h1>
+            <p class="subtitle">Domain Discovery</p>
+        </header>
+
+        <div class="form-container">
+            <form id="generateForm">
+                <div class="form-group">
+                    <label class="label" for="prompt">Describe your domain idea</label>
+                    <textarea 
+                        id="prompt" 
+                        class="input textarea"
+                        placeholder="combine two random animals like fishbunny"
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="label" for="count">Number of suggestions</label>
+                        <input 
+                            type="number" 
+                            id="count" 
+                            class="input number-input"
+                            min="1" 
+                            max="20" 
+                            value="10"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="label">Extensions to check</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="extensions" value=".com" checked class="checkbox">
+                                .com
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="extensions" value=".net" class="checkbox">
+                                .net
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="extensions" value=".org" class="checkbox">
+                                .org
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="extensions" value=".io" class="checkbox">
+                                .io
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-button" id="generateButton">
+                    <span id="buttonText">Generate Domains</span>
+                </button>
+            </form>
+        </div>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <div id="loadingMessage">Generating domain ideas...</div>
+        </div>
+
+        <div id="error" class="error"></div>
+
+        <div id="results" class="results">
+            <div class="results-header">
+                <h2 class="results-title">Domain Results</h2>
+                <p class="results-count" id="resultsCount">Found domains</p>
+            </div>
+
+            <div class="actions">
+                <button id="exportBtn" class="action-button">Export Results</button>
+                <button id="copyAllBtn" class="action-button">Copy Available</button>
+                <button id="newSearchBtn" class="action-button">New Search</button>
+            </div>
+
+            <div class="section" id="availableSection">
+                <h3 class="section-title">Available Domains</h3>
+                <div id="availableList" class="domain-grid"></div>
+            </div>
+
+            <div class="section" id="takenSection">
+                <h3 class="section-title">Taken Domains</h3>
+                <div id="takenList" class="domain-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

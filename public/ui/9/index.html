@@ -1,0 +1,481 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+    <title>GOBLIN GLOBE - The ULTIMATE Domain Finder!!!</title>
+    <meta name="generator" content="FrontPage Express 2.0">
+    <meta name="keywords" content="domains, internet, web, goblin, globe, BEST, AWESOME, COOL, RADICAL, TUBULAR">
+    <meta name="description" content="The most AWESOME domain finder on the World Wide Web! Find cool domains with our AI-powered goblin technology!">
+    <meta name="author" content="GoblinMaster2000">
+    <meta name="copyright" content="Copyright 1999 Goblin Globe Industries">
+    <link rel="shortcut icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=">
+    <style>
+        /* 90s Web-Safe Colors and Fonts */
+        body {
+            background: url('data:image/gif;base64,R0lGODlhCgAKAPIAAP///8zMzJmZmWZmZjMzMwAAAAAAAAAAACH5BAEAAAUALAAAAAAKAAoAAAMlWLrc/jDKSau9OOvNu/9gKI5kaZ5oqq5s675wLM90bd94ru987//AoHBILBqPyKRyyWw6n9CodEqtWq/YrHbL7Xq/4LB4TC6bz+i0es1ut9yu9wsOi8fksvmMTqvX7Lb7DY/L5/S6/Y7P6/f8/g8QGCg4SFhoeIiYqLjI2Oj4CBkpOUlZaXmJmam5ydnp+QkaKjpKWmp6ipqqusra6voKGys7S1tre4ubq7vL2+v7CxwsPExcbHyMnKy8zNzs/AwdLT1NXW19jZ2tvc3d7f0NHi4+Tl5ufo6err7O3u7+Dh8vP09fb3+Pn6+/z9/v/w8woMCBBAsaPIgwocKFDBs6fAgxosSJFCtavIgxo8aNHDt6/AgypMiRJEuaPIkypMmTKFOqXMmypcuXMGPKnEmzps2bOHPq3Mmzp8+fQIMKHUq0qNGjSJMqXcq0qdOnUKNKnUq1qtWrWLNq3cq1q9evM7F67gkzqFCnU69OzVq2LFqzaNOiVasWrVu4cuPGnWu3btuyeufCvZv37l+8efPq5du3b9++fgMHFiyYsOHCgwcbJoAAADs=') repeat;
+            margin: 0;
+            padding: 0;
+            font-family: "Times New Roman", serif;
+            font-size: 12px;
+            color: #000000;
+        }
+        
+        /* Marquee and blinking text */
+        .blink {
+            animation: blink 1s linear infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .rainbow-text {
+            background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow 2s ease infinite;
+            font-weight: bold;
+        }
+        
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* 3D beveled effects */
+        .bevel-inset {
+            border: 2px inset #c0c0c0;
+            background-color: #c0c0c0;
+        }
+        
+        .bevel-outset {
+            border: 2px outset #c0c0c0;
+            background-color: #c0c0c0;
+        }
+        
+        .bevel-raised {
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            border-right: 2px solid #808080;
+            border-bottom: 2px solid #808080;
+            background-color: #c0c0c0;
+        }
+        
+        /* Tables for layout */
+        .main-table {
+            width: 100%;
+            border: 0;
+            cellpadding: 0;
+            cellspacing: 0;
+        }
+        
+        .header-cell {
+            background: linear-gradient(45deg, #0000ff, #ff00ff, #ff0000, #ffff00, #00ff00, #00ffff);
+            background-size: 400% 400%;
+            animation: rainbow 3s ease infinite;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .content-cell {
+            background-color: #ffffff;
+            padding: 15px;
+            vertical-align: top;
+        }
+        
+        .sidebar-cell {
+            background-color: #ffff99;
+            padding: 10px;
+            width: 200px;
+            vertical-align: top;
+            border: 2px outset #c0c0c0;
+        }
+        
+        /* Form elements with 90s styling */
+        input[type="text"], textarea, select {
+            font-family: "Times New Roman", serif;
+            font-size: 12px;
+            border: 2px inset #c0c0c0;
+            background-color: #ffffff;
+            padding: 4px;
+        }
+        
+        input[type="submit"], input[type="button"], button {
+            font-family: "Times New Roman", serif;
+            font-size: 12px;
+            border: 2px outset #c0c0c0;
+            background-color: #c0c0c0;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+        
+        input[type="submit"]:active, input[type="button"]:active, button:active {
+            border: 2px inset #c0c0c0;
+        }
+        
+        /* Horizontal rules */
+        .rainbow-hr {
+            height: 10px;
+            background: linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080);
+            border: none;
+            margin: 10px 0;
+        }
+        
+        /* Visitor counter styling */
+        .counter {
+            background-color: #000000;
+            color: #00ff00;
+            font-family: "Courier New", monospace;
+            font-size: 14px;
+            padding: 5px 10px;
+            border: 2px inset #c0c0c0;
+            display: inline-block;
+        }
+        
+        /* WordArt style heading */
+        .wordart-title {
+            font-family: Impact, Arial Black, sans-serif;
+            font-size: 48px;
+            font-weight: bold;
+            text-shadow: 
+                2px 2px 0px #000000,
+                4px 4px 4px #808080;
+            transform: perspective(200px) rotateX(15deg);
+            background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow 2s ease infinite;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        /* Results styling */
+        .results-table {
+            width: 100%;
+            border: 2px outset #c0c0c0;
+            background-color: #ffffff;
+            cellpadding: 4;
+            cellspacing: 1;
+        }
+        
+        .results-header {
+            background-color: #0000ff;
+            color: #ffffff;
+            font-weight: bold;
+            text-align: center;
+            padding: 5px;
+        }
+        
+        .domain-available {
+            background-color: #00ff00;
+            color: #000000;
+        }
+        
+        .domain-taken {
+            background-color: #ff0000;
+            color: #ffffff;
+        }
+        
+        .loading-gif {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        /* Animated under construction */
+        .construction {
+            display: inline-block;
+            animation: bounce 1s infinite alternate;
+        }
+        
+        @keyframes bounce {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-10px); }
+        }
+        
+        /* Web ring navigation */
+        .webring {
+            background-color: #ffff00;
+            border: 2px solid #000000;
+            padding: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .webring a {
+            color: #0000ff;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        
+        /* Status messages */
+        .status-message {
+            background-color: #c0c0c0;
+            border: 2px inset #c0c0c0;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: "MS Sans Serif", sans-serif;
+            font-size: 11px;
+        }
+        
+        /* Scrolling text effect */
+        .scroll-text {
+            background-color: #000080;
+            color: #ffffff;
+            padding: 5px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        .scroll-text span {
+            display: inline-block;
+            animation: scroll 15s linear infinite;
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main layout table -->
+    <table class="main-table">
+        <tr>
+            <td class="header-cell" colspan="2">
+                <div class="wordart-title">GOBLIN GLOBE</div>
+                <div style="color: white; font-size: 16px; font-weight: bold; text-shadow: 2px 2px 4px #000000;">
+                    THE ULTIMATE DOMAIN NAME FINDER!!!
+                </div>
+                <div class="blink" style="color: yellow; font-size: 14px; margin-top: 10px;">
+                    *** NEW AND IMPROVED! *** POWERED BY AI! ***
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="content-cell">
+                <hr class="rainbow-hr">
+                
+                <!-- Under Construction Section -->
+                <div style="text-align: center; margin: 20px 0;">
+                    <div class="construction" style="font-size: 18px; font-weight: bold; color: #ff0000;">
+                        🚧 UNDER CONSTRUCTION 🚧
+                    </div>
+                    <div style="margin: 10px 0;">
+                        <img src="data:image/gif;base64,R0lGODlhPAA8APcAAAAAAAEBAQICAgMDAwQEBAUFBQYGBgcHBwgICAkJCQoKCgsLCwwMDA0NDQ4ODg8PDxAQEBERERISEhMTExQUFBUVFRYWFhcXFxgYGBkZGRoaGhsbGxwcHB0dHR4eHh8fHyAgICEhISIiIiMjIykpKSkpKSkpKSkpKSkpKSkpKSkpKSoqKisrKywsLC0tLS4uLi8vLzAwMDExMTIyMjMzMzQ0NDU1NTY2Njc3Nzg4ODk5OTo6Ojs7Ozw8PD09PT4+Pj8/P0BAQEFBQUJCQkNDQ0REREVFRUZGRkdHR0hISElJSUpKSktLS0xMTE1NTU5OTk9PT1BQUFFRUVJSUlNTU1RUVFVVVVZWVldXV1hYWFlZWVpaWltbW1xcXF1dXV5eXl9fX2BgYGFhYWJiYmNjY2RkZGVlZWZmZmdnZ2hoaGlpaWpqamtra2xsbG1tbW5ubm9vb3BwcHFxcXJycnNzc3R0dHV1dXZ2dnd3d3h4eHl5eXp6ent7e3x8fH19fX5+fn9/f4CAgIGBgYKCgoODg4SEhIWFhYaGhoeHh4iIiImJiYqKiouLi4yMjI2NjY6Ojo+Pj5CQkJGRkZKSkpOTk5SUlJWVlZaWlpeXl5iYmJmZmZqampubm5ycnJ2dnZ6enp+fn6CgoKGhoaKioqOjo6SkpKWlpaampqenp6ioqKmpqaqqqqurq6ysrK2tra6urq+vr7CwsLGxsbKysrOzs7S0tLW1tba2tre3t7i4uLm5ubq6uru7u7y8vL29vb6+vr+/v8DAwMHBwcLCwsPDw8TExMXFxcbGxsfHx8jIyMnJycrKysvLy8zMzM3Nzc7Ozs/Pz9DQ0NHR0dLS0tPT09TU1NXV1dbW1tfX19jY2NnZ2dra2tvb29zc3N3d3d7e3t/f3+Dg4OHh4eLi4uPj4+Tk5OXl5ebm5ufn5+jo6Onp6erq6uvr6+zs7O3t7e7u7u/v7/Dw8PHx8fLy8vPz8/T09PX19fb29vf39/j4+Pn5+fr6+vv7+/z8/P39/f7+/v///yH/C05FVFNDQVBFMi4wAwEAAAAh+QQJCgAAACwAAAAAPAA8AAAI/wABCBxIsKDBgwgTKlzIsKHDhxAjSpxIsaLFixgzatzIsaPHjyBDihxJsqTJkyhTqlzJsqXLlzBjypxJs6bNmzhz6tzJs6fPn0CDCh1KtKjRo0iTKl3KtKnTp1CjSp1KtarVq1izat3KtavXr2DDih1LtqzZs2jTql3Ltq3bt3Djyp1Lt67du3jz6t3Lt6/fv4ADCx5MuLDhw4gTK17MuLHjx5AjS55MubLly5gza97MubPnz6BDix5NurTp06hTq17NurXr17Bjy55Nu7bt27hz697Nu7fv38CDCx9OvLjx48iTK1/OvLnz59CjS59Ovbr169iza9/Ovbv37+DDi/8fT768+fPo06tfz769+/fw48ufT7++/fv48+vfz7+///8ABijggAQWaOCBCCao4IIMNujggxBGKOGEFFZo4YUYZqjhhhx26OGHIIYo4ogklmjiiSimqOKKLLbo4oswxijjjDTWaOONOOao44489ujjj0AGKeSQRBZp5JFIJqnkkkw26eSTUEYp5ZRUVmnllVhmqeWWXHbp5ZdghinmmGSWaeaZaKap5ppstunmm3DGKeecdNZp55145qnnnnz26eefgAYq6KCEFmrooYgmquiijDbq6KOQRirppJRWaumlmGaq6aacdurpp6CGKuqopJZq6qmopqrqqqy26uqrsMYq66y01mrrrbjmquuuvPbq669WCvrrsMQWa+yxyP8m6+yz0EYr7bTUVmvttdhmq+223Hbr7bfghivuuOSWa+656Kar7rrstuvuu/DGK++89NZr77345qvvvvz26++/AAcs8MAEF2zwwQgnrPDCDDfs8MMQRyzxxBRXbPHFGGes8cYcd+zxxyCHLPLIJJds8skop6zyyiy37PLLMMcs88w012zzzTjnrPPOPPfs889ABy300EQXbfTRSCet9NJMN+3001BHLfXUVFdt9dVYZ6311lx37fXXYIct9thkl2322WinrfbabLft9ttwxy333HTXbffdeOet995894333oAHLvjghBdu+OGIJ6744ow37vjjkEcu+eSUV2755ZhnrvnmnHfu+eeghy766KSXbvrpqKeu+uqst+7667DHLvvstNdu++245/8O++y456777rz37vvvwAcv/PDEF2/88cgnr/zyzDfv/PPQRy/99NRXb/312Gev/fbcd+/99+CHL/745Jdv/vnop6/++uy37/778Mcv//z012///fjnr//+/Pfv//8AGI+DAFR3wMIdJ2BAoODhCXDAAhcAuwIqUIELXI8ACvAAoZZNgAdAIGAGCMEJcqc2BZygBCVIwQlOEIMYHKAGO8jBDoJwgya04AhDeEITmvCEKFRh+0jQASRiYDIOJGEHSXhCFF5QhSl8IQVN6MEQgtCEJkxhC1sYwxfeUIYxfCEN/7fDE/rQh0IU4g6JaEQjGnGCTHShEpdo/0QnPnGKUZziFK2YxStmcYtbxGIXvdhFL34xjGQcYxnHeMYztjGNbXxjHNcYxzfOcY517GMf/xjIQA6ykIU85CEPmchELnKRj1xkIx8ZyUhOspKXzOQmOxnKUJ6ylKdM5SpbuclVvjKWs6zlLXOZy17+spjFPGYyk7nMZj4zms+sZjazuc1udnOc4SxnOcvZznqus531zGc+++nPgI6zoAc96EITutCGPjSiE63oRS+a0Y1udKQb7WhIA1rSkJ70pCc9aUpXmtKWrjSmM21pTWP60prutKc5fWlQgzrUpB61qEU96lOTetSkNjWqTX1qVae61apudatd/errrXb1q2H9alrHWta0nnWtbX3rXN861rreda97/etfBzvYwi62sY197GQru9nOfrazy41sZj/72dCOtrSnTe1qW/va2M62trfN7W57+9vgDre4x03ucpv73OhOt7rXze52u/vd8I63vOdN73rbu972vje+863vfvv73/4OuMAFPvCBE7zgBj84whOu8IYr/OEQj7jEJ07xi1v84hjPuMYzvvGOf7zjIA/5yEdO8pOjPOUqX7nKWf5ymM984jCfucxpXvOa2/zmN8+5znfO857/POhBH7rQh070ohv96EhPutKXzvSmO/3pUI+61KdO9apbvepXz7rWt871rnv969z3+tfBHvawj73sZ0+7281+drSnXe1qX7va1872/1/fOt73zve++/3vgA+84AdP+MIb/vCIT7ziF8/4xjv+8ZCPvOQnT/nKW/7ymM+85jfP+c57/vOgD73oR0/60pv+9KhPvepXz/rWu/71sI+97GdP+9rb/va4z73ud8/73vv+98APvvCHT/ziG//4yE++8pfP/OY7//nQj770p0/96lv/+tjPvva3z/3ue//74A+/+MdP/vKb//zoT7/6qa9+66v/+tjXvvfBP/7yl//86E+/+tfP/va7//3wj7/85w=" alt="Under Construction" width="60" height="60">
+                    </div>
+                    <div style="font-family: 'MS Sans Serif', sans-serif; font-size: 11px; color: #800080;">
+                        Last Updated: <span class="blink">NEVER!</span> | WebMaster: GoblinMaster2000
+                    </div>
+                </div>
+                
+                <hr class="rainbow-hr">
+                
+                <!-- Main Form -->
+                <form id="domainForm">
+                    <table border="0" width="100%">
+                        <tr>
+                            <td bgcolor="#ccccff" align="center" colspan="2">
+                                <font size="+1" color="#000080"><b>DOMAIN SEARCH WIZARD</b></font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="150" align="right"><b>What domain do you want?</b></td>
+                            <td>
+                                <textarea id="prompt" name="prompt" rows="4" cols="40" class="bevel-inset" placeholder="Type your awesome domain idea here! Like: cool tech startup, gaming website, etc."></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right"><b>How many domains?</b></td>
+                            <td>
+                                <select id="count" name="count" class="bevel-inset">
+                                    <option value="5">5 domains</option>
+                                    <option value="10" selected>10 domains</option>
+                                    <option value="15">15 domains</option>
+                                    <option value="20">20 domains</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right"><b>Extensions:</b></td>
+                            <td>
+                                <input type="checkbox" name="extensions" value=".com" checked> .com
+                                <input type="checkbox" name="extensions" value=".net"> .net
+                                <input type="checkbox" name="extensions" value=".org"> .org
+                                <input type="checkbox" name="extensions" value=".io"> .io
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center" style="padding-top: 15px;">
+                                <input type="submit" value="FIND MY DOMAINS!!!" style="font-size: 14px; font-weight: bold;">
+                                <input type="button" value="RESET FORM" onclick="resetForm()">
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                
+                <!-- Loading Animation -->
+                <div id="loading" class="loading-gif" style="display: none;">
+                    <div style="font-size: 16px; font-weight: bold; color: #ff0000; margin-bottom: 10px;">
+                        <span class="blink">SEARCHING THE INTERNET...</span>
+                    </div>
+                    <div style="font-family: 'Courier New', monospace; background-color: #000000; color: #00ff00; padding: 10px; border: 2px inset #c0c0c0; display: inline-block;">
+                        <div id="loadingText">INITIALIZING AI GOBLIN BRAIN...</div>
+                        <div style="margin-top: 5px;">
+                            <span id="progressBar">████████████████████</span> <span id="progressPercent">0%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Status Message -->
+                <div id="statusMessage" class="status-message" style="display: none;"></div>
+                
+                <!-- Results -->
+                <div id="results" style="display: none;">
+                    <hr class="rainbow-hr">
+                    <div style="text-align: center; margin: 20px 0;">
+                        <font size="+2" color="#008000"><b>YOUR DOMAIN RESULTS!!!</b></font>
+                    </div>
+                    
+                    <!-- Available Domains -->
+                    <div id="availableSection">
+                        <table class="results-table" width="100%">
+                            <tr class="results-header">
+                                <td colspan="3">
+                                    <font size="+1">✅ AVAILABLE DOMAINS ✅</font>
+                                </td>
+                            </tr>
+                            <tbody id="availableList">
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <br>
+                    
+                    <!-- Taken Domains -->
+                    <div id="takenSection">
+                        <table class="results-table" width="100%">
+                            <tr class="results-header">
+                                <td colspan="3">
+                                    <font size="+1">❌ TAKEN DOMAINS ❌</font>
+                                </td>
+                            </tr>
+                            <tbody id="takenList">
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Export Options -->
+                    <div style="text-align: center; margin: 20px 0;">
+                        <input type="button" value="COPY ALL AVAILABLE" onclick="copyAvailable()">
+                        <input type="button" value="EXPORT TO CSV" onclick="exportCSV()">
+                        <input type="button" value="NEW SEARCH" onclick="newSearch()">
+                    </div>
+                </div>
+                
+                <hr class="rainbow-hr">
+                
+                <!-- Fun 90s Footer -->
+                <div style="text-align: center; margin: 20px 0;">
+                    <div class="scroll-text">
+                        <span>*** GOBLIN GLOBE IS THE BEST DOMAIN FINDER ON THE WORLD WIDE WEB! *** TELL YOUR FRIENDS! *** BOOKMARK THIS PAGE! *** GEOCITIES APPROVED! ***</span>
+                    </div>
+                </div>
+                
+                <!-- 90s Web Standards Compliance -->
+                <div style="text-align: center; margin: 20px 0; font-size: 10px;">
+                    <div style="margin-bottom: 10px;">
+                        <img src="data:image/gif;base64,R0lGODlhHgAOAPcAAP///wAAAP8AAP//AP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAAQALAAAAAAYAA4AAAhKAAkIHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmypMmTKFOqXMmypcuXHlHKnEmzps2bOHPq3Mmzp8+fQIMKBQQAOw==" alt="Made with Notepad" width="30" height="14">
+                        <img src="data:image/gif;base64,R0lGODlhHgAOAPcAAP///wAAAP8AAP//AP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAAQALAAAAAAYAA4AAAhKAAkIHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmypMmTKFOqXMmypcuXHlHKnEmzps2bOHPq3Mmzp8+fQIMKBQQAOw==" alt="HTML 3.2 Compatible" width="30" height="14">
+                        <img src="data:image/gif;base64,R0lGODlhHgAOAPcAAP///wAAAP8AAP//AP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAAQALAAAAAAYAA4AAAhKAAkIHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmypMmTKFOqXCmypcuXHlHKnEmzps2bOHPq3Mmzp8+fQIMKBQQAOw==" alt="Netscape Now!" width="30" height="14">
+                    </div>
+                    <div style="color: #666666;">
+                        This site is optimized for <b>Netscape Navigator 4.0</b> and <b>Internet Explorer 4.0</b><br>
+                        Best viewed at 800x600 resolution with thousands of colors<br>
+                        <a href="http://www.netscape.com/" style="color: #0000ff;">Get Netscape</a> | 
+                        <a href="http://www.microsoft.com/ie/" style="color: #0000ff;">Get Internet Explorer</a>
+                    </div>
+                </div>
+                
+                <!-- Last Updated -->
+                <div style="text-align: center; font-size: 9px; color: #666666; margin: 10px 0;">
+                    Page last updated: <span class="blink">RIGHT NOW!</span> | 
+                    Created with: ❤️ and FrontPage Express | 
+                    Hosted by: GeoCities (RIP)
+                </div>
+                
+            </td>
+            
+            <!-- Sidebar -->
+            <td class="sidebar-cell">
+                <!-- Visitor Counter -->
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 12px; font-weight: bold; margin-bottom: 5px;">VISITOR COUNTER:</div>
+                    <div class="counter" id="visitorCounter">001337</div>
+                    <div style="font-size: 10px; margin-top: 5px;">You are visitor #<span class="blink">1337</span>!</div>
+                </div>
+                
+                <!-- Random Stats -->
+                <div class="bevel-raised" style="padding: 10px; margin-bottom: 15px;">
+                    <div style="font-weight: bold; color: #800000; margin-bottom: 5px;">GOBLIN STATS:</div>
+                    <div style="font-size: 11px;">
+                        🧙‍♂️ Domains Found: <span class="rainbow-text">9,999,999</span><br>
+                        ⚡ AI Power Level: <span class="blink">MAXIMUM</span><br>
+                        🌍 Countries Served: ALL<br>
+                        📈 Success Rate: 420.69%
+                    </div>
+                </div>
+                
+                <!-- Web Ring -->
+                <div class="webring">
+                    <div style="font-weight: bold; font-size: 12px; margin-bottom: 5px;">GOBLIN WEB RING</div>
+                    <div style="font-size: 10px;">
+                        <a href="#">← Previous</a> |
+                        <a href="#">Random</a> |
+                        <a href="#">Next →</a>
+                    </div>
+                </div>
+                
+                <!-- Awards -->
+                <div style="text-align: center; margin: 15px 0;">
+                    <div style="font-weight: bold; font-size: 11px; margin-bottom: 5px;">AWARDS WON:</div>
+                    <div style="font-size: 20px;">🏆🥇⭐</div>
+                    <div style="font-size: 9px; margin-top: 3px;">
+                        Best Website 1999<br>
+                        Coolest Site Award<br>
+                        Webby Winner
+                    </div>
+                </div>
+                
+                <!-- Guestbook -->
+                <div class="bevel-raised" style="padding: 8px; margin: 15px 0;">
+                    <div style="font-weight: bold; font-size: 11px; margin-bottom: 5px; color: #000080;">SIGN MY GUESTBOOK!</div>
+                    <div style="font-size: 9px;">
+                        <a href="#" style="color: #800080;">Click here to sign!</a><br>
+                        Last entry: "OMG this site rocks!" - CoolDude98
+                    </div>
+                </div>
+                
+                <!-- Best Viewed In -->
+                <div style="text-align: center; margin: 15px 0; font-size: 9px;">
+                    <div style="font-weight: bold;">BEST VIEWED IN:</div>
+                    <div>Netscape Navigator 4.0</div>
+                    <div>800x600 resolution</div>
+                    <div>16-bit color</div>
+                </div>
+                
+                <!-- Email Link -->
+                <div style="text-align: center; margin: 15px 0; font-size: 10px;">
+                    <div class="blink">📧 EMAIL THE WEBMASTER!</div>
+                    <a href="mailto:goblinmaster@hotmail.com" style="color: #0000ff;">goblinmaster@hotmail.com</a>
+                </div>
+            </td>
+        </tr>
+    </table>
+    
+    <script src="app.js"></script>
+</body>
+</html>

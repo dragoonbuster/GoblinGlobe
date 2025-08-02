@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goblin Globe - Steampunk Domain Discovery Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            font-weight: 400;
+            color: #2c1810;
+            background: linear-gradient(135deg, #1a0f0a 0%, #2c1810 50%, #1a0f0a 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            position: relative;
+        }
+
+        /* Steampunk background texture */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(184, 134, 11, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(120, 53, 15, 0.1) 0%, transparent 50%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><defs><pattern id="gear" patternUnits="userSpaceOnUse" width="50" height="50"><circle cx="25" cy="25" r="20" fill="none" stroke="rgba(184,134,11,0.1)" stroke-width="1"/><circle cx="25" cy="25" r="3" fill="rgba(184,134,11,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23gear)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            position: relative;
+        }
+
+        /* Typography - Victorian style */
+        .title-ornate {
+            font-family: 'Playfair Display', serif;
+            font-size: 72px;
+            font-weight: 900;
+            color: #b8860b;
+            text-align: center;
+            text-shadow: 
+                2px 2px 0px #78350f,
+                4px 4px 8px rgba(0,0,0,0.5);
+            letter-spacing: 0.05em;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .title-ornate::before,
+        .title-ornate::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #b8860b, transparent);
+        }
+
+        .title-ornate::before {
+            left: -120px;
+        }
+
+        .title-ornate::after {
+            right: -120px;
+        }
+
+        .subtitle {
+            font-family: 'Crimson Text', serif;
+            font-size: 24px;
+            color: #cd853f;
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 60px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Brass frame styling */
+        .brass-frame {
+            background: linear-gradient(135deg, #cd853f 0%, #b8860b 25%, #daa520 50%, #b8860b 75%, #cd853f 100%);
+            border: 3px solid #78350f;
+            border-radius: 15px;
+            padding: 6px;
+            position: relative;
+            box-shadow: 
+                0 8px 32px rgba(0,0,0,0.4),
+                inset 0 2px 4px rgba(255,255,255,0.2),
+                inset 0 -2px 4px rgba(0,0,0,0.2);
+        }
+
+        .brass-frame::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, #8b4513, #a0522d, #8b4513);
+            border-radius: 18px;
+            z-index: -1;
+        }
+
+        .brass-inner {
+            background: rgba(26, 15, 10, 0.9);
+            border: 2px solid #5d2c0f;
+            border-radius: 12px;
+            padding: 40px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Gear decorations */
+        .gear {
+            position: absolute;
+            color: #b8860b;
+            opacity: 0.6;
+            animation: spin 20s linear infinite;
+        }
+
+        .gear-1 {
+            top: -15px;
+            left: -15px;
+            font-size: 30px;
+            animation-duration: 15s;
+        }
+
+        .gear-2 {
+            top: -10px;
+            right: -10px;
+            font-size: 25px;
+            animation-duration: 25s;
+            animation-direction: reverse;
+        }
+
+        .gear-3 {
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 35px;
+            animation-duration: 20s;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 35px;
+        }
+
+        .form-label {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #cd853f;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 18px 20px;
+            border: 2px solid #78350f;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(205, 133, 63, 0.1) 0%, rgba(139, 69, 19, 0.1) 100%);
+            font-family: 'Crimson Text', serif;
+            font-size: 18px;
+            color: #cd853f;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 2px 2px 8px rgba(0,0,0,0.3),
+                0 2px 4px rgba(184, 134, 11, 0.2);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            border-color: #b8860b;
+            box-shadow: 
+                inset 2px 2px 8px rgba(0,0,0,0.3),
+                0 0 0 3px rgba(184, 134, 11, 0.3),
+                0 4px 8px rgba(184, 134, 11, 0.2);
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: rgba(205, 133, 63, 0.6);
+            font-style: italic;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-number {
+            width: 120px;
+        }
+
+        /* Checkbox styling */
+        .checkbox-group {
+            display: flex;
+            gap: 30px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .checkbox-input {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            border: 2px solid #78350f;
+            background: linear-gradient(135deg, rgba(205, 133, 63, 0.2) 0%, rgba(139, 69, 19, 0.2) 100%);
+            cursor: pointer;
+            position: relative;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-input:checked {
+            background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
+            border-color: #b8860b;
+            box-shadow: 0 0 8px rgba(184, 134, 11, 0.5);
+        }
+
+        .checkbox-input:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 0px;
+            left: 4px;
+            color: #1a0f0a;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .checkbox-label {
+            font-family: 'Crimson Text', serif;
+            font-size: 18px;
+            color: #cd853f;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Steam-powered button */
+        .btn-steam {
+            background: linear-gradient(135deg, #b8860b 0%, #daa520 50%, #b8860b 100%);
+            color: #1a0f0a;
+            border: 3px solid #78350f;
+            padding: 18px 40px;
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            border-radius: 8px;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 6px 20px rgba(0,0,0,0.3),
+                inset 0 2px 4px rgba(255,255,255,0.2),
+                inset 0 -2px 4px rgba(0,0,0,0.2);
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+            margin-top: 25px;
+        }
+
+        .btn-steam:hover {
+            background: linear-gradient(135deg, #daa520 0%, #ffd700 50%, #daa520 100%);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 25px rgba(0,0,0,0.4),
+                inset 0 2px 4px rgba(255,255,255,0.3),
+                inset 0 -2px 4px rgba(0,0,0,0.3);
+        }
+
+        .btn-steam:active {
+            transform: translateY(0px);
+            box-shadow: 
+                0 4px 15px rgba(0,0,0,0.3),
+                inset 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-steam:disabled {
+            background: linear-gradient(135deg, #666 0%, #888 50%, #666 100%);
+            color: #333;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #cd853f;
+            border: 2px solid #78350f;
+            padding: 15px 30px;
+            font-family: 'Crimson Text', serif;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, rgba(184, 134, 11, 0.2) 0%, rgba(218, 165, 32, 0.2) 100%);
+            border-color: #b8860b;
+            color: #daa520;
+            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.3);
+        }
+
+        /* Loading spinner - Steam gauge style */
+        .steam-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(26, 15, 10, 0.3);
+            border-top: 3px solid #1a0f0a;
+            border-radius: 50%;
+            animation: steam-spin 1s linear infinite;
+            margin-left: 15px;
+        }
+
+        @keyframes steam-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Steam effects */
+        .steam-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .steam {
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: steam-rise 3s ease-out infinite;
+            opacity: 0;
+        }
+
+        .steam:nth-child(2) { left: 45%; animation-delay: 0.5s; }
+        .steam:nth-child(3) { left: 55%; animation-delay: 1s; }
+        .steam:nth-child(4) { left: 40%; animation-delay: 1.5s; }
+        .steam:nth-child(5) { left: 60%; animation-delay: 2s; }
+
+        @keyframes steam-rise {
+            0% {
+                opacity: 0;
+                transform: translateY(0px) scale(1);
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(1.5);
+            }
+        }
+
+        /* Loading section */
+        .loading-chamber {
+            text-align: center;
+            padding: 60px 0;
+            position: relative;
+        }
+
+        .loading-gauge {
+            width: 80px;
+            height: 80px;
+            border: 6px solid rgba(120, 53, 15, 0.3);
+            border-top: 6px solid #b8860b;
+            border-right: 6px solid #daa520;
+            border-radius: 50%;
+            animation: steam-spin 2s ease-in-out infinite;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        .loading-gauge::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: #b8860b;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .loading-message {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: #cd853f;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Progress pressure gauge */
+        .pressure-gauge {
+            width: 100%;
+            height: 12px;
+            background: rgba(120, 53, 15, 0.3);
+            border: 2px solid #78350f;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .pressure-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #b8860b 0%, #daa520 50%, #ffd700 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(184, 134, 11, 0.5);
+        }
+
+        .progress-text {
+            font-family: 'Crimson Text', serif;
+            font-size: 16px;
+            color: #cd853f;
+            text-align: center;
+            margin-top: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Results section */
+        .results-section {
+            margin-top: 60px;
+        }
+
+        .results-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .results-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #b8860b;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .results-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        /* Domain cards */
+        .domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .domain-card.available {
+            background: linear-gradient(135deg, rgba(184, 134, 11, 0.1) 0%, rgba(218, 165, 32, 0.1) 100%);
+            border: 2px solid #b8860b;
+        }
+
+        .domain-card.taken {
+            background: linear-gradient(135deg, rgba(120, 53, 15, 0.1) 0%, rgba(139, 69, 19, 0.1) 100%);
+            border: 2px solid #78350f;
+        }
+
+        .domain-card {
+            padding: 25px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            backdrop-filter: blur(5px);
+            box-shadow: 
+                0 4px 15px rgba(0,0,0,0.2),
+                inset 0 1px 2px rgba(255,255,255,0.1);
+        }
+
+        .domain-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 8px 25px rgba(0,0,0,0.3),
+                inset 0 1px 2px rgba(255,255,255,0.2);
+        }
+
+        .domain-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            word-break: break-all;
+            color: #cd853f;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .domain-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .domain-method {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(205, 133, 63, 0.8);
+            font-family: 'Crimson Text', serif;
+        }
+
+        .domain-score {
+            font-size: 16px;
+            font-weight: 600;
+            color: #b8860b;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .domain-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .link-register {
+            background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
+            color: #1a0f0a;
+            text-decoration: none;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+        }
+
+        .link-register:hover {
+            background: linear-gradient(135deg, #daa520 0%, #ffd700 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Error messages */
+        .error-chamber {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.1) 0%, rgba(165, 42, 42, 0.1) 100%);
+            border: 2px solid #8b0000;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 40px 0;
+            color: #cd853f;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .toast {
+            background: linear-gradient(135deg, rgba(26, 15, 10, 0.95) 0%, rgba(44, 24, 16, 0.95) 100%);
+            border: 2px solid #b8860b;
+            border-radius: 8px;
+            padding: 20px 30px;
+            min-width: 300px;
+            font-size: 14px;
+            color: #cd853f;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            border-color: #8b0000;
+            color: #ff6b6b;
+        }
+
+        /* Utility classes */
+        .hidden {
+            display: none;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            .title-ornate {
+                font-size: 48px;
+            }
+
+            .title-ornate::before,
+            .title-ornate::after {
+                display: none;
+            }
+
+            .brass-inner {
+                padding: 25px;
+            }
+
+            .checkbox-group {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .domain-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn-secondary {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div style="margin-top: 60px; margin-bottom: 60px;">
+            <h1 class="title-ornate">GOBLIN GLOBE</h1>
+            <p class="subtitle">Mechanised Domain Discovery Engine</p>
+        </div>
+
+        <!-- Main Form -->
+        <div class="brass-frame steam-container">
+            <div class="gear gear-1">⚙</div>
+            <div class="gear gear-2">⚙</div>
+            <div class="gear gear-3">⚙</div>
+            
+            <div class="steam"></div>
+            <div class="steam"></div>
+            <div class="steam"></div>
+            <div class="steam"></div>
+            <div class="steam"></div>
+            
+            <div class="brass-inner">
+                <form id="generateForm">
+                    <div class="form-group">
+                        <label for="prompt" class="form-label">Domain Specification</label>
+                        <textarea 
+                            id="prompt" 
+                            class="form-textarea"
+                            placeholder="Describe your domain requirements in precise detail..."
+                            required
+                        ></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="count" class="form-label">Quantity Output</label>
+                        <input 
+                            type="number" 
+                            id="count" 
+                            class="form-input form-number" 
+                            min="1" 
+                            max="20" 
+                            value="10"
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Domain Classifications</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="extensions" value=".com" checked class="checkbox-input">
+                                <span class="checkbox-label">Commercial (.com)</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="extensions" value=".net" class="checkbox-input">
+                                <span class="checkbox-label">Network (.net)</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="extensions" value=".org" class="checkbox-input">
+                                <span class="checkbox-label">Organisation (.org)</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="extensions" value=".io" class="checkbox-input">
+                                <span class="checkbox-label">Input/Output (.io)</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" id="generateButton" class="btn-steam">
+                        <span id="buttonText">Engage Discovery Engine</span>
+                        <div id="buttonSpinner" class="steam-spinner hidden"></div>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Loading Chamber -->
+        <div id="loading" class="loading-chamber hidden">
+            <div class="loading-gauge"></div>
+            <p id="loadingMessage" class="loading-message">Calibrating discovery apparatus...</p>
+            <div id="progressBar" class="pressure-gauge hidden">
+                <div id="progressFill" class="pressure-fill"></div>
+            </div>
+            <p id="progressText" class="progress-text hidden">Stage 1 of 3</p>
+        </div>
+
+        <!-- Error Chamber -->
+        <div id="error" class="error-chamber hidden">
+            <p style="font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-bottom: 10px;">Engine Malfunction Detected</p>
+            <p style="font-size: 16px;"></p>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results" class="results-section hidden">
+            <div class="results-header">
+                <h2 class="results-title">Discovery Results</h2>
+                <div class="results-actions">
+                    <button id="exportBtn" class="btn-secondary">Export Ledger</button>
+                    <button id="copyAllBtn" class="btn-secondary">Copy Available</button>
+                    <button id="newSearchBtn" class="btn-secondary">New Discovery</button>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 60px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 28px; color: #b8860b; margin-bottom: 25px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Available Domains</h3>
+                <div id="availableList" class="domain-grid"></div>
+            </div>
+            
+            <div style="margin-bottom: 60px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 28px; color: #78350f; margin-bottom: 25px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Occupied Territories</h3>
+                <div id="takenList" class="domain-grid"></div>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div id="toastContainer" class="toast-container"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+    <title>GOBLIN GLOBE - 90s Demo Features</title>
+    <meta name="generator" content="FrontPage Express 2.0">
+    <style>
+        body {
+            background: url('data:image/gif;base64,R0lGODlhCgAKAPIAAP///8zMzJmZmWZmZjMzMwAAAAAAAAAAACH5BAEAAAUALAAAAAAKAAoAAAMlWLrc/jDKSau9OOvNu/9gKI5kaZ5oqq5s675wLM90bd94ru987//AoHBILBqPyKRyyWw6n9CodEqtWq/YrHbL7Xq/4LB4TC6bz+i0es1ut9yu9wsOi8fksvmMTqvX7Lb7DY/L5/S6/Y7P6/f8/g8QGCg4SFhoeIiYqLjI2Oj4CBkpOUlZaXmJmam5ydnp+QkaKjpKWmp6ipqqusra6voKGys7S1tre4ubq7vL2+v7CxwsPExcbHyMnKy8zNzs/AwdLT1NXW19jZ2tvc3d7f0NHi4+Tl5ufo6err7O3u7+Dh8vP09fb3+Pn6+/z9/v/w8woMCBBAsaPIgwocKFDBs6fAgxosSJFCtavIgxo8aNHDt6/AgypMiRJEuaPIkypMmTKFOqXCmypcuXMGPKnEmzps2bOHPq3Mmzp8+fQIMKHUq0qNGjSJMqXcq0qdOnUKNKnUq1qtWrWLNq3cq1q9evYMOKHUu2rNmzaNOqXcu2rdu3cOPKnUu3rt27ePPq3cu3r9+/gAMLHky4sOHDiBMrXsy4sePHkCNLnky5suXLmDNr3sy5s+fPoEOLHk26tOnTqFOrXs26tevXsGPLnk27tu3buHPr3s27t+/fwIMLH068uPHjyJMrX868ufPn0KNLn069uvXr2LNr3869u/fv4MOLBwQAOw==') repeat;
+            font-family: "Times New Roman", serif;
+            margin: 20px;
+            color: #000000;
+        }
+        
+        .blink {
+            animation: blink 1s linear infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .rainbow-text {
+            background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow 2s ease infinite;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .bevel-outset {
+            border: 2px outset #c0c0c0;
+            background-color: #c0c0c0;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
+        .rainbow-hr {
+            height: 10px;
+            background: linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080);
+            border: none;
+            margin: 10px 0;
+        }
+        
+        .construction {
+            display: inline-block;
+            animation: bounce 1s infinite alternate;
+            font-size: 18px;
+            color: #ff0000;
+        }
+        
+        @keyframes bounce {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-10px); }
+        }
+        
+        .scroll-text {
+            background-color: #000080;
+            color: #ffffff;
+            padding: 5px;
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 10px 0;
+        }
+        
+        .scroll-text span {
+            display: inline-block;
+            animation: scroll 10s linear infinite;
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <div class="rainbow-text">GOBLIN GLOBE 90s DEMO</div>
+        
+        <hr class="rainbow-hr">
+        
+        <div class="construction">🚧 UNDER CONSTRUCTION 🚧</div>
+        
+        <div class="bevel-outset">
+            <h3>90s Web Features Showcase:</h3>
+            
+            <p><span class="blink">BLINKING TEXT!</span> - Classic web animation</p>
+            
+            <p><span class="rainbow-text">RAINBOW GRADIENTS!</span> - WordArt style text</p>
+            
+            <p>🔊 <strong>Sound Effects:</strong> BEEP BOOP BING! (Imagine Sound Blaster compatibility)</p>
+            
+            <p>📊 <strong>Visitor Counter:</strong> You are visitor #<span class="blink">001337</span>!</p>
+            
+            <p>💿 <strong>Best viewed with:</strong> Netscape Navigator 4.0, 800x600, 256 colors</p>
+            
+            <p>📧 <strong>Contact:</strong> <a href="mailto:webmaster@hotmail.com">webmaster@hotmail.com</a></p>
+        </div>
+        
+        <div class="scroll-text">
+            <span>*** WELCOME TO THE WORLD WIDE WEB! *** BOOKMARK THIS PAGE! *** TELL YOUR FRIENDS! ***</span>
+        </div>
+        
+        <p><strong>Features Included:</strong></p>
+        <ul align="left">
+            <li>Table-based layout (no CSS Grid here!)</li>
+            <li>Web-safe color palette</li>
+            <li>3D beveled buttons and borders</li>
+            <li>Animated GIF backgrounds</li>
+            <li>Marquee scrolling text</li>
+            <li>Visitor counter</li>
+            <li>Guestbook links</li>
+            <li>Web ring navigation</li>
+            <li>Under construction graphics</li>
+            <li>HTML 3.2 compliance</li>
+            <li>Meta tags galore</li>
+            <li>FrontPage Express styling</li>
+        </ul>
+        
+        <hr class="rainbow-hr">
+        
+        <p><a href="index.html"><strong>← Back to GOBLIN GLOBE Domain Finder</strong></a></p>
+        
+        <p style="font-size: 10px; color: #666666;">
+            Page created with FrontPage Express | Last updated: Never! | 
+            <br>Copyright 1999 Goblin Globe Industries
+        </p>
+    </center>
+</body>
+</html>

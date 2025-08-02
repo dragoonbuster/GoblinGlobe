@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOBLIN GLOBE</title>
+    <style>
+        /* BRUTALIST RESET - RAW HTML EXPOSED */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 18px;
+            line-height: 1.2;
+        }
+
+        body {
+            font-family: 'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 900;
+            color: #1a1a1a;
+            background: linear-gradient(135deg, #d4d4d4 0%, #a8a8a8 50%, #8c8c8c 100%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        /* CONCRETE TEXTURE OVERLAY */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(0,0,0,0.1) 2px, transparent 2px),
+                radial-gradient(circle at 80% 20%, rgba(0,0,0,0.08) 1px, transparent 1px),
+                radial-gradient(circle at 40% 40%, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 100px 100px, 150px 150px, 80px 80px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* CHAOTIC CONTAINER SYSTEM */
+        .brutal-container {
+            position: relative;
+            z-index: 2;
+            max-width: none;
+            margin: 0;
+            padding: 0;
+            background: rgba(160, 160, 160, 0.7);
+            border: 8px solid #1a1a1a;
+            border-style: solid;
+            box-shadow: 
+                inset 0 0 20px rgba(0,0,0,0.3),
+                0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        /* MASSIVE IMPOSING HEADER */
+        .brutal-header {
+            position: relative;
+            background: linear-gradient(45deg, #2a2a2a 0%, #1a1a1a 100%);
+            padding: 60px 40px;
+            border-bottom: 12px solid #FFD700;
+            overflow: hidden;
+            transform: skew(-2deg);
+            margin: -20px -20px 0 -20px;
+        }
+
+        .brutal-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 2px,
+                rgba(255,215,0,0.1) 2px,
+                rgba(255,215,0,0.1) 4px
+            );
+        }
+
+        .brutal-title {
+            position: relative;
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 900;
+            color: #FFD700;
+            text-shadow: 
+                4px 4px 0px #1a1a1a,
+                8px 8px 0px rgba(0,0,0,0.5),
+                12px 12px 20px rgba(0,0,0,0.8);
+            letter-spacing: -0.05em;
+            line-height: 0.8;
+            transform: skew(2deg);
+            margin-bottom: 20px;
+        }
+
+        .brutal-subtitle {
+            font-size: 1.2rem;
+            color: #cccccc;
+            font-weight: 700;
+            transform: skew(2deg);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        /* ASYMMETRIC LAYOUT CHAOS */
+        .brutal-form-section {
+            position: relative;
+            background: rgba(180, 180, 180, 0.8);
+            margin: 40px 20px 0 60px;
+            padding: 60px 40px;
+            border: 6px solid #1a1a1a;
+            border-left: 20px solid #FFD700;
+            transform: rotate(-1deg);
+            box-shadow: 
+                0 15px 30px rgba(0,0,0,0.3),
+                inset -5px -5px 10px rgba(0,0,0,0.1);
+        }
+
+        /* MASSIVE FORM ELEMENTS */
+        .brutal-form-group {
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .brutal-label {
+            display: block;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+            border-left: 8px solid #FFD700;
+            padding-left: 15px;
+        }
+
+        .brutal-textarea,
+        .brutal-input {
+            width: 100%;
+            padding: 25px 20px;
+            font-family: 'Arial Black', Arial, sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            background: #f0f0f0;
+            border: 6px solid #1a1a1a;
+            border-radius: 0;
+            outline: none;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            box-shadow: 
+                inset 4px 4px 8px rgba(0,0,0,0.2),
+                0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .brutal-textarea:focus,
+        .brutal-input:focus {
+            border-color: #FFD700;
+            background: #ffffff;
+            transform: scale(1.02);
+            box-shadow: 
+                inset 4px 4px 8px rgba(0,0,0,0.2),
+                0 0 0 4px rgba(255,215,0,0.3),
+                0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .brutal-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .brutal-number-input {
+            width: 150px;
+            text-align: center;
+        }
+
+        /* CHECKBOX CHAOS */
+        .brutal-checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .brutal-checkbox-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            background: rgba(200, 200, 200, 0.7);
+            padding: 15px 20px;
+            border: 4px solid #1a1a1a;
+            transform: rotate(0.5deg);
+            transition: all 0.2s ease;
+        }
+
+        .brutal-checkbox-item:nth-child(2n) {
+            transform: rotate(-0.8deg);
+        }
+
+        .brutal-checkbox-item:hover {
+            background: rgba(255,215,0,0.3);
+            transform: rotate(0deg) scale(1.05);
+            border-color: #FFD700;
+        }
+
+        .brutal-checkbox {
+            width: 30px;
+            height: 30px;
+            margin-right: 15px;
+            border: 4px solid #1a1a1a;
+            background: #f0f0f0;
+            cursor: pointer;
+            position: relative;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .brutal-checkbox:checked {
+            background: #FFD700;
+            border-color: #1a1a1a;
+        }
+
+        .brutal-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            font-weight: 900;
+            color: #1a1a1a;
+        }
+
+        .brutal-checkbox-label {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: #1a1a1a;
+            cursor: pointer;
+        }
+
+        /* MASSIVE BRUTAL BUTTON */
+        .brutal-button {
+            background: linear-gradient(45deg, #1a1a1a 0%, #2a2a2a 100%);
+            color: #FFD700;
+            border: 8px solid #FFD700;
+            padding: 30px 60px;
+            font-family: 'Impact', 'Arial Black', Arial, sans-serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-top: 40px;
+            transform: rotate(-1deg);
+            box-shadow: 
+                0 10px 20px rgba(0,0,0,0.4),
+                inset 0 0 0 2px rgba(255,215,0,0.2);
+        }
+
+        .brutal-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .brutal-button:hover {
+            background: #FFD700;
+            color: #1a1a1a;
+            border-color: #1a1a1a;
+            transform: rotate(0deg) scale(1.05);
+            box-shadow: 
+                0 15px 30px rgba(0,0,0,0.5),
+                inset 0 0 0 4px rgba(26,26,26,0.3);
+        }
+
+        .brutal-button:hover::before {
+            left: 100%;
+        }
+
+        .brutal-button:active {
+            transform: rotate(0deg) scale(0.98);
+        }
+
+        .brutal-button:disabled {
+            background: #666;
+            color: #999;
+            border-color: #999;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* LOADING CHAOS */
+        .brutal-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26,26,26,0.9);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .brutal-spinner {
+            width: 80px;
+            height: 80px;
+            border: 8px solid #333;
+            border-top: 8px solid #FFD700;
+            border-radius: 0;
+            animation: brutal-spin 1s linear infinite;
+            margin-bottom: 30px;
+        }
+
+        @keyframes brutal-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .brutal-loading-text {
+            font-size: 2rem;
+            color: #FFD700;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        /* CONCRETE BLOCK RESULTS */
+        .brutal-results {
+            margin: 60px 20px 20px 20px;
+            position: relative;
+        }
+
+        .brutal-results-header {
+            background: #1a1a1a;
+            color: #FFD700;
+            padding: 30px 40px;
+            border: 6px solid #FFD700;
+            margin-bottom: 40px;
+            transform: skew(-1deg);
+        }
+
+        .brutal-results-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .brutal-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .brutal-action-btn {
+            background: rgba(160,160,160,0.8);
+            color: #1a1a1a;
+            border: 4px solid #1a1a1a;
+            padding: 15px 25px;
+            font-family: 'Impact', Arial, sans-serif;
+            font-size: 1rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            transform: rotate(0.5deg);
+        }
+
+        .brutal-action-btn:hover {
+            background: #FFD700;
+            transform: rotate(0deg) scale(1.1);
+            border-color: #FFD700;
+        }
+
+        /* DOMAIN BLOCKS STACKED LIKE CONCRETE */
+        .brutal-domain-section {
+            margin-bottom: 60px;
+        }
+
+        .brutal-section-title {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+            border-left: 12px solid #FFD700;
+            padding-left: 20px;
+            background: rgba(255,215,0,0.2);
+            padding: 15px 20px;
+            transform: skew(-1deg);
+        }
+
+        .brutal-domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        .brutal-domain-block {
+            background: linear-gradient(135deg, #d0d0d0 0%, #b0b0b0 100%);
+            border: 6px solid #1a1a1a;
+            padding: 30px;
+            position: relative;
+            transition: all 0.3s ease;
+            transform: rotate(-0.5deg);
+            box-shadow: 
+                0 10px 20px rgba(0,0,0,0.3),
+                inset 0 0 10px rgba(255,255,255,0.1);
+        }
+
+        .brutal-domain-block:nth-child(2n) {
+            transform: rotate(0.8deg);
+        }
+
+        .brutal-domain-block:hover {
+            transform: rotate(0deg) scale(1.05);
+            border-color: #FFD700;
+            background: linear-gradient(135deg, #FFD700 0%, #e6c200 100%);
+            box-shadow: 
+                0 15px 30px rgba(0,0,0,0.4),
+                inset 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        .brutal-domain-block.available {
+            border-left: 15px solid #00ff00;
+        }
+
+        .brutal-domain-block.taken {
+            border-left: 15px solid #ff0000;
+            background: linear-gradient(135deg, #a0a0a0 0%, #808080 100%);
+        }
+
+        .brutal-domain-name {
+            font-family: 'Courier New', monospace;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            word-break: break-all;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.3);
+            padding: 10px;
+            border: 2px solid #1a1a1a;
+        }
+
+        .brutal-domain-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .brutal-domain-method {
+            font-size: 0.9rem;
+            font-weight: 900;
+            color: #666;
+            background: rgba(0,0,0,0.1);
+            padding: 5px 10px;
+            border: 2px solid #666;
+        }
+
+        .brutal-domain-score {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: #1a1a1a;
+        }
+
+        .brutal-domain-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .brutal-register-link {
+            background: #FFD700;
+            color: #1a1a1a;
+            text-decoration: none;
+            padding: 15px 25px;
+            font-size: 1rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            border: 4px solid #1a1a1a;
+            transition: all 0.2s ease;
+            flex: 1;
+            text-align: center;
+        }
+
+        .brutal-register-link:hover {
+            background: #1a1a1a;
+            color: #FFD700;
+            border-color: #FFD700;
+            transform: scale(1.05);
+        }
+
+        /* ERROR BLOCKS */
+        .brutal-error {
+            background: #ff0000;
+            color: #ffffff;
+            border: 8px solid #1a1a1a;
+            padding: 40px;
+            margin: 40px 20px;
+            font-size: 1.3rem;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            transform: rotate(-1deg);
+        }
+
+        /* UTILITY CLASSES */
+        .hidden {
+            display: none !important;
+        }
+
+        /* RESPONSIVE BRUTALISM */
+        @media (max-width: 768px) {
+            .brutal-title {
+                font-size: clamp(2rem, 6vw, 4rem);
+            }
+            
+            .brutal-form-section {
+                margin: 20px 10px 0 30px;
+                padding: 40px 20px;
+                transform: rotate(-0.5deg);
+            }
+            
+            .brutal-checkbox-group {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .brutal-domain-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .brutal-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* AGGRESSIVE HOVER STATES */
+        .brutal-checkbox-item:active {
+            transform: scale(0.95);
+        }
+
+        .brutal-domain-block:active {
+            transform: scale(0.98);
+        }
+
+        /* BROKEN GRID OVERLAY */
+        .brutal-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(90deg, rgba(26,26,26,0.1) 1px, transparent 1px),
+                linear-gradient(rgba(26,26,26,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="brutal-container">
+        <!-- CARVED HEADER -->
+        <div class="brutal-header">
+            <h1 class="brutal-title">GOBLIN<br>GLOBE</h1>
+            <p class="brutal-subtitle">DOMAIN CONQUEST MACHINE</p>
+        </div>
+
+        <!-- ASYMMETRIC FORM CHAOS -->
+        <div class="brutal-form-section">
+            <form id="generateForm">
+                <div class="brutal-form-group">
+                    <label for="prompt" class="brutal-label">DOMAIN CONCEPT</label>
+                    <textarea 
+                        id="prompt" 
+                        class="brutal-textarea"
+                        placeholder="DESCRIBE YOUR DIGITAL TERRITORY..."
+                        required
+                    ></textarea>
+                </div>
+                
+                <div class="brutal-form-group">
+                    <label for="count" class="brutal-label">QUANTITY</label>
+                    <input 
+                        type="number" 
+                        id="count" 
+                        class="brutal-input brutal-number-input" 
+                        min="1" 
+                        max="20" 
+                        value="10"
+                    >
+                </div>
+                
+                <div class="brutal-form-group">
+                    <label class="brutal-label">EXTENSIONS</label>
+                    <div class="brutal-checkbox-group">
+                        <label class="brutal-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".com" checked class="brutal-checkbox">
+                            <span class="brutal-checkbox-label">.COM</span>
+                        </label>
+                        <label class="brutal-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".net" class="brutal-checkbox">
+                            <span class="brutal-checkbox-label">.NET</span>
+                        </label>
+                        <label class="brutal-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".org" class="brutal-checkbox">
+                            <span class="brutal-checkbox-label">.ORG</span>
+                        </label>
+                        <label class="brutal-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".io" class="brutal-checkbox">
+                            <span class="brutal-checkbox-label">.IO</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" id="generateButton" class="brutal-button">
+                    <span id="buttonText">CONQUER DOMAINS</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- LOADING CHAOS -->
+        <div id="loading" class="brutal-loading hidden">
+            <div class="brutal-spinner"></div>
+            <p id="loadingMessage" class="brutal-loading-text">GENERATING DOMAINS...</p>
+        </div>
+
+        <!-- ERROR BLOCK -->
+        <div id="error" class="brutal-error hidden">
+            <p></p>
+        </div>
+
+        <!-- CONCRETE BLOCK RESULTS -->
+        <div id="results" class="brutal-results hidden">
+            <div class="brutal-results-header">
+                <h2 class="brutal-results-title">CONQUEST RESULTS</h2>
+                <div class="brutal-actions">
+                    <button id="exportBtn" class="brutal-action-btn">EXPORT</button>
+                    <button id="copyAllBtn" class="brutal-action-btn">COPY ALL</button>
+                    <button id="newSearchBtn" class="brutal-action-btn">NEW SEARCH</button>
+                </div>
+            </div>
+            
+            <div class="brutal-domain-section">
+                <h3 class="brutal-section-title">AVAILABLE TERRITORY</h3>
+                <div id="availableList" class="brutal-domain-grid"></div>
+            </div>
+            
+            <div class="brutal-domain-section">
+                <h3 class="brutal-section-title">OCCUPIED TERRITORY</h3>
+                <div id="takenList" class="brutal-domain-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const form = document.getElementById('generateForm');
+        const generateButton = document.getElementById('generateButton');
+        const buttonText = document.getElementById('buttonText');
+        const loading = document.getElementById('loading');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const results = document.getElementById('results');
+        const error = document.getElementById('error');
+        const availableList = document.getElementById('availableList');
+        const takenList = document.getElementById('takenList');
+        const exportBtn = document.getElementById('exportBtn');
+        const copyAllBtn = document.getElementById('copyAllBtn');
+        const newSearchBtn = document.getElementById('newSearchBtn');
+
+        // Global state
+        let currentResults = { available: [], taken: [] };
+
+        // Initialize event listeners
+        form.addEventListener('submit', handleFormSubmit);
+        exportBtn.addEventListener('click', handleExport);
+        copyAllBtn.addEventListener('click', handleCopyAll);
+        newSearchBtn.addEventListener('click', handleNewSearch);
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const prompt = document.getElementById('prompt').value.trim();
+            const count = parseInt(document.getElementById('count').value);
+            const extensions = Array.from(document.querySelectorAll('input[name="extensions"]:checked'))
+                .map(cb => cb.value);
+            
+            // Validation
+            if (!prompt) {
+                showError('ENTER A DOMAIN CONCEPT!');
+                return;
+            }
+            
+            if (extensions.length === 0) {
+                showError('SELECT AT LEAST ONE EXTENSION!');
+                return;
+            }
+            
+            // Start loading state
+            setLoadingState(true);
+            
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt, count, extensions })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || `HTTP ${response.status}`);
+                }
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to generate domains');
+                }
+                
+                // Store results and display
+                currentResults = data.results;
+                displayResults(data.results);
+                
+            } catch (err) {
+                console.error('Generation error:', err);
+                showError(getErrorMessage(err));
+            } finally {
+                setLoadingState(false);
+            }
+        }
+
+        function setLoadingState(isLoading) {
+            generateButton.disabled = isLoading;
+            
+            if (isLoading) {
+                buttonText.textContent = 'CONQUERING...';
+                loading.classList.remove('hidden');
+                results.classList.add('hidden');
+                error.classList.add('hidden');
+            } else {
+                buttonText.textContent = 'CONQUER DOMAINS';
+                loading.classList.add('hidden');
+            }
+        }
+
+        function displayResults(results) {
+            availableList.innerHTML = '';
+            takenList.innerHTML = '';
+            
+            if (results.available.length === 0 && results.taken.length === 0) {
+                showError('NO DOMAINS CONQUERED. TRY DIFFERENT CONCEPT!');
+                return;
+            }
+            
+            // Display available domains
+            results.available.forEach(item => {
+                const div = createDomainBlock(item.domain, true, item.method, item.qualityScore, item.qualityGrade);
+                availableList.appendChild(div);
+            });
+            
+            // Display taken domains
+            results.taken.forEach(item => {
+                const div = createDomainBlock(item.domain, false, item.method, item.qualityScore, item.qualityGrade);
+                takenList.appendChild(div);
+            });
+            
+            // Show results section
+            results.classList.remove('hidden');
+            results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function createDomainBlock(domain, isAvailable, method, qualityScore = null, qualityGrade = null) {
+            const div = document.createElement('div');
+            div.className = `brutal-domain-block ${isAvailable ? 'available' : 'taken'}`;
+            
+            let content = `
+                <div class="brutal-domain-name">${domain}</div>
+                <div class="brutal-domain-meta">
+                    <span class="brutal-domain-method">${method}</span>
+                    ${qualityScore ? `<span class="brutal-domain-score">${qualityScore.overall}/100</span>` : ''}
+                </div>
+            `;
+            
+            if (isAvailable) {
+                content += `
+                    <div class="brutal-domain-actions">
+                        <a href="https://www.namecheap.com/domains/registration/results/?domain=${domain}" 
+                           target="_blank" 
+                           class="brutal-register-link">REGISTER NOW</a>
+                    </div>
+                `;
+            }
+            
+            div.innerHTML = content;
+            return div;
+        }
+
+        function handleCopyAll() {
+            if (currentResults.available.length === 0) {
+                showError('NO AVAILABLE DOMAINS TO COPY!');
+                return;
+            }
+            
+            const domains = currentResults.available.map(item => item.domain).join('\\n');
+            copyToClipboard(domains);
+        }
+
+        function handleExport() {
+            if (currentResults.available.length === 0 && currentResults.taken.length === 0) {
+                showError('NO RESULTS TO EXPORT!');
+                return;
+            }
+            
+            const timestamp = new Date().toISOString().split('T')[0];
+            const prompt = document.getElementById('prompt').value;
+            
+            // Create CSV content
+            const csvContent = [
+                'Domain,Status,Quality Score,Quality Grade,Method',
+                ...currentResults.available.map(item => 
+                    `"${item.domain}","Available","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method}"`
+                ),
+                ...currentResults.taken.map(item => 
+                    `"${item.domain}","Taken","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method}"`
+                )
+            ].join('\\n');
+            
+            // Create and download file
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `goblin-globe-conquest-${timestamp}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        function handleNewSearch() {
+            // Clear form
+            document.getElementById('prompt').value = '';
+            document.getElementById('count').value = '10';
+            
+            // Reset results
+            currentResults = { available: [], taken: [] };
+            results.classList.add('hidden');
+            error.classList.add('hidden');
+            
+            // Focus on prompt input
+            document.getElementById('prompt').focus();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                // Show temporary success message
+                const originalError = error.innerHTML;
+                error.innerHTML = '<p>COPIED TO CLIPBOARD!</p>';
+                error.classList.remove('hidden');
+                setTimeout(() => {
+                    error.classList.add('hidden');
+                    error.innerHTML = originalError;
+                }, 2000);
+            } catch (err) {
+                showError('FAILED TO COPY!');
+            }
+        }
+
+        function showError(message) {
+            error.innerHTML = `<p>${message}</p>`;
+            error.classList.remove('hidden');
+            results.classList.add('hidden');
+        }
+
+        function getErrorMessage(error) {
+            const message = error.message || 'UNKNOWN ERROR OCCURRED';
+            
+            if (message.includes('rate limit') || message.includes('429')) {
+                return 'TOO MANY REQUESTS! WAIT AND RETRY!';
+            }
+            
+            if (message.includes('timeout') || message.includes('ENOTFOUND')) {
+                return 'CONNECTION FAILED! CHECK INTERNET!';
+            }
+            
+            if (message.includes('401') || message.includes('403')) {
+                return 'AUTHENTICATION ERROR! REFRESH PAGE!';
+            }
+            
+            if (message.includes('500')) {
+                return 'SERVER ERROR! TRY AGAIN LATER!';
+            }
+            
+            return message.toUpperCase();
+        }
+
+        // Add aggressive interactions
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add random glitch effects
+            setInterval(() => {
+                const blocks = document.querySelectorAll('.brutal-domain-block');
+                if (blocks.length > 0 && Math.random() < 0.1) {
+                    const randomBlock = blocks[Math.floor(Math.random() * blocks.length)];
+                    randomBlock.style.transform += ' translateX(2px)';
+                    setTimeout(() => {
+                        randomBlock.style.transform = randomBlock.style.transform.replace(' translateX(2px)', '');
+                    }, 100);
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

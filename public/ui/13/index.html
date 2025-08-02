@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ゴブリングローブ GOBLIN GLOBE - Domain Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        body {
+            font-family: 'Orbitron', monospace;
+            font-weight: 400;
+            color: #ff00ff;
+            background: linear-gradient(135deg, #2E003E 0%, #3D2C8D 25%, #916BBF 50%, #C996CC 75%, #FFAFCC 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* VHS tracking effect overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                rgba(255, 255, 255, 0.03) 1px,
+                rgba(255, 255, 255, 0.03) 2px,
+                transparent 3px
+            );
+            pointer-events: none;
+            z-index: 1000;
+            animation: vhsTracking 0.1s linear infinite;
+        }
+
+        @keyframes vhsTracking {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* Geometric grid background */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 0, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 1;
+            animation: gridPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Glitch effect class */
+        .glitch {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch::before {
+            animation: glitch-1 0.5s infinite linear alternate-reverse;
+            color: #00ffff;
+            z-index: -1;
+        }
+
+        .glitch::after {
+            animation: glitch-2 0.5s infinite linear alternate-reverse;
+            color: #ff0080;
+            z-index: -2;
+        }
+
+        @keyframes glitch-1 {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-2px); }
+            40% { transform: translateX(-2px); }
+            60% { transform: translateX(2px); }
+            80% { transform: translateX(2px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes glitch-2 {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(2px); }
+            40% { transform: translateX(2px); }
+            60% { transform: translateX(-2px); }
+            80% { transform: translateX(-2px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* Windows 95 styled container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .window {
+            background: linear-gradient(135deg, #c0c0c0 0%, #808080 100%);
+            border: 3px outset #c0c0c0;
+            border-radius: 0;
+            margin-bottom: 20px;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .window-header {
+            background: linear-gradient(90deg, #0000ff 0%, #800080 100%);
+            color: #ffffff;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #404040;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 2px;
+        }
+
+        .window-button {
+            width: 16px;
+            height: 14px;
+            background: #c0c0c0;
+            border: 1px outset #c0c0c0;
+            font-size: 10px;
+            line-height: 1;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .window-content {
+            padding: 20px;
+            background: rgba(192, 192, 192, 0.95);
+            color: #000000;
+        }
+
+        /* Japanese and English title styling */
+        .main-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .japanese-title {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff00ff, #00ffff, #ff0080, #8000ff);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite, textGlow 2s ease-in-out infinite alternate;
+            text-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .english-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #00ffff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 3px;
+            animation: neonFlicker 1.5s infinite alternate;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: #ff0080;
+            margin-top: 10px;
+            font-family: 'Inconsolata', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 20px rgba(255, 0, 255, 0.5); }
+            100% { text-shadow: 0 0 30px rgba(255, 0, 255, 0.8), 0 0 40px rgba(0, 255, 255, 0.4); }
+        }
+
+        @keyframes neonFlicker {
+            0%, 100% { 
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 255, 255, 0.5);
+                opacity: 1;
+            }
+            50% { 
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 255, 0.8);
+                opacity: 0.8;
+            }
+        }
+
+        /* Form styling */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #000080;
+            text-transform: uppercase;
+            font-family: 'Inconsolata', monospace;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 8px;
+            border: 2px inset #c0c0c0;
+            background: #ffffff;
+            font-family: 'Inconsolata', monospace;
+            font-size: 14px;
+            color: #000000;
+            outline: none;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            border: 2px inset #0000ff;
+            background: #e6f3ff;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-number {
+            width: 80px;
+        }
+
+        /* Checkbox styling */
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 4px 8px;
+            border: 1px solid #808080;
+        }
+
+        .checkbox-input {
+            width: 14px;
+            height: 14px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        .checkbox-label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #000080;
+            cursor: pointer;
+            font-family: 'Inconsolata', monospace;
+        }
+
+        /* Button styling */
+        .btn-primary {
+            background: linear-gradient(135deg, #ff00ff 0%, #8000ff 100%);
+            color: #ffffff;
+            border: 2px outset #ff00ff;
+            padding: 12px 24px;
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 8px rgba(255, 0, 255, 0.3);
+            animation: buttonPulse 2s ease-in-out infinite;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #00ffff 0%, #0080ff 100%);
+            border-color: #00ffff;
+            box-shadow: 0 6px 12px rgba(0, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            border: 2px inset #ff00ff;
+        }
+
+        .btn-primary:disabled {
+            background: #808080;
+            border-color: #404040;
+            cursor: not-allowed;
+            animation: none;
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% { box-shadow: 0 4px 8px rgba(255, 0, 255, 0.3); }
+            50% { box-shadow: 0 4px 8px rgba(255, 0, 255, 0.6), 0 0 20px rgba(255, 0, 255, 0.3); }
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #c0c0c0 0%, #808080 100%);
+            color: #000000;
+            border: 2px outset #c0c0c0;
+            padding: 8px 16px;
+            font-family: 'Inconsolata', monospace;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #ffffff 0%, #c0c0c0 100%);
+        }
+
+        .btn-secondary:active {
+            border: 2px inset #c0c0c0;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top: 2px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Progress bar */
+        .progress-container {
+            width: 100%;
+            height: 20px;
+            background: #ffffff;
+            border: 2px inset #c0c0c0;
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff00ff 0%, #00ffff 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: progressShine 1.5s ease-in-out infinite;
+        }
+
+        @keyframes progressShine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Results section */
+        .results-section {
+            margin-top: 30px;
+        }
+
+        .results-header {
+            margin-bottom: 20px;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .domain-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px outset #c0c0c0;
+            padding: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .domain-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 0, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .domain-card:hover::before {
+            opacity: 1;
+            animation: cardShine 1s ease-in-out;
+        }
+
+        @keyframes cardShine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .domain-card:hover {
+            border-color: #ff00ff;
+            box-shadow: 0 4px 12px rgba(255, 0, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .domain-card.available {
+            background: rgba(144, 238, 144, 0.9);
+            border-color: #00ff00;
+        }
+
+        .domain-card.taken {
+            background: rgba(255, 182, 193, 0.9);
+            border-color: #ff0000;
+        }
+
+        .domain-name {
+            font-family: 'Inconsolata', monospace;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #000080;
+            word-break: break-all;
+        }
+
+        .domain-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 10px;
+        }
+
+        .domain-method {
+            background: #000080;
+            color: #ffffff;
+            padding: 2px 6px;
+            font-family: 'Inconsolata', monospace;
+            font-weight: bold;
+        }
+
+        .domain-score {
+            background: #800080;
+            color: #ffffff;
+            padding: 2px 6px;
+            font-family: 'Inconsolata', monospace;
+            font-weight: bold;
+        }
+
+        .domain-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .link-register {
+            background: linear-gradient(135deg, #ff0000 0%, #ff0080 100%);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 8px 16px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-family: 'Inconsolata', monospace;
+            border: 2px outset #ff0000;
+            transition: all 0.2s ease;
+            flex: 1;
+            text-align: center;
+        }
+
+        .link-register:hover {
+            background: linear-gradient(135deg, #ff0080 0%, #8000ff 100%);
+            text-decoration: none;
+        }
+
+        /* Error and loading states */
+        .error-message {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px inset #ff0000;
+            padding: 20px;
+            margin: 20px 0;
+            color: #ff0000;
+            font-family: 'Inconsolata', monospace;
+        }
+
+        .loading-container {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #ff00ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: rgba(192, 192, 192, 0.95);
+            border: 2px outset #c0c0c0;
+            padding: 12px 16px;
+            min-width: 250px;
+            font-size: 12px;
+            font-family: 'Inconsolata', monospace;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-color: #00ff00;
+            background: rgba(144, 238, 144, 0.95);
+            color: #008000;
+        }
+
+        .toast.error {
+            border-color: #ff0000;
+            background: rgba(255, 182, 193, 0.95);
+            color: #800000;
+        }
+
+        /* Palm tree decoration */
+        .palm-tree {
+            position: fixed;
+            bottom: 0;
+            right: 20px;
+            width: 80px;
+            height: 120px;
+            z-index: 5;
+            opacity: 0.6;
+        }
+
+        .palm-tree svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 10px rgba(255, 0, 255, 0.3));
+        }
+
+        /* Greek column decoration */
+        .greek-column {
+            position: fixed;
+            bottom: 0;
+            left: 20px;
+            width: 60px;
+            height: 150px;
+            z-index: 5;
+            opacity: 0.4;
+        }
+
+        /* Utility classes */
+        .hidden {
+            display: none;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .domain-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-group {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .results-actions {
+                flex-direction: column;
+            }
+
+            .japanese-title {
+                font-size: 24px;
+            }
+
+            .english-title {
+                font-size: 18px;
+            }
+
+            .palm-tree,
+            .greek-column {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Greek Column Decoration -->
+    <div class="greek-column">
+        <svg viewBox="0 0 60 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="130" width="50" height="20" fill="rgba(255,255,255,0.3)"/>
+            <rect x="10" y="20" width="40" height="110" fill="rgba(255,255,255,0.2)"/>
+            <rect x="0" y="0" width="60" height="25" fill="rgba(255,255,255,0.3)"/>
+            <line x1="15" y1="25" x2="15" y2="130" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="25" y1="25" x2="25" y2="130" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="35" y1="25" x2="35" y2="130" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <line x1="45" y1="25" x2="45" y2="130" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        </svg>
+    </div>
+
+    <!-- Palm Tree Decoration -->
+    <div class="palm-tree">
+        <svg viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="35" y="60" width="10" height="60" fill="rgba(139,69,19,0.6)"/>
+            <ellipse cx="40" cy="30" rx="25" ry="15" fill="rgba(0,128,0,0.4)"/>
+            <ellipse cx="40" cy="35" rx="30" ry="18" fill="rgba(0,128,0,0.3)"/>
+            <ellipse cx="40" cy="40" rx="28" ry="16" fill="rgba(0,128,0,0.4)"/>
+            <ellipse cx="40" cy="25" rx="20" ry="12" fill="rgba(0,128,0,0.5)"/>
+        </svg>
+    </div>
+
+    <div class="container">
+        <!-- Main Header Window -->
+        <div class="window">
+            <div class="window-header">
+                <span>Domain Finder v2.0 - AESTHETIC MODE</span>
+                <div class="window-controls">
+                    <div class="window-button">_</div>
+                    <div class="window-button">□</div>
+                    <div class="window-button">×</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="main-title">
+                    <div class="japanese-title glitch" data-text="ゴブリングローブ">ゴブリングローブ</div>
+                    <div class="english-title">GOBLIN GLOBE</div>
+                    <div class="subtitle">Domain Name Finder with Mathematical Precision</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Window -->
+        <div class="window">
+            <div class="window-header">
+                <span>Search Parameters</span>
+                <div class="window-controls">
+                    <div class="window-button">_</div>
+                    <div class="window-button">□</div>
+                    <div class="window-button">×</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <form id="generateForm">
+                    <div class="form-group">
+                        <label for="prompt" class="form-label">Domain Description</label>
+                        <textarea 
+                            id="prompt" 
+                            class="form-textarea"
+                            placeholder="Describe your domain concept..."
+                            required
+                        ></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="count" class="form-label">Quantity</label>
+                        <input 
+                            type="number" 
+                            id="count" 
+                            class="form-input form-number" 
+                            min="1" 
+                            max="20" 
+                            value="10"
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Extensions</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="extensions" value=".com" checked class="checkbox-input">
+                                <span class="checkbox-label">.com</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="extensions" value=".net" class="checkbox-input">
+                                <span class="checkbox-label">.net</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="extensions" value=".org" class="checkbox-input">
+                                <span class="checkbox-label">.org</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="extensions" value=".io" class="checkbox-input">
+                                <span class="checkbox-label">.io</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" id="generateButton" class="btn-primary">
+                        <span id="buttonText">Generate Domains</span>
+                        <div id="buttonSpinner" class="spinner hidden"></div>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Loading Window -->
+        <div id="loading" class="window hidden">
+            <div class="window-header">
+                <span>Processing...</span>
+                <div class="window-controls">
+                    <div class="window-button">_</div>
+                    <div class="window-button">□</div>
+                    <div class="window-button">×</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="loading-container">
+                    <div class="loading-spinner"></div>
+                    <p id="loadingMessage">Generating domain ideas...</p>
+                    <div id="progressBar" class="progress-container hidden">
+                        <div id="progressFill" class="progress-bar"></div>
+                    </div>
+                    <p id="progressText" class="hidden" style="font-size: 12px; margin-top: 10px;">Step 1 of 3</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Window -->
+        <div id="error" class="window hidden">
+            <div class="window-header">
+                <span>Error</span>
+                <div class="window-controls">
+                    <div class="window-button">_</div>
+                    <div class="window-button">□</div>
+                    <div class="window-button">×</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="error-message">
+                    <p></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Window -->
+        <div id="results" class="window hidden">
+            <div class="window-header">
+                <span>Results</span>
+                <div class="window-controls">
+                    <div class="window-button">_</div>
+                    <div class="window-button">□</div>
+                    <div class="window-button">×</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="results-section">
+                    <div class="results-header">
+                        <div class="results-actions">
+                            <button id="exportBtn" class="btn-secondary">Export CSV</button>
+                            <button id="copyAllBtn" class="btn-secondary">Copy Available</button>
+                            <button id="newSearchBtn" class="btn-secondary">New Search</button>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h2 style="color: #000080; font-size: 16px; margin-bottom: 15px; font-family: 'Orbitron', monospace;">Available Domains</h2>
+                        <div id="availableList" class="domain-grid"></div>
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <h2 style="color: #800000; font-size: 16px; margin-bottom: 15px; font-family: 'Orbitron', monospace;">Taken Domains</h2>
+                        <div id="takenList" class="domain-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div id="toastContainer" class="toast-container"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

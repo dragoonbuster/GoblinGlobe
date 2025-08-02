@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOBLIN GLOBE - Terminal Interface</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&family=Source+Code+Pro:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Terminal Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --terminal-bg: #000000;
+            --terminal-text: #00FF00;
+            --terminal-amber: #FFA500;
+            --terminal-red: #FF0000;
+            --terminal-blue: #0080FF;
+            --terminal-dim: #008000;
+            --terminal-cursor: #00FF00;
+            --scanline-opacity: 0.05;
+        }
+
+        body {
+            font-family: 'Fira Code', 'Source Code Pro', 'Monaco', 'Menlo', monospace;
+            background: var(--terminal-bg);
+            color: var(--terminal-text);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            line-height: 1.4;
+            font-size: 14px;
+            position: relative;
+        }
+
+        /* CRT Monitor Effects */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 0, var(--scanline-opacity)) 2px,
+                rgba(0, 255, 0, var(--scanline-opacity)) 4px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.3) 100%);
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Terminal Container */
+        .terminal {
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ASCII Art Logo */
+        .logo {
+            font-family: 'Source Code Pro', monospace;
+            font-weight: 700;
+            font-size: 10px;
+            line-height: 1;
+            color: var(--terminal-text);
+            text-shadow: 0 0 10px var(--terminal-text);
+            margin-bottom: 20px;
+            white-space: pre;
+            animation: logoGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            0% { text-shadow: 0 0 10px var(--terminal-text); }
+            100% { text-shadow: 0 0 20px var(--terminal-text), 0 0 30px var(--terminal-text); }
+        }
+
+        /* System Info */
+        .system-info {
+            color: var(--terminal-dim);
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+
+        .system-info .timestamp {
+            color: var(--terminal-amber);
+        }
+
+        /* Command Prompt */
+        .prompt-line {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .prompt-prefix {
+            color: var(--terminal-amber);
+            margin-right: 8px;
+            font-weight: 500;
+        }
+
+        .command-input {
+            background: transparent;
+            border: none;
+            color: var(--terminal-text);
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            flex: 1;
+            padding: 0;
+            text-shadow: 0 0 8px var(--terminal-text);
+        }
+
+        .command-input::placeholder {
+            color: var(--terminal-dim);
+        }
+
+        /* Cursor */
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: var(--terminal-cursor);
+            margin-left: 2px;
+            animation: blink 1s infinite;
+            box-shadow: 0 0 8px var(--terminal-cursor);
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin: 20px 0;
+            border-left: 2px solid var(--terminal-dim);
+            padding-left: 15px;
+        }
+
+        .form-section.active {
+            border-left-color: var(--terminal-text);
+            animation: sectionPulse 2s infinite;
+        }
+
+        @keyframes sectionPulse {
+            0%, 100% { border-left-color: var(--terminal-text); }
+            50% { border-left-color: var(--terminal-amber); }
+        }
+
+        .section-label {
+            color: var(--terminal-amber);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        /* Input Fields */
+        .terminal-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--terminal-dim);
+            color: var(--terminal-text);
+            font-family: inherit;
+            font-size: inherit;
+            padding: 8px 0;
+            width: 100%;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .terminal-input:focus {
+            border-bottom-color: var(--terminal-text);
+            text-shadow: 0 0 8px var(--terminal-text);
+        }
+
+        .terminal-textarea {
+            background: transparent;
+            border: 1px solid var(--terminal-dim);
+            color: var(--terminal-text);
+            font-family: inherit;
+            font-size: inherit;
+            padding: 10px;
+            width: 100%;
+            min-height: 80px;
+            resize: vertical;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .terminal-textarea:focus {
+            border-color: var(--terminal-text);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        /* Checkboxes */
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            color: var(--terminal-amber);
+        }
+
+        .checkbox-input {
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border: 1px solid var(--terminal-text);
+            margin-right: 8px;
+            position: relative;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .checkbox-input:checked {
+            background: var(--terminal-text);
+            box-shadow: 0 0 8px var(--terminal-text);
+        }
+
+        .checkbox-input:checked::after {
+            content: 'X';
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            color: var(--terminal-bg);
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* Buttons */
+        .terminal-button {
+            background: transparent;
+            border: 1px solid var(--terminal-text);
+            color: var(--terminal-text);
+            padding: 10px 20px;
+            font-family: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 5px 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal-button:hover {
+            background: var(--terminal-text);
+            color: var(--terminal-bg);
+            box-shadow: 0 0 15px var(--terminal-text);
+        }
+
+        .terminal-button:disabled {
+            border-color: var(--terminal-dim);
+            color: var(--terminal-dim);
+            cursor: not-allowed;
+        }
+
+        .terminal-button:disabled:hover {
+            background: transparent;
+            color: var(--terminal-dim);
+            box-shadow: none;
+        }
+
+        .button-primary {
+            border-color: var(--terminal-amber);
+            color: var(--terminal-amber);
+        }
+
+        .button-primary:hover {
+            background: var(--terminal-amber);
+            color: var(--terminal-bg);
+            box-shadow: 0 0 15px var(--terminal-amber);
+        }
+
+        /* Loading Animation */
+        .loading-section {
+            margin: 30px 0;
+            display: none;
+        }
+
+        .loading-section.active {
+            display: block;
+        }
+
+        .loading-bar {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .loading-text {
+            margin-right: 15px;
+            min-width: 200px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--terminal-dim);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--terminal-text);
+            width: 0%;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px var(--terminal-text);
+        }
+
+        .spinner {
+            display: inline-block;
+            margin-left: 10px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Results Section */
+        .results-section {
+            margin-top: 40px;
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+            animation: terminalFadeIn 0.5s ease-in;
+        }
+
+        @keyframes terminalFadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .results-header {
+            color: var(--terminal-amber);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--terminal-dim);
+            padding-bottom: 10px;
+        }
+
+        .domain-list {
+            margin: 20px 0;
+        }
+
+        .domain-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dotted var(--terminal-dim);
+            transition: all 0.3s ease;
+        }
+
+        .domain-item:hover {
+            background: rgba(0, 255, 0, 0.05);
+            padding-left: 10px;
+        }
+
+        .domain-name {
+            font-weight: 500;
+            text-shadow: 0 0 5px var(--terminal-text);
+        }
+
+        .domain-status {
+            font-size: 12px;
+            padding: 2px 8px;
+            border: 1px solid;
+        }
+
+        .status-available {
+            color: var(--terminal-text);
+            border-color: var(--terminal-text);
+            background: rgba(0, 255, 0, 0.1);
+        }
+
+        .status-taken {
+            color: var(--terminal-red);
+            border-color: var(--terminal-red);
+            background: rgba(255, 0, 0, 0.1);
+        }
+
+        .domain-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .action-button {
+            background: transparent;
+            border: 1px solid var(--terminal-blue);
+            color: var(--terminal-blue);
+            padding: 4px 8px;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .action-button:hover {
+            background: var(--terminal-blue);
+            color: var(--terminal-bg);
+        }
+
+        /* Error Messages */
+        .error-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid var(--terminal-red);
+            background: rgba(255, 0, 0, 0.1);
+            color: var(--terminal-red);
+            display: none;
+        }
+
+        .error-section.active {
+            display: block;
+            animation: errorFlash 0.5s ease-in;
+        }
+
+        @keyframes errorFlash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Typing Animation */
+        .typing-text {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid var(--terminal-cursor);
+            animation: typing 2s steps(40, end), blink-cursor 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-cursor {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--terminal-cursor); }
+        }
+
+        /* Help Text */
+        .help-text {
+            color: var(--terminal-dim);
+            font-size: 11px;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+
+        .help-command {
+            color: var(--terminal-amber);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .terminal {
+                padding: 10px;
+            }
+            
+            .logo {
+                font-size: 8px;
+            }
+            
+            body {
+                font-size: 12px;
+            }
+            
+            .checkbox-group {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+
+        /* Hidden Utility */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal">
+        <!-- ASCII Art Logo -->
+        <div class="logo">
+ ██████╗  ██████╗ ██████╗ ██╗     ██╗███╗   ██╗     ██████╗ ██╗      ██████╗ ██████╗ ███████╗
+██╔════╝ ██╔═══██╗██╔══██╗██║     ██║████╗  ██║    ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔════╝
+██║  ███╗██║   ██║██████╔╝██║     ██║██╔██╗ ██║    ██║  ███╗██║     ██║   ██║██████╔╝█████╗  
+██║   ██║██║   ██║██╔══██╗██║     ██║██║╚██╗██║    ██║   ██║██║     ██║   ██║██╔══██╗██╔══╝  
+╚██████╔╝╚██████╔╝██████╔╝███████╗██║██║ ╚████║    ╚██████╔╝███████╗╚██████╔╝██████╔╝███████╗
+ ╚═════╝  ╚═════╝ ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝     ╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚══════╝
+                                                                                               
+        </div>
+
+        <!-- System Info -->
+        <div class="system-info">
+            <div>DOMAIN FINDER v2.0.0 - Terminal Interface</div>
+            <div>System: <span class="timestamp" id="systemTime"></span></div>
+            <div>Status: <span style="color: var(--terminal-text);">READY</span></div>
+            <div>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+        </div>
+
+        <!-- Main Command Interface -->
+        <form id="terminalForm">
+            <!-- Prompt Description -->
+            <div class="form-section active" id="promptSection">
+                <div class="section-label">&gt; DOMAIN_DESCRIPTION:</div>
+                <div class="prompt-line">
+                    <span class="prompt-prefix">$</span>
+                    <textarea 
+                        id="promptInput" 
+                        class="terminal-textarea"
+                        placeholder="Enter domain concept description..."
+                        rows="3"
+                    ></textarea>
+                </div>
+            </div>
+
+            <!-- Count Selection -->
+            <div class="form-section" id="countSection">
+                <div class="section-label">&gt; GENERATION_COUNT:</div>
+                <div class="prompt-line">
+                    <span class="prompt-prefix">$</span>
+                    <input 
+                        type="number" 
+                        id="countInput" 
+                        class="terminal-input"
+                        min="1" 
+                        max="20" 
+                        value="10"
+                        style="width: 100px;"
+                    >
+                    <span style="margin-left: 10px; color: var(--terminal-dim);">[1-20]</span>
+                </div>
+            </div>
+
+            <!-- Extensions Selection -->
+            <div class="form-section" id="extensionsSection">
+                <div class="section-label">&gt; DOMAIN_EXTENSIONS:</div>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="extensions" value=".com" checked class="checkbox-input">
+                        <span>.com</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="extensions" value=".net" class="checkbox-input">
+                        <span>.net</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="extensions" value=".org" class="checkbox-input">
+                        <span>.org</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="extensions" value=".io" class="checkbox-input">
+                        <span>.io</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Execute Button -->
+            <div class="form-section">
+                <button type="submit" id="executeButton" class="terminal-button button-primary">
+                    <span id="executeText">EXECUTE SCAN</span>
+                    <span id="executeSpinner" class="spinner hidden">⣾</span>
+                </button>
+                <button type="button" id="clearButton" class="terminal-button">CLEAR</button>
+            </div>
+        </form>
+
+        <!-- Loading Section -->
+        <div class="loading-section" id="loadingSection">
+            <div class="section-label">&gt; SYSTEM_STATUS:</div>
+            <div class="loading-bar">
+                <div class="loading-text" id="loadingText">Initializing scan...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="spinner" id="loadingSpinner">⣾</div>
+            </div>
+            <div id="progressDetails" style="color: var(--terminal-dim); font-size: 12px; margin-top: 5px;"></div>
+        </div>
+
+        <!-- Error Section -->
+        <div class="error-section" id="errorSection">
+            <div class="section-label">&gt; ERROR_LOG:</div>
+            <div id="errorMessage"></div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection">
+            <div class="results-header">
+                <div class="section-label">&gt; SCAN_RESULTS:</div>
+                <div id="scanSummary" style="color: var(--terminal-dim); margin-top: 10px;"></div>
+            </div>
+
+            <!-- Available Domains -->
+            <div id="availableSection">
+                <div style="color: var(--terminal-text); margin: 20px 0 10px 0; border-left: 3px solid var(--terminal-text); padding-left: 10px;">
+                    AVAILABLE DOMAINS [<span id="availableCount">0</span>]
+                </div>
+                <div class="domain-list" id="availableList"></div>
+            </div>
+
+            <!-- Taken Domains -->
+            <div id="takenSection">
+                <div style="color: var(--terminal-red); margin: 20px 0 10px 0; border-left: 3px solid var(--terminal-red); padding-left: 10px;">
+                    TAKEN DOMAINS [<span id="takenCount">0</span>]
+                </div>
+                <div class="domain-list" id="takenList"></div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="form-section">
+                <button type="button" id="exportButton" class="terminal-button">EXPORT_DATA</button>
+                <button type="button" id="copyButton" class="terminal-button">COPY_AVAILABLE</button>
+                <button type="button" id="newScanButton" class="terminal-button">NEW_SCAN</button>
+            </div>
+        </div>
+
+        <!-- Help Text -->
+        <div class="help-text">
+            <div>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+            <div>COMMANDS: <span class="help-command">CTRL+ENTER</span> Execute | <span class="help-command">CTRL+C</span> Copy | <span class="help-command">CTRL+S</span> Export | <span class="help-command">CTRL+R</span> Reset</div>
+            <div>STATUS: Domain availability checked via DNS lookup with WHOIS fallback</div>
+            <div>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

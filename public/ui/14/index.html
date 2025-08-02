@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goblin Globe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet">
+    <style>
+        /* Material Design 3 CSS Variables for Dynamic Color */
+        :root {
+            /* Primary Color Palette */
+            --md-sys-color-primary: #6750A4;
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-primary-container: #EADDFF;
+            --md-sys-color-on-primary-container: #21005D;
+            
+            /* Secondary Color Palette */
+            --md-sys-color-secondary: #625B71;
+            --md-sys-color-on-secondary: #FFFFFF;
+            --md-sys-color-secondary-container: #E8DEF8;
+            --md-sys-color-on-secondary-container: #1D192B;
+            
+            /* Tertiary Color Palette */
+            --md-sys-color-tertiary: #7D5260;
+            --md-sys-color-on-tertiary: #FFFFFF;
+            --md-sys-color-tertiary-container: #FFD8E4;
+            --md-sys-color-on-tertiary-container: #31111D;
+            
+            /* Surface Colors */
+            --md-sys-color-surface: #FFFBFE;
+            --md-sys-color-on-surface: #1C1B1F;
+            --md-sys-color-surface-variant: #E7E0EC;
+            --md-sys-color-on-surface-variant: #49484E;
+            --md-sys-color-surface-container-lowest: #FFFFFF;
+            --md-sys-color-surface-container-low: #F7F2FA;
+            --md-sys-color-surface-container: #F3EDF7;
+            --md-sys-color-surface-container-high: #ECE6F0;
+            --md-sys-color-surface-container-highest: #E6E0E9;
+            
+            /* Background Colors */
+            --md-sys-color-background: #FFFBFE;
+            --md-sys-color-on-background: #1C1B1F;
+            
+            /* Outline Colors */
+            --md-sys-color-outline: #79767D;
+            --md-sys-color-outline-variant: #CAC4D0;
+            
+            /* Error Colors */
+            --md-sys-color-error: #BA1A1A;
+            --md-sys-color-on-error: #FFFFFF;
+            --md-sys-color-error-container: #FFDAD6;
+            --md-sys-color-on-error-container: #410002;
+            
+            /* Typography Scale */
+            --md-sys-typescale-display-large-font: 400 57px/64px Roboto, sans-serif;
+            --md-sys-typescale-display-medium-font: 400 45px/52px Roboto, sans-serif;
+            --md-sys-typescale-display-small-font: 400 36px/44px Roboto, sans-serif;
+            --md-sys-typescale-headline-large-font: 400 32px/40px Roboto, sans-serif;
+            --md-sys-typescale-headline-medium-font: 400 28px/36px Roboto, sans-serif;
+            --md-sys-typescale-headline-small-font: 400 24px/32px Roboto, sans-serif;
+            --md-sys-typescale-title-large-font: 400 22px/28px Roboto, sans-serif;
+            --md-sys-typescale-title-medium-font: 500 16px/24px Roboto, sans-serif;
+            --md-sys-typescale-title-small-font: 500 14px/20px Roboto, sans-serif;
+            --md-sys-typescale-body-large-font: 400 16px/24px Roboto, sans-serif;
+            --md-sys-typescale-body-medium-font: 400 14px/20px Roboto, sans-serif;
+            --md-sys-typescale-body-small-font: 400 12px/16px Roboto, sans-serif;
+            --md-sys-typescale-label-large-font: 500 14px/20px Roboto, sans-serif;
+            --md-sys-typescale-label-medium-font: 500 12px/16px Roboto, sans-serif;
+            --md-sys-typescale-label-small-font: 500 11px/16px Roboto, sans-serif;
+            
+            /* Shape Scale */
+            --md-sys-shape-corner-none: 0px;
+            --md-sys-shape-corner-extra-small: 4px;
+            --md-sys-shape-corner-small: 8px;
+            --md-sys-shape-corner-medium: 12px;
+            --md-sys-shape-corner-large: 16px;
+            --md-sys-shape-corner-extra-large: 28px;
+        }
+
+        /* Dark theme overrides */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --md-sys-color-primary: #D0BCFF;
+                --md-sys-color-on-primary: #381E72;
+                --md-sys-color-primary-container: #4F378B;
+                --md-sys-color-on-primary-container: #EADDFF;
+                
+                --md-sys-color-secondary: #CCC2DC;
+                --md-sys-color-on-secondary: #332D41;
+                --md-sys-color-secondary-container: #4A4458;
+                --md-sys-color-on-secondary-container: #E8DEF8;
+                
+                --md-sys-color-surface: #10131A;
+                --md-sys-color-on-surface: #E6E0E9;
+                --md-sys-color-surface-variant: #49484E;
+                --md-sys-color-on-surface-variant: #CAC4D0;
+                --md-sys-color-surface-container-lowest: #0B0E14;
+                --md-sys-color-surface-container-low: #1C1B1F;
+                --md-sys-color-surface-container: #201F26;
+                --md-sys-color-surface-container-high: #2B2930;
+                --md-sys-color-surface-container-highest: #36343B;
+                
+                --md-sys-color-background: #10131A;
+                --md-sys-color-on-background: #E6E0E9;
+                
+                --md-sys-color-outline: #938F99;
+                --md-sys-color-outline-variant: #49484E;
+            }
+        }
+
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font: var(--md-sys-typescale-body-medium-font);
+            background-color: var(--md-sys-color-background);
+            color: var(--md-sys-color-on-background);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Container and Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* Typography Classes */
+        .display-large { font: var(--md-sys-typescale-display-large-font); }
+        .display-medium { font: var(--md-sys-typescale-display-medium-font); }
+        .display-small { font: var(--md-sys-typescale-display-small-font); }
+        .headline-large { font: var(--md-sys-typescale-headline-large-font); }
+        .headline-medium { font: var(--md-sys-typescale-headline-medium-font); }
+        .headline-small { font: var(--md-sys-typescale-headline-small-font); }
+        .title-large { font: var(--md-sys-typescale-title-large-font); }
+        .title-medium { font: var(--md-sys-typescale-title-medium-font); }
+        .title-small { font: var(--md-sys-typescale-title-small-font); }
+        .body-large { font: var(--md-sys-typescale-body-large-font); }
+        .body-medium { font: var(--md-sys-typescale-body-medium-font); }
+        .body-small { font: var(--md-sys-typescale-body-small-font); }
+        .label-large { font: var(--md-sys-typescale-label-large-font); }
+        .label-medium { font: var(--md-sys-typescale-label-medium-font); }
+        .label-small { font: var(--md-sys-typescale-label-small-font); }
+
+        /* Material Card Component */
+        .md-card {
+            background-color: var(--md-sys-color-surface-container);
+            border-radius: var(--md-sys-shape-corner-medium);
+            padding: 16px;
+            margin: 8px 0;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        }
+
+        .md-card:hover {
+            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.12), 0 8px 10px rgba(0, 0, 0, 0.14);
+            transform: translateY(-2px);
+        }
+
+        .md-card.filled {
+            background-color: var(--md-sys-color-surface-container-high);
+        }
+
+        .md-card.elevated {
+            background-color: var(--md-sys-color-surface-container-low);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.18);
+        }
+
+        .md-card.outlined {
+            background-color: var(--md-sys-color-surface);
+            border: 1px solid var(--md-sys-color-outline-variant);
+            box-shadow: none;
+        }
+
+        /* Material Button Components */
+        .md-button {
+            font: var(--md-sys-typescale-label-large-font);
+            border: none;
+            border-radius: var(--md-sys-shape-corner-large);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 40px;
+            padding: 10px 24px;
+            text-decoration: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .md-button:disabled {
+            opacity: 0.38;
+            cursor: not-allowed;
+        }
+
+        .md-button-filled {
+            background-color: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+        }
+
+        .md-button-filled:hover:not(:disabled) {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .md-button-outlined {
+            background-color: transparent;
+            color: var(--md-sys-color-primary);
+            border: 1px solid var(--md-sys-color-outline);
+        }
+
+        .md-button-text {
+            background-color: transparent;
+            color: var(--md-sys-color-primary);
+        }
+
+        .md-button-tonal {
+            background-color: var(--md-sys-color-secondary-container);
+            color: var(--md-sys-color-on-secondary-container);
+        }
+
+        /* Floating Action Button */
+        .md-fab {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--md-sys-shape-corner-large);
+            background-color: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+            border: none;
+            cursor: pointer;
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), 0 6px 10px rgba(0, 0, 0, 0.14);
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            z-index: 100;
+        }
+
+        .md-fab:hover {
+            box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2), 0 16px 20px rgba(0, 0, 0, 0.14);
+            transform: scale(1.05);
+        }
+
+        .md-fab.extended {
+            width: auto;
+            padding: 16px 20px;
+            gap: 12px;
+            border-radius: var(--md-sys-shape-corner-large);
+        }
+
+        /* Material Text Field */
+        .md-text-field {
+            position: relative;
+            margin: 16px 0;
+        }
+
+        .md-text-field-input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: var(--md-sys-shape-corner-extra-small);
+            background-color: var(--md-sys-color-surface);
+            color: var(--md-sys-color-on-surface);
+            font: var(--md-sys-typescale-body-large-font);
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            resize: vertical;
+        }
+
+        .md-text-field-input:focus {
+            border-color: var(--md-sys-color-primary);
+            border-width: 2px;
+        }
+
+        .md-text-field-input::placeholder {
+            color: var(--md-sys-color-on-surface-variant);
+        }
+
+        .md-text-field-label {
+            font: var(--md-sys-typescale-body-small-font);
+            color: var(--md-sys-color-on-surface-variant);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* Material Checkbox */
+        .md-checkbox {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            margin: 8px 0;
+        }
+
+        .md-checkbox-input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .md-checkbox-icon {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--md-sys-color-on-surface-variant);
+            border-radius: 2px;
+            margin-right: 12px;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            background-color: transparent;
+        }
+
+        .md-checkbox-input:checked + .md-checkbox-icon {
+            background-color: var(--md-sys-color-primary);
+            border-color: var(--md-sys-color-primary);
+        }
+
+        .md-checkbox-input:checked + .md-checkbox-icon::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 1px;
+            width: 6px;
+            height: 10px;
+            border: solid var(--md-sys-color-on-primary);
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .md-checkbox-label {
+            font: var(--md-sys-typescale-body-large-font);
+            color: var(--md-sys-color-on-surface);
+        }
+
+        /* Ripple Effect */
+        .md-ripple {
+            position: absolute;
+            border-radius: 50%;
+            background-color: currentColor;
+            opacity: 0.3;
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Progress Indicator */
+        .md-progress {
+            width: 100%;
+            height: 4px;
+            background-color: var(--md-sys-color-surface-container-highest);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .md-progress-bar {
+            height: 100%;
+            background-color: var(--md-sys-color-primary);
+            width: 0%;
+            transition: width 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .md-progress.indeterminate .md-progress-bar {
+            width: 100%;
+            animation: indeterminate 2s infinite;
+        }
+
+        @keyframes indeterminate {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* Snackbar */
+        .md-snackbar {
+            position: fixed;
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            background-color: var(--md-sys-color-surface-container);
+            color: var(--md-sys-color-on-surface);
+            padding: 16px;
+            border-radius: var(--md-sys-shape-corner-extra-small);
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), 0 6px 10px rgba(0, 0, 0, 0.14);
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .md-snackbar.show {
+            transform: translateY(0);
+        }
+
+        /* Layout */
+        .main-content {
+            padding: 24px 0;
+        }
+
+        .form-section {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .form-row .md-text-field {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        /* Results */
+        .results-section {
+            margin-top: 48px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .domain-card {
+            position: relative;
+        }
+
+        .domain-name {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            word-break: break-all;
+            color: var(--md-sys-color-on-surface);
+        }
+
+        .domain-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .domain-status {
+            font: var(--md-sys-typescale-label-small-font);
+            padding: 4px 8px;
+            border-radius: var(--md-sys-shape-corner-extra-small);
+            text-transform: uppercase;
+        }
+
+        .domain-status.available {
+            background-color: var(--md-sys-color-tertiary-container);
+            color: var(--md-sys-color-on-tertiary-container);
+        }
+
+        .domain-status.taken {
+            background-color: var(--md-sys-color-error-container);
+            color: var(--md-sys-color-on-error-container);
+        }
+
+        .domain-score {
+            font: var(--md-sys-typescale-label-medium-font);
+            color: var(--md-sys-color-on-surface-variant);
+        }
+
+        .domain-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        /* Loading States */
+        .loading-container {
+            text-align: center;
+            padding: 48px 0;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--md-sys-color-surface-container-highest);
+            border-top: 4px solid var(--md-sys-color-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 24px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Utility Classes */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .mb-16 { margin-bottom: 16px; }
+        .mb-24 { margin-bottom: 24px; }
+        .mt-24 { margin-top: 24px; }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+            }
+            
+            .form-row .md-text-field {
+                width: 100%;
+            }
+            
+            .checkbox-group {
+                flex-direction: column;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .md-fab {
+                bottom: 24px;
+                right: 24px;
+            }
+            
+            .md-snackbar {
+                left: 16px;
+                right: 16px;
+                max-width: none;
+            }
+        }
+
+        /* Smooth Animations */
+        * {
+            transition: color 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
+                        background-color 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
+                        border-color 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="main-content">
+            <div class="text-center mb-24">
+                <h1 class="display-small" style="color: var(--md-sys-color-primary);">Goblin Globe</h1>
+                <p class="body-large" style="color: var(--md-sys-color-on-surface-variant);">Domain name finder with mathematical precision</p>
+            </div>
+        </header>
+
+        <!-- Form Section -->
+        <section class="form-section">
+            <div class="md-card elevated">
+                <form id="generateForm">
+                    <div class="md-text-field">
+                        <label for="prompt" class="md-text-field-label">Domain Description</label>
+                        <textarea 
+                            id="prompt" 
+                            class="md-text-field-input"
+                            placeholder="Describe your domain concept..."
+                            rows="4"
+                            required
+                        ></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="md-text-field">
+                            <label for="count" class="md-text-field-label">Quantity</label>
+                            <input 
+                                type="number" 
+                                id="count" 
+                                class="md-text-field-input" 
+                                min="1" 
+                                max="20" 
+                                value="10"
+                            >
+                        </div>
+                    </div>
+                    
+                    <div class="mb-24">
+                        <label class="md-text-field-label">Extensions</label>
+                        <div class="checkbox-group">
+                            <label class="md-checkbox">
+                                <input type="checkbox" name="extensions" value=".com" checked class="md-checkbox-input">
+                                <span class="md-checkbox-icon"></span>
+                                <span class="md-checkbox-label">.com</span>
+                            </label>
+                            <label class="md-checkbox">
+                                <input type="checkbox" name="extensions" value=".net" class="md-checkbox-input">
+                                <span class="md-checkbox-icon"></span>
+                                <span class="md-checkbox-label">.net</span>
+                            </label>
+                            <label class="md-checkbox">
+                                <input type="checkbox" name="extensions" value=".org" class="md-checkbox-input">
+                                <span class="md-checkbox-icon"></span>
+                                <span class="md-checkbox-label">.org</span>
+                            </label>
+                            <label class="md-checkbox">
+                                <input type="checkbox" name="extensions" value=".io" class="md-checkbox-input">
+                                <span class="md-checkbox-icon"></span>
+                                <span class="md-checkbox-label">.io</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" id="generateButton" class="md-button md-button-filled">
+                            <span class="material-symbols-rounded">search</span>
+                            <span id="buttonText">Generate Domains</span>
+                            <div id="buttonSpinner" class="loading-spinner hidden" style="width: 20px; height: 20px; margin: 0;"></div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Loading Section -->
+        <section id="loading" class="loading-container hidden">
+            <div class="loading-spinner"></div>
+            <p id="loadingMessage" class="headline-small mb-16">Generating domain ideas...</p>
+            <div id="progressBar" class="md-progress hidden">
+                <div id="progressFill" class="md-progress-bar"></div>
+            </div>
+            <p id="progressText" class="body-small hidden" style="color: var(--md-sys-color-on-surface-variant);">Step 1 of 3</p>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results" class="results-section hidden">
+            <div class="text-center mb-24">
+                <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                    <button id="exportBtn" class="md-button md-button-outlined">
+                        <span class="material-symbols-rounded">download</span>
+                        Export CSV
+                    </button>
+                    <button id="copyAllBtn" class="md-button md-button-outlined">
+                        <span class="material-symbols-rounded">content_copy</span>
+                        Copy Available
+                    </button>
+                    <button id="newSearchBtn" class="md-button md-button-text">
+                        <span class="material-symbols-rounded">refresh</span>
+                        New Search
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mb-24">
+                <h2 class="headline-medium mb-16" style="color: var(--md-sys-color-tertiary);">Available Domains</h2>
+                <div id="availableList" class="results-grid"></div>
+            </div>
+            
+            <div class="mb-24">
+                <h2 class="headline-medium mb-16" style="color: var(--md-sys-color-error);">Taken Domains</h2>
+                <div id="takenList" class="results-grid"></div>
+            </div>
+        </section>
+
+        <!-- Floating Action Button -->
+        <button id="scrollToTopFab" class="md-fab hidden" title="Scroll to top">
+            <span class="material-symbols-rounded">keyboard_arrow_up</span>
+        </button>
+    </div>
+
+    <!-- Snackbar Container -->
+    <div id="snackbarContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

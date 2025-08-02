@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOBLIN GLOBE - Celestial Domain Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Baroque Extravaganza Begins */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --royal-gold: #FFD700;
+            --deep-gold: #B8860B;
+            --baroque-purple: #4B0082;
+            --deep-purple: #301934;
+            --crimson-red: #DC143C;
+            --royal-red: #8B0000;
+            --ivory: #FFFFF0;
+            --cream: #F5F5DC;
+            --bronze: #CD7F32;
+            --ornate-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            --golden-glow: 0 0 30px rgba(255, 215, 0, 0.8);
+            --purple-glow: 0 0 20px rgba(75, 0, 130, 0.6);
+        }
+
+        body {
+            font-family: 'Cinzel', serif;
+            background: linear-gradient(135deg, 
+                var(--deep-purple) 0%, 
+                var(--baroque-purple) 25%, 
+                var(--deep-purple) 50%, 
+                var(--royal-red) 75%, 
+                var(--deep-purple) 100%);
+            background-attachment: fixed;
+            color: var(--ivory);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(220, 20, 60, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(75, 0, 130, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Floating ornamental elements */
+        .baroque-ornament {
+            position: fixed;
+            font-size: 2rem;
+            color: var(--royal-gold);
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatOrnamentation 8s ease-in-out infinite;
+        }
+
+        .baroque-ornament:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .baroque-ornament:nth-child(2) { top: 20%; right: 10%; animation-delay: 2s; }
+        .baroque-ornament:nth-child(3) { bottom: 30%; left: 8%; animation-delay: 4s; }
+        .baroque-ornament:nth-child(4) { bottom: 10%; right: 15%; animation-delay: 6s; }
+
+        @keyframes floatOrnamentation {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-20px) rotate(5deg); opacity: 0.6; }
+        }
+
+        /* Main container with ornate frame */
+        .imperial-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+            position: relative;
+        }
+
+        .imperial-container::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 8px solid var(--royal-gold);
+            border-image: linear-gradient(45deg, var(--royal-gold), var(--deep-gold), var(--royal-gold)) 1;
+            box-shadow: 
+                inset 0 0 50px rgba(255, 215, 0, 0.2),
+                0 0 50px rgba(255, 215, 0, 0.3);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Majestic Header */
+        .celestial-header {
+            text-align: center;
+            margin: 60px 0 80px 0;
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .celestial-header::before {
+            content: '✦ ❈ ✦ ❈ ✦ ❈ ✦ ❈ ✦ ❈ ✦ ❈ ✦';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            color: var(--royal-gold);
+            animation: sparkleHeader 3s ease-in-out infinite;
+        }
+
+        .celestial-header::after {
+            content: '❈ ✦ ❈ ✦ ❈ ✦ ❈ ✦ ❈ ✦ ❈ ✦ ❈';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            color: var(--royal-gold);
+            animation: sparkleHeader 3s ease-in-out infinite reverse;
+        }
+
+        @keyframes sparkleHeader {
+            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+        }
+
+        .goblin-globe-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 4.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, 
+                var(--royal-gold) 0%, 
+                var(--ivory) 25%, 
+                var(--royal-gold) 50%, 
+                var(--ivory) 75%, 
+                var(--royal-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            letter-spacing: 0.2em;
+            margin: 20px 0;
+            position: relative;
+            animation: royalGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes royalGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8)); }
+            50% { filter: drop-shadow(0 0 30px rgba(255, 215, 0, 1)); }
+        }
+
+        .celestial-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--cream);
+            font-style: italic;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Ornate Form Container */
+        .baroque-form-palace {
+            background: linear-gradient(135deg, 
+                rgba(75, 0, 130, 0.3) 0%, 
+                rgba(139, 0, 0, 0.2) 50%, 
+                rgba(75, 0, 130, 0.3) 100%);
+            border: 4px solid var(--royal-gold);
+            border-radius: 30px;
+            padding: 50px;
+            margin: 40px 0;
+            position: relative;
+            box-shadow: var(--ornate-shadow), inset 0 0 30px rgba(255, 215, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .baroque-form-palace::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, var(--royal-gold), transparent, var(--royal-gold));
+            border-radius: 35px;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .ornate-corners {
+            position: absolute;
+            font-size: 2.5rem;
+            color: var(--royal-gold);
+            opacity: 0.8;
+        }
+
+        .ornate-corners.top-left { top: -15px; left: -15px; }
+        .ornate-corners.top-right { top: -15px; right: -15px; }
+        .ornate-corners.bottom-left { bottom: -15px; left: -15px; }
+        .ornate-corners.bottom-right { bottom: -15px; right: -15px; }
+
+        /* Majestic Form Elements */
+        .royal-form-group {
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .imperial-label {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--royal-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 20px;
+            display: block;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .imperial-label::after {
+            content: '✦';
+            margin-left: 15px;
+            animation: labelSparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes labelSparkle {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .golden-input,
+        .golden-textarea {
+            width: 100%;
+            padding: 25px 30px;
+            border: 3px solid var(--royal-gold);
+            border-radius: 15px;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 240, 0.95) 0%, 
+                rgba(245, 245, 220, 0.95) 100%);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--deep-purple);
+            outline: none;
+            transition: all 0.4s ease;
+            box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .golden-input:focus,
+        .golden-textarea:focus {
+            border-color: var(--ivory);
+            box-shadow: 
+                inset 0 4px 10px rgba(0, 0, 0, 0.2),
+                0 0 25px rgba(255, 215, 0, 0.8);
+            transform: scale(1.02);
+        }
+
+        .golden-textarea {
+            resize: vertical;
+            min-height: 150px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .royal-number-input {
+            width: 150px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Ornate Checkbox Palace */
+        .checkbox-palace {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 25px;
+        }
+
+        .royal-checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, 
+                rgba(255, 215, 0, 0.1) 0%, 
+                rgba(255, 215, 0, 0.05) 100%);
+            border: 2px solid var(--deep-gold);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .royal-checkbox-item:hover {
+            border-color: var(--royal-gold);
+            background: linear-gradient(135deg, 
+                rgba(255, 215, 0, 0.2) 0%, 
+                rgba(255, 215, 0, 0.1) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .imperial-checkbox {
+            width: 25px;
+            height: 25px;
+            margin-right: 15px;
+            border: 3px solid var(--royal-gold);
+            border-radius: 8px;
+            background: var(--ivory);
+            cursor: pointer;
+            position: relative;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            transition: all 0.3s ease;
+        }
+
+        .imperial-checkbox:checked {
+            background: linear-gradient(135deg, var(--royal-gold), var(--deep-gold));
+            border-color: var(--ivory);
+            transform: scale(1.1);
+        }
+
+        .imperial-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--deep-purple);
+            font-weight: 900;
+            font-size: 14px;
+        }
+
+        .checkbox-extension-label {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--ivory);
+            cursor: pointer;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Majestic Submit Button */
+        .imperial-submit-button {
+            background: linear-gradient(135deg, 
+                var(--royal-gold) 0%, 
+                var(--deep-gold) 25%, 
+                var(--royal-gold) 50%, 
+                var(--deep-gold) 75%, 
+                var(--royal-gold) 100%);
+            color: var(--deep-purple);
+            border: 4px solid var(--ivory);
+            padding: 25px 60px;
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border-radius: 20px;
+            position: relative;
+            margin-top: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: var(--ornate-shadow);
+            overflow: hidden;
+        }
+
+        .imperial-submit-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.4), 
+                transparent);
+            transition: left 0.6s ease;
+        }
+
+        .imperial-submit-button:hover::before {
+            left: 100%;
+        }
+
+        .imperial-submit-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 
+                var(--ornate-shadow),
+                0 10px 30px rgba(255, 215, 0, 0.6);
+            border-color: var(--royal-gold);
+        }
+
+        .imperial-submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .button-text {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Royal Spinner */
+        .royal-spinner {
+            width: 25px;
+            height: 25px;
+            border: 3px solid var(--deep-purple);
+            border-top: 3px solid var(--ivory);
+            border-radius: 50%;
+            animation: royalSpin 1s linear infinite;
+        }
+
+        @keyframes royalSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Baroque Loading Palace */
+        .loading-palace {
+            text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(135deg, 
+                rgba(75, 0, 130, 0.2) 0%, 
+                rgba(139, 0, 0, 0.1) 100%);
+            border: 3px solid var(--royal-gold);
+            border-radius: 25px;
+            margin: 60px 0;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+
+        .loading-palace::before {
+            content: '⚜ ❈ ⚜ ❈ ⚜ ❈ ⚜ ❈ ⚜ ❈ ⚜ ❈ ⚜';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--deep-purple);
+            padding: 0 30px;
+            color: var(--royal-gold);
+            font-size: 1.2rem;
+            animation: ornateRotation 4s ease-in-out infinite;
+        }
+
+        @keyframes ornateRotation {
+            0%, 100% { transform: translateX(-50%) rotate(0deg); }
+            50% { transform: translateX(-50%) rotate(3deg); }
+        }
+
+        .majestic-loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 6px solid rgba(255, 215, 0, 0.2);
+            border-top: 6px solid var(--royal-gold);
+            border-right: 6px solid var(--ivory);
+            border-radius: 50%;
+            animation: majesticspin 2s ease-in-out infinite;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+
+        .majestic-loading-spinner::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 3px solid rgba(255, 215, 0, 0.3);
+            border-top: 3px solid var(--ivory);
+            border-radius: 50%;
+            animation: majesticspin 1.5s ease-in-out infinite reverse;
+        }
+
+        @keyframes majesticspin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-message {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--royal-gold);
+            font-style: italic;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Imperial Progress Bar */
+        .progress-throne {
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(135deg, 
+                rgba(75, 0, 130, 0.4) 0%, 
+                rgba(139, 0, 0, 0.4) 100%);
+            border: 2px solid var(--royal-gold);
+            border-radius: 10px;
+            margin: 30px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-crown {
+            height: 100%;
+            background: linear-gradient(135deg, 
+                var(--royal-gold) 0%, 
+                var(--ivory) 50%, 
+                var(--royal-gold) 100%);
+            width: 0%;
+            transition: width 0.6s ease;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-crown::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.6), 
+                transparent);
+            animation: progressShimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes progressShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            color: var(--cream);
+            text-align: center;
+            margin-top: 15px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Results Palace */
+        .results-palace {
+            margin-top: 80px;
+            background: linear-gradient(135deg, 
+                rgba(75, 0, 130, 0.1) 0%, 
+                rgba(139, 0, 0, 0.1) 100%);
+            border: 4px solid var(--royal-gold);
+            border-radius: 30px;
+            padding: 50px;
+            position: relative;
+            backdrop-filter: blur(8px);
+        }
+
+        .results-palace::before {
+            content: '👑 ROYAL DOMAIN DISCOVERIES 👑';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--deep-purple);
+            color: var(--royal-gold);
+            padding: 10px 40px;
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: 2px solid var(--royal-gold);
+            border-radius: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .results-actions-court {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .court-action-button {
+            background: linear-gradient(135deg, 
+                rgba(255, 215, 0, 0.2) 0%, 
+                rgba(255, 215, 0, 0.1) 100%);
+            color: var(--royal-gold);
+            border: 2px solid var(--royal-gold);
+            padding: 15px 30px;
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .court-action-button:hover {
+            background: linear-gradient(135deg, 
+                var(--royal-gold) 0%, 
+                var(--deep-gold) 100%);
+            color: var(--deep-purple);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .domain-section-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--royal-gold);
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .domain-section-title::before,
+        .domain-section-title::after {
+            content: '⚜';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: var(--cream);
+            animation: sectionTitleGlow 3s ease-in-out infinite;
+        }
+
+        .domain-section-title::before { left: -50px; }
+        .domain-section-title::after { right: -50px; }
+
+        @keyframes sectionTitleGlow {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Imperial Domain Grid */
+        .imperial-domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .domain-throne-card {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 240, 0.95) 0%, 
+                rgba(245, 245, 220, 0.95) 100%);
+            border: 3px solid var(--royal-gold);
+            border-radius: 20px;
+            padding: 35px;
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: var(--ornate-shadow);
+            overflow: hidden;
+        }
+
+        .domain-throne-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                var(--royal-gold), 
+                var(--deep-gold), 
+                var(--royal-gold), 
+                var(--deep-gold));
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .domain-throne-card:hover::before {
+            opacity: 1;
+        }
+
+        .domain-throne-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                var(--ornate-shadow),
+                0 15px 40px rgba(255, 215, 0, 0.4);
+        }
+
+        .domain-throne-card.available {
+            border-color: var(--royal-gold);
+        }
+
+        .domain-throne-card.taken {
+            border-color: var(--bronze);
+            background: linear-gradient(135deg, 
+                rgba(205, 127, 50, 0.1) 0%, 
+                rgba(160, 82, 45, 0.1) 100%);
+            opacity: 0.8;
+        }
+
+        .domain-name-royal {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--deep-purple);
+            margin-bottom: 20px;
+            word-break: break-all;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .domain-meta-court {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, 
+                rgba(75, 0, 130, 0.1) 0%, 
+                rgba(139, 0, 0, 0.1) 100%);
+            border-radius: 12px;
+            border: 1px solid var(--deep-gold);
+        }
+
+        .domain-method-badge {
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--baroque-purple);
+            background: linear-gradient(135deg, 
+                var(--royal-gold) 0%, 
+                var(--deep-gold) 100%);
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .domain-score-crown {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--crimson-red);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .domain-actions-court {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .royal-action-button {
+            background: linear-gradient(135deg, 
+                var(--baroque-purple) 0%, 
+                var(--deep-purple) 100%);
+            color: var(--ivory);
+            border: 2px solid var(--royal-gold);
+            padding: 12px 25px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            flex: 1;
+            text-align: center;
+        }
+
+        .royal-action-button:hover {
+            background: linear-gradient(135deg, 
+                var(--royal-gold) 0%, 
+                var(--deep-gold) 100%);
+            color: var(--deep-purple);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .register-throne-link {
+            background: linear-gradient(135deg, 
+                var(--crimson-red) 0%, 
+                var(--royal-red) 100%);
+            color: var(--ivory);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .register-throne-link:hover {
+            background: linear-gradient(135deg, 
+                var(--royal-gold) 0%, 
+                var(--deep-gold) 100%);
+            color: var(--deep-purple);
+        }
+
+        /* Error Palace */
+        .error-palace {
+            background: linear-gradient(135deg, 
+                rgba(220, 20, 60, 0.1) 0%, 
+                rgba(139, 0, 0, 0.1) 100%);
+            border: 3px solid var(--crimson-red);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 60px 0;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+
+        .error-palace::before {
+            content: '⚠ ROYAL DECREE ⚠';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--deep-purple);
+            color: var(--crimson-red);
+            padding: 8px 25px;
+            font-family: 'Cinzel Decorative', serif;
+            font-weight: 700;
+            border: 2px solid var(--crimson-red);
+            border-radius: 12px;
+        }
+
+        .error-message-royal {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--ivory);
+            font-weight: 500;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Toast Palace */
+        .toast-court {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .royal-toast {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 240, 0.95) 0%, 
+                rgba(245, 245, 220, 0.95) 100%);
+            border: 3px solid var(--royal-gold);
+            border-radius: 15px;
+            padding: 20px 30px;
+            min-width: 350px;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            color: var(--deep-purple);
+            box-shadow: var(--ornate-shadow);
+            transform: translateX(100%);
+            transition: transform 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .royal-toast.show {
+            transform: translateX(0);
+        }
+
+        .royal-toast.success {
+            border-color: var(--royal-gold);
+        }
+
+        .royal-toast.error {
+            border-color: var(--crimson-red);
+            color: var(--crimson-red);
+        }
+
+        .royal-toast::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                transparent, 
+                rgba(255, 215, 0, 0.1), 
+                transparent);
+            animation: toastShimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes toastShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Responsive Baroque Design */
+        @media (max-width: 768px) {
+            .imperial-container {
+                padding: 20px;
+            }
+
+            .goblin-globe-title {
+                font-size: 3rem;
+            }
+
+            .celestial-subtitle {
+                font-size: 1.4rem;
+            }
+
+            .baroque-form-palace {
+                padding: 30px 20px;
+            }
+
+            .checkbox-palace {
+                grid-template-columns: 1fr;
+            }
+
+            .imperial-domain-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-actions-court {
+                flex-direction: column;
+            }
+
+            .royal-toast {
+                min-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Baroque Ornaments -->
+    <div class="baroque-ornament">❈</div>
+    <div class="baroque-ornament">⚜</div>
+    <div class="baroque-ornament">✦</div>
+    <div class="baroque-ornament">❋</div>
+
+    <div class="imperial-container">
+        <!-- Celestial Header -->
+        <div class="celestial-header">
+            <h1 class="goblin-globe-title">GOBLIN GLOBE</h1>
+            <p class="celestial-subtitle">Divine Domain Manifestation Engine</p>
+        </div>
+
+        <!-- Baroque Form Palace -->
+        <div class="baroque-form-palace">
+            <div class="ornate-corners top-left">❈</div>
+            <div class="ornate-corners top-right">❈</div>
+            <div class="ornate-corners bottom-left">❈</div>
+            <div class="ornate-corners bottom-right">❈</div>
+
+            <form id="generateForm">
+                <div class="royal-form-group">
+                    <label for="prompt" class="imperial-label">Domain Vision</label>
+                    <textarea 
+                        id="prompt" 
+                        class="golden-textarea"
+                        placeholder="Describe thy noble domain concept with royal precision..."
+                        required
+                    ></textarea>
+                </div>
+                
+                <div class="royal-form-group">
+                    <label for="count" class="imperial-label">Quantity of Domains</label>
+                    <input 
+                        type="number" 
+                        id="count" 
+                        class="golden-input royal-number-input" 
+                        min="1" 
+                        max="20" 
+                        value="10"
+                    >
+                </div>
+                
+                <div class="royal-form-group">
+                    <label class="imperial-label">Royal Extensions</label>
+                    <div class="checkbox-palace">
+                        <label class="royal-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".com" checked class="imperial-checkbox">
+                            <span class="checkbox-extension-label">.com</span>
+                        </label>
+                        <label class="royal-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".net" class="imperial-checkbox">
+                            <span class="checkbox-extension-label">.net</span>
+                        </label>
+                        <label class="royal-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".org" class="imperial-checkbox">
+                            <span class="checkbox-extension-label">.org</span>
+                        </label>
+                        <label class="royal-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".io" class="imperial-checkbox">
+                            <span class="checkbox-extension-label">.io</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" id="generateButton" class="imperial-submit-button">
+                    <span id="buttonText" class="button-text">Manifest Domains</span>
+                    <div id="buttonSpinner" class="royal-spinner hidden"></div>
+                </button>
+            </form>
+        </div>
+
+        <!-- Loading Palace -->
+        <div id="loading" class="loading-palace hidden">
+            <div class="majestic-loading-spinner"></div>
+            <p id="loadingMessage" class="loading-message">Consulting the celestial archives...</p>
+            <div id="progressBar" class="progress-throne hidden">
+                <div id="progressFill" class="progress-crown"></div>
+            </div>
+            <p id="progressText" class="progress-text hidden">Royal Process 1 of 3</p>
+        </div>
+
+        <!-- Error Palace -->
+        <div id="error" class="error-palace hidden">
+            <p class="error-message-royal"></p>
+        </div>
+
+        <!-- Results Palace -->
+        <div id="results" class="results-palace hidden">
+            <div class="results-actions-court">
+                <button id="exportBtn" class="court-action-button">Export Scroll</button>
+                <button id="copyAllBtn" class="court-action-button">Copy Available</button>
+                <button id="newSearchBtn" class="court-action-button">New Quest</button>
+            </div>
+            
+            <div>
+                <h2 class="domain-section-title">Available Domains</h2>
+                <div id="availableList" class="imperial-domain-grid"></div>
+            </div>
+            
+            <div>
+                <h2 class="domain-section-title">Taken Domains</h2>
+                <div id="takenList" class="imperial-domain-grid"></div>
+            </div>
+        </div>
+
+        <!-- Toast Court -->
+        <div id="toastContainer" class="toast-court"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

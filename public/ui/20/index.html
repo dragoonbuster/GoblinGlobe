@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goblin Globe - Holographic Interface</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', monospace;
+            background: #000;
+            color: #00ffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Holographic background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 150, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(0, 100, 200, 0.05) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        /* Animated grid overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridFloat 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes gridFloat {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-10px, -5px); }
+            50% { transform: translate(5px, -10px); }
+            75% { transform: translate(-5px, 5px); }
+        }
+
+        /* Holographic container */
+        .holo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        /* Floating holographic title */
+        .holo-title {
+            text-align: center;
+            margin: 60px 0 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .holo-title h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #00ffff;
+            text-shadow: 
+                0 0 10px #00ffff,
+                0 0 20px #00ffff,
+                0 0 40px #00ffff,
+                0 0 80px #00ffff;
+            animation: titlePulse 3s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+
+        .holo-title p {
+            font-size: 1.2rem;
+            color: #0099cc;
+            text-shadow: 0 0 10px #0099cc;
+            opacity: 0.8;
+            animation: subtitleFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { 
+                text-shadow: 
+                    0 0 10px #00ffff,
+                    0 0 20px #00ffff,
+                    0 0 40px #00ffff,
+                    0 0 80px #00ffff;
+            }
+            50% { 
+                text-shadow: 
+                    0 0 20px #00ffff,
+                    0 0 40px #00ffff,
+                    0 0 80px #00ffff,
+                    0 0 160px #00ffff;
+            }
+        }
+
+        @keyframes subtitleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Floating holographic form */
+        .holo-form {
+            background: rgba(0, 50, 100, 0.1);
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            position: relative;
+            backdrop-filter: blur(10px);
+            box-shadow: 
+                0 0 30px rgba(0, 255, 255, 0.2),
+                inset 0 0 30px rgba(0, 255, 255, 0.1);
+            animation: formFloat 6s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes formFloat {
+            0%, 100% { transform: translateY(0) rotateX(0); }
+            25% { transform: translateY(-10px) rotateX(1deg); }
+            50% { transform: translateY(-5px) rotateX(0); }
+            75% { transform: translateY(-15px) rotateX(-1deg); }
+        }
+
+        .holo-form::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                transparent, 
+                rgba(0, 255, 255, 0.5), 
+                transparent, 
+                rgba(0, 150, 255, 0.5), 
+                transparent);
+            border-radius: 20px;
+            z-index: -1;
+            animation: borderGlow 3s linear infinite;
+        }
+
+        @keyframes borderGlow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 200%; }
+        }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(0, 20, 40, 0.8);
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 10px;
+            color: #00ffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.4),
+                inset 0 0 20px rgba(0, 255, 255, 0.1);
+            text-shadow: 0 0 5px #00ffff;
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-number {
+            width: 120px;
+        }
+
+        /* Holographic checkboxes */
+        .checkbox-group {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .checkbox-input {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            appearance: none;
+            background: rgba(0, 20, 40, 0.8);
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-input:checked {
+            background: rgba(0, 255, 255, 0.2);
+            border-color: #00ffff;
+            box-shadow: 
+                0 0 15px rgba(0, 255, 255, 0.6),
+                inset 0 0 10px rgba(0, 255, 255, 0.2);
+        }
+
+        .checkbox-input:checked::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 6px;
+            width: 6px;
+            height: 10px;
+            border: solid #00ffff;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            filter: drop-shadow(0 0 5px #00ffff);
+        }
+
+        .checkbox-label {
+            font-size: 0.9rem;
+            color: #0099cc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover .checkbox-label {
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        /* Holographic button */
+        .holo-button {
+            background: linear-gradient(45deg, rgba(0, 100, 200, 0.3), rgba(0, 255, 255, 0.3));
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            padding: 20px 40px;
+            color: #00ffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            margin-top: 20px;
+            text-shadow: 0 0 10px #00ffff;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.3),
+                inset 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+
+        .holo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 5px 30px rgba(0, 255, 255, 0.5),
+                inset 0 0 30px rgba(0, 255, 255, 0.2);
+            text-shadow: 0 0 20px #00ffff;
+        }
+
+        .holo-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading hologram */
+        .holo-loading {
+            text-align: center;
+            padding: 60px 20px;
+            display: none;
+        }
+
+        .holo-spinner {
+            width: 80px;
+            height: 80px;
+            border: 3px solid rgba(0, 255, 255, 0.2);
+            border-top: 3px solid #00ffff;
+            border-radius: 50%;
+            animation: holoSpin 1s linear infinite;
+            margin: 0 auto 30px;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 255, 0.5),
+                inset 0 0 30px rgba(0, 255, 255, 0.2);
+        }
+
+        @keyframes holoSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-message {
+            font-size: 1.2rem;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+            margin-bottom: 20px;
+            animation: messagePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes messagePulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(0, 50, 100, 0.3);
+            border-radius: 2px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00ffff, #0099cc, #00ffff);
+            background-size: 200% 100%;
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.3s ease;
+            animation: progressGlow 2s ease-in-out infinite;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        }
+
+        @keyframes progressGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: #0099cc;
+            margin-top: 10px;
+        }
+
+        /* Results hologram */
+        .holo-results {
+            margin-top: 60px;
+            display: none;
+        }
+
+        .results-header {
+            margin-bottom: 40px;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .holo-button-secondary {
+            background: rgba(0, 50, 100, 0.2);
+            border: 2px solid rgba(0, 255, 255, 0.4);
+            border-radius: 10px;
+            padding: 12px 24px;
+            color: #0099cc;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .holo-button-secondary:hover {
+            border-color: #00ffff;
+            color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            text-shadow: 0 0 5px #00ffff;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px #00ffff;
+        }
+
+        /* Domain cards - 3D holographic projection */
+        .domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .domain-card {
+            background: rgba(0, 30, 60, 0.1);
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+            animation: cardFloat 8s ease-in-out infinite;
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0) rotateX(0) rotateY(0); }
+            25% { transform: translateY(-5px) rotateX(2deg) rotateY(1deg); }
+            50% { transform: translateY(-10px) rotateX(0) rotateY(0); }
+            75% { transform: translateY(-5px) rotateX(-2deg) rotateY(-1deg); }
+        }
+
+        .domain-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            border-color: #00ffff;
+            box-shadow: 
+                0 10px 40px rgba(0, 255, 255, 0.3),
+                inset 0 0 30px rgba(0, 255, 255, 0.1);
+        }
+
+        .domain-card.available {
+            border-color: rgba(0, 255, 100, 0.5);
+            box-shadow: 0 0 20px rgba(0, 255, 100, 0.2);
+        }
+
+        .domain-card.taken {
+            border-color: rgba(255, 100, 100, 0.3);
+            background: rgba(50, 10, 10, 0.1);
+            opacity: 0.7;
+        }
+
+        .domain-name {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #00ffff;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px #00ffff;
+            word-break: break-all;
+        }
+
+        .domain-card.available .domain-name {
+            color: #00ff88;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        .domain-card.taken .domain-name {
+            color: #ff6666;
+            text-shadow: 0 0 10px #ff6666;
+        }
+
+        .domain-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .domain-method {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #0099cc;
+        }
+
+        .domain-score {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #00ffff;
+        }
+
+        .domain-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .link-register {
+            background: linear-gradient(45deg, rgba(0, 255, 100, 0.3), rgba(0, 200, 150, 0.3));
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            text-decoration: none;
+            padding: 12px 24px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            text-shadow: 0 0 5px #00ff88;
+        }
+
+        .link-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+            text-shadow: 0 0 15px #00ff88;
+        }
+
+        /* Error hologram */
+        .holo-error {
+            background: rgba(100, 0, 0, 0.1);
+            border: 2px solid rgba(255, 100, 100, 0.5);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            color: #ff6666;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(255, 100, 100, 0.2);
+            display: none;
+        }
+
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .toast {
+            background: rgba(0, 50, 100, 0.9);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            padding: 20px 30px;
+            min-width: 300px;
+            font-size: 0.9rem;
+            color: #00ffff;
+            backdrop-filter: blur(10px);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            text-shadow: 0 0 5px #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            border-color: #ff6666;
+            color: #ff6666;
+            background: rgba(100, 0, 0, 0.1);
+            text-shadow: 0 0 5px #ff6666;
+            box-shadow: 0 0 20px rgba(255, 100, 100, 0.3);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .holo-title h1 {
+                font-size: 2.5rem;
+            }
+            
+            .holo-form {
+                padding: 20px;
+            }
+
+            .checkbox-group {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .domain-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Utility classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Scanning lines effect */
+        .scan-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            background: linear-gradient(
+                transparent 50%,
+                rgba(0, 255, 255, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            animation: scanLines 0.1s linear infinite;
+        }
+
+        @keyframes scanLines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-overlay"></div>
+    <div class="scan-lines"></div>
+    
+    <div class="holo-container">
+        <!-- Holographic Title -->
+        <div class="holo-title">
+            <h1>Goblin Globe</h1>
+            <p>Holographic Domain Discovery Interface</p>
+        </div>
+
+        <!-- Floating Holographic Form -->
+        <div class="holo-form">
+            <form id="generateForm">
+                <div class="form-group">
+                    <label for="prompt" class="form-label">Domain Concept Matrix</label>
+                    <textarea 
+                        id="prompt" 
+                        class="form-textarea"
+                        placeholder="Initialize domain concept parameters..."
+                        required
+                    ></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="count" class="form-label">Generation Quantity</label>
+                    <input 
+                        type="number" 
+                        id="count" 
+                        class="form-input form-number" 
+                        min="1" 
+                        max="20" 
+                        value="10"
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Domain Extensions Array</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="extensions" value=".com" checked class="checkbox-input">
+                            <span class="checkbox-label">.com</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="extensions" value=".net" class="checkbox-input">
+                            <span class="checkbox-label">.net</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="extensions" value=".org" class="checkbox-input">
+                            <span class="checkbox-label">.org</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="extensions" value=".io" class="checkbox-input">
+                            <span class="checkbox-label">.io</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" id="generateButton" class="holo-button">
+                    <span id="buttonText">Initialize Scan</span>
+                    <div id="buttonSpinner" class="holo-spinner hidden" style="width: 20px; height: 20px; margin: 0; display: inline-block;"></div>
+                </button>
+            </form>
+        </div>
+
+        <!-- Holographic Loading -->
+        <div id="loading" class="holo-loading">
+            <div class="holo-spinner"></div>
+            <p id="loadingMessage" class="loading-message">Scanning domain matrix...</p>
+            <div id="progressBar" class="progress-container hidden">
+                <div id="progressFill" class="progress-bar"></div>
+            </div>
+            <p id="progressText" class="progress-text hidden">Phase 1 of 3</p>
+        </div>
+
+        <!-- Error Hologram -->
+        <div id="error" class="holo-error">
+            <p class="loading-message"></p>
+        </div>
+
+        <!-- Holographic Results -->
+        <div id="results" class="holo-results">
+            <div class="results-header">
+                <div class="results-actions">
+                    <button id="exportBtn" class="holo-button-secondary">Export Data</button>
+                    <button id="copyAllBtn" class="holo-button-secondary">Copy Available</button>
+                    <button id="newSearchBtn" class="holo-button-secondary">New Scan</button>
+                </div>
+            </div>
+            
+            <div class="mb-60">
+                <h2 class="section-title">Available Domains</h2>
+                <div id="availableList" class="domain-grid"></div>
+            </div>
+            
+            <div class="mb-60">
+                <h2 class="section-title">Occupied Domains</h2>
+                <div id="takenList" class="domain-grid"></div>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div id="toastContainer" class="toast-container"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

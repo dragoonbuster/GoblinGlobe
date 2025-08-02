@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goblin Globe - Zen Garden</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sand-light: #f5f2e8;
+            --sand-medium: #ede6d3;
+            --sand-dark: #d4c4a0;
+            --stone-light: #9b9084;
+            --stone-medium: #7a6f5f;
+            --stone-dark: #5a4f3f;
+            --accent-warm: #8b7355;
+            --text-primary: #3d3326;
+            --text-secondary: #6b5d47;
+            --shadow-soft: rgba(61, 51, 38, 0.08);
+            --shadow-medium: rgba(61, 51, 38, 0.12);
+            --shadow-hard: rgba(61, 51, 38, 0.16);
+        }
+
+        html {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        body {
+            font-family: 'Inter', 'Helvetica Neue', sans-serif;
+            font-weight: 300;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--sand-light) 0%, var(--sand-medium) 50%, var(--sand-light) 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sand texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(212, 196, 160, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(212, 196, 160, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(155, 144, 132, 0.1) 0%, transparent 50%);
+            background-size: 400px 400px, 600px 600px, 300px 300px;
+            background-position: 0 0, 100px 100px, 200px 200px;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        /* Container with zen spacing */
+        .zen-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 80px 40px;
+            position: relative;
+        }
+
+        /* Zen stones floating background */
+        .zen-stones {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .stone {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--stone-light), var(--stone-medium));
+            box-shadow: 0 8px 32px var(--shadow-soft);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .stone:nth-child(1) {
+            width: 120px;
+            height: 80px;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .stone:nth-child(2) {
+            width: 80px;
+            height: 60px;
+            top: 70%;
+            right: 10%;
+            animation-delay: -7s;
+        }
+
+        .stone:nth-child(3) {
+            width: 100px;
+            height: 70px;
+            top: 40%;
+            left: 15%;
+            animation-delay: -14s;
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.3;
+            }
+            50% { 
+                transform: translateY(-20px) rotate(1deg);
+                opacity: 0.5;
+            }
+        }
+
+        /* Zen circle meditation points */
+        .zen-circle {
+            position: absolute;
+            border: 1px solid var(--stone-light);
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+
+        .zen-circle:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 20%;
+            right: 5%;
+            animation: ripple 8s ease-in-out infinite;
+        }
+
+        .zen-circle:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            bottom: 25%;
+            left: 8%;
+            animation: ripple 12s ease-in-out infinite;
+            animation-delay: -4s;
+        }
+
+        @keyframes ripple {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.3;
+            }
+        }
+
+        /* Header with zen calligraphy style */
+        .zen-header {
+            text-align: center;
+            margin-bottom: 120px;
+            position: relative;
+        }
+
+        .zen-title {
+            font-family: 'Noto Serif JP', serif;
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 200;
+            color: var(--text-primary);
+            letter-spacing: 0.05em;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 8px var(--shadow-soft);
+            position: relative;
+        }
+
+        .zen-title::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-warm), transparent);
+        }
+
+        .zen-subtitle {
+            font-size: 1.125rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            max-width: 400px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Form with stone-like elements */
+        .zen-form {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 60px;
+            box-shadow: 
+                0 8px 32px var(--shadow-soft),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 80px;
+        }
+
+        .form-section {
+            margin-bottom: 50px;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .zen-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .zen-input,
+        .zen-textarea {
+            width: 100%;
+            padding: 20px 0;
+            border: none;
+            border-bottom: 2px solid var(--stone-light);
+            background: transparent;
+            font-family: inherit;
+            font-size: 1.125rem;
+            font-weight: 300;
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.4s ease;
+        }
+
+        .zen-input:focus,
+        .zen-textarea:focus {
+            border-bottom-color: var(--accent-warm);
+            transform: translateY(-2px);
+        }
+
+        .zen-textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+
+        .zen-number {
+            width: 100px;
+        }
+
+        /* Zen checkbox group */
+        .zen-checkboxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .zen-checkbox-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .zen-checkbox-item:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .zen-checkbox-input {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            border: 2px solid var(--stone-medium);
+            border-radius: 50%;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            transition: all 0.3s ease;
+        }
+
+        .zen-checkbox-input:checked {
+            background: linear-gradient(135deg, var(--accent-warm), var(--stone-medium));
+            border-color: var(--accent-warm);
+            box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.2);
+        }
+
+        .zen-checkbox-input:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .zen-checkbox-label {
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        /* Stone-like button */
+        .zen-button {
+            background: linear-gradient(135deg, var(--stone-medium), var(--stone-dark));
+            color: white;
+            border: none;
+            padding: 24px 48px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.4s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 40px;
+            box-shadow: 
+                0 8px 24px var(--shadow-medium),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .zen-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 12px 32px var(--shadow-hard),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .zen-button:active {
+            transform: translateY(-2px);
+        }
+
+        .zen-button:disabled {
+            background: var(--stone-light);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 4px 12px var(--shadow-soft);
+        }
+
+        /* Ripple effect for button */
+        .zen-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            transition: transform 0.6s ease;
+        }
+
+        .zen-button:active::before {
+            transform: translate(-50%, -50%) scale(2);
+        }
+
+        /* Zen spinner */
+        .zen-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: zen-spin 2s linear infinite;
+        }
+
+        @keyframes zen-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Loading state with zen animation */
+        .zen-loading {
+            text-align: center;
+            padding: 80px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .zen-loading.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .zen-loading-circle {
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--sand-dark);
+            border-top: 3px solid var(--accent-warm);
+            border-radius: 50%;
+            animation: zen-spin 3s ease-in-out infinite;
+            margin: 0 auto 30px;
+        }
+
+        .zen-loading-text {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        /* Progress with zen flow */
+        .zen-progress {
+            width: 100%;
+            height: 3px;
+            background: var(--sand-dark);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .zen-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-warm), var(--stone-medium));
+            width: 0%;
+            transition: width 1s ease-out;
+            border-radius: 2px;
+        }
+
+        .zen-progress-step {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        /* Results with zen styling */
+        .zen-results {
+            margin-top: 80px;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+
+        .zen-results.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .zen-results-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .zen-results-title {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--text-primary);
+            margin-bottom: 40px;
+        }
+
+        .zen-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+
+        .zen-action-btn {
+            background: rgba(255, 255, 255, 0.6);
+            color: var(--text-primary);
+            border: 2px solid var(--stone-light);
+            padding: 16px 32px;
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .zen-action-btn:hover {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: var(--accent-warm);
+            transform: translateY(-2px);
+        }
+
+        /* Domain cards with stone styling */
+        .zen-section {
+            margin-bottom: 60px;
+        }
+
+        .zen-section-title {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--text-primary);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .zen-domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .zen-domain-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 32px var(--shadow-soft);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .zen-domain-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-warm), var(--stone-medium));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .zen-domain-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px var(--shadow-medium);
+        }
+
+        .zen-domain-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .zen-domain-card.taken {
+            background: rgba(237, 230, 211, 0.5);
+            border-color: var(--sand-dark);
+        }
+
+        .zen-domain-name {
+            font-family: 'Inter', monospace;
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 16px;
+            word-break: break-all;
+            color: var(--text-primary);
+        }
+
+        .zen-domain-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .zen-domain-method {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+        }
+
+        .zen-domain-score {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--accent-warm);
+        }
+
+        .zen-domain-details {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .zen-domain-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .zen-copy-btn {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--stone-light);
+            padding: 10px 20px;
+            font-size: 0.875rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .zen-copy-btn:hover {
+            background: var(--stone-light);
+            color: white;
+        }
+
+        .zen-register-link {
+            background: var(--accent-warm);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 0.875rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            flex: 2;
+            text-align: center;
+        }
+
+        .zen-register-link:hover {
+            background: var(--stone-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Error message with zen styling */
+        .zen-error {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--accent-warm);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 40px 0;
+            color: var(--text-primary);
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Toast notifications */
+        .zen-toast-container {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .zen-toast {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--stone-light);
+            border-radius: 12px;
+            padding: 20px 24px;
+            min-width: 300px;
+            font-size: 0.875rem;
+            transform: translateX(100%);
+            transition: transform 0.4s ease;
+            box-shadow: 0 8px 32px var(--shadow-medium);
+        }
+
+        .zen-toast.show {
+            transform: translateX(0);
+        }
+
+        .zen-toast.success {
+            border-color: var(--accent-warm);
+        }
+
+        .zen-toast.error {
+            border-color: var(--accent-warm);
+            color: var(--accent-warm);
+        }
+
+        /* Utility classes */
+        .hidden {
+            display: none;
+        }
+
+        .zen-text-center {
+            text-align: center;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .zen-container {
+                padding: 40px 20px;
+            }
+
+            .zen-form {
+                padding: 40px 30px;
+            }
+
+            .zen-title {
+                font-size: 2.5rem;
+            }
+
+            .zen-checkboxes {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .zen-domain-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .zen-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stone:nth-child(1),
+            .stone:nth-child(2),
+            .stone:nth-child(3) {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .zen-checkboxes {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Zen stones background -->
+    <div class="zen-stones">
+        <div class="stone"></div>
+        <div class="stone"></div>
+        <div class="stone"></div>
+        <div class="zen-circle"></div>
+        <div class="zen-circle"></div>
+    </div>
+
+    <div class="zen-container">
+        <!-- Zen Header -->
+        <header class="zen-header">
+            <h1 class="zen-title">Goblin Globe</h1>
+            <p class="zen-subtitle">Find domain names with tranquil precision and mindful discovery</p>
+        </header>
+
+        <!-- Zen Form -->
+        <form id="zenGenerateForm" class="zen-form">
+            <div class="form-section">
+                <label for="zenPrompt" class="zen-label">Domain Vision</label>
+                <textarea 
+                    id="zenPrompt" 
+                    class="zen-textarea"
+                    placeholder="Describe your domain concept with clarity and purpose..."
+                    required
+                ></textarea>
+            </div>
+            
+            <div class="form-section">
+                <label for="zenCount" class="zen-label">Quantity</label>
+                <input 
+                    type="number" 
+                    id="zenCount" 
+                    class="zen-input zen-number" 
+                    min="1" 
+                    max="20" 
+                    value="10"
+                >
+            </div>
+            
+            <div class="form-section">
+                <label class="zen-label">Extensions</label>
+                <div class="zen-checkboxes">
+                    <label class="zen-checkbox-item">
+                        <input type="checkbox" name="zenExtensions" value=".com" checked class="zen-checkbox-input">
+                        <span class="zen-checkbox-label">.com</span>
+                    </label>
+                    <label class="zen-checkbox-item">
+                        <input type="checkbox" name="zenExtensions" value=".net" class="zen-checkbox-input">
+                        <span class="zen-checkbox-label">.net</span>
+                    </label>
+                    <label class="zen-checkbox-item">
+                        <input type="checkbox" name="zenExtensions" value=".org" class="zen-checkbox-input">
+                        <span class="zen-checkbox-label">.org</span>
+                    </label>
+                    <label class="zen-checkbox-item">
+                        <input type="checkbox" name="zenExtensions" value=".io" class="zen-checkbox-input">
+                        <span class="zen-checkbox-label">.io</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="zen-text-center">
+                <button type="submit" id="zenGenerateButton" class="zen-button">
+                    <span id="zenButtonText">Discover Domains</span>
+                    <div id="zenButtonSpinner" class="zen-spinner hidden"></div>
+                </button>
+            </div>
+        </form>
+
+        <!-- Zen Loading -->
+        <div id="zenLoading" class="zen-loading hidden">
+            <div class="zen-loading-circle"></div>
+            <p id="zenLoadingMessage" class="zen-loading-text">Generating domain ideas...</p>
+            <div id="zenProgressBar" class="zen-progress hidden">
+                <div id="zenProgressFill" class="zen-progress-fill"></div>
+            </div>
+            <p id="zenProgressText" class="zen-progress-step hidden">Step 1 of 3</p>
+        </div>
+
+        <!-- Zen Error -->
+        <div id="zenError" class="zen-error hidden">
+            <p></p>
+        </div>
+
+        <!-- Zen Results -->
+        <div id="zenResults" class="zen-results hidden">
+            <div class="zen-results-header">
+                <h2 class="zen-results-title">Domain Discoveries</h2>
+                <div class="zen-actions">
+                    <button id="zenExportBtn" class="zen-action-btn">Export CSV</button>
+                    <button id="zenCopyAllBtn" class="zen-action-btn">Copy Available</button>
+                    <button id="zenNewSearchBtn" class="zen-action-btn">New Search</button>
+                </div>
+            </div>
+            
+            <div class="zen-section">
+                <h3 class="zen-section-title">Available</h3>
+                <div id="zenAvailableList" class="zen-domain-grid"></div>
+            </div>
+            
+            <div class="zen-section">
+                <h3 class="zen-section-title">Taken</h3>
+                <div id="zenTakenList" class="zen-domain-grid"></div>
+            </div>
+        </div>
+
+        <!-- Zen Toast Container -->
+        <div id="zenToastContainer" class="zen-toast-container"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

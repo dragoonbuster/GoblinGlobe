@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goblin Globe</title>
+    <style>
+        /* Y2K Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        body {
+            font-family: 'Trebuchet MS', 'Arial', sans-serif;
+            font-weight: 400;
+            color: #00ffff;
+            background: linear-gradient(135deg, #000033 0%, #000066 25%, #003366 50%, #006699 75%, #0099cc 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* Animated background elements */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(0, 255, 128, 0.05) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Circuit pattern overlay */
+        .circuit-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(90deg, transparent 98%, rgba(0, 255, 255, 0.1) 100%),
+                linear-gradient(0deg, transparent 98%, rgba(0, 255, 255, 0.1) 100%);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* Metallic container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 60px;
+            position: relative;
+        }
+
+        /* Y2K Grid system */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(24, 1fr);
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .col-12 {
+            grid-column: span 12;
+        }
+
+        .col-24 {
+            grid-column: span 24;
+        }
+
+        /* Y2K Typography with metallic effects */
+        .logo {
+            font-size: 72px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #c0c0c0 0%, #ffffff 25%, #c0c0c0 50%, #888888 75%, #ffffff 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 
+                0 0 10px rgba(0, 255, 255, 0.5),
+                0 0 20px rgba(0, 255, 255, 0.3),
+                0 0 30px rgba(0, 255, 255, 0.1);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 
+                    0 0 10px rgba(0, 255, 255, 0.5),
+                    0 0 20px rgba(0, 255, 255, 0.3),
+                    0 0 30px rgba(0, 255, 255, 0.1);
+            }
+            to {
+                text-shadow: 
+                    0 0 15px rgba(0, 255, 255, 0.8),
+                    0 0 25px rgba(0, 255, 255, 0.5),
+                    0 0 35px rgba(0, 255, 255, 0.3);
+            }
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #00ffaa;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px rgba(0, 255, 170, 0.5);
+        }
+
+        /* Translucent blob forms */
+        .blob-form {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(0, 255, 255, 0.15) 25%,
+                rgba(255, 0, 255, 0.1) 50%,
+                rgba(0, 255, 128, 0.15) 75%,
+                rgba(255, 255, 255, 0.1) 100%);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 0 20px rgba(0, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blob-form::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, 
+                transparent 40%, 
+                rgba(255, 255, 255, 0.1) 50%, 
+                transparent 60%);
+            animation: shine 3s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        /* Form elements with Y2K styling */
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, 
+                rgba(0, 0, 0, 0.4) 0%,
+                rgba(0, 50, 100, 0.3) 100%);
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 15px;
+            color: #00ffff;
+            font-family: inherit;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            border-color: #00ffff;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.4),
+                inset 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: rgba(0, 255, 255, 0.6);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-number {
+            width: 120px;
+        }
+
+        /* Y2K Checkbox styling */
+        .checkbox-group {
+            display: flex;
+            gap: 30px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .checkbox-input {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            background: linear-gradient(135deg, 
+                rgba(0, 0, 0, 0.5) 0%,
+                rgba(0, 100, 150, 0.3) 100%);
+            border: 2px solid rgba(0, 255, 255, 0.5);
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-input:checked {
+            background: linear-gradient(135deg, #00ffff 0%, #0099ff 100%);
+            border-color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+        }
+
+        .checkbox-input:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #000033;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: #00ffaa;
+            cursor: pointer;
+            text-shadow: 0 0 5px rgba(0, 255, 170, 0.3);
+        }
+
+        /* Futuristic buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #00ffff 0%, #0099ff 50%, #00ffff 100%);
+            color: #000033;
+            border: none;
+            border-radius: 25px;
+            padding: 18px 40px;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 20px;
+            box-shadow: 
+                0 8px 20px rgba(0, 255, 255, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.4), 
+                transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 12px 25px rgba(0, 255, 255, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-primary:disabled {
+            background: linear-gradient(135deg, #666666 0%, #444444 100%);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, 
+                rgba(0, 0, 0, 0.6) 0%,
+                rgba(0, 100, 150, 0.4) 100%);
+            color: #00ffff;
+            border: 2px solid rgba(0, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 12px 25px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #00ffff 0%, #0099ff 100%);
+            color: #000033;
+            border-color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        }
+
+        /* Y2K Loading animations */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 255, 255, 0.3);
+            border-top: 3px solid #00ffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-container {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(0, 255, 255, 0.2);
+            border-top: 4px solid #00ffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 30px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        /* Progress bar with neon effect */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            margin: 30px 0;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00ffff 0%, #0099ff 50%, #00ffff 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Translucent domain cards */
+        .domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .domain-card {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(0, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0.1) 100%);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .domain-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%,
+                #00ffff 50%,
+                transparent 100%);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .domain-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ffff;
+            box-shadow: 
+                0 15px 30px rgba(0, 255, 255, 0.2),
+                0 0 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .domain-card.available {
+            border-color: rgba(0, 255, 170, 0.5);
+        }
+
+        .domain-card.available:hover {
+            border-color: #00ffaa;
+            box-shadow: 
+                0 15px 30px rgba(0, 255, 170, 0.2),
+                0 0 30px rgba(0, 255, 170, 0.3);
+        }
+
+        .domain-card.taken {
+            background: linear-gradient(135deg, 
+                rgba(100, 100, 100, 0.1) 0%,
+                rgba(50, 50, 50, 0.2) 100%);
+            border-color: rgba(128, 128, 128, 0.3);
+            opacity: 0.7;
+        }
+
+        .domain-name {
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            word-break: break-all;
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .domain-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .domain-method {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(0, 255, 255, 0.7);
+            background: rgba(0, 255, 255, 0.1);
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+
+        .domain-score {
+            font-size: 14px;
+            font-weight: bold;
+            color: #00ffaa;
+            text-shadow: 0 0 5px rgba(0, 255, 170, 0.5);
+        }
+
+        .domain-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .link-register {
+            background: linear-gradient(135deg, #00ffaa 0%, #00ff88 100%);
+            color: #000033;
+            text-decoration: none;
+            padding: 12px 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 255, 170, 0.3);
+        }
+
+        .link-register:hover {
+            background: linear-gradient(135deg, #00ffff 0%, #0099ff 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 255, 255, 0.4);
+        }
+
+        /* Error messages with Y2K styling */
+        .error-message {
+            background: linear-gradient(135deg, 
+                rgba(255, 0, 100, 0.1) 0%,
+                rgba(255, 0, 0, 0.1) 100%);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 0, 100, 0.5);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 40px 0;
+            color: #ff0088;
+            text-shadow: 0 0 10px rgba(255, 0, 136, 0.3);
+        }
+
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .toast {
+            background: linear-gradient(135deg, 
+                rgba(0, 0, 0, 0.8) 0%,
+                rgba(0, 100, 150, 0.6) 100%);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 255, 0.5);
+            border-radius: 15px;
+            padding: 15px 25px;
+            min-width: 300px;
+            font-size: 14px;
+            color: #00ffff;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        /* Utility classes */
+        .hidden {
+            display: none;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-15 { margin-bottom: 15px; }
+        .mb-30 { margin-bottom: 30px; }
+        .mb-60 { margin-bottom: 60px; }
+        .mt-30 { margin-top: 30px; }
+        .mt-60 { margin-top: 60px; }
+
+        /* Section headers */
+        .type-2 {
+            font-size: 32px;
+            font-weight: bold;
+            color: #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            margin-bottom: 30px;
+        }
+
+        .type-4 {
+            font-size: 18px;
+            color: #00ffaa;
+            text-shadow: 0 0 5px rgba(0, 255, 170, 0.3);
+        }
+
+        .type-6 {
+            font-size: 14px;
+            color: rgba(0, 255, 255, 0.8);
+        }
+
+        /* Results section */
+        .results-section {
+            margin-top: 60px;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 30px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .col-12,
+            .col-24 {
+                grid-column: 1;
+            }
+
+            .logo {
+                font-size: 48px;
+            }
+
+            .checkbox-group {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .domain-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-actions {
+                flex-direction: column;
+            }
+
+            .btn-secondary {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="circuit-overlay"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="grid mt-60">
+            <div class="col-24 text-center">
+                <h1 class="logo">Goblin Globe</h1>
+                <p class="subtitle">Domain name finder with mathematical precision</p>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="grid">
+            <div class="col-12">
+                <div class="blob-form">
+                    <form id="generateForm">
+                        <div class="form-group">
+                            <label for="prompt" class="form-label">Domain Description</label>
+                            <textarea 
+                                id="prompt" 
+                                class="form-textarea"
+                                placeholder="Describe your domain concept..."
+                                required
+                            ></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="count" class="form-label">Quantity</label>
+                            <input 
+                                type="number" 
+                                id="count" 
+                                class="form-input form-number" 
+                                min="1" 
+                                max="20" 
+                                value="10"
+                            >
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Extensions</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="extensions" value=".com" checked class="checkbox-input">
+                                    <span class="checkbox-label">.com</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="extensions" value=".net" class="checkbox-input">
+                                    <span class="checkbox-label">.net</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="extensions" value=".org" class="checkbox-input">
+                                    <span class="checkbox-label">.org</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="extensions" value=".io" class="checkbox-input">
+                                    <span class="checkbox-label">.io</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" id="generateButton" class="btn-primary">
+                            <span id="buttonText">Generate Domains</span>
+                            <div id="buttonSpinner" class="spinner hidden"></div>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading-container hidden">
+            <div class="loading-spinner"></div>
+            <p id="loadingMessage" class="type-4 mb-30">Generating domain ideas...</p>
+            <div id="progressBar" class="progress-container hidden">
+                <div id="progressFill" class="progress-bar"></div>
+            </div>
+            <p id="progressText" class="type-6 hidden">Step 1 of 3</p>
+        </div>
+
+        <!-- Error -->
+        <div id="error" class="error-message hidden">
+            <p class="type-4"></p>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="results-section hidden">
+            <div class="results-header">
+                <div class="results-actions">
+                    <button id="exportBtn" class="btn-secondary">Export CSV</button>
+                    <button id="copyAllBtn" class="btn-secondary">Copy Available</button>
+                    <button id="newSearchBtn" class="btn-secondary">New Search</button>
+                </div>
+            </div>
+            
+            <div class="mb-60">
+                <h2 class="type-2 mb-30">Available</h2>
+                <div id="availableList" class="domain-grid"></div>
+            </div>
+            
+            <div class="mb-60">
+                <h2 class="type-2 mb-30">Taken</h2>
+                <div id="takenList" class="domain-grid"></div>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div id="toastContainer" class="toast-container"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
