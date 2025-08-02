@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import whois from 'whois';
+import { calculateDomainQualityScore, getQualityGrade, sortDomainsByQuality } from './domain-scoring.js';
 
 dotenv.config();
 
@@ -19,11 +20,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(join(__dirname, '../public')));
 
-async function checkDomainAvailability(domain) {
+async function checkDomainAvailability(domain, prompt = '') {
+  // Calculate quality score
+  const qualityScore = calculateDomainQualityScore(domain, prompt);
+  const qualityGrade = getQualityGrade(qualityScore.overall);
+  
   try {
     // First try DNS lookup (faster)
     await dns.resolve4(domain);
-    return { domain, available: false, method: 'dns' };
+    return { domain, available: false, method: 'dns', qualityScore, qualityGrade };
   } catch (error) {
     if (error.code === 'ENOTFOUND') {
       // Double-check with WHOIS for accuracy
@@ -31,7 +36,7 @@ async function checkDomainAvailability(domain) {
         return new Promise((resolve) => {
           whois.lookup(domain, (err, data) => {
             if (err || !data) {
-              resolve({ domain, available: true, method: 'whois-error' });
+              resolve({ domain, available: true, method: 'whois-error', qualityScore, qualityGrade });
               return;
             }
             
@@ -42,14 +47,14 @@ async function checkDomainAvailability(domain) {
               lowerData.includes('no data found') ||
               lowerData.includes('no entries found');
             
-            resolve({ domain, available: isAvailable, method: 'whois' });
+            resolve({ domain, available: isAvailable, method: 'whois', qualityScore, qualityGrade });
           });
         });
       } catch {
-        return { domain, available: true, method: 'dns-only' };
+        return { domain, available: true, method: 'dns-only', qualityScore, qualityGrade };
       }
     }
-    return { domain, available: false, method: 'error' };
+    return { domain, available: false, method: 'error', qualityScore, qualityGrade };
   }
 }
 
@@ -90,15 +95,15 @@ app.post('/api/generate', async (req, res) => {
     const checks = [];
     for (const name of names) {
       for (const ext of extensions) {
-        checks.push(checkDomainAvailability(name + ext));
+        checks.push(checkDomainAvailability(name + ext, prompt));
       }
     }
     
     const results = await Promise.all(checks);
     
-    // Group by availability
-    const available = results.filter(r => r.available);
-    const taken = results.filter(r => !r.available);
+    // Group by availability and sort by quality
+    const available = sortDomainsByQuality(results.filter(r => r.available));
+    const taken = sortDomainsByQuality(results.filter(r => !r.available));
     
     res.json({
       success: true,
@@ -135,12 +140,14 @@ app.post('/api/check', async (req, res) => {
     }
     
     const results = await Promise.all(
-      domains.map(domain => checkDomainAvailability(domain))
+      domains.map(domain => checkDomainAvailability(domain, ''))
     );
+    
+    const sortedResults = sortDomainsByQuality(results);
     
     res.json({
       success: true,
-      results
+      results: sortedResults
     });
   } catch (error) {
     console.error('Error:', error);

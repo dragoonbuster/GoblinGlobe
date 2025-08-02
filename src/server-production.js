@@ -15,6 +15,7 @@ import { promises as dns } from 'dns';
 import whois from 'whois';
 import crypto from 'crypto';
 import { isValidDomain, sanitizePrompt, detectPromptInjection, createSecurityContext } from './security-utils.js';
+import { calculateDomainQualityScore, getQualityGrade, sortDomainsByQuality } from './domain-scoring.js';
 
 // Load environment variables
 dotenv.config();
@@ -334,11 +335,15 @@ export function createApp() {
   ];
 
   // Fixed domain checking function with proper timeout and security
-  async function checkDomainAvailability(domain, timeout = 5000) {
+  async function checkDomainAvailability(domain, prompt = '', timeout = 5000) {
+    // Calculate quality score first (before security validation)
+    const qualityScore = calculateDomainQualityScore(domain, prompt);
+    const qualityGrade = getQualityGrade(qualityScore.overall);
+    
     // Security validation
     if (!isValidDomain(domain)) {
       logger.warn(`Invalid or suspicious domain blocked: ${domain}`);
-      return { domain, available: false, method: 'blocked', error: 'Invalid domain' };
+      return { domain, available: false, method: 'blocked', error: 'Invalid domain', qualityScore, qualityGrade };
     }
     
     try {
@@ -353,11 +358,11 @@ export function createApp() {
         timeoutPromise
       ]);
       
-      return { domain, available: false, method: 'dns' };
+      return { domain, available: false, method: 'dns', qualityScore, qualityGrade };
     } catch (error) {
       if (error.message === 'DNS timeout') {
         logger.warn(`DNS timeout for ${domain}`);
-        return { domain, available: false, method: 'timeout' };
+        return { domain, available: false, method: 'timeout', qualityScore, qualityGrade };
       }
       
       if (error.code === 'ENOTFOUND') {
@@ -367,7 +372,7 @@ export function createApp() {
             new Promise((resolve) => {
               whois.lookup(domain, (err, data) => {
                 if (err) {
-                  resolve({ domain, available: true, method: 'whois-error' });
+                  resolve({ domain, available: true, method: 'whois-error', qualityScore, qualityGrade });
                   return;
                 }
                 
@@ -377,22 +382,22 @@ export function createApp() {
                   lowerData.includes('not found') ||
                   lowerData.includes('no data found');
                 
-                resolve({ domain, available: isAvailable, method: 'whois' });
+                resolve({ domain, available: isAvailable, method: 'whois', qualityScore, qualityGrade });
               });
             }),
             new Promise((resolve) => 
-              setTimeout(() => resolve({ domain, available: true, method: 'whois-timeout' }), timeout)
+              setTimeout(() => resolve({ domain, available: true, method: 'whois-timeout', qualityScore, qualityGrade }), timeout)
             )
           ]);
           
           return whoisResult;
         } catch (whoisError) {
           logger.warn(`WHOIS check failed for ${domain}:`, whoisError.message);
-          return { domain, available: true, method: 'dns-only' };
+          return { domain, available: true, method: 'dns-only', qualityScore, qualityGrade };
         }
       }
       
-      return { domain, available: false, method: 'error' };
+      return { domain, available: false, method: 'error', qualityScore, qualityGrade };
     }
   }
 
@@ -476,7 +481,7 @@ export function createApp() {
       const checks = [];
       for (const name of names) {
         for (const ext of extensions) {
-          checks.push(checkDomainAvailability(name + ext));
+          checks.push(checkDomainAvailability(name + ext, sanitizedPrompt));
         }
       }
       
@@ -485,8 +490,8 @@ export function createApp() {
         .filter(r => r.status === 'fulfilled')
         .map(r => r.value);
       
-      const available = successfulResults.filter(r => r.available);
-      const taken = successfulResults.filter(r => !r.available);
+      const available = sortDomainsByQuality(successfulResults.filter(r => r.available));
+      const taken = sortDomainsByQuality(successfulResults.filter(r => !r.available));
       
       const duration = Date.now() - startTime;
       
@@ -534,16 +539,18 @@ export function createApp() {
     
     try {
       const results = await Promise.allSettled(
-        domains.map(domain => checkDomainAvailability(domain))
+        domains.map(domain => checkDomainAvailability(domain, ''))
       );
       
       const successfulResults = results
         .filter(r => r.status === 'fulfilled')
         .map(r => r.value);
       
+      const sortedResults = sortDomainsByQuality(successfulResults);
+      
       res.json({
         success: true,
-        results: successfulResults
+        results: sortedResults
       });
     } catch (error) {
       logger.error('Domain check error:', error);
