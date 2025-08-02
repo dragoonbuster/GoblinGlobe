@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOBLIN GLOBE MATRIX TERMINAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Unix System Terminal Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --matrix-bg: #000000;
+            --matrix-fg: #00ff00;
+            --matrix-gray: #004400;
+            --matrix-dark-gray: #002200;
+            --matrix-light-gray: #00aa00;
+            --matrix-green: #00ff00;
+            --matrix-red: #ff0044;
+            --matrix-blue: #00aaff;
+            --matrix-yellow: #ffff00;
+            --matrix-cyan: #00ffff;
+            --matrix-selection: #004400;
+        }
+
+        body {
+            font-family: 'Source Code Pro', 'Courier New', monospace;
+            background: var(--unix-bg);
+            color: var(--unix-fg);
+            margin: 0;
+            padding: 0;
+            line-height: 1.4;
+            font-size: 13px;
+            position: relative;
+            cursor: text;
+        }
+
+        /* Terminal Container */
+        .unix-terminal {
+            min-height: 100vh;
+            padding: 8px;
+            max-width: 120ch;
+            margin: 0 auto;
+        }
+
+        /* Man Page Header */
+        .man-header {
+            text-transform: uppercase;
+            font-weight: bold;
+            text-align: center;
+            border-bottom: 1px solid var(--unix-gray);
+            padding-bottom: 4px;
+            margin-bottom: 16px;
+            color: var(--unix-light-gray);
+        }
+
+        /* ASCII Logo - Minimal Unix Style */
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8px;
+            line-height: 1;
+            color: var(--unix-fg);
+            white-space: pre;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        /* Man Page Sections */
+        .man-section {
+            margin: 16px 0;
+        }
+
+        .section-header {
+            font-weight: bold;
+            color: var(--unix-light-gray);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .section-content {
+            margin-left: 8px;
+            color: var(--unix-fg);
+        }
+
+        /* System Info - Unix Style */
+        .system-info {
+            color: var(--unix-gray);
+            font-size: 11px;
+            margin-bottom: 16px;
+            font-family: monospace;
+        }
+
+        .system-info .uname-line {
+            margin: 2px 0;
+        }
+
+        .system-info .uptime {
+            color: var(--unix-light-gray);
+        }
+
+        /* Command Line Interface */
+        .command-interface {
+            margin: 16px 0;
+        }
+
+        .command-prompt {
+            display: flex;
+            align-items: flex-start;
+            margin: 8px 0;
+            font-family: monospace;
+        }
+
+        .shell-prompt {
+            color: var(--unix-green);
+            margin-right: 4px;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .command-input,
+        .unix-input,
+        .unix-textarea {
+            background: transparent;
+            border: none;
+            color: var(--unix-fg);
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            flex: 1;
+            padding: 0;
+            border-bottom: 1px dotted var(--unix-dark-gray);
+            margin-bottom: 4px;
+        }
+
+        .unix-textarea {
+            border: 1px solid var(--unix-dark-gray);
+            padding: 4px;
+            min-height: 60px;
+            resize: vertical;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .command-input:focus,
+        .unix-input:focus,
+        .unix-textarea:focus {
+            border-color: var(--unix-gray);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .command-input::placeholder,
+        .unix-textarea::placeholder {
+            color: var(--unix-dark-gray);
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin: 12px 0;
+            padding-left: 8px;
+            border-left: 1px solid var(--unix-dark-gray);
+        }
+
+        .form-section.active {
+            border-left-color: var(--unix-gray);
+        }
+
+        .form-label {
+            color: var(--unix-light-gray);
+            font-size: 12px;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        /* Unix Cursor */
+        .unix-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background: var(--unix-fg);
+            margin-left: 2px;
+            animation: unix-blink 1s infinite;
+        }
+
+        @keyframes unix-blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        /* Checkboxes - Unix Style */
+        .options-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 8px;
+            margin: 8px 0;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .option-item:hover {
+            color: var(--unix-light-gray);
+        }
+
+        .unix-checkbox {
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            border: 1px solid var(--unix-gray);
+            margin-right: 6px;
+            position: relative;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .unix-checkbox:checked {
+            background: var(--unix-fg);
+        }
+
+        .unix-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: -2px;
+            left: 0px;
+            color: var(--unix-bg);
+            font-size: 8px;
+            font-weight: bold;
+        }
+
+        /* Buttons - Minimal Unix Style */
+        .unix-button {
+            background: transparent;
+            border: 1px solid var(--unix-gray);
+            color: var(--unix-fg);
+            padding: 4px 12px;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
+            margin: 4px 8px 4px 0;
+            transition: all 0.2s ease;
+        }
+
+        .unix-button:hover {
+            background: var(--unix-fg);
+            color: var(--unix-bg);
+        }
+
+        .unix-button:disabled {
+            border-color: var(--unix-dark-gray);
+            color: var(--unix-dark-gray);
+            cursor: not-allowed;
+        }
+
+        .unix-button:disabled:hover {
+            background: transparent;
+            color: var(--unix-dark-gray);
+        }
+
+        .unix-button.primary {
+            border-color: var(--unix-light-gray);
+            color: var(--unix-light-gray);
+        }
+
+        .unix-button.primary:hover {
+            background: var(--unix-light-gray);
+            color: var(--unix-bg);
+        }
+
+        /* Progress Display */
+        .progress-section {
+            margin: 16px 0;
+            display: none;
+        }
+
+        .progress-section.active {
+            display: block;
+        }
+
+        .progress-line {
+            display: flex;
+            align-items: center;
+            margin: 4px 0;
+            font-family: monospace;
+            font-size: 11px;
+        }
+
+        .progress-label {
+            min-width: 120px;
+            color: var(--unix-gray);
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 1px;
+            background: var(--unix-dark-gray);
+            position: relative;
+            margin: 0 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--unix-fg);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-percent {
+            min-width: 30px;
+            text-align: right;
+            color: var(--unix-light-gray);
+        }
+
+        .spinner {
+            display: inline-block;
+            animation: unix-spin 1s linear infinite;
+            margin-left: 4px;
+        }
+
+        @keyframes unix-spin {
+            0% { content: '|'; }
+            25% { content: '/'; }
+            50% { content: '-'; }
+            75% { content: '\\'; }
+            100% { content: '|'; }
+        }
+
+        .spinner::after {
+            content: '|';
+        }
+
+        /* Results Display */
+        .results-section {
+            margin-top: 24px;
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+            animation: unix-fade-in 0.3s ease-in;
+        }
+
+        @keyframes unix-fade-in {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .results-header {
+            color: var(--unix-light-gray);
+            font-weight: bold;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--unix-dark-gray);
+            padding-bottom: 4px;
+        }
+
+        /* Tree-style Results */
+        .domain-tree {
+            font-family: monospace;
+            font-size: 12px;
+            margin: 8px 0;
+        }
+
+        .tree-section {
+            margin: 12px 0;
+        }
+
+        .tree-header {
+            color: var(--unix-light-gray);
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .tree-item {
+            display: flex;
+            align-items: center;
+            padding: 2px 0;
+            cursor: pointer;
+            transition: background-color 0.1s ease;
+        }
+
+        .tree-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tree-item.selected {
+            background: var(--unix-selection);
+        }
+
+        .tree-prefix {
+            color: var(--unix-gray);
+            margin-right: 4px;
+            font-family: monospace;
+        }
+
+        .domain-name {
+            flex: 1;
+            color: var(--unix-fg);
+        }
+
+        .domain-status {
+            font-size: 10px;
+            padding: 1px 4px;
+            margin-left: 8px;
+        }
+
+        .status-available {
+            color: var(--unix-green);
+            border: 1px solid var(--unix-green);
+        }
+
+        .status-taken {
+            color: var(--unix-red);
+            border: 1px solid var(--unix-red);
+        }
+
+        .domain-actions {
+            display: none;
+            gap: 4px;
+            margin-left: 8px;
+        }
+
+        .tree-item:hover .domain-actions,
+        .tree-item.selected .domain-actions {
+            display: flex;
+        }
+
+        .action-link {
+            color: var(--unix-blue);
+            text-decoration: none;
+            font-size: 9px;
+            cursor: pointer;
+        }
+
+        .action-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Error Display */
+        .error-section {
+            margin: 16px 0;
+            color: var(--unix-red);
+            display: none;
+            border-left: 2px solid var(--unix-red);
+            padding-left: 8px;
+            font-size: 12px;
+        }
+
+        .error-section.active {
+            display: block;
+        }
+
+        /* Vim-style Navigation Hints */
+        .nav-hints {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--unix-bg);
+            border-top: 1px solid var(--unix-dark-gray);
+            padding: 4px 8px;
+            font-size: 10px;
+            color: var(--unix-gray);
+            font-family: monospace;
+        }
+
+        .nav-hint {
+            margin-right: 16px;
+        }
+
+        .nav-key {
+            color: var(--unix-light-gray);
+            font-weight: bold;
+        }
+
+        /* Help Section */
+        .help-section {
+            color: var(--unix-gray);
+            font-size: 11px;
+            margin-top: 24px;
+            line-height: 1.6;
+        }
+
+        .help-command {
+            color: var(--unix-light-gray);
+            font-family: monospace;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .unix-terminal {
+                padding: 4px;
+                max-width: none;
+            }
+            
+            .logo {
+                font-size: 6px;
+            }
+            
+            body {
+                font-size: 11px;
+            }
+            
+            .options-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Hidden Utility */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Selection Highlighting */
+        ::selection {
+            background: var(--unix-selection);
+            color: var(--unix-fg);
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--unix-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--unix-dark-gray);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--unix-gray);
+        }
+
+        /* Focus indicators */
+        .command-input:focus,
+        .unix-input:focus,
+        .unix-textarea:focus {
+            outline: 1px dotted var(--unix-gray);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="unix-terminal">
+        <!-- Man Page Header -->
+        <div class="man-header">
+            GOBLIN-GLOBE-DOMAINS(1) User Commands GOBLIN-GLOBE-DOMAINS(1)
+        </div>
+
+        <!-- ASCII Logo -->
+        <div class="logo">
+ ██████╗  ██████╗ ██████╗ ██╗     ██╗███╗   ██╗     ██████╗ ██╗      ██████╗ ██████╗ ███████╗
+██╔════╝ ██╔═══██╗██╔══██╗██║     ██║████╗  ██║    ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔════╝
+██║  ███╗██║   ██║██████╔╝██║     ██║██╔██╗ ██║    ██║  ███╗██║     ██║   ██║██████╔╝█████╗  
+██║   ██║██║   ██║██╔══██╗██║     ██║██║╚██╗██║    ██║   ██║██║     ██║   ██║██╔══██╗██╔══╝  
+╚██████╔╝╚██████╔╝██████╔╝███████╗██║██║ ╚████║    ╚██████╔╝███████╗╚██████╔╝██████╔╝███████╗
+ ╚═════╝  ╚═════╝ ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝     ╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚══════╝
+        </div>
+
+        <!-- System Info -->
+        <div class="system-info">
+            <div class="uname-line">user@goblin-globe:~$ uname -a</div>
+            <div class="uname-line">Linux goblin-globe 5.15.0-generic #42-Ubuntu SMP x86_64 GNU/Linux</div>
+            <div class="uname-line">user@goblin-globe:~$ uptime</div>
+            <div class="uname-line uptime" id="systemUptime"></div>
+        </div>
+
+        <!-- Name Section -->
+        <div class="man-section">
+            <div class="section-header">NAME</div>
+            <div class="section-content">
+                goblin-globe-domains - intelligent domain name discovery and availability checker
+            </div>
+        </div>
+
+        <!-- Synopsis Section -->
+        <div class="man-section">
+            <div class="section-header">SYNOPSIS</div>
+            <div class="section-content">
+                <strong>goblin-globe-domains</strong> [<strong>-c</strong> <em>count</em>] [<strong>-e</strong> <em>extensions</em>] <em>description</em>
+            </div>
+        </div>
+
+        <!-- Description Section -->
+        <div class="man-section">
+            <div class="section-header">DESCRIPTION</div>
+            <div class="section-content">
+                Generate and check domain name availability based on concept descriptions.
+                Uses AI-powered generation with DNS and WHOIS verification.
+            </div>
+        </div>
+
+        <!-- Options Section -->
+        <div class="man-section">
+            <div class="section-header">OPTIONS</div>
+            <div class="section-content">
+                <form id="terminalForm">
+                    <!-- Description Input -->  
+                    <div class="form-section active" id="promptSection">
+                        <div class="form-label">description</div>
+                        <div class="command-prompt">
+                            <span class="shell-prompt">$</span>
+                            <textarea 
+                                id="promptInput" 
+                                class="unix-textarea"
+                                placeholder="Enter domain concept description..."
+                                rows="3"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Count Option -->
+                    <div class="form-section" id="countSection">
+                        <div class="form-label">-c, --count=NUM</div>
+                        <div class="command-prompt">
+                            <span class="shell-prompt">$</span>
+                            <input 
+                                type="number" 
+                                id="countInput" 
+                                class="unix-input"
+                                min="1" 
+                                max="20" 
+                                value="10"
+                                style="width: 60px;"
+                            >
+                            <span style="margin-left: 8px; color: var(--unix-gray); font-size: 11px;">number of domains to generate (1-20)</span>
+                        </div>
+                    </div>
+
+                    <!-- Extensions Option -->
+                    <div class="form-section" id="extensionsSection">
+                        <div class="form-label">-e, --extensions=LIST</div>
+                        <div class="options-group">
+                            <label class="option-item">
+                                <input type="checkbox" name="extensions" value=".com" checked class="unix-checkbox">
+                                <span>.com</span>
+                            </label>
+                            <label class="option-item">
+                                <input type="checkbox" name="extensions" value=".net" class="unix-checkbox">
+                                <span>.net</span>
+                            </label>
+                            <label class="option-item">
+                                <input type="checkbox" name="extensions" value=".org" class="unix-checkbox">
+                                <span>.org</span>
+                            </label>
+                            <label class="option-item">
+                                <input type="checkbox" name="extensions" value=".io" class="unix-checkbox">
+                                <span>.io</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Execute Commands -->
+                    <div class="form-section">
+                        <button type="submit" id="executeButton" class="unix-button primary">
+                            <span id="executeText">execute</span>
+                            <span id="executeSpinner" class="spinner hidden"></span>
+                        </button>
+                        <button type="button" id="clearButton" class="unix-button">clear</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section" id="progressSection">
+            <div class="section-header">EXECUTION</div>
+            <div class="section-content">
+                <div class="progress-line">
+                    <div class="progress-label" id="progressLabel">initializing...</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-percent" id="progressPercent">0%</div>
+                </div>
+                <div id="progressDetails" style="color: var(--unix-gray); font-size: 10px; margin-top: 4px;"></div>
+            </div>
+        </div>
+
+        <!-- Error Section -->
+        <div class="error-section" id="errorSection">
+            <div id="errorMessage"></div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection">
+            <div class="section-header">OUTPUT</div>
+            <div class="section-content">
+                <div id="scanSummary" style="color: var(--unix-gray); margin-bottom: 12px; font-size: 11px;"></div>
+
+                <!-- Available Domains Tree -->
+                <div class="tree-section" id="availableSection">
+                    <div class="tree-header">available [<span id="availableCount">0</span>]</div>
+                    <div class="domain-tree" id="availableTree"></div>
+                </div>
+
+                <!-- Taken Domains Tree -->
+                <div class="tree-section" id="takenSection">
+                    <div class="tree-header">taken [<span id="takenCount">0</span>]</div>
+                    <div class="domain-tree" id="takenTree"></div>
+                </div>
+
+                <!-- Action Commands -->
+                <div class="form-section">
+                    <button type="button" id="exportButton" class="unix-button">export</button>
+                    <button type="button" id="copyButton" class="unix-button">copy</button>
+                    <button type="button" id="newScanButton" class="unix-button">new</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Examples Section -->
+        <div class="man-section">
+            <div class="section-header">EXAMPLES</div>
+            <div class="section-content">
+                <div style="font-family: monospace; color: var(--unix-gray); font-size: 11px;">
+                    <div>$ goblin-globe-domains "tech startup"</div>
+                    <div>$ goblin-globe-domains -c 15 -e .com,.io "ai platform"</div>
+                    <div>$ goblin-globe-domains --count=5 "creative agency"</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Section -->
+        <div class="help-section">
+            <div class="section-header">KEYBOARD NAVIGATION</div>
+            <div class="section-content">
+                <div><span class="help-command">Tab</span> - navigate fields</div>
+                <div><span class="help-command">Ctrl+Enter</span> - execute scan</div>
+                <div><span class="help-command">Ctrl+C</span> - copy available domains</div>
+                <div><span class="help-command">Ctrl+S</span> - export results</div>
+                <div><span class="help-command">Ctrl+R</span> - reset form</div>
+                <div><span class="help-command">j/k</span> - navigate results (vim-style)</div>
+                <div><span class="help-command">Enter</span> - select domain</div>
+                <div><span class="help-command">q</span> - quit/clear</div>
+            </div>
+        </div>
+
+        <!-- Author Section -->
+        <div class="man-section">
+            <div class="section-header">AUTHOR</div>
+            <div class="section-content">
+                Written by Goblin Globe Systems
+            </div>
+        </div>
+
+        <!-- Copyright Section -->
+        <div class="man-section">
+            <div class="section-header">COPYRIGHT</div>
+            <div class="section-content">
+                Copyright © 2024 Goblin Globe Systems. License: MIT
+            </div>
+        </div>
+    </div>
+
+    <!-- Vim-style Navigation Hints -->
+    <div class="nav-hints">
+        <span class="nav-hint"><span class="nav-key">Ctrl+Enter</span> execute</span>
+        <span class="nav-hint"><span class="nav-key">j/k</span> navigate</span>
+        <span class="nav-hint"><span class="nav-key">Enter</span> select</span>
+        <span class="nav-hint"><span class="nav-key">Ctrl+C</span> copy</span>
+        <span class="nav-hint"><span class="nav-key">Ctrl+S</span> export</span>
+        <span class="nav-hint"><span class="nav-key">q</span> quit</span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
