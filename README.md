@@ -38,6 +38,7 @@ npm install
 # Set up environment
 cp .env.example .env
 # Edit .env and add your OpenAI API key
+# Customize rate limits, timeouts, and more (see .env.example)
 
 # Start development server
 npm run dev
@@ -47,13 +48,23 @@ npm run dev
 ### Production
 ```bash
 # Set up production environment
-cp .env.production.example .env.production
-# Edit .env.production with your API key
+cp .env.example .env
+# Edit .env with production values (see .env.example)
 
 # Start production server
-npm start
+NODE_ENV=production npm start
 # Runs on port 8080 (or PORT env var)
 ```
+
+### Configuration
+
+All settings are now environment-based for easy management:
+- **Rate Limiting**: Control request limits per user
+- **Timeouts**: Adjust DNS, WHOIS, and API timeouts  
+- **Security**: Configure CORS, HSTS, and monitoring keys
+- **Performance**: Set cache durations and request sizes
+
+See `.env.example` for all options and `DIGITALOCEAN_DEPLOYMENT.md` for cloud deployment guide.
 
 ## 🎮 Usage
 

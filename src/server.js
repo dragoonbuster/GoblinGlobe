@@ -22,7 +22,7 @@ const __dirname = dirname(__filename);
 const app = express();
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
-  timeout: 30000 // 30 second timeout
+  timeout: parseInt(process.env.OPENAI_TIMEOUT_MS) || 30000 // Default 30 seconds
 });
 
 // Security middleware (relaxed for development)
@@ -47,8 +47,9 @@ app.use(cors({
 }));
 
 // Body parsing with reasonable limits
-app.use(express.json({ limit: '1mb' }));
-app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+const requestSizeLimit = process.env.REQUEST_SIZE_LIMIT || '1mb';
+app.use(express.json({ limit: requestSizeLimit }));
+app.use(express.urlencoded({ extended: true, limit: requestSizeLimit }));
 
 // Additional security headers for API responses
 app.use((req, res, next) => {
@@ -81,9 +82,10 @@ app.use((req, res, next) => {
 app.use(express.static(join(__dirname, '../public')));
 
 // Rate limiting (more relaxed for development)
+const rateLimitWindow = (parseInt(process.env.RATE_LIMIT_WINDOW_MINUTES) || 15) * 60 * 1000;
 const developmentLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 50, // More generous for development
+  windowMs: rateLimitWindow,
+  max: parseInt(process.env.RATE_LIMIT_GENERAL_MAX) || 50, // More generous for development
   message: 'Too many requests from this IP, please try again later.',
   standardHeaders: true,
   legacyHeaders: false
@@ -137,7 +139,7 @@ async function checkWHOISWithCache(domain, qualityScore, qualityGrade, timeout) 
   }
 }
 
-async function checkDomainAvailability(domain, prompt = '', timeout = 5000) {
+async function checkDomainAvailability(domain, prompt = '', timeout = parseInt(process.env.DNS_TIMEOUT_MS) || 5000) {
   // Check cache first for complete availability result
   const cachedResult = await cacheManager.getDomainAvailability(domain);
   if (cachedResult) {
@@ -263,15 +265,15 @@ const validateGenerateRequest = [
     .withMessage('Prompt must be between 3 and 500 characters'),
   body('count').optional().isInt({ min: 1, max: 20 })
     .withMessage('Count must be between 1 and 20'),
-  body('extensions').optional().isArray({ max: 10 })
-    .withMessage('Maximum 10 extensions allowed'),
+  body('extensions').optional().isArray({ max: parseInt(process.env.MAX_EXTENSION_COUNT) || 10 })
+    .withMessage(`Maximum ${parseInt(process.env.MAX_EXTENSION_COUNT) || 10} extensions allowed`),
   body('extensions.*').optional().isIn(['.com', '.net', '.org', '.io', '.co', '.dev', '.app'])
     .withMessage('Invalid extension')
 ];
 
 const validateCheckRequest = [
-  body('domains').isArray({ min: 1, max: 50 })
-    .withMessage('Must provide 1-50 domains'),
+  body('domains').isArray({ min: 1, max: parseInt(process.env.MAX_DOMAIN_COUNT) || 50 })
+    .withMessage(`Must provide 1-${parseInt(process.env.MAX_DOMAIN_COUNT) || 50} domains`),
   body('domains.*').matches(/^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,}$/)
     .withMessage('Invalid domain format')
 ];

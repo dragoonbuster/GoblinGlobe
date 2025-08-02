@@ -60,6 +60,61 @@ export function validateEnvironment() {
       required: false,
       validate: (val) => !val || val.length > 0,
       error: 'OPENAI_MODEL must be a valid model name'
+    },
+    RATE_LIMIT_WINDOW_MINUTES: {
+      required: false,
+      validate: (val) => !val || (Number(val) > 0 && Number(val) <= 1440),
+      error: 'RATE_LIMIT_WINDOW_MINUTES must be between 1 and 1440 (24 hours)'
+    },
+    RATE_LIMIT_GENERATE_MAX: {
+      required: false,
+      validate: (val) => !val || (Number(val) > 0 && Number(val) <= 1000),
+      error: 'RATE_LIMIT_GENERATE_MAX must be between 1 and 1000'
+    },
+    RATE_LIMIT_CHECK_MAX: {
+      required: false,
+      validate: (val) => !val || (Number(val) > 0 && Number(val) <= 1000),
+      error: 'RATE_LIMIT_CHECK_MAX must be between 1 and 1000'
+    },
+    RATE_LIMIT_GENERAL_MAX: {
+      required: false,
+      validate: (val) => !val || (Number(val) > 0 && Number(val) <= 10000),
+      error: 'RATE_LIMIT_GENERAL_MAX must be between 1 and 10000'
+    },
+    OPENAI_TIMEOUT_MS: {
+      required: false,
+      validate: (val) => !val || (Number(val) >= 1000 && Number(val) <= 300000),
+      error: 'OPENAI_TIMEOUT_MS must be between 1000 and 300000 (1-300 seconds)'
+    },
+    DNS_TIMEOUT_MS: {
+      required: false,
+      validate: (val) => !val || (Number(val) >= 100 && Number(val) <= 30000),
+      error: 'DNS_TIMEOUT_MS must be between 100 and 30000 (0.1-30 seconds)'
+    },
+    REQUEST_SIZE_LIMIT: {
+      required: false,
+      validate: (val) => !val || /^\d+(kb|mb)$/i.test(val),
+      error: 'REQUEST_SIZE_LIMIT must be a valid size (e.g., 1mb, 500kb)'
+    },
+    MAX_DOMAIN_COUNT: {
+      required: false,
+      validate: (val) => !val || (Number(val) > 0 && Number(val) <= 500),
+      error: 'MAX_DOMAIN_COUNT must be between 1 and 500'
+    },
+    MAX_EXTENSION_COUNT: {
+      required: false,
+      validate: (val) => !val || (Number(val) > 0 && Number(val) <= 50),
+      error: 'MAX_EXTENSION_COUNT must be between 1 and 50'
+    },
+    HSTS_MAX_AGE: {
+      required: false,
+      validate: (val) => !val || (Number(val) >= 0 && Number(val) <= 63072000),
+      error: 'HSTS_MAX_AGE must be between 0 and 63072000 (2 years)'
+    },
+    INTERNAL_MONITOR_KEY: {
+      required: false,
+      validate: (val) => !val || val.length >= 10,
+      error: 'INTERNAL_MONITOR_KEY must be at least 10 characters long'
     }
   };
 
@@ -118,7 +173,7 @@ export function createApp() {
   // Initialize OpenAI with timeout configuration
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
-    timeout: 30000 // 30 second timeout
+    timeout: parseInt(process.env.OPENAI_TIMEOUT_MS) || 30000 // Default 30 seconds
   });
 
   // Security middleware
@@ -133,7 +188,7 @@ export function createApp() {
       }
     },
     hsts: {
-      maxAge: 31536000,
+      maxAge: parseInt(process.env.HSTS_MAX_AGE) || 31536000, // Default 1 year
       includeSubDomains: true,
       preload: true
     }
@@ -153,8 +208,9 @@ export function createApp() {
   app.use(cors(corsOptions));
 
   // Body parsing with size limits
-  app.use(express.json({ limit: '1mb' }));
-  app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+  const requestSizeLimit = process.env.REQUEST_SIZE_LIMIT || '1mb';
+  app.use(express.json({ limit: requestSizeLimit }));
+  app.use(express.urlencoded({ extended: true, limit: requestSizeLimit }));
 
   // Sanitize user input
   app.use(mongoSanitize());
@@ -206,21 +262,23 @@ export function createApp() {
   });
 
   // Different rate limits for different endpoints
+  const rateLimitWindow = (parseInt(process.env.RATE_LIMIT_WINDOW_MINUTES) || 15) * 60 * 1000;
+  
   const generateLimiter = createRateLimiter(
-    15 * 60 * 1000, // 15 minutes
-    5, // 5 requests per window
+    rateLimitWindow,
+    parseInt(process.env.RATE_LIMIT_GENERATE_MAX) || 5,
     'Too many generation requests. Please try again later.'
   );
 
   const checkLimiter = createRateLimiter(
-    15 * 60 * 1000, // 15 minutes
-    20, // 20 requests per window
+    rateLimitWindow,
+    parseInt(process.env.RATE_LIMIT_CHECK_MAX) || 20,
     'Too many check requests. Please try again later.'
   );
 
   const generalLimiter = createRateLimiter(
-    15 * 60 * 1000, // 15 minutes
-    100, // 100 requests per window
+    rateLimitWindow,
+    parseInt(process.env.RATE_LIMIT_GENERAL_MAX) || 100,
     'Too many requests. Please try again later.'
   );
 
@@ -260,7 +318,7 @@ export function createApp() {
     const internalHeader = req.headers['x-internal-monitor'];
     const isInternalIP = req.ip === '127.0.0.1' || req.ip === '::1';
 
-    if (!isInternalIP && internalHeader !== process.env.INTERNAL_MONITOR_KEY) {
+    if (!isInternalIP && (!process.env.INTERNAL_MONITOR_KEY || internalHeader !== process.env.INTERNAL_MONITOR_KEY)) {
       return res.status(403).json({ error: 'Forbidden' });
     }
 
@@ -283,7 +341,7 @@ export function createApp() {
 
   // Static files with security headers
   app.use(express.static(join(__dirname, '../public'), {
-    maxAge: '1d',
+    maxAge: process.env.STATIC_CACHE_MAX_AGE || '1d',
     setHeaders: (res, path) => {
       res.setHeader('X-Content-Type-Options', 'nosniff');
     }
@@ -295,21 +353,21 @@ export function createApp() {
       .withMessage('Prompt must be between 3 and 500 characters'),
     body('count').optional().isInt({ min: 1, max: 20 })
       .withMessage('Count must be between 1 and 20'),
-    body('extensions').optional().isArray({ max: 10 })
-      .withMessage('Maximum 10 extensions allowed'),
+    body('extensions').optional().isArray({ max: parseInt(process.env.MAX_EXTENSION_COUNT) || 10 })
+      .withMessage(`Maximum ${parseInt(process.env.MAX_EXTENSION_COUNT) || 10} extensions allowed`),
     body('extensions.*').optional().isIn(['.com', '.net', '.org', '.io', '.co', '.dev', '.app'])
       .withMessage('Invalid extension')
   ];
 
   const validateCheckRequest = [
-    body('domains').isArray({ min: 1, max: 50 })
-      .withMessage('Must provide 1-50 domains'),
+    body('domains').isArray({ min: 1, max: parseInt(process.env.MAX_DOMAIN_COUNT) || 50 })
+      .withMessage(`Must provide 1-${parseInt(process.env.MAX_DOMAIN_COUNT) || 50} domains`),
     body('domains.*').matches(/^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,}$/)
       .withMessage('Invalid domain format')
   ];
 
   // Fixed domain checking function with proper timeout, security, and caching
-  async function checkDomainAvailability(domain, prompt = '', timeout = 5000) {
+  async function checkDomainAvailability(domain, prompt = '', timeout = parseInt(process.env.DNS_TIMEOUT_MS) || 5000) {
     // Check cache first for complete availability result
     const cachedResult = await cacheManager.getDomainAvailability(domain);
     if (cachedResult) {
