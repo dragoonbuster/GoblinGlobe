@@ -1,9 +1,9 @@
-import { 
-  isPrivateIP, 
-  isValidDomain, 
-  sanitizePrompt, 
+import {
+  isPrivateIP,
+  isValidDomain,
+  sanitizePrompt,
   detectPromptInjection,
-  createSecurityContext 
+  createSecurityContext
 } from '../../src/security-utils.js';
 
 describe('Security Utils', () => {
@@ -165,16 +165,16 @@ describe('Security Utils', () => {
   describe('createSecurityContext', () => {
     test('should create valid security context', () => {
       const context = createSecurityContext();
-      
+
       expect(context).toHaveProperty('requestId');
       expect(context).toHaveProperty('timestamp');
       expect(context).toHaveProperty('checks');
-      
+
       expect(typeof context.requestId).toBe('string');
       expect(context.requestId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
-      
+
       expect(new Date(context.timestamp)).toBeInstanceOf(Date);
-      
+
       expect(context.checks).toEqual({
         dns: false,
         prompt: false,
@@ -184,12 +184,12 @@ describe('Security Utils', () => {
 
     test('should create unique contexts', async () => {
       const context1 = createSecurityContext();
-      
+
       // Add small delay to ensure different timestamp
       await new Promise(resolve => setTimeout(resolve, 10));
-      
+
       const context2 = createSecurityContext();
-      
+
       expect(context1.requestId).not.toBe(context2.requestId);
       expect(context1.timestamp).not.toBe(context2.timestamp);
     });

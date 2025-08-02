@@ -51,7 +51,7 @@ describe('API Integration Tests', () => {
     const whois = await import('whois');
     dnsResolve4 = dns.promises.resolve4;
     whoisLookup = whois.default.lookup;
-    
+
     // Reset mocks
     jest.clearAllMocks();
   });
@@ -103,7 +103,7 @@ describe('API Integration Tests', () => {
     beforeEach(() => {
       // Mock DNS to return not found (domain available)
       dnsResolve4.mockRejectedValue({ code: 'ENOTFOUND' });
-      
+
       // Mock whois to return available
       whoisLookup.mockImplementation((domain, callback) => {
         callback(null, 'No match found');

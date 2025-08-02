@@ -16,26 +16,26 @@ const PORT = 3999; // Use different port to avoid conflicts
 // Start server for testing
 const server = app.listen(PORT, async () => {
   console.log(`Test server started on port ${PORT}`);
-  
+
   const requiredHeaders = {
     'x-frame-options': 'SAMEORIGIN',
     'x-content-type-options': 'nosniff',
     'strict-transport-security': /max-age=\d+/,
     'x-xss-protection': '0' // Modern helmet.js disables XSS auditor as recommended
   };
-  
+
   const testUrl = `http://localhost:${PORT}`;
-  
+
   try {
     // Make HTTP request to test server
     http.get(testUrl, (res) => {
       let passed = true;
-      
+
       console.log(`\nTesting security headers for ${testUrl}...\n`);
-      
+
       for (const [header, expected] of Object.entries(requiredHeaders)) {
         const value = res.headers[header];
-        
+
         if (!value) {
           console.error(`❌ Missing header: ${header}`);
           passed = false;
@@ -53,14 +53,14 @@ const server = app.listen(PORT, async () => {
           console.log(`✅ ${header}: ${value}`);
         }
       }
-      
+
       // Additional security headers to check (optional but good to have)
       const optionalHeaders = {
         'x-dns-prefetch-control': 'off',
         'x-download-options': 'noopen',
         'x-permitted-cross-domain-policies': 'none'
       };
-      
+
       console.log('\nOptional security headers:');
       for (const [header, expected] of Object.entries(optionalHeaders)) {
         const value = res.headers[header];
@@ -70,9 +70,9 @@ const server = app.listen(PORT, async () => {
           console.log(`ℹ️  ${header}: not set (optional)`);
         }
       }
-      
+
       console.log('\n' + (passed ? '✅ All required security headers are properly set!' : '❌ Some security headers are missing or incorrect.'));
-      
+
       // Clean up
       server.close(() => {
         process.exit(passed ? 0 : 1);

@@ -10,7 +10,7 @@ const PRIVATE_IP_RANGES = [
   { start: '192.168.0.0', end: '192.168.255.255' },
   { start: '127.0.0.0', end: '127.255.255.255' }, // Loopback
   { start: '169.254.0.0', end: '169.254.255.255' }, // Link-local
-  { start: '0.0.0.0', end: '0.255.255.255' }, // Reserved
+  { start: '0.0.0.0', end: '0.255.255.255' } // Reserved
 ];
 
 // Convert IP string to number for comparison
@@ -31,16 +31,16 @@ export function isPrivateIP(ip) {
   }
 
   const ipNum = ipToNumber(ip);
-  
+
   for (const range of PRIVATE_IP_RANGES) {
     const startNum = ipToNumber(range.start);
     const endNum = ipToNumber(range.end);
-    
+
     if (ipNum >= startNum && ipNum <= endNum) {
       return true;
     }
   }
-  
+
   return false;
 }
 
@@ -49,10 +49,10 @@ export function isValidDomain(domain) {
   try {
     // Basic validation
     if (!domain || typeof domain !== 'string') return false;
-    
+
     // Check length
     if (domain.length > 253) return false;
-    
+
     // Check for suspicious patterns
     const suspicious = [
       'localhost',
@@ -67,19 +67,19 @@ export function isValidDomain(domain) {
       '.internal',
       '.cluster.local'
     ];
-    
+
     const lowerDomain = domain.toLowerCase();
     for (const pattern of suspicious) {
       if (lowerDomain.includes(pattern)) {
         return false;
       }
     }
-    
+
     // Check if it's an IP address
     if (net.isIP(domain)) {
       return !isPrivateIP(domain);
     }
-    
+
     // Valid domain format
     const domainRegex = /^([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
     return domainRegex.test(domain);
@@ -91,25 +91,25 @@ export function isValidDomain(domain) {
 // Sanitize prompt to prevent injection attacks
 export function sanitizePrompt(prompt) {
   if (!prompt || typeof prompt !== 'string') return '';
-  
+
   // Remove potential command injection characters
   let sanitized = prompt
     .replace(/[<>'"`;|&$(){}[\]\\]/g, '') // Remove shell metacharacters
     .replace(/\n|\r/g, ' ') // Replace newlines with spaces
     .trim();
-  
+
   // Limit length
   if (sanitized.length > 500) {
     sanitized = sanitized.substring(0, 500);
   }
-  
+
   return sanitized;
 }
 
 // Check for prompt injection attempts
 export function detectPromptInjection(prompt) {
   if (!prompt || typeof prompt !== 'string') return false;
-  
+
   const injectionPatterns = [
     // Direct instructions
     /ignore\s+(previous|above|all)/i,
@@ -118,37 +118,37 @@ export function detectPromptInjection(prompt) {
     /new\s+instructions?:/i,
     /system\s*:/i,
     /assistant\s*:/i,
-    
+
     // Role manipulation
     /you\s+are\s+now/i,
     /act\s+as\s+(a|an)/i,
     /pretend\s+to\s+be/i,
     /roleplay\s+as/i,
-    
+
     // Output manipulation
     /output\s+the\s+following/i,
     /print\s+the\s+following/i,
     /say\s+exactly/i,
     /repeat\s+after\s+me/i,
-    
+
     // Boundary breaking
     /\[\/\w+\]/,  // Closing tags like [/INST]
     /```[^`]*```/, // Code blocks that might contain instructions
     /<\|.*?\|>/,   // Special tokens
-    
+
     // Common jailbreak attempts
     /do\s+anything\s+now/i,
     /dan\s+mode/i,
     /developer\s+mode/i,
     /jailbreak/i
   ];
-  
+
   for (const pattern of injectionPatterns) {
     if (pattern.test(prompt)) {
       return true;
     }
   }
-  
+
   return false;
 }
 

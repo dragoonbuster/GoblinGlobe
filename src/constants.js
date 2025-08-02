@@ -57,15 +57,15 @@ export const SECURITY = {
   IP_HASH_LENGTH: 8,
   REQUEST_ID_LENGTH: 36, // UUID v4
   HELMET_CSP: {
-    defaultSrc: ["'self'"],
-    styleSrc: ["'self'", "'unsafe-inline'", 'https://cdn.tailwindcss.com'],
-    scriptSrc: ["'self'", "'unsafe-inline'", 'https://cdn.tailwindcss.com'],
-    imgSrc: ["'self'", 'data:', 'https:'],
-    connectSrc: ["'self'"],
-    fontSrc: ["'self'", 'https:', 'data:'],
-    objectSrc: ["'none'"],
-    mediaSrc: ["'self'"],
-    frameSrc: ["'self'"]
+    defaultSrc: ['\'self\''],
+    styleSrc: ['\'self\'', '\'unsafe-inline\'', 'https://cdn.tailwindcss.com'],
+    scriptSrc: ['\'self\'', '\'unsafe-inline\'', 'https://cdn.tailwindcss.com'],
+    imgSrc: ['\'self\'', 'data:', 'https:'],
+    connectSrc: ['\'self\''],
+    fontSrc: ['\'self\'', 'https:', 'data:'],
+    objectSrc: ['\'none\''],
+    mediaSrc: ['\'self\''],
+    frameSrc: ['\'self\'']
   }
 };
 

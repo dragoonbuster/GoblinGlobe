@@ -5,8 +5,7 @@ import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import { body, validationResult } from 'express-validator';
 import mongoSanitize from 'express-mongo-sanitize';
-import winston from 'winston';
-import DailyRotateFile from 'winston-daily-rotate-file';
+import { logger } from './logger.js';
 import OpenAI from 'openai';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
@@ -16,6 +15,7 @@ import whois from 'whois';
 import crypto from 'crypto';
 import { isValidDomain, sanitizePrompt, detectPromptInjection, createSecurityContext } from './security-utils.js';
 import { calculateDomainQualityScore, getQualityGrade, sortDomainsByQuality } from './domain-scoring.js';
+import { cacheManager, initializeCache, shutdownCache } from './cache-manager.js';
 
 // Load environment variables
 dotenv.config();
@@ -66,13 +66,13 @@ export function validateEnvironment() {
   console.log('Validating environment variables...');
   for (const [envVar, config] of Object.entries(requiredEnvVars)) {
     const value = process.env[envVar];
-    
+
     if (config.required && !value) {
       console.error(`Missing required environment variable: ${envVar}`);
       console.error(config.error);
       process.exit(1);
     }
-    
+
     if (value && !config.validate(value)) {
       console.error(`Invalid environment variable ${envVar}: ${value}`);
       console.error(config.error);
@@ -88,61 +88,35 @@ const LOG_SENSITIVE_DATA = process.env.LOG_SENSITIVE_DATA === 'true';
 // Log sanitization function
 function sanitizeLogData(data) {
   const sanitized = { ...data };
-  
+
   if (!LOG_SENSITIVE_DATA) {
     // Hash IPs for privacy
     if (sanitized.ip) {
       sanitized.ip = crypto.createHash('sha256').update(sanitized.ip).digest('hex').substring(0, 8);
     }
-    
+
     // Remove prompt content
     if (sanitized.prompt) {
       sanitized.prompt = '[REDACTED]';
     }
-    
+
     // Mask user agent
     if (sanitized.userAgent) {
       const parts = sanitized.userAgent.split('/');
       sanitized.userAgent = parts[0] || 'Unknown';
     }
   }
-  
+
   return sanitized;
 }
 
-// Configure logging
-export const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'info',
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json()
-  ),
-  transports: [
-    new winston.transports.Console({
-      format: winston.format.simple()
-    }),
-    new DailyRotateFile({
-      filename: 'logs/app-%DATE%.log',
-      datePattern: 'YYYY-MM-DD',
-      maxSize: '20m',
-      maxFiles: '14d'
-    }),
-    new DailyRotateFile({
-      filename: 'logs/error-%DATE%.log',
-      datePattern: 'YYYY-MM-DD',
-      maxSize: '20m',
-      maxFiles: '14d',
-      level: 'error'
-    })
-  ]
-});
 
 // Create Express app
 export function createApp() {
   const app = express();
 
   // Initialize OpenAI with timeout configuration
-  const openai = new OpenAI({ 
+  const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
     timeout: 30000 // 30 second timeout
   });
@@ -151,11 +125,11 @@ export function createApp() {
   app.use(helmet({
     contentSecurityPolicy: {
       directives: {
-        defaultSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com"],
-        imgSrc: ["'self'", "data:", "https:"],
-        connectSrc: ["'self'"]
+        defaultSrc: ['\'self\''],
+        styleSrc: ['\'self\'', '\'unsafe-inline\'', 'https://cdn.tailwindcss.com'],
+        scriptSrc: ['\'self\'', '\'unsafe-inline\'', 'https://cdn.tailwindcss.com'],
+        imgSrc: ['\'self\'', 'data:', 'https:'],
+        connectSrc: ['\'self\'']
       }
     },
     hsts: {
@@ -170,8 +144,8 @@ export function createApp() {
 
   // CORS configuration
   const corsOptions = {
-    origin: process.env.ALLOWED_ORIGINS ? 
-      process.env.ALLOWED_ORIGINS.split(',') : 
+    origin: process.env.ALLOWED_ORIGINS ?
+      process.env.ALLOWED_ORIGINS.split(',') :
       ['http://localhost:3000'],
     credentials: true,
     optionsSuccessStatus: 200
@@ -184,7 +158,7 @@ export function createApp() {
 
   // Sanitize user input
   app.use(mongoSanitize());
-  
+
   // Additional security headers for API responses
   app.use((req, res, next) => {
     if (req.path.startsWith('/api/')) {
@@ -255,7 +229,7 @@ export function createApp() {
 
   // Health check endpoint (no rate limit)
   app.get('/health', (req, res) => {
-    res.json({ 
+    res.json({
       status: 'healthy',
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
@@ -279,17 +253,17 @@ export function createApp() {
       res.status(503).json({ status: 'not ready' });
     }
   });
-  
+
   // Security monitoring endpoint (protected)
   app.get('/api/security/status', generalLimiter, (req, res) => {
     // Only allow from internal IPs or with proper header
     const internalHeader = req.headers['x-internal-monitor'];
     const isInternalIP = req.ip === '127.0.0.1' || req.ip === '::1';
-    
+
     if (!isInternalIP && internalHeader !== process.env.INTERNAL_MONITOR_KEY) {
       return res.status(403).json({ error: 'Forbidden' });
     }
-    
+
     res.json({
       status: 'operational',
       timestamp: new Date().toISOString(),
@@ -334,85 +308,156 @@ export function createApp() {
       .withMessage('Invalid domain format')
   ];
 
-  // Fixed domain checking function with proper timeout and security
+  // Fixed domain checking function with proper timeout, security, and caching
   async function checkDomainAvailability(domain, prompt = '', timeout = 5000) {
-    // Calculate quality score first (before security validation)
+    // Check cache first for complete availability result
+    const cachedResult = await cacheManager.getDomainAvailability(domain);
+    if (cachedResult) {
+      // Update quality score and grade for the cached result (in case prompt changed)
+      const qualityScore = calculateDomainQualityScore(domain, prompt);
+      const qualityGrade = getQualityGrade(qualityScore.overall);
+      return { ...cachedResult, qualityScore, qualityGrade };
+    }
+
+    // Calculate quality score
     const qualityScore = calculateDomainQualityScore(domain, prompt);
     const qualityGrade = getQualityGrade(qualityScore.overall);
-    
+
     // Security validation
     if (!isValidDomain(domain)) {
       logger.warn(`Invalid or suspicious domain blocked: ${domain}`);
-      return { domain, available: false, method: 'blocked', error: 'Invalid domain', qualityScore, qualityGrade };
+      const result = { domain, available: false, method: 'blocked', error: 'Invalid domain', qualityScore, qualityGrade };
+      // Don't cache blocked domains
+      return result;
     }
-    
+
+    // Check for cached DNS result first
+    let result;
+    const cachedDNS = await cacheManager.getDNSResult(domain);
+
     try {
-      // Create timeout promise
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('DNS timeout')), timeout)
-      );
-      
-      // Race DNS lookup against timeout
-      await Promise.race([
-        dns.resolve4(domain),
-        timeoutPromise
-      ]);
-      
-      return { domain, available: false, method: 'dns', qualityScore, qualityGrade };
-    } catch (error) {
-      if (error.message === 'DNS timeout') {
-        logger.warn(`DNS timeout for ${domain}`);
-        return { domain, available: false, method: 'timeout', qualityScore, qualityGrade };
-      }
-      
-      if (error.code === 'ENOTFOUND') {
-        // Try WHOIS as fallback with proper timeout handling
+      if (cachedDNS) {
+        // Use cached DNS result
+        if (cachedDNS.resolved) {
+          result = { domain, available: false, method: 'dns-cached', qualityScore, qualityGrade };
+        } else {
+          // DNS was not found, check WHOIS (might be cached too)
+          result = await checkWHOISWithCache(domain, qualityScore, qualityGrade, timeout);
+        }
+      } else {
+        // Perform fresh DNS lookup
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('DNS timeout')), timeout)
+        );
+
         try {
-          const whoisResult = await Promise.race([
-            new Promise((resolve) => {
-              whois.lookup(domain, (err, data) => {
-                if (err) {
-                  resolve({ domain, available: true, method: 'whois-error', qualityScore, qualityGrade });
-                  return;
-                }
-                
-                const lowerData = data.toLowerCase();
-                const isAvailable = 
-                  lowerData.includes('no match') ||
-                  lowerData.includes('not found') ||
-                  lowerData.includes('no data found');
-                
-                resolve({ domain, available: isAvailable, method: 'whois', qualityScore, qualityGrade });
-              });
-            }),
-            new Promise((resolve) => 
-              setTimeout(() => resolve({ domain, available: true, method: 'whois-timeout', qualityScore, qualityGrade }), timeout)
-            )
+          await Promise.race([
+            dns.resolve4(domain),
+            timeoutPromise
           ]);
-          
-          return whoisResult;
-        } catch (whoisError) {
-          logger.warn(`WHOIS check failed for ${domain}:`, whoisError.message);
-          return { domain, available: true, method: 'dns-only', qualityScore, qualityGrade };
+
+          // Cache the successful DNS result
+          await cacheManager.setDNSResult(domain, { resolved: true });
+          result = { domain, available: false, method: 'dns', qualityScore, qualityGrade };
+        } catch (dnsError) {
+          if (dnsError.message === 'DNS timeout') {
+            logger.warn(`DNS timeout for ${domain}`);
+            result = { domain, available: false, method: 'timeout', qualityScore, qualityGrade };
+          } else if (dnsError.code === 'ENOTFOUND') {
+            // Cache the DNS not found result
+            await cacheManager.setDNSResult(domain, { resolved: false });
+            // Try WHOIS as fallback
+            result = await checkWHOISWithCache(domain, qualityScore, qualityGrade, timeout);
+          } else {
+            result = { domain, available: false, method: 'error', qualityScore, qualityGrade };
+          }
         }
       }
-      
+
+      // Cache the final availability result
+      await cacheManager.setDomainAvailability(domain, {
+        domain: result.domain,
+        available: result.available,
+        method: result.method
+      });
+
+      return result;
+    } catch (error) {
+      logger.error(`Domain availability check failed for ${domain}:`, error);
       return { domain, available: false, method: 'error', qualityScore, qualityGrade };
     }
   }
 
-  // Generate domain names with error handling (fixed without timeout parameter)
+  // Helper function for WHOIS checking with caching
+  async function checkWHOISWithCache(domain, qualityScore, qualityGrade, timeout) {
+    const cachedWHOIS = await cacheManager.getWHOISResult(domain);
+
+    if (cachedWHOIS) {
+      return {
+        domain,
+        available: cachedWHOIS.available,
+        method: `${cachedWHOIS.method}-cached`,
+        qualityScore,
+        qualityGrade
+      };
+    }
+
+    try {
+      const whoisResult = await Promise.race([
+        new Promise((resolve) => {
+          whois.lookup(domain, (err, data) => {
+            if (err) {
+              resolve({ available: true, method: 'whois-error' });
+              return;
+            }
+
+            const lowerData = data.toLowerCase();
+            const isAvailable =
+              lowerData.includes('no match') ||
+              lowerData.includes('not found') ||
+              lowerData.includes('no data found');
+
+            resolve({ available: isAvailable, method: 'whois' });
+          });
+        }),
+        new Promise((resolve) =>
+          setTimeout(() => resolve({ available: true, method: 'whois-timeout' }), timeout)
+        )
+      ]);
+
+      // Cache the WHOIS result
+      await cacheManager.setWHOISResult(domain, whoisResult);
+
+      return { domain, ...whoisResult, qualityScore, qualityGrade };
+    } catch (whoisError) {
+      logger.warn(`WHOIS check failed for ${domain}:`, whoisError.message);
+      const result = { available: true, method: 'dns-only' };
+      await cacheManager.setWHOISResult(domain, result);
+      return { domain, ...result, qualityScore, qualityGrade };
+    }
+  }
+
+  // Generate domain names with caching and error handling
   async function generateDomainNames(prompt, count = 10) {
+    const model = process.env.OPENAI_MODEL || 'gpt-3.5-turbo';
+
+    // Check cache first
+    const cachedResult = await cacheManager.getDomainGeneration(prompt, count, model);
+    if (cachedResult) {
+      logger.info(`Using cached domain generation for prompt: "${prompt}"`);
+      return cachedResult;
+    }
+
     try {
       const systemPrompt = `Generate exactly ${count} domain names based on: "${prompt}". 
       Return ONLY a JSON array of domain names without extensions.
       Make them memorable, brandable, and relevant.`;
 
       const response = await openai.chat.completions.create({
-        model: process.env.OPENAI_MODEL || "gpt-3.5-turbo",
+        model: model,
         messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: prompt }
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: prompt }
         ],
         temperature: 0.9,
         max_tokens: 500
@@ -420,11 +465,16 @@ export function createApp() {
 
       const content = response.choices[0].message.content;
       const names = JSON.parse(content);
-      
+
       // Validate generated names
-      return names.filter(name => 
+      const validNames = names.filter(name =>
         /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]?$/.test(name)
       ).slice(0, count);
+
+      // Cache the result
+      await cacheManager.setDomainGeneration(prompt, count, model, validNames);
+
+      return validNames;
     } catch (error) {
       logger.error('Domain generation failed:', error);
       throw new Error('Failed to generate domain names');
@@ -440,10 +490,10 @@ export function createApp() {
 
     const startTime = Date.now();
     const { prompt, count = 10, extensions = ['.com'] } = req.body;
-    
+
     // Create security context
     const secContext = createSecurityContext();
-    
+
     try {
       // Check for prompt injection
       if (detectPromptInjection(prompt)) {
@@ -454,15 +504,15 @@ export function createApp() {
           ip: req.ip,
           requestId: secContext.requestId
         }));
-        return res.status(400).json({ 
-          success: false, 
-          error: 'Invalid prompt format detected' 
+        return res.status(400).json({
+          success: false,
+          error: 'Invalid prompt format detected'
         });
       }
-      
+
       // Sanitize prompt
       const sanitizedPrompt = sanitizePrompt(prompt);
-      
+
       // Log API usage with sanitization
       logger.info(sanitizeLogData({
         type: 'api_request',
@@ -473,10 +523,10 @@ export function createApp() {
         ip: req.ip,
         requestId: secContext.requestId
       }));
-      
+
       // Generate names with sanitized prompt
       const names = await generateDomainNames(sanitizedPrompt, count);
-      
+
       // Check availability in parallel with timeout
       const checks = [];
       for (const name of names) {
@@ -484,17 +534,17 @@ export function createApp() {
           checks.push(checkDomainAvailability(name + ext, sanitizedPrompt));
         }
       }
-      
+
       const results = await Promise.allSettled(checks);
       const successfulResults = results
         .filter(r => r.status === 'fulfilled')
         .map(r => r.value);
-      
+
       const available = sortDomainsByQuality(successfulResults.filter(r => r.available));
       const taken = sortDomainsByQuality(successfulResults.filter(r => !r.available));
-      
+
       const duration = Date.now() - startTime;
-      
+
       // Log successful generation
       logger.info({
         type: 'api_success',
@@ -503,7 +553,7 @@ export function createApp() {
         totalChecked: successfulResults.length,
         available: available.length
       });
-      
+
       res.json({
         success: true,
         results: { available, taken },
@@ -521,10 +571,10 @@ export function createApp() {
         error: error.message,
         duration: Date.now() - startTime
       });
-      
-      res.status(500).json({ 
-        success: false, 
-        error: 'Service temporarily unavailable' 
+
+      res.status(500).json({
+        success: false,
+        error: 'Service temporarily unavailable'
       });
     }
   });
@@ -536,27 +586,27 @@ export function createApp() {
     }
 
     const { domains } = req.body;
-    
+
     try {
       const results = await Promise.allSettled(
         domains.map(domain => checkDomainAvailability(domain, ''))
       );
-      
+
       const successfulResults = results
         .filter(r => r.status === 'fulfilled')
         .map(r => r.value);
-      
+
       const sortedResults = sortDomainsByQuality(successfulResults);
-      
+
       res.json({
         success: true,
         results: sortedResults
       });
     } catch (error) {
       logger.error('Domain check error:', error);
-      res.status(500).json({ 
-        success: false, 
-        error: 'Service temporarily unavailable' 
+      res.status(500).json({
+        success: false,
+        error: 'Service temporarily unavailable'
       });
     }
   });
@@ -575,8 +625,8 @@ export function createApp() {
       url: req.url,
       method: req.method
     });
-    
-    res.status(500).json({ 
+
+    res.status(500).json({
       error: 'Internal server error',
       reference: Date.now()
     });
@@ -589,22 +639,29 @@ export function createApp() {
 if (import.meta.url === `file://${process.argv[1]}`) {
   // Validate environment variables first
   validateEnvironment();
-  
+
+  // Initialize cache
+  logger.info('Initializing Redis cache...');
+  await initializeCache();
+
   // Create Express app
   const app = createApp();
-  
+
   // Graceful shutdown handler
   let server;
-  
-  const gracefulShutdown = () => {
+
+  const gracefulShutdown = async () => {
     logger.info('Received shutdown signal, closing server...');
-    
+
+    // Close cache connection first
+    await shutdownCache();
+
     if (server) {
       server.close(() => {
         logger.info('HTTP server closed');
         process.exit(0);
       });
-      
+
       // Force shutdown after 30 seconds
       setTimeout(() => {
         logger.error('Forced shutdown after timeout');
@@ -614,15 +671,15 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       process.exit(0);
     }
   };
-  
+
   process.on('SIGTERM', gracefulShutdown);
   process.on('SIGINT', gracefulShutdown);
-  
+
   // Unhandled rejection handler
   process.on('unhandledRejection', (reason, promise) => {
     logger.error('Unhandled Rejection at:', promise, 'reason:', reason);
   });
-  
+
   // Start server
   const PORT = process.env.PORT || 8080;
   server = app.listen(PORT, () => {
@@ -631,7 +688,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     logger.info(`CORS origins: ${process.env.ALLOWED_ORIGINS || 'localhost only'}`);
     logger.info(`Log sensitive data: ${process.env.LOG_SENSITIVE_DATA === 'true'}`);
   });
-  
+
   // Handle server startup errors
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {

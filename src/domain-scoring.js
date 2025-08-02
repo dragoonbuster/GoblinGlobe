@@ -18,7 +18,7 @@ const COMMON_PATTERNS = [
   /^[bcdfghjklmnpqrstvwxyz][aeiou]/,  // Consonant-vowel start
   /[aeiou][bcdfghjklmnpqrstvwxyz]$/,  // Vowel-consonant end
   /[aeiou]{2}/,  // Double vowels
-  /[bcdfghjklmnpqrstvwxyz]{3,}/,  // 3+ consonants in a row (negative)
+  /[bcdfghjklmnpqrstvwxyz]{3,}/  // 3+ consonants in a row (negative)
 ];
 
 // Extension quality ranking
@@ -42,7 +42,7 @@ const EXTENSION_RANKS = {
 function calculateLengthScore(domain) {
   const baseDomain = domain.split('.')[0];
   const length = baseDomain.length;
-  
+
   if (length < 3) return 20; // Too short
   if (length <= 6) return 100; // Ideal length
   if (length <= 8) return 90;
@@ -60,7 +60,7 @@ function calculateLengthScore(domain) {
 function calculateMemorabilityScore(domain) {
   const baseDomain = domain.split('.')[0].toLowerCase();
   let score = 50; // Base score
-  
+
   // Check for common words
   if (COMMON_WORDS.has(baseDomain)) {
     score += 30;
@@ -73,11 +73,11 @@ function calculateMemorabilityScore(domain) {
       }
     }
   }
-  
+
   // Pronunciation patterns
   const vowelCount = (baseDomain.match(/[aeiou]/g) || []).length;
   const consonantCount = baseDomain.length - vowelCount;
-  
+
   // Good vowel/consonant ratio
   const ratio = vowelCount / baseDomain.length;
   if (ratio >= 0.3 && ratio <= 0.5) {
@@ -85,12 +85,12 @@ function calculateMemorabilityScore(domain) {
   } else if (ratio < 0.2 || ratio > 0.6) {
     score -= 15;
   }
-  
+
   // Check for difficult consonant clusters
   if (/[bcdfghjklmnpqrstvwxyz]{3,}/.test(baseDomain)) {
     score -= 20;
   }
-  
+
   // Repeating characters (good for memorability if not excessive)
   const repeats = baseDomain.match(/(.)\1+/g);
   if (repeats && repeats.length === 1 && repeats[0].length === 2) {
@@ -98,7 +98,7 @@ function calculateMemorabilityScore(domain) {
   } else if (repeats && repeats.length > 1) {
     score -= 15; // Multiple repeats are bad
   }
-  
+
   // Alternating vowel-consonant pattern is good
   let alternating = true;
   for (let i = 1; i < baseDomain.length; i++) {
@@ -112,7 +112,7 @@ function calculateMemorabilityScore(domain) {
   if (alternating && baseDomain.length >= 4) {
     score += 15;
   }
-  
+
   return Math.max(0, Math.min(100, score));
 }
 
@@ -123,17 +123,17 @@ function calculateMemorabilityScore(domain) {
 function calculateBrandabilityScore(domain) {
   const baseDomain = domain.split('.')[0].toLowerCase();
   let score = 70; // Base score for generated domains
-  
+
   // Penalize numbers
   if (/\d/.test(baseDomain)) {
     score -= 25;
   }
-  
+
   // Penalize hyphens and underscores
   if (/[-_]/.test(baseDomain)) {
     score -= 20;
   }
-  
+
   // Bonus for unique letter combinations
   const uniqueChars = new Set(baseDomain).size;
   const uniqueRatio = uniqueChars / baseDomain.length;
@@ -142,7 +142,7 @@ function calculateBrandabilityScore(domain) {
   } else if (uniqueRatio < 0.4) {
     score -= 10; // Low character diversity
   }
-  
+
   // Check for creative combinations (portmanteau patterns)
   if (baseDomain.length >= 6) {
     // Look for potential word boundaries
@@ -158,7 +158,7 @@ function calculateBrandabilityScore(domain) {
       score += 20; // Likely portmanteau
     }
   }
-  
+
   // Penalize very generic patterns
   const genericPatterns = [
     /^the/, /web$/, /site$/, /app$/, /tech$/, /pro$/, /max$/, /plus$/,
@@ -170,7 +170,7 @@ function calculateBrandabilityScore(domain) {
       break;
     }
   }
-  
+
   return Math.max(0, Math.min(100, score));
 }
 
@@ -189,15 +189,15 @@ function calculateExtensionScore(domain) {
  */
 function calculateKeywordRelevanceScore(domain, prompt) {
   if (!prompt) return 50; // Default if no prompt
-  
+
   const baseDomain = domain.split('.')[0].toLowerCase();
   const promptWords = prompt.toLowerCase()
     .split(/\s+/)
     .filter(word => word.length >= 3)
     .map(word => word.replace(/[^a-z]/g, ''));
-  
+
   let score = 30; // Base score
-  
+
   // Direct word matches
   for (const word of promptWords) {
     if (word.length >= 3) {
@@ -206,7 +206,7 @@ function calculateKeywordRelevanceScore(domain, prompt) {
       }
     }
   }
-  
+
   // Partial matches (first 3+ characters)
   for (const word of promptWords) {
     if (word.length >= 4) {
@@ -216,7 +216,7 @@ function calculateKeywordRelevanceScore(domain, prompt) {
       }
     }
   }
-  
+
   // Check for thematic relevance (simple heuristics)
   const themes = {
     tech: ['tech', 'digital', 'cyber', 'data', 'code', 'dev', 'app', 'web', 'net'],
@@ -225,19 +225,19 @@ function calculateKeywordRelevanceScore(domain, prompt) {
     social: ['social', 'connect', 'share', 'community', 'network', 'link'],
     education: ['learn', 'teach', 'edu', 'study', 'school', 'academy', 'knowledge']
   };
-  
+
   for (const [theme, keywords] of Object.entries(themes)) {
-    const promptHasTheme = promptWords.some(word => 
+    const promptHasTheme = promptWords.some(word =>
       keywords.some(keyword => word.includes(keyword) || keyword.includes(word))
     );
     const domainHasTheme = keywords.some(keyword => baseDomain.includes(keyword));
-    
+
     if (promptHasTheme && domainHasTheme) {
       score += 15;
       break;
     }
   }
-  
+
   return Math.max(0, Math.min(100, score));
 }
 
@@ -253,7 +253,7 @@ export function calculateDomainQualityScore(domain, prompt = '') {
     extension: 0.15,    // 15% - Extension quality
     relevance: 0.10     // 10% - Keyword relevance
   };
-  
+
   const scores = {
     length: calculateLengthScore(domain),
     memorability: calculateMemorabilityScore(domain),
@@ -261,12 +261,12 @@ export function calculateDomainQualityScore(domain, prompt = '') {
     extension: calculateExtensionScore(domain),
     relevance: calculateKeywordRelevanceScore(domain, prompt)
   };
-  
+
   // Calculate weighted average
   const totalScore = Object.entries(scores).reduce((total, [factor, score]) => {
     return total + (score * weights[factor]);
   }, 0);
-  
+
   return {
     overall: Math.round(totalScore),
     breakdown: scores,
