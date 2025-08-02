@@ -1,5 +1,6 @@
 import net from 'net';
 import { URL } from 'url';
+import crypto from 'crypto';
 
 // Private IP ranges (RFC 1918, RFC 4193, etc.)
 const PRIVATE_IP_RANGES = [
@@ -113,7 +114,7 @@ export function detectPromptInjection(prompt) {
     // Direct instructions
     /ignore\s+(previous|above|all)/i,
     /disregard\s+(previous|above|all)/i,
-    /forget\s+(previous|above|all)/i,
+    /forget\s+(previous|above|all|everything)/i,
     /new\s+instructions?:/i,
     /system\s*:/i,
     /assistant\s*:/i,

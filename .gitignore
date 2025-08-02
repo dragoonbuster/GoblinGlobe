@@ -16,3 +16,6 @@ build/
 *~
 logs/
 .env.production
+.env.test
+coverage/
+*.coverage

@@ -4,14 +4,20 @@
   "type": "module",
   "main": "src/server.js",
   "scripts": {
-    "start": "NODE_ENV=production node src/server-production-final.js",
+    "start": "NODE_ENV=production node src/server-production.js",
     "dev": "node --watch src/server.js",
-    "test": "node --test",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
+    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+    "test:unit": "NODE_OPTIONS=--experimental-vm-modules jest tests/unit",
+    "test:integration": "NODE_OPTIONS=--experimental-vm-modules jest tests/integration",
     "test:load": "artillery run tests/load-test.yml",
     "test:security": "npm audit && npm run test:headers",
     "test:headers": "node tests/security-headers-test-final.js",
     "build": "npm ci --production",
-    "logs": "tail -f logs/app-*.log"
+    "logs": "tail -f logs/app-*.log",
+    "lint": "eslint src/ tests/ --ext .js",
+    "lint:fix": "eslint src/ tests/ --ext .js --fix"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -33,7 +39,11 @@
     "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.1.0",
-    "artillery": "^2.0.23"
+    "artillery": "^2.0.23",
+    "eslint": "^9.32.0",
+    "jest": "^30.0.5",
+    "supertest": "^7.1.4"
   }
 }
