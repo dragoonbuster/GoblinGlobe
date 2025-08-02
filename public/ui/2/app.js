@@ -1,521 +1,490 @@
-// DOM Elements
-const form = document.getElementById('generateForm');
-const generateButton = document.getElementById('generateButton');
-const buttonText = document.getElementById('buttonText');
-const buttonSpinner = document.getElementById('buttonSpinner');
-const loading = document.getElementById('loading');
-const loadingMessage = document.getElementById('loadingMessage');
-const progressBar = document.getElementById('progressBar');
-const progressFill = document.getElementById('progressFill');
-const progressText = document.getElementById('progressText');
-const results = document.getElementById('results');
-const error = document.getElementById('error');
-const availableList = document.getElementById('availableList');
-const takenList = document.getElementById('takenList');
-const exportBtn = document.getElementById('exportBtn');
-const copyAllBtn = document.getElementById('copyAllBtn');
-const newSearchBtn = document.getElementById('newSearchBtn');
-const toastContainer = document.getElementById('toastContainer');
+// 90s-style Goblin Globe Domain Finder
+// Authentic retro web experience with modern functionality
 
-// Global state
+// Global variables for the 90s experience
 let currentResults = { available: [], taken: [] };
-let currentSummary = {};
+let searchInProgress = false;
+let visitorCount = 1337; // Starting with a classic number
+let konamiCode = [];
+const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // Up, Up, Down, Down, Left, Right, Left, Right, B, A
 
-// Cyberpunk loading messages
-const loadingMessages = [
-  'Initializing neural networks...',
-  'Scanning domain matrix...',
-  'Penetrating DNS barriers...',
-  'Analyzing quantum domains...',
-  'Decrypting availability data...',
-  'Accessing the mainframe...',
-  'Infiltrating domain registries...',
-  'Running cybersecurity protocols...',
-  'Processing data streams...',
-  'Compiling results...'
-];
-
-// Initialize event listeners
-form.addEventListener('submit', handleFormSubmit);
-exportBtn.addEventListener('click', handleExport);
-copyAllBtn.addEventListener('click', handleCopyAll);
-newSearchBtn.addEventListener('click', handleNewSearch);
-
-// Add keyboard shortcuts with cyberpunk flavor
-document.addEventListener('keydown', (e) => {
-  if (e.ctrlKey || e.metaKey) {
-    switch (e.key) {
-      case 'Enter':
-        if (!generateButton.disabled) {
-          form.dispatchEvent(new Event('submit'));
-        }
-        break;
-      case 'c':
-        if (currentResults.available.length > 0) {
-          e.preventDefault();
-          handleCopyAll();
-        }
-        break;
-      case 's':
-        if (currentResults.available.length > 0) {
-          e.preventDefault();
-          handleExport();
-        }
-        break;
-      case 'r':
-        e.preventDefault();
-        handleNewSearch();
-        break;
-    }
-  }
+// Initialize the 90s experience
+document.addEventListener('DOMContentLoaded', function() {
+    initializeVisitorCounter();
+    initializeKonamiCode();
+    initializeRandomEffects();
+    
+    // Set up form submission
+    document.getElementById('domainForm').addEventListener('submit', handleFormSubmit);
 });
 
-// Cyberpunk loading animation controller
-let loadingMessageInterval;
+// Visitor counter animation (classic 90s feature)
+function initializeVisitorCounter() {
+    setInterval(() => {
+        visitorCount++;
+        if (visitorCount > 999999) visitorCount = 1;
+        
+        const counterElement = document.getElementById('visitorCounter');
+        if (counterElement) {
+            counterElement.textContent = String(visitorCount).padStart(6, '0');
+        }
+    }, 5000);
+}
 
+// Konami code easter egg (very 90s)
+function initializeKonamiCode() {
+    document.addEventListener('keydown', (e) => {
+        konamiCode.push(e.keyCode);
+        if (konamiCode.length > konamiSequence.length) {
+            konamiCode.shift();
+        }
+        
+        if (konamiCode.join(',') === konamiSequence.join(',')) {
+            activateCheatMode();
+        }
+    });
+}
+
+function activateCheatMode() {
+    alert('🎉 CHEAT CODE ACTIVATED! 🎉\nYou found the secret goblin power!\n30 extra domains unlocked!');
+    
+    const countSelect = document.getElementById('count');
+    if (countSelect && !countSelect.querySelector('option[value="50"]')) {
+        const cheatOption = document.createElement('option');
+        cheatOption.value = '50';
+        cheatOption.textContent = '50 domains (CHEAT MODE!)';
+        cheatOption.style.color = '#ff0000';
+        cheatOption.style.fontWeight = 'bold';
+        countSelect.appendChild(cheatOption);
+    }
+}
+
+// Random 90s visual effects
+function initializeRandomEffects() {
+    setInterval(() => {
+        // Random color change for rainbow elements
+        const rainbowElements = document.querySelectorAll('.rainbow-text, .wordart-title');
+        rainbowElements.forEach(el => {
+            el.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+        });
+        
+        // Randomly change the construction animation speed
+        const constructionElements = document.querySelectorAll('.construction');
+        constructionElements.forEach(el => {
+            el.style.animationDuration = (0.5 + Math.random() * 1.5) + 's';
+        });
+    }, 3000);
+}
+
+// Handle form submission with 90s flair
 async function handleFormSubmit(e) {
-  e.preventDefault();
-  
-  // Get form data
-  const prompt = document.getElementById('prompt').value.trim();
-  const count = parseInt(document.getElementById('count').value);
-  const extensions = Array.from(document.querySelectorAll('input[name="extensions"]:checked'))
-    .map(cb => cb.value);
-  
-  // Validation
-  if (!prompt) {
-    showToast('Neural input required - enter domain parameters', 'error');
-    return;
-  }
-  
-  if (extensions.length === 0) {
-    showToast('Protocol extension selection required', 'error');
-    return;
-  }
-  
-  // Start loading state with cyberpunk effects
-  setLoadingState(true);
-  startCyberpunkLoadingAnimation();
-  showProgressStep('Initializing domain scan...', 1, 3, 10);
-  
-  try {
-    const response = await fetch('/api/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ prompt, count, extensions })
+    e.preventDefault();
+    
+    if (searchInProgress) {
+        alert('WHOA THERE COWBOY! Still searching the interwebs!');
+        return;
+    }
+    
+    const prompt = document.getElementById('prompt').value.trim();
+    const count = parseInt(document.getElementById('count').value);
+    const extensions = Array.from(document.querySelectorAll('input[name="extensions"]:checked'))
+        .map(cb => cb.value);
+    
+    // Validation with 90s style alerts
+    if (!prompt) {
+        alert('Dude! You gotta tell me what kind of domain you want!');
+        return;
+    }
+    
+    if (extensions.length === 0) {
+        alert('Choose an extension or the goblins will be sad! :-(');
+        return;
+    }
+    
+    await searchDomains(prompt, count, extensions);
+}
+
+// The main search function with authentic 90s loading experience
+async function searchDomains(prompt, count, extensions) {
+    searchInProgress = true;
+    
+    // Hide results and show loading
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('statusMessage').style.display = 'none';
+    
+    // 90s loading text animation
+    const loadingTexts = [
+        'INITIALIZING AI GOBLIN BRAIN...',
+        'CONNECTING TO THE MATRIX...',
+        'HACKING THE MAINFRAME...',
+        'CONSULTING CRYSTAL BALL...',
+        'AWAKENING DOMAIN SPIRITS...',
+        'SEARCHING THE WORLD WIDE WEB...',
+        'GENERATING AWESOME NAMES...',
+        'CHECKING AVAILABILITY...',
+        'CALCULATING COOLNESS FACTOR...',
+        'ADDING EXTRA MAGIC SAUCE...',
+        'CONSULTING THE GOBLIN COUNCIL...',
+        'FINALIZING EPIC RESULTS...'
+    ];
+    
+    let textIndex = 0;
+    let progress = 0;
+    
+    const loadingInterval = setInterval(() => {
+        document.getElementById('loadingText').textContent = loadingTexts[textIndex];
+        textIndex = (textIndex + 1) % loadingTexts.length;
+        
+        progress += 8.33; // Progress to 100 in 12 steps
+        const filledBars = Math.floor(progress / 5);
+        const progressBarText = '█'.repeat(filledBars) + '░'.repeat(20 - filledBars);
+        
+        document.getElementById('progressBar').textContent = progressBarText;
+        document.getElementById('progressPercent').textContent = Math.min(100, Math.floor(progress)) + '%';
+    }, 800);
+    
+    try {
+        const response = await fetch('/api/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt, count, extensions })
+        });
+        
+        const data = await response.json();
+        
+        // Stop loading animation
+        clearInterval(loadingInterval);
+        document.getElementById('loading').style.display = 'none';
+        
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || 'The goblins encountered an error!');
+        }
+        
+        currentResults = data.results;
+        displayResults(data.results);
+        
+        // Show success message with 90s flair
+        const availableCount = data.results.available.length;
+        let successMessage = '';
+        if (availableCount > 10) {
+            successMessage = `HOLY COW! Found ${availableCount} available domains! You hit the jackpot!`;
+        } else if (availableCount > 5) {
+            successMessage = `AWESOME! Found ${availableCount} available domains! Not too shabby!`;
+        } else if (availableCount > 0) {
+            successMessage = `SUCCESS! Found ${availableCount} available domains! Better than nothing!`;
+        } else {
+            successMessage = 'BUMMER! No available domains found. Try a different search!';
+        }
+        
+        showStatus(successMessage, 'success');
+        
+    } catch (error) {
+        clearInterval(loadingInterval);
+        document.getElementById('loading').style.display = 'none';
+        
+        // 90s style error messages
+        let errorMessage = 'OOPS! Something went wrong: ' + error.message;
+        if (error.message.includes('rate limit')) {
+            errorMessage = 'SLOW DOWN THERE SPEED RACER! Too many requests. Chill for a sec!';
+        } else if (error.message.includes('timeout')) {
+            errorMessage = 'TIMEOUT ERROR! The internet tubes are clogged! Try again!';
+        } else if (error.message.includes('500')) {
+            errorMessage = 'SERVER ERROR! Our hamsters need a coffee break! Try again later!';
+        }
+        
+        showStatus(errorMessage, 'error');
+    }
+    
+    searchInProgress = false;
+}
+
+// Display results in authentic 90s table format
+function displayResults(results) {
+    const availableList = document.getElementById('availableList');
+    const takenList = document.getElementById('takenList');
+    
+    availableList.innerHTML = '';
+    takenList.innerHTML = '';
+    
+    // Display available domains with 90s styling
+    results.available.forEach((item, index) => {
+        const row = document.createElement('tr');
+        row.className = 'domain-available';
+        
+        // Add some 90s flair to alternating rows
+        if (index % 2 === 1) {
+            row.style.backgroundColor = '#90EE90';
+        }
+        
+        const qualityScore = item.qualityScore?.overall || 'N/A';
+        const qualityGrade = item.qualityGrade?.grade || '';
+        
+        row.innerHTML = `
+            <td width="40%" style="font-family: 'Courier New', monospace; font-weight: bold;">
+                ${item.domain}
+            </td>
+            <td width="30%" style="text-align: center;">
+                Score: ${qualityScore}/100
+                ${qualityGrade ? `<br><small>(Grade: ${qualityGrade})</small>` : ''}
+            </td>
+            <td width="30%" style="text-align: center;">
+                <a href="https://www.namecheap.com/domains/registration/results/?domain=${item.domain}" 
+                   target="_blank" 
+                   style="color: #000080; font-weight: bold; text-decoration: underline;">
+                    REGISTER NOW!
+                </a>
+                <br>
+                <small style="color: #008000;">AVAILABLE!</small>
+            </td>
+        `;
+        availableList.appendChild(row);
     });
     
-    showProgressStep('Analyzing domain matrix...', 2, 3, 50);
+    // Display taken domains
+    results.taken.forEach((item, index) => {
+        const row = document.createElement('tr');
+        row.className = 'domain-taken';
+        
+        // Add some 90s flair to alternating rows
+        if (index % 2 === 1) {
+            row.style.backgroundColor = '#FF6B6B';
+        }
+        
+        const qualityScore = item.qualityScore?.overall || 'N/A';
+        const qualityGrade = item.qualityGrade?.grade || '';
+        
+        row.innerHTML = `
+            <td width="40%" style="font-family: 'Courier New', monospace; font-weight: bold;">
+                ${item.domain}
+            </td>
+            <td width="30%" style="text-align: center;">
+                Score: ${qualityScore}/100
+                ${qualityGrade ? `<br><small>(Grade: ${qualityGrade})</small>` : ''}
+            </td>
+            <td width="30%" style="text-align: center;">
+                <small style="color: #FFFFFF;">UNAVAILABLE</small>
+                <br>
+                <small style="color: #FFB6C1;">Someone beat you to it!</small>
+            </td>
+        `;
+        takenList.appendChild(row);
+    });
     
-    const data = await response.json();
+    // Hide empty sections
+    const availableSection = document.getElementById('availableSection');
+    const takenSection = document.getElementById('takenSection');
     
-    if (!response.ok) {
-      throw new Error(data.error || `System error ${response.status}`);
+    if (results.available.length === 0) {
+        availableSection.style.display = 'none';
+    } else {
+        availableSection.style.display = 'block';
     }
     
-    if (!data.success) {
-      throw new Error(data.error || 'Domain generation protocol failed');
+    if (results.taken.length === 0) {
+        takenSection.style.display = 'none';
+    } else {
+        takenSection.style.display = 'block';
     }
     
-    // Complete progress with cyberpunk flair
-    showProgressStep('Compiling scan results...', 3, 3, 90);
+    document.getElementById('results').style.display = 'block';
     
-    // Brief delay to show completion
-    await new Promise(resolve => setTimeout(resolve, 800));
-    showProgressStep('Scan complete!', 3, 3, 100);
+    // Scroll to results with 90s flair
+    setTimeout(() => {
+        document.getElementById('results').scrollIntoView({
+            behavior: 'auto', // No smooth scrolling in the 90s!
+            block: 'start'
+        });
+    }, 100);
+}
+
+// Show status messages with 90s styling
+function showStatus(message, type) {
+    const statusDiv = document.getElementById('statusMessage');
     
-    // Store results and display
-    currentResults = data.results;
-    currentSummary = data.summary;
+    let bgColor = '#c0c0c0';
+    let textColor = '#000000';
+    let prefix = '';
     
-    displayResults(data.results, data.summary);
-    showToast(`Scan complete: ${data.results.available.length} available domains detected!`, 'success');
+    if (type === 'success') {
+        bgColor = '#90EE90';
+        prefix = '✅ SUCCESS: ';
+    } else if (type === 'error') {
+        bgColor = '#FFB6C1';
+        prefix = '❌ ERROR: ';
+    }
     
-  } catch (err) {
-    console.error('System error:', err);
-    showError(getCyberpunkErrorMessage(err));
-    showToast('Domain scan failed - system compromised', 'error');
-  } finally {
-    setLoadingState(false);
-    stopCyberpunkLoadingAnimation();
-  }
+    statusDiv.innerHTML = `<b>${prefix}${message}</b>`;
+    statusDiv.style.display = 'block';
+    statusDiv.style.backgroundColor = bgColor;
+    statusDiv.style.color = textColor;
+    statusDiv.style.border = '2px inset #c0c0c0';
 }
 
-function startCyberpunkLoadingAnimation() {
-  let messageIndex = 0;
-  loadingMessageInterval = setInterval(() => {
-    loadingMessage.textContent = loadingMessages[messageIndex];
-    messageIndex = (messageIndex + 1) % loadingMessages.length;
-  }, 1200);
+// Copy available domains to clipboard (90s style)
+function copyAvailable() {
+    if (currentResults.available.length === 0) {
+        alert('NO DOMAINS TO COPY! Search for some first, dude!');
+        return;
+    }
+    
+    const domains = currentResults.available.map(item => item.domain).join('\n');
+    
+    // Modern clipboard API with 90s fallback
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(domains).then(() => {
+            alert(`RADICAL! Copied ${currentResults.available.length} domains to clipboard!\n\nNow paste them somewhere awesome!`);
+        }).catch(() => {
+            fallbackCopy(domains);
+        });
+    } else {
+        fallbackCopy(domains);
+    }
 }
 
-function stopCyberpunkLoadingAnimation() {
-  if (loadingMessageInterval) {
-    clearInterval(loadingMessageInterval);
-    loadingMessageInterval = null;
-  }
-}
-
-function setLoadingState(isLoading) {
-  generateButton.disabled = isLoading;
-  
-  if (isLoading) {
-    buttonText.textContent = 'Scanning...';
-    buttonSpinner.classList.remove('hidden');
-    loading.classList.remove('hidden');
-    results.classList.add('hidden');
-    error.classList.add('hidden');
-    progressBar.classList.remove('hidden');
-    progressText.classList.remove('hidden');
-  } else {
-    buttonText.textContent = 'Initialize Domain Scan';
-    buttonSpinner.classList.add('hidden');
-    loading.classList.add('hidden');
-    progressBar.classList.add('hidden');
-    progressText.classList.add('hidden');
-  }
-}
-
-function showProgressStep(message, step, totalSteps, percentage) {
-  loadingMessage.textContent = message;
-  progressText.textContent = `Process ${step} of ${totalSteps}`;
-  progressFill.style.width = `${percentage}%`;
-}
-
-function displayResults(results, summary) {
-  availableList.innerHTML = '';
-  takenList.innerHTML = '';
-  
-  if (results.available.length === 0 && results.taken.length === 0) {
-    showError('No domains detected in scan matrix. Recalibrate search parameters.');
-    return;
-  }
-  
-  // Display available domains
-  results.available.forEach(item => {
-    const div = createCyberpunkDomainCard(item.domain, true, item.method, item.qualityScore, item.qualityGrade);
-    availableList.appendChild(div);
-  });
-  
-  // Display taken domains
-  results.taken.forEach(item => {
-    const div = createCyberpunkDomainCard(item.domain, false, item.method, item.qualityScore, item.qualityGrade);
-    takenList.appendChild(div);
-  });
-  
-  // Show results section
-  results.classList.remove('hidden');
-  
-  // Scroll to results with smooth animation
-  results.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function createCyberpunkDomainCard(domain, isAvailable, method, qualityScore = null, qualityGrade = null) {
-  const div = document.createElement('div');
-  div.className = `domain-card ${isAvailable ? 'available' : 'taken'}`;
-  
-  // Domain name
-  const domainName = document.createElement('div');
-  domainName.className = 'domain-name';
-  domainName.textContent = domain;
-  div.appendChild(domainName);
-  
-  // Meta information
-  const meta = document.createElement('div');
-  meta.className = 'domain-meta';
-  
-  const methodSpan = document.createElement('span');
-  methodSpan.className = 'domain-method';
-  methodSpan.textContent = `method: ${method}`;
-  
-  const scoreSpan = document.createElement('span');
-  scoreSpan.className = 'domain-score';
-  if (qualityScore && qualityGrade) {
-    scoreSpan.textContent = `${qualityGrade.grade}: ${qualityScore.overall}/100`;
-  } else {
-    scoreSpan.textContent = 'score: pending';
-  }
-  
-  meta.appendChild(methodSpan);
-  meta.appendChild(scoreSpan);
-  div.appendChild(meta);
-  
-  // Quality breakdown tooltip
-  if (qualityScore) {
-    const qualityInfo = document.createElement('div');
-    qualityInfo.className = 'type-6';
-    qualityInfo.style.marginBottom = '15px';
-    qualityInfo.innerHTML = `
-      <div style="font-family: 'Orbitron', monospace; font-size: 11px; line-height: 1.3;">
-        LENGTH: ${qualityScore.breakdown.length}/100 • 
-        MEMORY: ${qualityScore.breakdown.memorability}/100 • 
-        BRAND: ${qualityScore.breakdown.brandability}/100<br>
-        PROTOCOL: ${qualityScore.breakdown.extension}/100 • 
-        RELEVANCE: ${qualityScore.breakdown.relevance}/100
-      </div>
-    `;
-    div.appendChild(qualityInfo);
-  }
-  
-  // Action buttons
-  const actions = document.createElement('div');
-  actions.className = 'domain-actions';
-  
-  // Copy button
-  const copyBtn = document.createElement('button');
-  copyBtn.className = 'btn-secondary';
-  copyBtn.textContent = 'Copy';
-  copyBtn.addEventListener('click', () => copyToClipboard(domain, `Domain ${domain} copied to memory buffer`));
-  actions.appendChild(copyBtn);
-  
-  if (isAvailable) {
-    // Register link
-    const registerLink = document.createElement('a');
-    registerLink.href = `https://www.namecheap.com/domains/registration/results/?domain=${domain}`;
-    registerLink.target = '_blank';
-    registerLink.className = 'link-register';
-    registerLink.textContent = 'Register Domain';
-    actions.appendChild(registerLink);
-  }
-  
-  div.appendChild(actions);
-  
-  return div;
-}
-
-function handleCopyAll() {
-  if (currentResults.available.length === 0) {
-    showToast('No available domains in memory buffer', 'error');
-    return;
-  }
-  
-  const domains = currentResults.available.map(item => item.domain).join('\n');
-  copyToClipboard(domains, `${currentResults.available.length} domains transferred to memory buffer!`);
-}
-
-function handleExport() {
-  if (currentResults.available.length === 0 && currentResults.taken.length === 0) {
-    showToast('No scan data available for export', 'error');
-    return;
-  }
-  
-  const timestamp = new Date().toISOString().split('T')[0];
-  const prompt = document.getElementById('prompt').value;
-  
-  // Create CSV content with cyberpunk headers
-  const csvContent = [
-    'Domain,Status,Quality_Score,Quality_Grade,Scan_Method,Registry_Link',
-    ...currentResults.available.map(item => 
-      `"${item.domain}","AVAILABLE","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method}","https://www.namecheap.com/domains/registration/results/?domain=${item.domain}"`
-    ),
-    ...currentResults.taken.map(item => 
-      `"${item.domain}","OCCUPIED","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method}","N/A"`
-    )
-  ].join('\n');
-  
-  // Create and download file
-  const blob = new Blob([csvContent], { type: 'text/csv' });
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.style.display = 'none';
-  a.href = url;
-  a.download = `goblin-globe-scan-${timestamp}-${prompt.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.csv`;
-  document.body.appendChild(a);
-  a.click();
-  window.URL.revokeObjectURL(url);
-  document.body.removeChild(a);
-  
-  showToast('Scan data exported to local storage!', 'success');
-}
-
-function handleNewSearch() {
-  // Clear form
-  document.getElementById('prompt').value = '';
-  document.getElementById('count').value = '10';
-  
-  // Reset results
-  currentResults = { available: [], taken: [] };
-  results.classList.add('hidden');
-  error.classList.add('hidden');
-  
-  // Focus on prompt input
-  document.getElementById('prompt').focus();
-  
-  // Scroll to top
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  
-  showToast('System reset - ready for new scan', 'success');
-}
-
-async function copyToClipboard(text, successMessage = 'Data transferred to memory buffer!') {
-  try {
-    await navigator.clipboard.writeText(text);
-    showToast(successMessage, 'success');
-  } catch (err) {
-    // Fallback for older browsers
+// Fallback copy method for older browsers (very 90s appropriate)
+function fallbackCopy(text) {
     const textArea = document.createElement('textarea');
     textArea.value = text;
     textArea.style.position = 'fixed';
-    textArea.style.left = '-999999px';
-    textArea.style.top = '-999999px';
+    textArea.style.left = '-9999px';
+    textArea.style.top = '-9999px';
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
     
     try {
-      document.execCommand('copy');
-      showToast(successMessage, 'success');
+        document.execCommand('copy');
+        alert(`COPIED! ${text.split('\n').length} domains are now in your clipboard!\n\nRight-click and paste wherever you want!`);
     } catch (err) {
-      showToast('Memory buffer transfer failed', 'error');
+        alert('COPY FAILED! Your browser is too old school even for the 90s!\n\nPlease select and copy the domains manually.');
     }
     
     document.body.removeChild(textArea);
-  }
 }
 
-function showToast(message, type = 'info', duration = 4000) {
-  const toast = document.createElement('div');
-  toast.className = `toast ${type}`;
-  
-  const icon = {
-    success: '✓',
-    error: '✗',
-    warning: '⚠',
-    info: 'i'
-  }[type];
-  
-  toast.innerHTML = `
-    <div style="display: flex; align-items: center; gap: 10px;">
-      <span style="font-family: 'Orbitron', monospace; font-weight: bold;">[${icon}]</span>
-      <span style="flex: 1;">${message}</span>
-      <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: inherit; cursor: pointer; font-size: 16px;">×</button>
-    </div>
-  `;
-  
-  toastContainer.appendChild(toast);
-  
-  // Trigger animation
-  setTimeout(() => {
-    toast.classList.add('show');
-  }, 10);
-  
-  // Auto remove
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => {
-      if (toast.parentElement) {
-        toast.remove();
-      }
-    }, 300);
-  }, duration);
+// Export to CSV with 90s flair
+function exportCSV() {
+    if (currentResults.available.length === 0 && currentResults.taken.length === 0) {
+        alert('NOTHING TO EXPORT! Search for domains first, then come back!');
+        return;
+    }
+    
+    const timestamp = new Date().toISOString().split('T')[0];
+    const prompt = document.getElementById('prompt').value.trim().replace(/[^a-z0-9]/gi, '-').toLowerCase();
+    
+    // Create CSV content with 90s comment header
+    const csvContent = [
+        '# GOBLIN GLOBE DOMAIN EXPORT',
+        '# Generated on: ' + new Date().toLocaleString(),
+        '# Search prompt: ' + document.getElementById('prompt').value,
+        'Domain,Status,Quality Score,Quality Grade,Method,Registrar Link',
+        ...currentResults.available.map(item => 
+            `"${item.domain}","Available","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method || 'AI'}","https://www.namecheap.com/domains/registration/results/?domain=${item.domain}"`
+        ),
+        ...currentResults.taken.map(item => 
+            `"${item.domain}","Taken","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method || 'AI'}","N/A"`
+        )
+    ].join('\n');
+    
+    // Create and download file
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `goblin-globe-domains-${timestamp}-${prompt}.csv`;
+    a.style.display = 'none';
+    
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    
+    alert('EXPORT COMPLETE!\n\nYour domains have been saved to a CSV file!\nCheck your Downloads folder!');
 }
 
-function showError(message) {
-  error.innerHTML = `
-    <div style="display: flex; align-items: center; gap: 15px;">
-      <span style="font-family: 'Orbitron', monospace; font-size: 24px;">⚠</span>
-      <div>
-        <div style="font-family: 'Orbitron', monospace; font-weight: bold; margin-bottom: 5px;">SYSTEM ERROR</div>
-        <div>${message}</div>
-      </div>
-    </div>
-  `;
-  error.classList.remove('hidden');
-  results.classList.add('hidden');
+// Start a new search (90s style reset)
+function newSearch() {
+    if (confirm('Are you sure you want to start over?\n\nThis will clear your current results!')) {
+        document.getElementById('prompt').value = '';
+        document.getElementById('count').value = '10';
+        document.getElementById('results').style.display = 'none';
+        document.getElementById('statusMessage').style.display = 'none';
+        currentResults = { available: [], taken: [] };
+        
+        // Scroll to top (no smooth scrolling in the 90s!)
+        window.scrollTo(0, 0);
+        
+        // Focus on the prompt field
+        document.getElementById('prompt').focus();
+        
+        showStatus('READY FOR NEW SEARCH! Type your domain idea above!', 'success');
+    }
 }
 
-function getCyberpunkErrorMessage(error) {
-  const message = error.message || 'Unidentified system malfunction';
-  
-  // Cyberpunk-themed error messages
-  if (message.includes('rate limit') || message.includes('429')) {
-    return 'Neural network overload detected. Cooling down system processes...';
-  }
-  
-  if (message.includes('timeout') || message.includes('ENOTFOUND')) {
-    return 'Connection to the matrix lost. Check network interface and retry...';
-  }
-  
-  if (message.includes('401') || message.includes('403')) {
-    return 'Access denied. Authentication protocols compromised...';
-  }
-  
-  if (message.includes('500')) {
-    return 'Server mainframe experiencing critical errors. Attempting recovery...';
-  }
-  
-  if (message.includes('Invalid prompt')) {
-    return 'Input parameters contain corrupted data. Sanitize and retry...';
-  }
-  
-  // Return cyberpunk version of original message
-  return `System anomaly detected: ${message}`;
+// Reset form to defaults
+function resetForm() {
+    if (confirm('Reset the form to defaults?')) {
+        document.getElementById('domainForm').reset();
+        document.getElementById('count').value = '10';
+        
+        // Make sure .com is checked
+        const comCheckbox = document.querySelector('input[name="extensions"][value=".com"]');
+        if (comCheckbox) {
+            comCheckbox.checked = true;
+        }
+        
+        alert('FORM RESET! Ready for a fresh search!');
+    }
 }
 
-// Initialize cyberpunk interface
-document.addEventListener('DOMContentLoaded', () => {
-  // Add cyberpunk keyboard shortcut hints
-  const form = document.getElementById('generateForm');
-  const helpText = document.createElement('div');
-  helpText.className = 'type-6 text-center';
-  helpText.style.marginTop = '20px';
-  helpText.innerHTML = `
-    <div style="font-family: 'Orbitron', monospace; letter-spacing: 0.1em;">
-      ⌨ HOTKEYS: CTRL+ENTER (scan) • CTRL+C (copy) • CTRL+S (export) • CTRL+R (reset)
-    </div>
-  `;
-  form.appendChild(helpText);
-  
-  // Add matrix rain effect enhancement
-  createMatrixRain();
+// Add some 90s keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    // F5 or Ctrl+R for refresh warning (very 90s)
+    if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
+        if (currentResults.available.length > 0 || currentResults.taken.length > 0) {
+            if (!confirm('WAIT! You have search results!\n\nRefreshing will lose your current domains!\n\nAre you sure you want to refresh?')) {
+                e.preventDefault();
+                return false;
+            }
+        }
+    }
+    
+    // Escape key to stop search
+    if (e.key === 'Escape' && searchInProgress) {
+        alert('SEARCH CANCELLED!\n\n(Just kidding, we can\'t actually stop it once it started!)');
+    }
 });
 
-// Matrix rain effect
-function createMatrixRain() {
-  const matrixChars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-  const drops = [];
-  
-  // Create matrix characters
-  for (let i = 0; i < 50; i++) {
-    const drop = document.createElement('div');
-    drop.style.position = 'fixed';
-    drop.style.top = '-20px';
-    drop.style.left = Math.random() * window.innerWidth + 'px';
-    drop.style.color = '#39FF14';
-    drop.style.fontSize = '14px';
-    drop.style.fontFamily = 'monospace';
-    drop.style.zIndex = '-1';
-    drop.style.opacity = '0.3';
-    drop.style.pointerEvents = 'none';
-    drop.textContent = matrixChars[Math.floor(Math.random() * matrixChars.length)];
-    
-    document.body.appendChild(drop);
-    drops.push({
-      element: drop,
-      speed: Math.random() * 3 + 1,
-      opacity: Math.random() * 0.5 + 0.1
-    });
-  }
-  
-  // Animate matrix rain
-  function animateMatrix() {
-    drops.forEach(drop => {
-      const currentTop = parseInt(drop.element.style.top);
-      
-      if (currentTop > window.innerHeight) {
-        drop.element.style.top = '-20px';
-        drop.element.style.left = Math.random() * window.innerWidth + 'px';
-        drop.element.textContent = matrixChars[Math.floor(Math.random() * matrixChars.length)];
-        drop.element.style.opacity = drop.opacity;
-      } else {
-        drop.element.style.top = (currentTop + drop.speed) + 'px';
-      }
-    });
-    
-    requestAnimationFrame(animateMatrix);
-  }
-  
-  animateMatrix();
-}
+// Add a 90s-style right-click warning
+document.addEventListener('contextmenu', function(e) {
+    // Don't actually prevent right-click, just show a 90s message
+    setTimeout(() => {
+        if (Math.random() < 0.1) { // 10% chance
+            alert('RIGHT-CLICKING DETECTED!\n\nDon\'t steal our HTML code!\nIt took us HOURS to make this page awesome!');
+        }
+    }, 100);
+});
+
+// Prevent drag and drop with 90s message
+document.addEventListener('dragstart', function(e) {
+    if (Math.random() < 0.2) { // 20% chance
+        alert('NO DRAGGING!\n\nThis isn\'t Windows 95, you know!');
+        e.preventDefault();
+    }
+});
+
+// Add some random 90s alerts
+setInterval(() => {
+    if (Math.random() < 0.001) { // Very rare, 0.1% chance every interval
+        const messages = [
+            'Did you know? Goblin Globe is powered by TURBO PASCAL!',
+            'Fun Fact: This website looks great in 256 colors!',
+            'Tip: Try the Konami code for a surprise!',
+            'Remember: Always bookmark awesome websites!',
+            'Pro Tip: Print this page for offline domain hunting!',
+            'Did you know? We support Internet Explorer 3.0!'
+        ];
+        alert(messages[Math.floor(Math.random() * messages.length)]);
+    }
+}, 30000); // Check every 30 seconds

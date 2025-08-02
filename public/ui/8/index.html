@@ -3,736 +3,815 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goblin Globe - Glassmorphic</title>
+    <title>GOBLIN GLOBE - DOS Terminal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Perfect+DOS+VGA+437&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS Reset */
+        /* Retro DOS Terminal Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Modern Glassmorphic Design */
-        html {
-            font-size: 16px;
-            line-height: 1.6;
+        :root {
+            --dos-blue: #0000aa;
+            --dos-white: #ffffff;
+            --dos-gray: #c0c0c0;
+            --dos-dark-gray: #808080;
+            --dos-black: #000000;
+            --dos-red: #ff0000;
+            --dos-green: #00aa00;
+            --dos-yellow: #ffff00;
+            --dos-cyan: #00ffff;
+            --dos-magenta: #ff00ff;
+            --dos-brown: #aa5500;
+            --dos-light-blue: #5555ff;
+            --dos-light-green: #55ff55;
+            --dos-light-red: #ff5555;
+            --dos-light-cyan: #55ffff;
+            --dos-light-magenta: #ff55ff;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, 
-                #667eea 0%, 
-                #764ba2 25%, 
-                #f093fb 50%, 
-                #f5576c 75%, 
-                #4facfe 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            min-height: 100vh;
+            font-family: 'Perfect DOS VGA 437', 'IBM Plex Mono', monospace;
+            background: var(--dos-blue);
+            color: var(--dos-white);
+            margin: 0;
+            padding: 0;
             overflow-x: hidden;
+            line-height: 1.2;
+            font-size: 16px;
+            position: relative;
+            image-rendering: pixelated;
+            cursor: default;
         }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Glassmorphic Container */
-        .glass-container {
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        /* DOS Window Style */
+        .dos-window {
+            min-height: 100vh;
+            background: var(--dos-blue);
             position: relative;
         }
 
-        .glass-container::before {
+        /* DOS Title Bar */
+        .dos-titlebar {
+            background: var(--dos-gray);
+            color: var(--dos-black);
+            padding: 4px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--dos-dark-gray);
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .dos-titlebar-text {
+            text-align: center;
+            flex: 1;
+        }
+
+        .dos-controls {
+            display: flex;
+            gap: 2px;
+        }
+
+        .dos-control-btn {
+            width: 16px;
+            height: 14px;
+            background: var(--dos-gray);
+            border: 1px outset var(--dos-gray);
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* DOS Content Area */
+        .dos-content {
+            padding: 8px;
+            min-height: calc(100vh - 32px);
+        }
+
+        /* ASCII Art Logo */
+        .logo {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            line-height: 1;
+            color: var(--dos-white);
+            white-space: pre;
+            text-align: center;
+            margin-bottom: 16px;
+            animation: dos-blink 2s infinite;
+        }
+
+        @keyframes dos-blink {
+            0%, 85% { opacity: 1; }
+            90%, 95% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        /* System Info Box */
+        .system-info {
+            background: var(--dos-gray);
+            color: var(--dos-black);
+            border: 2px inset var(--dos-gray);
+            padding: 8px;
+            margin-bottom: 16px;
+            font-size: 12px;
+        }
+
+        .system-info-line {
+            display: flex;
+            justify-content: space-between;
+            margin: 2px 0;
+        }
+
+        .info-label {
+            font-weight: bold;
+        }
+
+        .info-value {
+            color: var(--dos-blue);
+        }
+
+        /* DOS Menu Bar */
+        .dos-menubar {
+            background: var(--dos-gray);
+            color: var(--dos-black);
+            padding: 4px 8px;
+            border-bottom: 1px solid var(--dos-dark-gray);
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .menu-item {
+            display: inline-block;
+            padding: 2px 8px;
+            margin-right: 4px;
+            cursor: pointer;
+            border: 1px transparent solid;
+        }
+
+        .menu-item:hover {
+            background: var(--dos-blue);
+            color: var(--dos-white);
+            border: 1px inset var(--dos-gray);
+        }
+
+        .menu-shortcut {
+            text-decoration: underline;
+        }
+
+        /* Box Drawing Characters */
+        .dos-box {
+            border: 2px solid var(--dos-white);
+            padding: 8px;
+            margin: 8px 0;
+            background: var(--dos-blue);
+            position: relative;
+        }
+
+        .dos-box::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: inherit;
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.3) 0%, 
-                rgba(255, 255, 255, 0.05) 100%);
-            pointer-events: none;
+            top: -2px;
+            left: 8px;
+            background: var(--dos-blue);
+            color: var(--dos-white);
+            padding: 0 4px;
+            font-size: 12px;
+            font-weight: bold;
         }
 
-        /* Main Container */
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
+        .dos-box.active::before {
+            content: attr(data-title);
         }
 
-        /* Header Glassmorphic Panel */
-        .header-glass {
-            text-align: center;
-            padding: 3rem 2rem;
-            margin-bottom: 2rem;
+        /* Form Elements */
+        .form-section {
+            margin: 12px 0;
+            border: 1px solid var(--dos-white);
+            padding: 8px;
             position: relative;
         }
 
-        .logo-title {
-            font-size: 4rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
+        .form-section.active {
+            border-color: var(--dos-yellow);
+            background: rgba(255, 255, 0, 0.1);
         }
 
-        .subtitle {
-            font-size: 1.25rem;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 400;
-            letter-spacing: 0.5px;
+        .section-title {
+            position: absolute;
+            top: -8px;
+            left: 8px;
+            background: var(--dos-blue);
+            color: var(--dos-white);
+            padding: 0 4px;
+            font-size: 12px;
+            font-weight: bold;
         }
 
-        /* Form Glassmorphic Panel */
-        .form-glass {
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            position: relative;
+        .form-section.active .section-title {
+            color: var(--dos-yellow);
         }
 
-        .form-group {
-            margin-bottom: 2rem;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .form-input,
-        .form-textarea {
-            width: 100%;
-            padding: 1rem 1.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            color: white;
-            font-size: 1rem;
+        /* DOS Input Fields */
+        .dos-input,
+        .dos-textarea {
+            background: var(--dos-white);
+            color: var(--dos-black);
+            border: 2px inset var(--dos-gray);
+            padding: 4px;
             font-family: inherit;
-            outline: none;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            font-size: 14px;
+            width: 100%;
+            margin: 4px 0;
         }
 
-        .form-input::placeholder,
-        .form-textarea::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .form-input:focus,
-        .form-textarea:focus {
-            border-color: rgba(255, 255, 255, 0.4);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .form-textarea {
+        .dos-textarea {
+            min-height: 60px;
             resize: vertical;
-            min-height: 120px;
         }
 
-        .form-number {
-            max-width: 120px;
+        .dos-input:focus,
+        .dos-textarea:focus {
+            outline: 2px solid var(--dos-yellow);
+            background: var(--dos-cyan);
         }
 
-        /* Checkbox Group Glassmorphic */
+        .dos-input::placeholder,
+        .dos-textarea::placeholder {
+            color: var(--dos-dark-gray);
+        }
+
+        /* DOS Checkboxes */
         .checkbox-group {
             display: flex;
-            gap: 1.5rem;
             flex-wrap: wrap;
-            margin-top: 1rem;
+            gap: 16px;
+            margin: 8px 0;
         }
 
         .checkbox-item {
             display: flex;
             align-items: center;
             cursor: pointer;
-            padding: 0.75rem 1.25rem;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            font-size: 14px;
         }
 
         .checkbox-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            color: var(--dos-yellow);
         }
 
-        .checkbox-input {
-            width: 18px;
-            height: 18px;
-            margin-right: 0.75rem;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-            background: transparent;
-            cursor: pointer;
-            position: relative;
-            -webkit-appearance: none;
-            -moz-appearance: none;
+        .dos-checkbox {
             appearance: none;
-            transition: all 0.3s ease;
+            width: 12px;
+            height: 12px;
+            border: 1px solid var(--dos-white);
+            margin-right: 6px;
+            position: relative;
+            background: var(--dos-blue);
+            cursor: pointer;
         }
 
-        .checkbox-input:checked {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-color: rgba(255, 255, 255, 0.6);
-            box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
+        .dos-checkbox:checked {
+            background: var(--dos-white);
         }
 
-        .checkbox-input:checked::after {
-            content: '';
+        .dos-checkbox:checked::after {
+            content: 'X';
             position: absolute;
-            top: 1px;
-            left: 5px;
-            width: 5px;
-            height: 10px;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
+            top: -2px;
+            left: 2px;
+            color: var(--dos-black);
+            font-size: 10px;
+            font-weight: bold;
         }
 
-        .checkbox-label {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.9);
-            cursor: pointer;
-        }
-
-        /* Glassmorphic Buttons */
-        .btn-primary {
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.2) 0%, 
-                rgba(255, 255, 255, 0.1) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 1rem 2.5rem;
+        /* DOS Buttons */
+        .dos-button {
+            background: var(--dos-gray);
+            color: var(--dos-black);
+            border: 2px outset var(--dos-gray);
+            padding: 6px 16px;
             font-family: inherit;
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 4px 4px 4px 0;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-top: 1rem;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
-        .btn-primary:hover {
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.3) 0%, 
-                rgba(255, 255, 255, 0.2) 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        .dos-button:hover {
+            background: var(--dos-white);
         }
 
-        .btn-primary:disabled {
-            opacity: 0.6;
+        .dos-button:active {
+            border: 2px inset var(--dos-gray);
+        }
+
+        .dos-button:disabled {
+            background: var(--dos-dark-gray);
+            color: var(--dos-gray);
             cursor: not-allowed;
-            transform: none;
         }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: rgba(255, 255, 255, 0.9);
-            padding: 0.75rem 1.5rem;
-            font-family: inherit;
-            font-size: 0.9rem;
-            font-weight: 500;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-right: 1rem;
-            margin-bottom: 1rem;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+        .dos-button.primary {
+            background: var(--dos-blue);
+            color: var(--dos-white);
+            border: 2px outset var(--dos-blue);
         }
 
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        .dos-button.primary:hover {
+            background: var(--dos-light-blue);
         }
 
-        /* Loading Spinner Glassmorphic */
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid transparent;
-            border-top: 2px solid rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        /* Progress Bar DOS Style */
+        .loading-section {
+            margin: 16px 0;
+            display: none;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .loading-section.active {
+            display: block;
         }
 
-        /* Progress Bar Glassmorphic */
         .progress-container {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            margin: 1.5rem 0;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            border: 2px inset var(--dos-gray);
+            padding: 4px;
+            background: var(--dos-white);
+            margin: 8px 0;
         }
 
         .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            width: 0%;
-            transition: width 0.3s ease;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+            height: 16px;
+            background: var(--dos-blue);
+            position: relative;
+            border: 1px solid var(--dos-black);
         }
 
-        /* Results Section Glassmorphic */
+        .progress-fill {
+            height: 100%;
+            background: var(--dos-green);
+            width: 0%;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dos-white);
+            font-size: 10px;
+            font-weight: bold;
+            text-shadow: 1px 1px 0 var(--dos-black);
+        }
+
+        .dos-spinner {
+            display: inline-block;
+            animation: dos-spin 1s linear infinite;
+            margin-left: 8px;
+        }
+
+        @keyframes dos-spin {
+            0% { content: '|'; }
+            25% { content: '/'; }
+            50% { content: '-'; }
+            75% { content: '\\'; }
+            100% { content: '|'; }
+        }
+
+        .dos-spinner::after {
+            content: '|';
+        }
+
+        /* Results Section */
         .results-section {
-            margin-top: 2rem;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+            animation: dos-slide-in 0.5s ease-in;
+        }
+
+        @keyframes dos-slide-in {
+            0% { 
+                opacity: 0; 
+                transform: translateX(-20px);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateX(0);
+            }
         }
 
         .results-header {
-            margin-bottom: 2rem;
+            background: var(--dos-gray);
+            color: var(--dos-black);
+            padding: 4px 8px;
+            border: 2px outset var(--dos-gray);
+            margin-bottom: 8px;
+            font-weight: bold;
         }
 
-        .results-actions {
+        /* Domain List Norton Commander Style */
+        .domain-list {
+            border: 2px inset var(--dos-gray);
+            background: var(--dos-white);
+            color: var(--dos-black);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .domain-item {
             display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2px 4px;
+            border-bottom: 1px solid var(--dos-gray);
+            font-size: 12px;
+            cursor: pointer;
         }
 
-        .section-title {
-            font-size: 2rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 1.5rem;
-            text-align: center;
+        .domain-item:hover {
+            background: var(--dos-blue);
+            color: var(--dos-white);
         }
 
-        .domain-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        /* Domain Card Glassmorphic */
-        .domain-card {
-            padding: 1.5rem;
-            position: relative;
-            transition: all 0.3s ease;
-            border-radius: 16px;
-        }
-
-        .domain-card.available {
-            background: rgba(76, 175, 80, 0.15);
-            border: 1px solid rgba(76, 175, 80, 0.3);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-        }
-
-        .domain-card.taken {
-            background: rgba(244, 67, 54, 0.15);
-            border: 1px solid rgba(244, 67, 54, 0.3);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-        }
-
-        .domain-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        .domain-item.selected {
+            background: var(--dos-cyan);
+            color: var(--dos-black);
         }
 
         .domain-name {
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: white;
-            margin-bottom: 1rem;
-            word-break: break-all;
+            font-weight: bold;
+            flex: 1;
         }
 
-        .domain-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
+        .domain-status {
+            padding: 1px 6px;
+            font-size: 10px;
+            border: 1px solid;
+            margin: 0 4px;
         }
 
-        .domain-method {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.6);
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
+        .status-available {
+            background: var(--dos-green);
+            color: var(--dos-white);
+            border-color: var(--dos-green);
         }
 
-        .domain-score {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
+        .status-taken {
+            background: var(--dos-red);
+            color: var(--dos-white);
+            border-color: var(--dos-red);
         }
 
         .domain-actions {
             display: flex;
-            gap: 0.75rem;
-            margin-top: 1rem;
+            gap: 4px;
         }
 
-        .link-register {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            text-decoration: none;
-            padding: 0.75rem 1.5rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            flex: 1;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .action-btn {
+            background: var(--dos-gray);
+            border: 1px outset var(--dos-gray);
+            color: var(--dos-black);
+            padding: 1px 4px;
+            font-size: 9px;
+            cursor: pointer;
         }
 
-        .link-register:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        .action-btn:hover {
+            background: var(--dos-white);
         }
 
-        /* Loading Container Glassmorphic */
-        .loading-container {
-            text-align: center;
-            padding: 3rem 2rem;
-        }
-
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            border-top: 3px solid rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1.5rem;
-        }
-
-        .loading-message {
-            font-size: 1.25rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 1rem;
-        }
-
-        .progress-text {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Error Message Glassmorphic */
-        .error-message {
-            background: rgba(244, 67, 54, 0.15);
-            border: 1px solid rgba(244, 67, 54, 0.3);
-            padding: 1.5rem;
-            margin: 2rem 0;
-            color: rgba(255, 255, 255, 0.9);
-            border-radius: 16px;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-        }
-
-        /* Toast Notifications Glassmorphic */
-        .toast-container {
+        /* Error Dialog */
+        .error-section {
             position: fixed;
-            top: 2rem;
-            right: 2rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--dos-gray);
+            border: 2px outset var(--dos-gray);
+            padding: 16px;
             z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .toast {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 1rem 1.5rem;
-            min-width: 300px;
-            border-radius: 16px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast.success {
-            border-color: rgba(76, 175, 80, 0.4);
-            background: rgba(76, 175, 80, 0.15);
-        }
-
-        .toast.error {
-            border-color: rgba(244, 67, 54, 0.4);
-            background: rgba(244, 67, 54, 0.15);
-        }
-
-        .toast-text {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.9rem;
-        }
-
-        /* Floating Elements */
-        .floating-orb {
-            position: fixed;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-            pointer-events: none;
-            animation: float 6s ease-in-out infinite;
-            z-index: 0;
-        }
-
-        .floating-orb:nth-child(1) {
-            width: 200px;
-            height: 200px;
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .floating-orb:nth-child(2) {
-            width: 150px;
-            height: 150px;
-            top: 70%;
-            right: 15%;
-            animation-delay: 2s;
-        }
-
-        .floating-orb:nth-child(3) {
-            width: 100px;
-            height: 100px;
-            bottom: 20%;
-            left: 20%;
-            animation-delay: 4s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
-        /* Utility Classes */
-        .hidden {
             display: none;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
         }
 
-        .text-center {
+        .error-section.active {
+            display: block;
+            animation: dos-error-pop 0.3s ease-out;
+        }
+
+        @keyframes dos-error-pop {
+            0% { transform: translate(-50%, -50%) scale(0.8); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .error-title {
+            background: var(--dos-red);
+            color: var(--dos-white);
+            padding: 2px 8px;
+            margin: -16px -16px 8px -16px;
+            font-weight: bold;
             text-align: center;
+        }
+
+        .error-message {
+            color: var(--dos-black);
+            margin-bottom: 16px;
+            min-width: 300px;
+        }
+
+        .error-buttons {
+            text-align: center;
+        }
+
+        /* Function Key Bar */
+        .function-keys {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--dos-gray);
+            color: var(--dos-black);
+            padding: 2px 4px;
+            font-size: 10px;
+            border-top: 1px solid var(--dos-dark-gray);
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .function-key {
+            cursor: pointer;
+            padding: 2px 4px;
+        }
+
+        .function-key:hover {
+            background: var(--dos-blue);
+            color: var(--dos-white);
+        }
+
+        .key-label {
+            font-weight: bold;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            background: var(--dos-gray);
+            color: var(--dos-black);
+            padding: 2px 8px;
+            font-size: 11px;
+            border-top: 1px solid var(--dos-white);
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .main-container {
-                padding: 1rem;
+            body {
+                font-size: 14px;
             }
-
-            .logo-title {
-                font-size: 2.5rem;
+            
+            .logo {
+                font-size: 6px;
             }
-
-            .form-glass,
-            .header-glass {
-                padding: 1.5rem;
-            }
-
+            
             .checkbox-group {
                 flex-direction: column;
-                gap: 0.75rem;
+                gap: 8px;
             }
-
-            .domain-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .results-actions {
-                flex-direction: column;
-            }
-
-            .btn-secondary {
-                margin-right: 0;
-            }
-
-            .toast-container {
-                top: 1rem;
-                right: 1rem;
-                left: 1rem;
-            }
-
-            .toast {
-                min-width: auto;
+            
+            .function-keys {
+                font-size: 8px;
             }
         }
 
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
+        /* Hidden Utility */
+        .hidden {
+            display: none !important;
         }
 
-        /* Selection styling */
-        ::selection {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+        /* DOS Cursor */
+        .dos-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background: var(--dos-white);
+            animation: dos-cursor-blink 1s infinite;
         }
 
-        ::-moz-selection {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+        @keyframes dos-cursor-blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
     </style>
 </head>
 <body>
-    <!-- Floating Background Elements -->
-    <div class="floating-orb"></div>
-    <div class="floating-orb"></div>
-    <div class="floating-orb"></div>
-
-    <div class="main-container">
-        <!-- Header Glass Panel -->
-        <div class="glass-container header-glass">
-            <h1 class="logo-title">Goblin Globe</h1>
-            <p class="subtitle">Domain name finder with mathematical precision</p>
+    <div class="dos-window">
+        <!-- DOS Title Bar -->
+        <div class="dos-titlebar">
+            <span>GOBLIN GLOBE</span>
+            <div class="dos-titlebar-text">Domain Finder v1.0 - C:\DOMAINS\</div>
+            <div class="dos-controls">
+                <div class="dos-control-btn">-</div>
+                <div class="dos-control-btn">□</div>
+                <div class="dos-control-btn">X</div>
+            </div>
         </div>
 
-        <!-- Form Glass Panel -->
-        <div class="glass-container form-glass">
-            <form id="generateForm">
-                <div class="form-group">
-                    <label for="prompt" class="form-label">Domain Description</label>
+        <!-- DOS Content -->
+        <div class="dos-content">
+            <!-- ASCII Art Logo -->
+            <div class="logo">
+ ██████╗  ██████╗ ██████╗ ██╗     ██╗███╗   ██╗     ██████╗ ██╗      ██████╗ ██████╗ ███████╗
+██╔════╝ ██╔═══██╗██╔══██╗██║     ██║████╗  ██║    ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔════╝
+██║  ███╗██║   ██║██████╔╝██║     ██║██╔██╗ ██║    ██║  ███╗██║     ██║   ██║██████╔╝█████╗  
+██║   ██║██║   ██║██╔══██╗██║     ██║██║╚██╗██║    ██║   ██║██║     ██║   ██║██╔══██╗██╔══╝  
+╚██████╔╝╚██████╔╝██████╔╝███████╗██║██║ ╚████║    ╚██████╔╝███████╗╚██████╔╝██████╔╝███████╗
+ ╚═════╝  ╚═════╝ ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝     ╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚══════╝
+            </div>
+
+            <!-- System Info -->
+            <div class="system-info">
+                <div class="system-info-line">
+                    <span class="info-label">System:</span>
+                    <span class="info-value">MS-DOS 6.22 Compatible Domain Scanner</span>
+                </div>
+                <div class="system-info-line">
+                    <span class="info-label">Date:</span>
+                    <span class="info-value" id="systemDate"></span>
+                </div>
+                <div class="system-info-line">
+                    <span class="info-label">Time:</span>
+                    <span class="info-value" id="systemTime"></span>
+                </div>
+                <div class="system-info-line">
+                    <span class="info-label">Memory:</span>
+                    <span class="info-value">640K Base, 15360K Extended</span>
+                </div>
+                <div class="system-info-line">
+                    <span class="info-label">Status:</span>
+                    <span class="info-value">Ready</span>
+                </div>
+            </div>
+
+            <!-- DOS Menu Bar -->
+            <div class="dos-menubar">
+                <span class="menu-item"><span class="menu-shortcut">F</span>ile</span>
+                <span class="menu-item"><span class="menu-shortcut">E</span>dit</span>
+                <span class="menu-item"><span class="menu-shortcut">S</span>earch</span>
+                <span class="menu-item"><span class="menu-shortcut">O</span>ptions</span>
+                <span class="menu-item"><span class="menu-shortcut">H</span>elp</span>
+            </div>
+
+            <!-- Main Form -->
+            <form id="terminalForm">
+                <!-- Domain Description -->
+                <div class="form-section active dos-box" data-title="Domain Description" id="promptSection">
+                    <div class="section-title">Domain Description</div>
                     <textarea 
-                        id="prompt" 
-                        class="form-textarea"
-                        placeholder="Describe your domain concept..."
-                        required
+                        id="promptInput" 
+                        class="dos-textarea"
+                        placeholder="Enter domain concept description..."
+                        rows="3"
                     ></textarea>
                 </div>
-                
-                <div class="form-group">
-                    <label for="count" class="form-label">Quantity</label>
+
+                <!-- Generation Count -->
+                <div class="form-section dos-box" data-title="Generation Count" id="countSection">
+                    <div class="section-title">Generation Count</div>
                     <input 
                         type="number" 
-                        id="count" 
-                        class="form-input form-number" 
+                        id="countInput" 
+                        class="dos-input"
                         min="1" 
                         max="20" 
                         value="10"
+                        style="width: 100px;"
                     >
+                    <span style="color: var(--dos-gray); margin-left: 8px;">(Range: 1-20)</span>
                 </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Extensions</label>
+
+                <!-- Domain Extensions -->
+                <div class="form-section dos-box" data-title="Domain Extensions" id="extensionsSection">
+                    <div class="section-title">Domain Extensions</div>
                     <div class="checkbox-group">
                         <label class="checkbox-item">
-                            <input type="checkbox" name="extensions" value=".com" checked class="checkbox-input">
-                            <span class="checkbox-label">.com</span>
+                            <input type="checkbox" name="extensions" value=".com" checked class="dos-checkbox">
+                            <span>.com</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="extensions" value=".net" class="checkbox-input">
-                            <span class="checkbox-label">.net</span>
+                            <input type="checkbox" name="extensions" value=".net" class="dos-checkbox">
+                            <span>.net</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="extensions" value=".org" class="checkbox-input">
-                            <span class="checkbox-label">.org</span>
+                            <input type="checkbox" name="extensions" value=".org" class="dos-checkbox">
+                            <span>.org</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="extensions" value=".io" class="checkbox-input">
-                            <span class="checkbox-label">.io</span>
+                            <input type="checkbox" name="extensions" value=".io" class="dos-checkbox">
+                            <span>.io</span>
                         </label>
                     </div>
                 </div>
-                
-                <button type="submit" id="generateButton" class="btn-primary">
-                    <span id="buttonText">Generate Domains</span>
-                    <div id="buttonSpinner" class="spinner hidden"></div>
-                </button>
+
+                <!-- Control Buttons -->
+                <div class="form-section">
+                    <button type="submit" id="executeButton" class="dos-button primary">
+                        <span id="executeText">Start Scan [F9]</span>
+                        <span id="executeSpinner" class="dos-spinner hidden"></span>
+                    </button>
+                    <button type="button" id="clearButton" class="dos-button">Clear [F2]</button>
+                    <button type="button" id="helpButton" class="dos-button">Help [F1]</button>
+                </div>
             </form>
-        </div>
 
-        <!-- Loading Glass Panel -->
-        <div id="loading" class="glass-container loading-container hidden">
-            <div class="loading-spinner"></div>
-            <p id="loadingMessage" class="loading-message">Generating domain ideas...</p>
-            <div id="progressBar" class="progress-container hidden">
-                <div id="progressFill" class="progress-bar"></div>
-            </div>
-            <p id="progressText" class="progress-text hidden">Step 1 of 3</p>
-        </div>
-
-        <!-- Error Glass Panel -->
-        <div id="error" class="glass-container error-message hidden">
-            <p></p>
-        </div>
-
-        <!-- Results Glass Panels -->
-        <div id="results" class="results-section hidden">
-            <div class="glass-container results-header">
-                <div class="results-actions">
-                    <button id="exportBtn" class="btn-secondary">Export CSV</button>
-                    <button id="copyAllBtn" class="btn-secondary">Copy Available</button>
-                    <button id="newSearchBtn" class="btn-secondary">New Search</button>
+            <!-- Loading Section -->
+            <div class="loading-section" id="loadingSection">
+                <div class="form-section dos-box" data-title="Scanning Progress">
+                    <div class="section-title">Scanning Progress</div>
+                    <div id="loadingText">Initializing domain scan...</div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                            <div class="progress-text" id="progressText">0%</div>
+                        </div>
+                    </div>
+                    <div id="progressDetails" style="color: var(--dos-gray); font-size: 11px; margin-top: 4px;"></div>
                 </div>
             </div>
-            
-            <div class="glass-container" style="margin-bottom: 2rem; padding: 2rem;">
-                <h2 class="section-title">Available</h2>
-                <div id="availableList" class="domain-grid"></div>
-            </div>
-            
-            <div class="glass-container" style="padding: 2rem;">
-                <h2 class="section-title">Taken</h2>
-                <div id="takenList" class="domain-grid"></div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection">
+                <div class="results-header">
+                    Scan Results - <span id="scanSummary"></span>
+                </div>
+
+                <!-- Available Domains -->
+                <div id="availableSection">
+                    <div class="form-section dos-box" data-title="Available Domains">
+                        <div class="section-title">Available Domains [<span id="availableCount">0</span>]</div>
+                        <div class="domain-list" id="availableList"></div>
+                    </div>
+                </div>
+
+                <!-- Taken Domains -->
+                <div id="takenSection">
+                    <div class="form-section dos-box" data-title="Taken Domains">
+                        <div class="section-title">Taken Domains [<span id="takenCount">0</span>]</div>
+                        <div class="domain-list" id="takenList"></div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-section">
+                    <button type="button" id="exportButton" class="dos-button">Export [F3]</button>
+                    <button type="button" id="copyButton" class="dos-button">Copy [F4]</button>
+                    <button type="button" id="newScanButton" class="dos-button">New Scan [F5]</button>
+                </div>
             </div>
         </div>
 
-        <!-- Toast Container -->
-        <div id="toastContainer" class="toast-container"></div>
+        <!-- Error Dialog -->
+        <div class="error-section" id="errorSection">
+            <div class="error-title">Error</div>
+            <div class="error-message" id="errorMessage"></div>
+            <div class="error-buttons">
+                <button class="dos-button" onclick="document.getElementById('errorSection').classList.remove('active')">OK</button>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            Ready | Domains: <span id="totalDomains">0</span> | Available: <span id="availableStatusCount">0</span> | Time: <span id="statusTime"></span>
+        </div>
+
+        <!-- Function Keys -->
+        <div class="function-keys">
+            <div class="function-key" data-key="F1"><span class="key-label">F1</span> Help</div>
+            <div class="function-key" data-key="F2"><span class="key-label">F2</span> Clear</div>
+            <div class="function-key" data-key="F3"><span class="key-label">F3</span> Export</div>
+            <div class="function-key" data-key="F4"><span class="key-label">F4</span> Copy</div>
+            <div class="function-key" data-key="F5"><span class="key-label">F5</span> NewScan</div>
+            <div class="function-key" data-key="F9"><span class="key-label">F9</span> Execute</div>
+            <div class="function-key" data-key="F10"><span class="key-label">F10</span> Quit</div>
+        </div>
     </div>
 
     <script src="app.js"></script>

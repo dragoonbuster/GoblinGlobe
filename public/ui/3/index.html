@@ -3,32 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GOBLIN GLOBE</title>
+    <title>GOBLIN GLOBE - Celestial Domain Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* BRUTALIST RESET - RAW HTML EXPOSED */
+        /* Baroque Extravaganza Begins */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html {
-            font-size: 18px;
-            line-height: 1.2;
+        :root {
+            --royal-gold: #FFD700;
+            --deep-gold: #B8860B;
+            --baroque-purple: #4B0082;
+            --deep-purple: #301934;
+            --crimson-red: #DC143C;
+            --royal-red: #8B0000;
+            --ivory: #FFFFF0;
+            --cream: #F5F5DC;
+            --bronze: #CD7F32;
+            --ornate-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            --golden-glow: 0 0 30px rgba(255, 215, 0, 0.8);
+            --purple-glow: 0 0 20px rgba(75, 0, 130, 0.6);
         }
 
         body {
-            font-family: 'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
-            font-weight: 900;
-            color: #1a1a1a;
-            background: linear-gradient(135deg, #d4d4d4 0%, #a8a8a8 50%, #8c8c8c 100%);
+            font-family: 'Cinzel', serif;
+            background: linear-gradient(135deg, 
+                var(--deep-purple) 0%, 
+                var(--baroque-purple) 25%, 
+                var(--deep-purple) 50%, 
+                var(--royal-red) 75%, 
+                var(--deep-purple) 100%);
             background-attachment: fixed;
+            color: var(--ivory);
             overflow-x: hidden;
-            text-transform: uppercase;
-            letter-spacing: 0.02em;
+            position: relative;
+            min-height: 100vh;
         }
 
-        /* CONCRETE TEXTURE OVERLAY */
         body::before {
             content: '';
             position: fixed;
@@ -36,906 +50,1027 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                radial-gradient(circle at 20% 80%, rgba(0,0,0,0.1) 2px, transparent 2px),
-                radial-gradient(circle at 80% 20%, rgba(0,0,0,0.08) 1px, transparent 1px),
-                radial-gradient(circle at 40% 40%, rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 100px 100px, 150px 150px, 80px 80px;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(220, 20, 60, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(75, 0, 130, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Floating ornamental elements */
+        .baroque-ornament {
+            position: fixed;
+            font-size: 2rem;
+            color: var(--royal-gold);
+            opacity: 0.3;
             pointer-events: none;
             z-index: 1;
+            animation: floatOrnamentation 8s ease-in-out infinite;
         }
 
-        /* CHAOTIC CONTAINER SYSTEM */
-        .brutal-container {
+        .baroque-ornament:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .baroque-ornament:nth-child(2) { top: 20%; right: 10%; animation-delay: 2s; }
+        .baroque-ornament:nth-child(3) { bottom: 30%; left: 8%; animation-delay: 4s; }
+        .baroque-ornament:nth-child(4) { bottom: 10%; right: 15%; animation-delay: 6s; }
+
+        @keyframes floatOrnamentation {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-20px) rotate(5deg); opacity: 0.6; }
+        }
+
+        /* Main container with ornate frame */
+        .imperial-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
             position: relative;
-            z-index: 2;
-            max-width: none;
-            margin: 0;
-            padding: 0;
-            background: rgba(160, 160, 160, 0.7);
-            border: 8px solid #1a1a1a;
-            border-style: solid;
-            box-shadow: 
-                inset 0 0 20px rgba(0,0,0,0.3),
-                0 20px 40px rgba(0,0,0,0.4);
         }
 
-        /* MASSIVE IMPOSING HEADER */
-        .brutal-header {
-            position: relative;
-            background: linear-gradient(45deg, #2a2a2a 0%, #1a1a1a 100%);
-            padding: 60px 40px;
-            border-bottom: 12px solid #FFD700;
-            overflow: hidden;
-            transform: skew(-2deg);
-            margin: -20px -20px 0 -20px;
-        }
-
-        .brutal-header::before {
+        .imperial-container::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 2px,
-                rgba(255,215,0,0.1) 2px,
-                rgba(255,215,0,0.1) 4px
-            );
-        }
-
-        .brutal-title {
-            position: relative;
-            font-size: clamp(3rem, 8vw, 8rem);
-            font-weight: 900;
-            color: #FFD700;
-            text-shadow: 
-                4px 4px 0px #1a1a1a,
-                8px 8px 0px rgba(0,0,0,0.5),
-                12px 12px 20px rgba(0,0,0,0.8);
-            letter-spacing: -0.05em;
-            line-height: 0.8;
-            transform: skew(2deg);
-            margin-bottom: 20px;
-        }
-
-        .brutal-subtitle {
-            font-size: 1.2rem;
-            color: #cccccc;
-            font-weight: 700;
-            transform: skew(2deg);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-        }
-
-        /* ASYMMETRIC LAYOUT CHAOS */
-        .brutal-form-section {
-            position: relative;
-            background: rgba(180, 180, 180, 0.8);
-            margin: 40px 20px 0 60px;
-            padding: 60px 40px;
-            border: 6px solid #1a1a1a;
-            border-left: 20px solid #FFD700;
-            transform: rotate(-1deg);
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 8px solid var(--royal-gold);
+            border-image: linear-gradient(45deg, var(--royal-gold), var(--deep-gold), var(--royal-gold)) 1;
             box-shadow: 
-                0 15px 30px rgba(0,0,0,0.3),
-                inset -5px -5px 10px rgba(0,0,0,0.1);
+                inset 0 0 50px rgba(255, 215, 0, 0.2),
+                0 0 50px rgba(255, 215, 0, 0.3);
+            pointer-events: none;
+            z-index: -1;
         }
 
-        /* MASSIVE FORM ELEMENTS */
-        .brutal-form-group {
+        /* Majestic Header */
+        .celestial-header {
+            text-align: center;
+            margin: 60px 0 80px 0;
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .celestial-header::before {
+            content: '✦ ❈ ✦ ❈ ✦ ❈ ✦ ❈ ✦ ❈ ✦ ❈ ✦';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            color: var(--royal-gold);
+            animation: sparkleHeader 3s ease-in-out infinite;
+        }
+
+        .celestial-header::after {
+            content: '❈ ✦ ❈ ✦ ❈ ✦ ❈ ✦ ❈ ✦ ❈ ✦ ❈';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            color: var(--royal-gold);
+            animation: sparkleHeader 3s ease-in-out infinite reverse;
+        }
+
+        @keyframes sparkleHeader {
+            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+        }
+
+        .goblin-globe-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 4.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, 
+                var(--royal-gold) 0%, 
+                var(--ivory) 25%, 
+                var(--royal-gold) 50%, 
+                var(--ivory) 75%, 
+                var(--royal-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            letter-spacing: 0.2em;
+            margin: 20px 0;
+            position: relative;
+            animation: royalGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes royalGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8)); }
+            50% { filter: drop-shadow(0 0 30px rgba(255, 215, 0, 1)); }
+        }
+
+        .celestial-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--cream);
+            font-style: italic;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Ornate Form Container */
+        .baroque-form-palace {
+            background: linear-gradient(135deg, 
+                rgba(75, 0, 130, 0.3) 0%, 
+                rgba(139, 0, 0, 0.2) 50%, 
+                rgba(75, 0, 130, 0.3) 100%);
+            border: 4px solid var(--royal-gold);
+            border-radius: 30px;
+            padding: 50px;
+            margin: 40px 0;
+            position: relative;
+            box-shadow: var(--ornate-shadow), inset 0 0 30px rgba(255, 215, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .baroque-form-palace::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, var(--royal-gold), transparent, var(--royal-gold));
+            border-radius: 35px;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .ornate-corners {
+            position: absolute;
+            font-size: 2.5rem;
+            color: var(--royal-gold);
+            opacity: 0.8;
+        }
+
+        .ornate-corners.top-left { top: -15px; left: -15px; }
+        .ornate-corners.top-right { top: -15px; right: -15px; }
+        .ornate-corners.bottom-left { bottom: -15px; left: -15px; }
+        .ornate-corners.bottom-right { bottom: -15px; right: -15px; }
+
+        /* Majestic Form Elements */
+        .royal-form-group {
             margin-bottom: 50px;
             position: relative;
         }
 
-        .brutal-label {
-            display: block;
+        .imperial-label {
+            font-family: 'Cinzel Decorative', serif;
             font-size: 1.4rem;
-            font-weight: 900;
-            color: #1a1a1a;
-            margin-bottom: 15px;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
-            border-left: 8px solid #FFD700;
-            padding-left: 15px;
-        }
-
-        .brutal-textarea,
-        .brutal-input {
-            width: 100%;
-            padding: 25px 20px;
-            font-family: 'Arial Black', Arial, sans-serif;
-            font-size: 1.3rem;
             font-weight: 700;
-            color: #1a1a1a;
-            background: #f0f0f0;
-            border: 6px solid #1a1a1a;
-            border-radius: 0;
-            outline: none;
-            transition: all 0.2s ease;
+            color: var(--royal-gold);
             text-transform: uppercase;
-            box-shadow: 
-                inset 4px 4px 8px rgba(0,0,0,0.2),
-                0 2px 4px rgba(0,0,0,0.1);
+            letter-spacing: 0.15em;
+            margin-bottom: 20px;
+            display: block;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+            position: relative;
         }
 
-        .brutal-textarea:focus,
-        .brutal-input:focus {
-            border-color: #FFD700;
-            background: #ffffff;
+        .imperial-label::after {
+            content: '✦';
+            margin-left: 15px;
+            animation: labelSparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes labelSparkle {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .golden-input,
+        .golden-textarea {
+            width: 100%;
+            padding: 25px 30px;
+            border: 3px solid var(--royal-gold);
+            border-radius: 15px;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 240, 0.95) 0%, 
+                rgba(245, 245, 220, 0.95) 100%);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--deep-purple);
+            outline: none;
+            transition: all 0.4s ease;
+            box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .golden-input:focus,
+        .golden-textarea:focus {
+            border-color: var(--ivory);
+            box-shadow: 
+                inset 0 4px 10px rgba(0, 0, 0, 0.2),
+                0 0 25px rgba(255, 215, 0, 0.8);
             transform: scale(1.02);
-            box-shadow: 
-                inset 4px 4px 8px rgba(0,0,0,0.2),
-                0 0 0 4px rgba(255,215,0,0.3),
-                0 8px 16px rgba(0,0,0,0.2);
         }
 
-        .brutal-textarea {
-            min-height: 150px;
+        .golden-textarea {
             resize: vertical;
+            min-height: 150px;
+            font-family: 'Playfair Display', serif;
         }
 
-        .brutal-number-input {
+        .royal-number-input {
             width: 150px;
             text-align: center;
+            font-weight: 600;
         }
 
-        /* CHECKBOX CHAOS */
-        .brutal-checkbox-group {
-            display: flex;
-            flex-wrap: wrap;
+        /* Ornate Checkbox Palace */
+        .checkbox-palace {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 30px;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
-        .brutal-checkbox-item {
-            position: relative;
+        .royal-checkbox-item {
             display: flex;
             align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, 
+                rgba(255, 215, 0, 0.1) 0%, 
+                rgba(255, 215, 0, 0.05) 100%);
+            border: 2px solid var(--deep-gold);
+            border-radius: 15px;
             cursor: pointer;
-            background: rgba(200, 200, 200, 0.7);
-            padding: 15px 20px;
-            border: 4px solid #1a1a1a;
-            transform: rotate(0.5deg);
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        .brutal-checkbox-item:nth-child(2n) {
-            transform: rotate(-0.8deg);
+        .royal-checkbox-item:hover {
+            border-color: var(--royal-gold);
+            background: linear-gradient(135deg, 
+                rgba(255, 215, 0, 0.2) 0%, 
+                rgba(255, 215, 0, 0.1) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
         }
 
-        .brutal-checkbox-item:hover {
-            background: rgba(255,215,0,0.3);
-            transform: rotate(0deg) scale(1.05);
-            border-color: #FFD700;
-        }
-
-        .brutal-checkbox {
-            width: 30px;
-            height: 30px;
+        .imperial-checkbox {
+            width: 25px;
+            height: 25px;
             margin-right: 15px;
-            border: 4px solid #1a1a1a;
-            background: #f0f0f0;
+            border: 3px solid var(--royal-gold);
+            border-radius: 8px;
+            background: var(--ivory);
             cursor: pointer;
             position: relative;
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
+            transition: all 0.3s ease;
         }
 
-        .brutal-checkbox:checked {
-            background: #FFD700;
-            border-color: #1a1a1a;
+        .imperial-checkbox:checked {
+            background: linear-gradient(135deg, var(--royal-gold), var(--deep-gold));
+            border-color: var(--ivory);
+            transform: scale(1.1);
         }
 
-        .brutal-checkbox:checked::after {
+        .imperial-checkbox:checked::after {
             content: '✓';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 18px;
+            color: var(--deep-purple);
             font-weight: 900;
-            color: #1a1a1a;
+            font-size: 14px;
         }
 
-        .brutal-checkbox-label {
+        .checkbox-extension-label {
+            font-family: 'Cinzel', serif;
             font-size: 1.1rem;
-            font-weight: 900;
-            color: #1a1a1a;
+            font-weight: 600;
+            color: var(--ivory);
             cursor: pointer;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
         }
 
-        /* MASSIVE BRUTAL BUTTON */
-        .brutal-button {
-            background: linear-gradient(45deg, #1a1a1a 0%, #2a2a2a 100%);
-            color: #FFD700;
-            border: 8px solid #FFD700;
-            padding: 30px 60px;
-            font-family: 'Impact', 'Arial Black', Arial, sans-serif;
-            font-size: 1.6rem;
-            font-weight: 900;
+        /* Majestic Submit Button */
+        .imperial-submit-button {
+            background: linear-gradient(135deg, 
+                var(--royal-gold) 0%, 
+                var(--deep-gold) 25%, 
+                var(--royal-gold) 50%, 
+                var(--deep-gold) 75%, 
+                var(--royal-gold) 100%);
+            color: var(--deep-purple);
+            border: 4px solid var(--ivory);
+            padding: 25px 60px;
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.2em;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            border-radius: 20px;
             position: relative;
-            overflow: hidden;
             margin-top: 40px;
-            transform: rotate(-1deg);
-            box-shadow: 
-                0 10px 20px rgba(0,0,0,0.4),
-                inset 0 0 0 2px rgba(255,215,0,0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: var(--ornate-shadow);
+            overflow: hidden;
         }
 
-        .brutal-button::before {
+        .imperial-submit-button::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent);
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.4), 
+                transparent);
             transition: left 0.6s ease;
         }
 
-        .brutal-button:hover {
-            background: #FFD700;
-            color: #1a1a1a;
-            border-color: #1a1a1a;
-            transform: rotate(0deg) scale(1.05);
-            box-shadow: 
-                0 15px 30px rgba(0,0,0,0.5),
-                inset 0 0 0 4px rgba(26,26,26,0.3);
-        }
-
-        .brutal-button:hover::before {
+        .imperial-submit-button:hover::before {
             left: 100%;
         }
 
-        .brutal-button:active {
-            transform: rotate(0deg) scale(0.98);
+        .imperial-submit-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 
+                var(--ornate-shadow),
+                0 10px 30px rgba(255, 215, 0, 0.6);
+            border-color: var(--royal-gold);
         }
 
-        .brutal-button:disabled {
-            background: #666;
-            color: #999;
-            border-color: #999;
+        .imperial-submit-button:disabled {
+            opacity: 0.6;
             cursor: not-allowed;
             transform: none;
         }
 
-        /* LOADING CHAOS */
-        .brutal-loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(26,26,26,0.9);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        .button-text {
+            position: relative;
+            z-index: 2;
         }
 
-        .brutal-spinner {
-            width: 80px;
-            height: 80px;
-            border: 8px solid #333;
-            border-top: 8px solid #FFD700;
-            border-radius: 0;
-            animation: brutal-spin 1s linear infinite;
-            margin-bottom: 30px;
+        /* Royal Spinner */
+        .royal-spinner {
+            width: 25px;
+            height: 25px;
+            border: 3px solid var(--deep-purple);
+            border-top: 3px solid var(--ivory);
+            border-radius: 50%;
+            animation: royalSpin 1s linear infinite;
         }
 
-        @keyframes brutal-spin {
+        @keyframes royalSpin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        .brutal-loading-text {
-            font-size: 2rem;
-            color: #FFD700;
-            font-weight: 900;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-        }
-
-        /* CONCRETE BLOCK RESULTS */
-        .brutal-results {
-            margin: 60px 20px 20px 20px;
-            position: relative;
-        }
-
-        .brutal-results-header {
-            background: #1a1a1a;
-            color: #FFD700;
-            padding: 30px 40px;
-            border: 6px solid #FFD700;
-            margin-bottom: 40px;
-            transform: skew(-1deg);
-        }
-
-        .brutal-results-title {
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .brutal-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .brutal-action-btn {
-            background: rgba(160,160,160,0.8);
-            color: #1a1a1a;
-            border: 4px solid #1a1a1a;
-            padding: 15px 25px;
-            font-family: 'Impact', Arial, sans-serif;
-            font-size: 1rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            transform: rotate(0.5deg);
-        }
-
-        .brutal-action-btn:hover {
-            background: #FFD700;
-            transform: rotate(0deg) scale(1.1);
-            border-color: #FFD700;
-        }
-
-        /* DOMAIN BLOCKS STACKED LIKE CONCRETE */
-        .brutal-domain-section {
-            margin-bottom: 60px;
-        }
-
-        .brutal-section-title {
-            font-size: 2rem;
-            font-weight: 900;
-            color: #1a1a1a;
-            margin-bottom: 30px;
-            border-left: 12px solid #FFD700;
-            padding-left: 20px;
-            background: rgba(255,215,0,0.2);
-            padding: 15px 20px;
-            transform: skew(-1deg);
-        }
-
-        .brutal-domain-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
-        }
-
-        .brutal-domain-block {
-            background: linear-gradient(135deg, #d0d0d0 0%, #b0b0b0 100%);
-            border: 6px solid #1a1a1a;
-            padding: 30px;
-            position: relative;
-            transition: all 0.3s ease;
-            transform: rotate(-0.5deg);
-            box-shadow: 
-                0 10px 20px rgba(0,0,0,0.3),
-                inset 0 0 10px rgba(255,255,255,0.1);
-        }
-
-        .brutal-domain-block:nth-child(2n) {
-            transform: rotate(0.8deg);
-        }
-
-        .brutal-domain-block:hover {
-            transform: rotate(0deg) scale(1.05);
-            border-color: #FFD700;
-            background: linear-gradient(135deg, #FFD700 0%, #e6c200 100%);
-            box-shadow: 
-                0 15px 30px rgba(0,0,0,0.4),
-                inset 0 0 15px rgba(0,0,0,0.1);
-        }
-
-        .brutal-domain-block.available {
-            border-left: 15px solid #00ff00;
-        }
-
-        .brutal-domain-block.taken {
-            border-left: 15px solid #ff0000;
-            background: linear-gradient(135deg, #a0a0a0 0%, #808080 100%);
-        }
-
-        .brutal-domain-name {
-            font-family: 'Courier New', monospace;
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: #1a1a1a;
-            margin-bottom: 20px;
-            word-break: break-all;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
-            background: rgba(255,255,255,0.3);
-            padding: 10px;
-            border: 2px solid #1a1a1a;
-        }
-
-        .brutal-domain-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .brutal-domain-method {
-            font-size: 0.9rem;
-            font-weight: 900;
-            color: #666;
-            background: rgba(0,0,0,0.1);
-            padding: 5px 10px;
-            border: 2px solid #666;
-        }
-
-        .brutal-domain-score {
-            font-size: 1.1rem;
-            font-weight: 900;
-            color: #1a1a1a;
-        }
-
-        .brutal-domain-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .brutal-register-link {
-            background: #FFD700;
-            color: #1a1a1a;
-            text-decoration: none;
-            padding: 15px 25px;
-            font-size: 1rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            border: 4px solid #1a1a1a;
-            transition: all 0.2s ease;
-            flex: 1;
+        /* Baroque Loading Palace */
+        .loading-palace {
             text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(135deg, 
+                rgba(75, 0, 130, 0.2) 0%, 
+                rgba(139, 0, 0, 0.1) 100%);
+            border: 3px solid var(--royal-gold);
+            border-radius: 25px;
+            margin: 60px 0;
+            position: relative;
+            backdrop-filter: blur(5px);
         }
 
-        .brutal-register-link:hover {
-            background: #1a1a1a;
-            color: #FFD700;
-            border-color: #FFD700;
-            transform: scale(1.05);
+        .loading-palace::before {
+            content: '⚜ ❈ ⚜ ❈ ⚜ ❈ ⚜ ❈ ⚜ ❈ ⚜ ❈ ⚜';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--deep-purple);
+            padding: 0 30px;
+            color: var(--royal-gold);
+            font-size: 1.2rem;
+            animation: ornateRotation 4s ease-in-out infinite;
         }
 
-        /* ERROR BLOCKS */
-        .brutal-error {
-            background: #ff0000;
-            color: #ffffff;
-            border: 8px solid #1a1a1a;
-            padding: 40px;
-            margin: 40px 20px;
-            font-size: 1.3rem;
-            font-weight: 900;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-            transform: rotate(-1deg);
+        @keyframes ornateRotation {
+            0%, 100% { transform: translateX(-50%) rotate(0deg); }
+            50% { transform: translateX(-50%) rotate(3deg); }
         }
 
-        /* UTILITY CLASSES */
-        .hidden {
-            display: none !important;
+        .majestic-loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 6px solid rgba(255, 215, 0, 0.2);
+            border-top: 6px solid var(--royal-gold);
+            border-right: 6px solid var(--ivory);
+            border-radius: 50%;
+            animation: majesticspin 2s ease-in-out infinite;
+            margin: 0 auto 40px;
+            position: relative;
         }
 
-        /* RESPONSIVE BRUTALISM */
-        @media (max-width: 768px) {
-            .brutal-title {
-                font-size: clamp(2rem, 6vw, 4rem);
-            }
-            
-            .brutal-form-section {
-                margin: 20px 10px 0 30px;
-                padding: 40px 20px;
-                transform: rotate(-0.5deg);
-            }
-            
-            .brutal-checkbox-group {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .brutal-domain-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .brutal-actions {
-                flex-direction: column;
-            }
+        .majestic-loading-spinner::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 3px solid rgba(255, 215, 0, 0.3);
+            border-top: 3px solid var(--ivory);
+            border-radius: 50%;
+            animation: majesticspin 1.5s ease-in-out infinite reverse;
         }
 
-        /* AGGRESSIVE HOVER STATES */
-        .brutal-checkbox-item:active {
-            transform: scale(0.95);
+        @keyframes majesticspin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .brutal-domain-block:active {
-            transform: scale(0.98);
+        .loading-message {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--royal-gold);
+            font-style: italic;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
         }
 
-        /* BROKEN GRID OVERLAY */
-        .brutal-container::after {
+        /* Imperial Progress Bar */
+        .progress-throne {
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(135deg, 
+                rgba(75, 0, 130, 0.4) 0%, 
+                rgba(139, 0, 0, 0.4) 100%);
+            border: 2px solid var(--royal-gold);
+            border-radius: 10px;
+            margin: 30px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-crown {
+            height: 100%;
+            background: linear-gradient(135deg, 
+                var(--royal-gold) 0%, 
+                var(--ivory) 50%, 
+                var(--royal-gold) 100%);
+            width: 0%;
+            transition: width 0.6s ease;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-crown::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: 
-                linear-gradient(90deg, rgba(26,26,26,0.1) 1px, transparent 1px),
-                linear-gradient(rgba(26,26,26,0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-            z-index: 1;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.6), 
+                transparent);
+            animation: progressShimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes progressShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            color: var(--cream);
+            text-align: center;
+            margin-top: 15px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Results Palace */
+        .results-palace {
+            margin-top: 80px;
+            background: linear-gradient(135deg, 
+                rgba(75, 0, 130, 0.1) 0%, 
+                rgba(139, 0, 0, 0.1) 100%);
+            border: 4px solid var(--royal-gold);
+            border-radius: 30px;
+            padding: 50px;
+            position: relative;
+            backdrop-filter: blur(8px);
+        }
+
+        .results-palace::before {
+            content: '👑 ROYAL DOMAIN DISCOVERIES 👑';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--deep-purple);
+            color: var(--royal-gold);
+            padding: 10px 40px;
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: 2px solid var(--royal-gold);
+            border-radius: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .results-actions-court {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .court-action-button {
+            background: linear-gradient(135deg, 
+                rgba(255, 215, 0, 0.2) 0%, 
+                rgba(255, 215, 0, 0.1) 100%);
+            color: var(--royal-gold);
+            border: 2px solid var(--royal-gold);
+            padding: 15px 30px;
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .court-action-button:hover {
+            background: linear-gradient(135deg, 
+                var(--royal-gold) 0%, 
+                var(--deep-gold) 100%);
+            color: var(--deep-purple);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .domain-section-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--royal-gold);
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .domain-section-title::before,
+        .domain-section-title::after {
+            content: '⚜';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: var(--cream);
+            animation: sectionTitleGlow 3s ease-in-out infinite;
+        }
+
+        .domain-section-title::before { left: -50px; }
+        .domain-section-title::after { right: -50px; }
+
+        @keyframes sectionTitleGlow {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Imperial Domain Grid */
+        .imperial-domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .domain-throne-card {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 240, 0.95) 0%, 
+                rgba(245, 245, 220, 0.95) 100%);
+            border: 3px solid var(--royal-gold);
+            border-radius: 20px;
+            padding: 35px;
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: var(--ornate-shadow);
+            overflow: hidden;
+        }
+
+        .domain-throne-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                var(--royal-gold), 
+                var(--deep-gold), 
+                var(--royal-gold), 
+                var(--deep-gold));
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .domain-throne-card:hover::before {
+            opacity: 1;
+        }
+
+        .domain-throne-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                var(--ornate-shadow),
+                0 15px 40px rgba(255, 215, 0, 0.4);
+        }
+
+        .domain-throne-card.available {
+            border-color: var(--royal-gold);
+        }
+
+        .domain-throne-card.taken {
+            border-color: var(--bronze);
+            background: linear-gradient(135deg, 
+                rgba(205, 127, 50, 0.1) 0%, 
+                rgba(160, 82, 45, 0.1) 100%);
+            opacity: 0.8;
+        }
+
+        .domain-name-royal {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--deep-purple);
+            margin-bottom: 20px;
+            word-break: break-all;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .domain-meta-court {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, 
+                rgba(75, 0, 130, 0.1) 0%, 
+                rgba(139, 0, 0, 0.1) 100%);
+            border-radius: 12px;
+            border: 1px solid var(--deep-gold);
+        }
+
+        .domain-method-badge {
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--baroque-purple);
+            background: linear-gradient(135deg, 
+                var(--royal-gold) 0%, 
+                var(--deep-gold) 100%);
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .domain-score-crown {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--crimson-red);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .domain-actions-court {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .royal-action-button {
+            background: linear-gradient(135deg, 
+                var(--baroque-purple) 0%, 
+                var(--deep-purple) 100%);
+            color: var(--ivory);
+            border: 2px solid var(--royal-gold);
+            padding: 12px 25px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            flex: 1;
+            text-align: center;
+        }
+
+        .royal-action-button:hover {
+            background: linear-gradient(135deg, 
+                var(--royal-gold) 0%, 
+                var(--deep-gold) 100%);
+            color: var(--deep-purple);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .register-throne-link {
+            background: linear-gradient(135deg, 
+                var(--crimson-red) 0%, 
+                var(--royal-red) 100%);
+            color: var(--ivory);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .register-throne-link:hover {
+            background: linear-gradient(135deg, 
+                var(--royal-gold) 0%, 
+                var(--deep-gold) 100%);
+            color: var(--deep-purple);
+        }
+
+        /* Error Palace */
+        .error-palace {
+            background: linear-gradient(135deg, 
+                rgba(220, 20, 60, 0.1) 0%, 
+                rgba(139, 0, 0, 0.1) 100%);
+            border: 3px solid var(--crimson-red);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 60px 0;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+
+        .error-palace::before {
+            content: '⚠ ROYAL DECREE ⚠';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--deep-purple);
+            color: var(--crimson-red);
+            padding: 8px 25px;
+            font-family: 'Cinzel Decorative', serif;
+            font-weight: 700;
+            border: 2px solid var(--crimson-red);
+            border-radius: 12px;
+        }
+
+        .error-message-royal {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--ivory);
+            font-weight: 500;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Toast Palace */
+        .toast-court {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .royal-toast {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 240, 0.95) 0%, 
+                rgba(245, 245, 220, 0.95) 100%);
+            border: 3px solid var(--royal-gold);
+            border-radius: 15px;
+            padding: 20px 30px;
+            min-width: 350px;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            color: var(--deep-purple);
+            box-shadow: var(--ornate-shadow);
+            transform: translateX(100%);
+            transition: transform 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .royal-toast.show {
+            transform: translateX(0);
+        }
+
+        .royal-toast.success {
+            border-color: var(--royal-gold);
+        }
+
+        .royal-toast.error {
+            border-color: var(--crimson-red);
+            color: var(--crimson-red);
+        }
+
+        .royal-toast::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                transparent, 
+                rgba(255, 215, 0, 0.1), 
+                transparent);
+            animation: toastShimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes toastShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Responsive Baroque Design */
+        @media (max-width: 768px) {
+            .imperial-container {
+                padding: 20px;
+            }
+
+            .goblin-globe-title {
+                font-size: 3rem;
+            }
+
+            .celestial-subtitle {
+                font-size: 1.4rem;
+            }
+
+            .baroque-form-palace {
+                padding: 30px 20px;
+            }
+
+            .checkbox-palace {
+                grid-template-columns: 1fr;
+            }
+
+            .imperial-domain-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-actions-court {
+                flex-direction: column;
+            }
+
+            .royal-toast {
+                min-width: 300px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="brutal-container">
-        <!-- CARVED HEADER -->
-        <div class="brutal-header">
-            <h1 class="brutal-title">GOBLIN<br>GLOBE</h1>
-            <p class="brutal-subtitle">DOMAIN CONQUEST MACHINE</p>
+    <!-- Floating Baroque Ornaments -->
+    <div class="baroque-ornament">❈</div>
+    <div class="baroque-ornament">⚜</div>
+    <div class="baroque-ornament">✦</div>
+    <div class="baroque-ornament">❋</div>
+
+    <div class="imperial-container">
+        <!-- Celestial Header -->
+        <div class="celestial-header">
+            <h1 class="goblin-globe-title">GOBLIN GLOBE</h1>
+            <p class="celestial-subtitle">Divine Domain Manifestation Engine</p>
         </div>
 
-        <!-- ASYMMETRIC FORM CHAOS -->
-        <div class="brutal-form-section">
+        <!-- Baroque Form Palace -->
+        <div class="baroque-form-palace">
+            <div class="ornate-corners top-left">❈</div>
+            <div class="ornate-corners top-right">❈</div>
+            <div class="ornate-corners bottom-left">❈</div>
+            <div class="ornate-corners bottom-right">❈</div>
+
             <form id="generateForm">
-                <div class="brutal-form-group">
-                    <label for="prompt" class="brutal-label">DOMAIN CONCEPT</label>
+                <div class="royal-form-group">
+                    <label for="prompt" class="imperial-label">Domain Vision</label>
                     <textarea 
                         id="prompt" 
-                        class="brutal-textarea"
-                        placeholder="DESCRIBE YOUR DIGITAL TERRITORY..."
+                        class="golden-textarea"
+                        placeholder="Describe thy noble domain concept with royal precision..."
                         required
                     ></textarea>
                 </div>
                 
-                <div class="brutal-form-group">
-                    <label for="count" class="brutal-label">QUANTITY</label>
+                <div class="royal-form-group">
+                    <label for="count" class="imperial-label">Quantity of Domains</label>
                     <input 
                         type="number" 
                         id="count" 
-                        class="brutal-input brutal-number-input" 
+                        class="golden-input royal-number-input" 
                         min="1" 
                         max="20" 
                         value="10"
                     >
                 </div>
                 
-                <div class="brutal-form-group">
-                    <label class="brutal-label">EXTENSIONS</label>
-                    <div class="brutal-checkbox-group">
-                        <label class="brutal-checkbox-item">
-                            <input type="checkbox" name="extensions" value=".com" checked class="brutal-checkbox">
-                            <span class="brutal-checkbox-label">.COM</span>
+                <div class="royal-form-group">
+                    <label class="imperial-label">Royal Extensions</label>
+                    <div class="checkbox-palace">
+                        <label class="royal-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".com" checked class="imperial-checkbox">
+                            <span class="checkbox-extension-label">.com</span>
                         </label>
-                        <label class="brutal-checkbox-item">
-                            <input type="checkbox" name="extensions" value=".net" class="brutal-checkbox">
-                            <span class="brutal-checkbox-label">.NET</span>
+                        <label class="royal-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".net" class="imperial-checkbox">
+                            <span class="checkbox-extension-label">.net</span>
                         </label>
-                        <label class="brutal-checkbox-item">
-                            <input type="checkbox" name="extensions" value=".org" class="brutal-checkbox">
-                            <span class="brutal-checkbox-label">.ORG</span>
+                        <label class="royal-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".org" class="imperial-checkbox">
+                            <span class="checkbox-extension-label">.org</span>
                         </label>
-                        <label class="brutal-checkbox-item">
-                            <input type="checkbox" name="extensions" value=".io" class="brutal-checkbox">
-                            <span class="brutal-checkbox-label">.IO</span>
+                        <label class="royal-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".io" class="imperial-checkbox">
+                            <span class="checkbox-extension-label">.io</span>
                         </label>
                     </div>
                 </div>
                 
-                <button type="submit" id="generateButton" class="brutal-button">
-                    <span id="buttonText">CONQUER DOMAINS</span>
+                <button type="submit" id="generateButton" class="imperial-submit-button">
+                    <span id="buttonText" class="button-text">Manifest Domains</span>
+                    <div id="buttonSpinner" class="royal-spinner hidden"></div>
                 </button>
             </form>
         </div>
 
-        <!-- LOADING CHAOS -->
-        <div id="loading" class="brutal-loading hidden">
-            <div class="brutal-spinner"></div>
-            <p id="loadingMessage" class="brutal-loading-text">GENERATING DOMAINS...</p>
+        <!-- Loading Palace -->
+        <div id="loading" class="loading-palace hidden">
+            <div class="majestic-loading-spinner"></div>
+            <p id="loadingMessage" class="loading-message">Consulting the celestial archives...</p>
+            <div id="progressBar" class="progress-throne hidden">
+                <div id="progressFill" class="progress-crown"></div>
+            </div>
+            <p id="progressText" class="progress-text hidden">Royal Process 1 of 3</p>
         </div>
 
-        <!-- ERROR BLOCK -->
-        <div id="error" class="brutal-error hidden">
-            <p></p>
+        <!-- Error Palace -->
+        <div id="error" class="error-palace hidden">
+            <p class="error-message-royal"></p>
         </div>
 
-        <!-- CONCRETE BLOCK RESULTS -->
-        <div id="results" class="brutal-results hidden">
-            <div class="brutal-results-header">
-                <h2 class="brutal-results-title">CONQUEST RESULTS</h2>
-                <div class="brutal-actions">
-                    <button id="exportBtn" class="brutal-action-btn">EXPORT</button>
-                    <button id="copyAllBtn" class="brutal-action-btn">COPY ALL</button>
-                    <button id="newSearchBtn" class="brutal-action-btn">NEW SEARCH</button>
-                </div>
+        <!-- Results Palace -->
+        <div id="results" class="results-palace hidden">
+            <div class="results-actions-court">
+                <button id="exportBtn" class="court-action-button">Export Scroll</button>
+                <button id="copyAllBtn" class="court-action-button">Copy Available</button>
+                <button id="newSearchBtn" class="court-action-button">New Quest</button>
             </div>
             
-            <div class="brutal-domain-section">
-                <h3 class="brutal-section-title">AVAILABLE TERRITORY</h3>
-                <div id="availableList" class="brutal-domain-grid"></div>
+            <div>
+                <h2 class="domain-section-title">Available Domains</h2>
+                <div id="availableList" class="imperial-domain-grid"></div>
             </div>
             
-            <div class="brutal-domain-section">
-                <h3 class="brutal-section-title">OCCUPIED TERRITORY</h3>
-                <div id="takenList" class="brutal-domain-grid"></div>
+            <div>
+                <h2 class="domain-section-title">Taken Domains</h2>
+                <div id="takenList" class="imperial-domain-grid"></div>
             </div>
         </div>
+
+        <!-- Toast Court -->
+        <div id="toastContainer" class="toast-court"></div>
     </div>
 
-    <script>
-        // DOM Elements
-        const form = document.getElementById('generateForm');
-        const generateButton = document.getElementById('generateButton');
-        const buttonText = document.getElementById('buttonText');
-        const loading = document.getElementById('loading');
-        const loadingMessage = document.getElementById('loadingMessage');
-        const results = document.getElementById('results');
-        const error = document.getElementById('error');
-        const availableList = document.getElementById('availableList');
-        const takenList = document.getElementById('takenList');
-        const exportBtn = document.getElementById('exportBtn');
-        const copyAllBtn = document.getElementById('copyAllBtn');
-        const newSearchBtn = document.getElementById('newSearchBtn');
-
-        // Global state
-        let currentResults = { available: [], taken: [] };
-
-        // Initialize event listeners
-        form.addEventListener('submit', handleFormSubmit);
-        exportBtn.addEventListener('click', handleExport);
-        copyAllBtn.addEventListener('click', handleCopyAll);
-        newSearchBtn.addEventListener('click', handleNewSearch);
-
-        async function handleFormSubmit(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const prompt = document.getElementById('prompt').value.trim();
-            const count = parseInt(document.getElementById('count').value);
-            const extensions = Array.from(document.querySelectorAll('input[name="extensions"]:checked'))
-                .map(cb => cb.value);
-            
-            // Validation
-            if (!prompt) {
-                showError('ENTER A DOMAIN CONCEPT!');
-                return;
-            }
-            
-            if (extensions.length === 0) {
-                showError('SELECT AT LEAST ONE EXTENSION!');
-                return;
-            }
-            
-            // Start loading state
-            setLoadingState(true);
-            
-            try {
-                const response = await fetch('/api/generate', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ prompt, count, extensions })
-                });
-                
-                const data = await response.json();
-                
-                if (!response.ok) {
-                    throw new Error(data.error || `HTTP ${response.status}`);
-                }
-                
-                if (!data.success) {
-                    throw new Error(data.error || 'Failed to generate domains');
-                }
-                
-                // Store results and display
-                currentResults = data.results;
-                displayResults(data.results);
-                
-            } catch (err) {
-                console.error('Generation error:', err);
-                showError(getErrorMessage(err));
-            } finally {
-                setLoadingState(false);
-            }
-        }
-
-        function setLoadingState(isLoading) {
-            generateButton.disabled = isLoading;
-            
-            if (isLoading) {
-                buttonText.textContent = 'CONQUERING...';
-                loading.classList.remove('hidden');
-                results.classList.add('hidden');
-                error.classList.add('hidden');
-            } else {
-                buttonText.textContent = 'CONQUER DOMAINS';
-                loading.classList.add('hidden');
-            }
-        }
-
-        function displayResults(results) {
-            availableList.innerHTML = '';
-            takenList.innerHTML = '';
-            
-            if (results.available.length === 0 && results.taken.length === 0) {
-                showError('NO DOMAINS CONQUERED. TRY DIFFERENT CONCEPT!');
-                return;
-            }
-            
-            // Display available domains
-            results.available.forEach(item => {
-                const div = createDomainBlock(item.domain, true, item.method, item.qualityScore, item.qualityGrade);
-                availableList.appendChild(div);
-            });
-            
-            // Display taken domains
-            results.taken.forEach(item => {
-                const div = createDomainBlock(item.domain, false, item.method, item.qualityScore, item.qualityGrade);
-                takenList.appendChild(div);
-            });
-            
-            // Show results section
-            results.classList.remove('hidden');
-            results.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        function createDomainBlock(domain, isAvailable, method, qualityScore = null, qualityGrade = null) {
-            const div = document.createElement('div');
-            div.className = `brutal-domain-block ${isAvailable ? 'available' : 'taken'}`;
-            
-            let content = `
-                <div class="brutal-domain-name">${domain}</div>
-                <div class="brutal-domain-meta">
-                    <span class="brutal-domain-method">${method}</span>
-                    ${qualityScore ? `<span class="brutal-domain-score">${qualityScore.overall}/100</span>` : ''}
-                </div>
-            `;
-            
-            if (isAvailable) {
-                content += `
-                    <div class="brutal-domain-actions">
-                        <a href="https://www.namecheap.com/domains/registration/results/?domain=${domain}" 
-                           target="_blank" 
-                           class="brutal-register-link">REGISTER NOW</a>
-                    </div>
-                `;
-            }
-            
-            div.innerHTML = content;
-            return div;
-        }
-
-        function handleCopyAll() {
-            if (currentResults.available.length === 0) {
-                showError('NO AVAILABLE DOMAINS TO COPY!');
-                return;
-            }
-            
-            const domains = currentResults.available.map(item => item.domain).join('\\n');
-            copyToClipboard(domains);
-        }
-
-        function handleExport() {
-            if (currentResults.available.length === 0 && currentResults.taken.length === 0) {
-                showError('NO RESULTS TO EXPORT!');
-                return;
-            }
-            
-            const timestamp = new Date().toISOString().split('T')[0];
-            const prompt = document.getElementById('prompt').value;
-            
-            // Create CSV content
-            const csvContent = [
-                'Domain,Status,Quality Score,Quality Grade,Method',
-                ...currentResults.available.map(item => 
-                    `"${item.domain}","Available","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method}"`
-                ),
-                ...currentResults.taken.map(item => 
-                    `"${item.domain}","Taken","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method}"`
-                )
-            ].join('\\n');
-            
-            // Create and download file
-            const blob = new Blob([csvContent], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = `goblin-globe-conquest-${timestamp}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        }
-
-        function handleNewSearch() {
-            // Clear form
-            document.getElementById('prompt').value = '';
-            document.getElementById('count').value = '10';
-            
-            // Reset results
-            currentResults = { available: [], taken: [] };
-            results.classList.add('hidden');
-            error.classList.add('hidden');
-            
-            // Focus on prompt input
-            document.getElementById('prompt').focus();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        async function copyToClipboard(text) {
-            try {
-                await navigator.clipboard.writeText(text);
-                // Show temporary success message
-                const originalError = error.innerHTML;
-                error.innerHTML = '<p>COPIED TO CLIPBOARD!</p>';
-                error.classList.remove('hidden');
-                setTimeout(() => {
-                    error.classList.add('hidden');
-                    error.innerHTML = originalError;
-                }, 2000);
-            } catch (err) {
-                showError('FAILED TO COPY!');
-            }
-        }
-
-        function showError(message) {
-            error.innerHTML = `<p>${message}</p>`;
-            error.classList.remove('hidden');
-            results.classList.add('hidden');
-        }
-
-        function getErrorMessage(error) {
-            const message = error.message || 'UNKNOWN ERROR OCCURRED';
-            
-            if (message.includes('rate limit') || message.includes('429')) {
-                return 'TOO MANY REQUESTS! WAIT AND RETRY!';
-            }
-            
-            if (message.includes('timeout') || message.includes('ENOTFOUND')) {
-                return 'CONNECTION FAILED! CHECK INTERNET!';
-            }
-            
-            if (message.includes('401') || message.includes('403')) {
-                return 'AUTHENTICATION ERROR! REFRESH PAGE!';
-            }
-            
-            if (message.includes('500')) {
-                return 'SERVER ERROR! TRY AGAIN LATER!';
-            }
-            
-            return message.toUpperCase();
-        }
-
-        // Add aggressive interactions
-        document.addEventListener('DOMContentLoaded', () => {
-            // Add random glitch effects
-            setInterval(() => {
-                const blocks = document.querySelectorAll('.brutal-domain-block');
-                if (blocks.length > 0 && Math.random() < 0.1) {
-                    const randomBlock = blocks[Math.floor(Math.random() * blocks.length)];
-                    randomBlock.style.transform += ' translateX(2px)';
-                    setTimeout(() => {
-                        randomBlock.style.transform = randomBlock.style.transform.replace(' translateX(2px)', '');
-                    }, 100);
-                }
-            }, 2000);
-        });
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>

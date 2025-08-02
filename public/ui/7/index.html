@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GOBLIN GLOBE - Terminal Interface</title>
+    <title>GOBLIN GLOBE - Cyberdeck Terminal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&family=Source+Code+Pro:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Terminal Base Styles */
+        /* Cyberdeck Hacker Terminal Styles */
         * {
             margin: 0;
             padding: 0;
@@ -16,29 +16,39 @@
         }
 
         :root {
-            --terminal-bg: #000000;
-            --terminal-text: #00FF00;
-            --terminal-amber: #FFA500;
-            --terminal-red: #FF0000;
-            --terminal-blue: #0080FF;
-            --terminal-dim: #008000;
-            --terminal-cursor: #00FF00;
-            --scanline-opacity: 0.05;
+            --cyber-bg: #0d1117;
+            --cyber-amber: #ffaa00;
+            --cyber-orange: #ff6600;
+            --cyber-red: #ff3333;
+            --cyber-green: #33ff33;
+            --cyber-blue: #3366ff;
+            --cyber-dim: #663300;
+            --cyber-bright: #ffcc66;
+            --cyber-panel: #1a1a1a;
+            --cyber-border: #444444;
+            --scan-line: rgba(255, 170, 0, 0.1);
         }
 
         body {
-            font-family: 'Fira Code', 'Source Code Pro', 'Monaco', 'Menlo', monospace;
-            background: var(--terminal-bg);
-            color: var(--terminal-text);
+            font-family: 'VT323', 'Orbitron', monospace;
+            background: var(--cyber-bg);
+            color: var(--cyber-amber);
             margin: 0;
             padding: 0;
             overflow-x: hidden;
-            line-height: 1.4;
-            font-size: 14px;
+            line-height: 1.3;
+            font-size: 16px;
             position: relative;
+            background-image: 
+                linear-gradient(45deg, #1a1a1a 25%, transparent 25%),
+                linear-gradient(-45deg, #1a1a1a 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #1a1a1a 75%),
+                linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
+            background-size: 30px 30px;
+            background-position: 0 0, 0 15px, 15px -15px, -15px 0px;
         }
 
-        /* CRT Monitor Effects */
+        /* CRT Phosphor Effects */
         body::before {
             content: '';
             position: fixed;
@@ -49,170 +59,309 @@
             background: repeating-linear-gradient(
                 0deg,
                 transparent,
-                transparent 2px,
-                rgba(0, 255, 0, var(--scanline-opacity)) 2px,
-                rgba(0, 255, 0, var(--scanline-opacity)) 4px
+                transparent 1px,
+                var(--scan-line) 1px,
+                var(--scan-line) 3px
             );
             pointer-events: none;
             z-index: 1000;
+            animation: phosphor-flicker 0.15s infinite linear;
         }
 
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.3) 100%);
-            pointer-events: none;
-            z-index: 999;
+        @keyframes phosphor-flicker {
+            0% { opacity: 1; }
+            98% { opacity: 1; }
+            99% { opacity: 0.96; }
+            100% { opacity: 1; }
         }
 
-        /* Terminal Container */
-        .terminal {
+        /* Terminal Grid Layout */
+        .cyberdeck-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr 250px;
+            grid-template-rows: auto 1fr auto;
             min-height: 100vh;
-            padding: 20px;
+            gap: 2px;
+            padding: 5px;
             position: relative;
             z-index: 1;
         }
 
+        /* Panel Styles */
+        .panel {
+            background: var(--cyber-panel);
+            border: 2px solid var(--cyber-border);
+            padding: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: linear-gradient(90deg, var(--cyber-amber), var(--cyber-orange));
+            opacity: 0.3;
+        }
+
+        .panel-title {
+            position: absolute;
+            top: 2px;
+            left: 10px;
+            font-size: 12px;
+            color: var(--cyber-bg);
+            font-weight: bold;
+            z-index: 2;
+            text-transform: uppercase;
+        }
+
+        .panel-content {
+            margin-top: 25px;
+            height: calc(100% - 25px);
+            overflow-y: auto;
+        }
+
+        /* Header Panel */
+        .header-panel {
+            grid-column: 1 / -1;
+            height: 120px;
+        }
+
+        /* Left Panel - System Status */
+        .status-panel {
+            grid-row: 2;
+        }
+
+        /* Center Panel - Main Terminal */
+        .main-panel {
+            grid-row: 2;
+        }
+
+        /* Right Panel - Network Monitor */
+        .network-panel {
+            grid-row: 2;
+        }
+
+        /* Footer Panel */
+        .footer-panel {
+            grid-column: 1 / -1;
+            height: 60px;
+        }
+
         /* ASCII Art Logo */
         .logo {
-            font-family: 'Source Code Pro', monospace;
-            font-weight: 700;
+            font-family: 'VT323', monospace;
             font-size: 10px;
             line-height: 1;
-            color: var(--terminal-text);
-            text-shadow: 0 0 10px var(--terminal-text);
-            margin-bottom: 20px;
+            color: var(--cyber-amber);
+            text-shadow: 0 0 15px var(--cyber-amber);
             white-space: pre;
-            animation: logoGlow 3s ease-in-out infinite alternate;
+            animation: cyber-glow 2s ease-in-out infinite alternate;
+            text-align: center;
+            margin-top: -5px;
         }
 
-        @keyframes logoGlow {
-            0% { text-shadow: 0 0 10px var(--terminal-text); }
-            100% { text-shadow: 0 0 20px var(--terminal-text), 0 0 30px var(--terminal-text); }
+        @keyframes cyber-glow {
+            0% { 
+                text-shadow: 0 0 15px var(--cyber-amber);
+                filter: brightness(1);
+            }
+            100% { 
+                text-shadow: 0 0 25px var(--cyber-amber), 0 0 35px var(--cyber-orange);
+                filter: brightness(1.2);
+            }
         }
 
-        /* System Info */
-        .system-info {
-            color: var(--terminal-dim);
-            margin-bottom: 20px;
-            font-size: 12px;
-        }
-
-        .system-info .timestamp {
-            color: var(--terminal-amber);
-        }
-
-        /* Command Prompt */
-        .prompt-line {
+        /* System Status Elements */
+        .status-item {
             display: flex;
-            align-items: center;
-            margin-bottom: 10px;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 12px;
+            border-bottom: 1px dotted var(--cyber-dim);
+            padding-bottom: 4px;
+        }
+
+        .status-label {
+            color: var(--cyber-dim);
+            text-transform: uppercase;
+        }
+
+        .status-value {
+            color: var(--cyber-amber);
+            font-weight: bold;
+            text-shadow: 0 0 8px var(--cyber-amber);
+        }
+
+        .status-value.online {
+            color: var(--cyber-green);
+            text-shadow: 0 0 8px var(--cyber-green);
+        }
+
+        .status-value.warning {
+            color: var(--cyber-orange);
+            text-shadow: 0 0 8px var(--cyber-orange);
+        }
+
+        .status-value.critical {
+            color: var(--cyber-red);
+            text-shadow: 0 0 8px var(--cyber-red);
+            animation: critical-blink 1s infinite;
+        }
+
+        @keyframes critical-blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.5; }
+        }
+
+        /* Network Diagnostic */
+        .network-diagnostic {
+            font-size: 11px;
+            line-height: 1.2;
+            color: var(--cyber-dim);
+            margin: 5px 0;
+        }
+
+        .network-address {
+            color: var(--cyber-blue);
+            font-family: monospace;
+        }
+
+        /* Hex Dump Style */
+        .hex-dump {
+            font-family: 'VT323', monospace;
+            font-size: 11px;
+            line-height: 1.1;
+            color: var(--cyber-dim);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px;
+            margin: 5px 0;
+            border-left: 2px solid var(--cyber-amber);
+            overflow-x: auto;
+        }
+
+        .hex-address {
+            color: var(--cyber-orange);
+            margin-right: 10px;
+        }
+
+        .hex-data {
+            color: var(--cyber-amber);
+            margin-right: 5px;
+        }
+
+        .hex-ascii {
+            color: var(--cyber-green);
+        }
+
+        /* Command Interface */
+        .command-line {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
             position: relative;
         }
 
         .prompt-prefix {
-            color: var(--terminal-amber);
+            color: var(--cyber-bright);
             margin-right: 8px;
-            font-weight: 500;
+            font-weight: bold;
+            text-shadow: 0 0 10px var(--cyber-bright);
+            min-width: 30px;
+            font-size: 14px;
         }
 
-        .command-input {
-            background: transparent;
-            border: none;
-            color: var(--terminal-text);
-            font-family: inherit;
-            font-size: inherit;
+        .command-input,
+        .terminal-input,
+        .terminal-textarea {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--cyber-dim);
+            color: var(--cyber-amber);
+            font-family: 'VT323', monospace;
+            font-size: 14px;
             outline: none;
             flex: 1;
-            padding: 0;
-            text-shadow: 0 0 8px var(--terminal-text);
+            padding: 8px;
+            text-shadow: 0 0 8px var(--cyber-amber);
+            transition: all 0.3s ease;
         }
 
-        .command-input::placeholder {
-            color: var(--terminal-dim);
+        .terminal-textarea {
+            min-height: 80px;
+            resize: vertical;
+            font-size: 13px;
         }
 
-        /* Cursor */
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 16px;
-            background: var(--terminal-cursor);
-            margin-left: 2px;
-            animation: blink 1s infinite;
-            box-shadow: 0 0 8px var(--terminal-cursor);
+        .command-input:focus,
+        .terminal-input:focus,
+        .terminal-textarea:focus {
+            border-color: var(--cyber-amber);
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.5);
+            background: rgba(255, 170, 0, 0.05);
         }
 
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
+        .command-input::placeholder,
+        .terminal-textarea::placeholder {
+            color: var(--cyber-dim);
         }
 
         /* Form Sections */
         .form-section {
-            margin: 20px 0;
-            border-left: 2px solid var(--terminal-dim);
+            margin: 15px 0;
+            border-left: 3px solid var(--cyber-dim);
             padding-left: 15px;
+            position: relative;
         }
 
         .form-section.active {
-            border-left-color: var(--terminal-text);
-            animation: sectionPulse 2s infinite;
+            border-left-color: var(--cyber-amber);
+            animation: cyber-section-pulse 2s infinite;
         }
 
-        @keyframes sectionPulse {
-            0%, 100% { border-left-color: var(--terminal-text); }
-            50% { border-left-color: var(--terminal-amber); }
+        @keyframes cyber-section-pulse {
+            0%, 100% { 
+                border-left-color: var(--cyber-amber);
+                box-shadow: -10px 0 20px rgba(255, 170, 0, 0.2);
+            }
+            50% { 
+                border-left-color: var(--cyber-bright);
+                box-shadow: -10px 0 30px rgba(255, 170, 0, 0.4);
+            }
         }
 
         .section-label {
-            color: var(--terminal-amber);
+            color: var(--cyber-bright);
             margin-bottom: 8px;
             text-transform: uppercase;
-            font-weight: 500;
+            font-weight: bold;
             letter-spacing: 1px;
+            text-shadow: 0 0 10px var(--cyber-bright);
+            font-size: 13px;
         }
 
-        /* Input Fields */
-        .terminal-input {
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid var(--terminal-dim);
-            color: var(--terminal-text);
-            font-family: inherit;
-            font-size: inherit;
-            padding: 8px 0;
-            width: 100%;
-            outline: none;
-            transition: all 0.3s ease;
+        /* Blinking Cursor */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background: var(--cyber-amber);
+            margin-left: 2px;
+            animation: cyber-blink 1.2s infinite;
+            box-shadow: 0 0 15px var(--cyber-amber);
         }
 
-        .terminal-input:focus {
-            border-bottom-color: var(--terminal-text);
-            text-shadow: 0 0 8px var(--terminal-text);
-        }
-
-        .terminal-textarea {
-            background: transparent;
-            border: 1px solid var(--terminal-dim);
-            color: var(--terminal-text);
-            font-family: inherit;
-            font-size: inherit;
-            padding: 10px;
-            width: 100%;
-            min-height: 80px;
-            resize: vertical;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .terminal-textarea:focus {
-            border-color: var(--terminal-text);
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        @keyframes cyber-blink {
+            0%, 50% { 
+                opacity: 1;
+                background: var(--cyber-amber);
+            }
+            51%, 100% { 
+                opacity: 0;
+                background: transparent;
+            }
         }
 
         /* Checkboxes */
@@ -228,17 +377,19 @@
             align-items: center;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .checkbox-item:hover {
-            color: var(--terminal-amber);
+            color: var(--cyber-bright);
+            text-shadow: 0 0 10px var(--cyber-bright);
         }
 
         .checkbox-input {
             appearance: none;
-            width: 12px;
-            height: 12px;
-            border: 1px solid var(--terminal-text);
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--cyber-amber);
             margin-right: 8px;
             position: relative;
             background: transparent;
@@ -246,28 +397,28 @@
         }
 
         .checkbox-input:checked {
-            background: var(--terminal-text);
-            box-shadow: 0 0 8px var(--terminal-text);
+            background: var(--cyber-amber);
+            box-shadow: 0 0 15px var(--cyber-amber);
         }
 
         .checkbox-input:checked::after {
-            content: 'X';
+            content: '√';
             position: absolute;
             top: -2px;
             left: 2px;
-            color: var(--terminal-bg);
-            font-size: 10px;
+            color: var(--cyber-bg);
+            font-size: 12px;
             font-weight: bold;
         }
 
-        /* Buttons */
+        /* Cyberdeck Buttons */
         .terminal-button {
-            background: transparent;
-            border: 1px solid var(--terminal-text);
-            color: var(--terminal-text);
-            padding: 10px 20px;
-            font-family: inherit;
-            font-size: inherit;
+            background: linear-gradient(45deg, var(--cyber-panel), var(--cyber-border));
+            border: 2px solid var(--cyber-amber);
+            color: var(--cyber-amber);
+            padding: 12px 24px;
+            font-family: 'VT323', monospace;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.3s ease;
             margin: 10px 5px 10px 0;
@@ -275,40 +426,56 @@
             letter-spacing: 1px;
             position: relative;
             overflow: hidden;
+            text-shadow: 0 0 10px var(--cyber-amber);
+            transform: skew(-5deg);
+        }
+
+        .terminal-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--cyber-amber), transparent);
+            opacity: 0.3;
+            transition: left 0.6s;
         }
 
         .terminal-button:hover {
-            background: var(--terminal-text);
-            color: var(--terminal-bg);
-            box-shadow: 0 0 15px var(--terminal-text);
+            background: var(--cyber-amber);
+            color: var(--cyber-bg);
+            box-shadow: 0 0 25px var(--cyber-amber);
+            text-shadow: none;
+            transform: skew(-5deg) scale(1.05);
+        }
+
+        .terminal-button:hover::before {
+            left: 100%;
         }
 
         .terminal-button:disabled {
-            border-color: var(--terminal-dim);
-            color: var(--terminal-dim);
+            border-color: var(--cyber-dim);
+            color: var(--cyber-dim);
             cursor: not-allowed;
-        }
-
-        .terminal-button:disabled:hover {
-            background: transparent;
-            color: var(--terminal-dim);
-            box-shadow: none;
+            text-shadow: none;
+            transform: skew(-5deg);
         }
 
         .button-primary {
-            border-color: var(--terminal-amber);
-            color: var(--terminal-amber);
+            border-color: var(--cyber-orange);
+            color: var(--cyber-orange);
+            text-shadow: 0 0 10px var(--cyber-orange);
         }
 
         .button-primary:hover {
-            background: var(--terminal-amber);
-            color: var(--terminal-bg);
-            box-shadow: 0 0 15px var(--terminal-amber);
+            background: var(--cyber-orange);
+            box-shadow: 0 0 30px var(--cyber-orange);
         }
 
         /* Loading Animation */
         .loading-section {
-            margin: 30px 0;
+            margin: 20px 0;
             display: none;
         }
 
@@ -324,29 +491,46 @@
 
         .loading-text {
             margin-right: 15px;
-            min-width: 200px;
+            min-width: 180px;
+            text-shadow: 0 0 10px var(--cyber-amber);
+            font-size: 13px;
         }
 
         .progress-bar {
             flex: 1;
-            height: 4px;
-            background: var(--terminal-dim);
+            height: 8px;
+            background: var(--cyber-dim);
             position: relative;
             overflow: hidden;
+            border: 1px solid var(--cyber-amber);
+            transform: skew(-10deg);
         }
 
         .progress-fill {
             height: 100%;
-            background: var(--terminal-text);
+            background: linear-gradient(90deg, var(--cyber-amber), var(--cyber-orange), var(--cyber-amber));
             width: 0%;
             transition: width 0.5s ease;
-            box-shadow: 0 0 10px var(--terminal-text);
+            box-shadow: 0 0 20px var(--cyber-amber);
+            animation: cyber-progress-scan 2s infinite;
+        }
+
+        @keyframes cyber-progress-scan {
+            0%, 100% { 
+                filter: brightness(1);
+            }
+            50% { 
+                filter: brightness(1.5);
+            }
         }
 
         .spinner {
             display: inline-block;
-            margin-left: 10px;
+            margin-left: 15px;
             animation: spin 1s linear infinite;
+            color: var(--cyber-orange);
+            text-shadow: 0 0 15px var(--cyber-orange);
+            font-size: 16px;
         }
 
         @keyframes spin {
@@ -356,144 +540,178 @@
 
         /* Results Section */
         .results-section {
-            margin-top: 40px;
+            margin-top: 20px;
             display: none;
         }
 
         .results-section.active {
             display: block;
-            animation: terminalFadeIn 0.5s ease-in;
+            animation: cyber-fade-in 1s ease-in;
         }
 
-        @keyframes terminalFadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+        @keyframes cyber-fade-in {
+            0% { 
+                opacity: 0; 
+                transform: translateY(30px) rotateX(10deg);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) rotateX(0deg);
+            }
         }
 
         .results-header {
-            color: var(--terminal-amber);
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--terminal-dim);
-            padding-bottom: 10px;
+            color: var(--cyber-bright);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--cyber-dim);
+            padding-bottom: 8px;
+            text-shadow: 0 0 15px var(--cyber-bright);
         }
 
         .domain-list {
-            margin: 20px 0;
+            margin: 15px 0;
         }
 
         .domain-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px dotted var(--terminal-dim);
+            padding: 10px 0;
+            border-bottom: 1px dotted var(--cyber-dim);
             transition: all 0.3s ease;
-        }
-
-        .domain-item:hover {
-            background: rgba(0, 255, 0, 0.05);
+            background: rgba(0, 0, 0, 0.2);
+            margin: 2px 0;
             padding-left: 10px;
         }
 
+        .domain-item:hover {
+            background: rgba(255, 170, 0, 0.1);
+            padding-left: 20px;
+            box-shadow: 0 0 20px rgba(255, 170, 0, 0.3);
+            transform: skew(-2deg);
+        }
+
         .domain-name {
-            font-weight: 500;
-            text-shadow: 0 0 5px var(--terminal-text);
+            font-weight: bold;
+            text-shadow: 0 0 10px var(--cyber-amber);
+            font-size: 14px;
         }
 
         .domain-status {
-            font-size: 12px;
-            padding: 2px 8px;
+            font-size: 10px;
+            padding: 4px 10px;
             border: 1px solid;
+            text-transform: uppercase;
+            transform: skew(-5deg);
         }
 
         .status-available {
-            color: var(--terminal-text);
-            border-color: var(--terminal-text);
-            background: rgba(0, 255, 0, 0.1);
+            color: var(--cyber-green);
+            border-color: var(--cyber-green);
+            background: rgba(51, 255, 51, 0.2);
+            text-shadow: 0 0 10px var(--cyber-green);
         }
 
         .status-taken {
-            color: var(--terminal-red);
-            border-color: var(--terminal-red);
-            background: rgba(255, 0, 0, 0.1);
+            color: var(--cyber-red);
+            border-color: var(--cyber-red);
+            background: rgba(255, 51, 51, 0.2);
+            text-shadow: 0 0 10px var(--cyber-red);
         }
 
         .domain-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
         }
 
         .action-button {
             background: transparent;
-            border: 1px solid var(--terminal-blue);
-            color: var(--terminal-blue);
-            padding: 4px 8px;
+            border: 1px solid var(--cyber-amber);
+            color: var(--cyber-amber);
+            padding: 4px 10px;
             font-size: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
+            font-family: 'VT323', monospace;
+            transform: skew(-5deg);
         }
 
         .action-button:hover {
-            background: var(--terminal-blue);
-            color: var(--terminal-bg);
+            background: var(--cyber-amber);
+            color: var(--cyber-bg);
+            box-shadow: 0 0 15px var(--cyber-amber);
+            transform: skew(-5deg) scale(1.1);
         }
 
         /* Error Messages */
         .error-section {
-            margin: 20px 0;
+            margin: 15px 0;
             padding: 15px;
-            border: 1px solid var(--terminal-red);
-            background: rgba(255, 0, 0, 0.1);
-            color: var(--terminal-red);
+            border: 2px solid var(--cyber-red);
+            background: rgba(255, 51, 51, 0.1);
+            color: var(--cyber-red);
             display: none;
+            text-shadow: 0 0 10px var(--cyber-red);
+            transform: skew(-2deg);
         }
 
         .error-section.active {
             display: block;
-            animation: errorFlash 0.5s ease-in;
+            animation: cyber-error-alert 0.5s ease-in;
         }
 
-        @keyframes errorFlash {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        /* Typing Animation */
-        .typing-text {
-            overflow: hidden;
-            white-space: nowrap;
-            border-right: 2px solid var(--terminal-cursor);
-            animation: typing 2s steps(40, end), blink-cursor 0.75s step-end infinite;
-        }
-
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-
-        @keyframes blink-cursor {
-            from, to { border-color: transparent; }
-            50% { border-color: var(--terminal-cursor); }
+        @keyframes cyber-error-alert {
+            0%, 100% { 
+                opacity: 1; 
+                border-color: var(--cyber-red);
+            }
+            25%, 75% { 
+                opacity: 0.7; 
+                border-color: var(--cyber-orange);
+            }
+            50% { 
+                opacity: 0.9; 
+                border-color: var(--cyber-red);
+            }
         }
 
         /* Help Text */
         .help-text {
-            color: var(--terminal-dim);
+            color: var(--cyber-dim);
             font-size: 11px;
-            margin-top: 20px;
-            line-height: 1.6;
+            line-height: 1.4;
+            text-shadow: 0 0 5px var(--cyber-dim);
         }
 
         .help-command {
-            color: var(--terminal-amber);
+            color: var(--cyber-orange);
+            text-shadow: 0 0 8px var(--cyber-orange);
         }
 
         /* Responsive Design */
+        @media (max-width: 1024px) {
+            .cyberdeck-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto 1fr auto auto;
+            }
+            
+            .status-panel,
+            .network-panel {
+                grid-column: 1;
+            }
+            
+            .main-panel {
+                grid-column: 1;
+                grid-row: 3;
+            }
+        }
+
         @media (max-width: 768px) {
-            .terminal {
-                padding: 10px;
+            .cyberdeck-grid {
+                padding: 2px;
+                gap: 1px;
             }
             
             .logo {
@@ -501,7 +719,7 @@
             }
             
             body {
-                font-size: 12px;
+                font-size: 14px;
             }
             
             .checkbox-group {
@@ -514,152 +732,242 @@
         .hidden {
             display: none !important;
         }
+
+        /* Data scrolling effect */
+        .data-scroll {
+            animation: data-stream 10s linear infinite;
+        }
+
+        @keyframes data-stream {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-20px); }
+        }
     </style>
 </head>
 <body>
-    <div class="terminal">
-        <!-- ASCII Art Logo -->
-        <div class="logo">
+    <div class="cyberdeck-grid">
+        <!-- Header Panel -->
+        <div class="panel header-panel">
+            <div class="panel-title">GOBLIN GLOBE CYBERDECK v4.2.1</div>
+            <div class="panel-content">
+                <div class="logo">
  ██████╗  ██████╗ ██████╗ ██╗     ██╗███╗   ██╗     ██████╗ ██╗      ██████╗ ██████╗ ███████╗
 ██╔════╝ ██╔═══██╗██╔══██╗██║     ██║████╗  ██║    ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔════╝
 ██║  ███╗██║   ██║██████╔╝██║     ██║██╔██╗ ██║    ██║  ███╗██║     ██║   ██║██████╔╝█████╗  
 ██║   ██║██║   ██║██╔══██╗██║     ██║██║╚██╗██║    ██║   ██║██║     ██║   ██║██╔══██╗██╔══╝  
 ╚██████╔╝╚██████╔╝██████╔╝███████╗██║██║ ╚████║    ╚██████╔╝███████╗╚██████╔╝██████╔╝███████╗
  ╚═════╝  ╚═════╝ ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝     ╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚══════╝
-                                                                                               
-        </div>
-
-        <!-- System Info -->
-        <div class="system-info">
-            <div>DOMAIN FINDER v2.0.0 - Terminal Interface</div>
-            <div>System: <span class="timestamp" id="systemTime"></span></div>
-            <div>Status: <span style="color: var(--terminal-text);">READY</span></div>
-            <div>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
-        </div>
-
-        <!-- Main Command Interface -->
-        <form id="terminalForm">
-            <!-- Prompt Description -->
-            <div class="form-section active" id="promptSection">
-                <div class="section-label">&gt; DOMAIN_DESCRIPTION:</div>
-                <div class="prompt-line">
-                    <span class="prompt-prefix">$</span>
-                    <textarea 
-                        id="promptInput" 
-                        class="terminal-textarea"
-                        placeholder="Enter domain concept description..."
-                        rows="3"
-                    ></textarea>
                 </div>
-            </div>
-
-            <!-- Count Selection -->
-            <div class="form-section" id="countSection">
-                <div class="section-label">&gt; GENERATION_COUNT:</div>
-                <div class="prompt-line">
-                    <span class="prompt-prefix">$</span>
-                    <input 
-                        type="number" 
-                        id="countInput" 
-                        class="terminal-input"
-                        min="1" 
-                        max="20" 
-                        value="10"
-                        style="width: 100px;"
-                    >
-                    <span style="margin-left: 10px; color: var(--terminal-dim);">[1-20]</span>
-                </div>
-            </div>
-
-            <!-- Extensions Selection -->
-            <div class="form-section" id="extensionsSection">
-                <div class="section-label">&gt; DOMAIN_EXTENSIONS:</div>
-                <div class="checkbox-group">
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="extensions" value=".com" checked class="checkbox-input">
-                        <span>.com</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="extensions" value=".net" class="checkbox-input">
-                        <span>.net</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="extensions" value=".org" class="checkbox-input">
-                        <span>.org</span>
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="extensions" value=".io" class="checkbox-input">
-                        <span>.io</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Execute Button -->
-            <div class="form-section">
-                <button type="submit" id="executeButton" class="terminal-button button-primary">
-                    <span id="executeText">EXECUTE SCAN</span>
-                    <span id="executeSpinner" class="spinner hidden">⣾</span>
-                </button>
-                <button type="button" id="clearButton" class="terminal-button">CLEAR</button>
-            </div>
-        </form>
-
-        <!-- Loading Section -->
-        <div class="loading-section" id="loadingSection">
-            <div class="section-label">&gt; SYSTEM_STATUS:</div>
-            <div class="loading-bar">
-                <div class="loading-text" id="loadingText">Initializing scan...</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-                <div class="spinner" id="loadingSpinner">⣾</div>
-            </div>
-            <div id="progressDetails" style="color: var(--terminal-dim); font-size: 12px; margin-top: 5px;"></div>
-        </div>
-
-        <!-- Error Section -->
-        <div class="error-section" id="errorSection">
-            <div class="section-label">&gt; ERROR_LOG:</div>
-            <div id="errorMessage"></div>
-        </div>
-
-        <!-- Results Section -->
-        <div class="results-section" id="resultsSection">
-            <div class="results-header">
-                <div class="section-label">&gt; SCAN_RESULTS:</div>
-                <div id="scanSummary" style="color: var(--terminal-dim); margin-top: 10px;"></div>
-            </div>
-
-            <!-- Available Domains -->
-            <div id="availableSection">
-                <div style="color: var(--terminal-text); margin: 20px 0 10px 0; border-left: 3px solid var(--terminal-text); padding-left: 10px;">
-                    AVAILABLE DOMAINS [<span id="availableCount">0</span>]
-                </div>
-                <div class="domain-list" id="availableList"></div>
-            </div>
-
-            <!-- Taken Domains -->
-            <div id="takenSection">
-                <div style="color: var(--terminal-red); margin: 20px 0 10px 0; border-left: 3px solid var(--terminal-red); padding-left: 10px;">
-                    TAKEN DOMAINS [<span id="takenCount">0</span>]
-                </div>
-                <div class="domain-list" id="takenList"></div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="form-section">
-                <button type="button" id="exportButton" class="terminal-button">EXPORT_DATA</button>
-                <button type="button" id="copyButton" class="terminal-button">COPY_AVAILABLE</button>
-                <button type="button" id="newScanButton" class="terminal-button">NEW_SCAN</button>
             </div>
         </div>
 
-        <!-- Help Text -->
-        <div class="help-text">
-            <div>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
-            <div>COMMANDS: <span class="help-command">CTRL+ENTER</span> Execute | <span class="help-command">CTRL+C</span> Copy | <span class="help-command">CTRL+S</span> Export | <span class="help-command">CTRL+R</span> Reset</div>
-            <div>STATUS: Domain availability checked via DNS lookup with WHOIS fallback</div>
-            <div>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+        <!-- Status Panel -->
+        <div class="panel status-panel">
+            <div class="panel-title">SYSTEM STATUS</div>
+            <div class="panel-content">
+                <div class="status-item">
+                    <span class="status-label">POWER:</span>
+                    <span class="status-value online">ONLINE</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">CPU:</span>
+                    <span class="status-value" id="cpuUsage">45%</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">MEMORY:</span>
+                    <span class="status-value" id="memUsage">67%</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">NETWORK:</span>
+                    <span class="status-value online">CONNECTED</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">UPTIME:</span>
+                    <span class="status-value" id="systemTime"></span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">DOMAINS:</span>
+                    <span class="status-value" id="domainCount">0</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">SECURITY:</span>
+                    <span class="status-value warning">ELEVATED</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Terminal Panel -->
+        <div class="panel main-panel">
+            <div class="panel-title">DOMAIN ACQUISITION TERMINAL</div>
+            <div class="panel-content">
+                <!-- Main Command Interface -->
+                <form id="terminalForm">
+                    <!-- Prompt Description -->
+                    <div class="form-section active" id="promptSection">
+                        <div class="section-label">>>> TARGET_DESCRIPTION:</div>
+                        <div class="command-line">
+                            <span class="prompt-prefix">C:\></span>
+                            <textarea 
+                                id="promptInput" 
+                                class="terminal-textarea"
+                                placeholder="Enter domain acquisition target parameters..."
+                                rows="3"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Count Selection -->
+                    <div class="form-section" id="countSection">
+                        <div class="section-label">>>> SCAN_DEPTH:</div>
+                        <div class="command-line">
+                            <span class="prompt-prefix">C:\></span>
+                            <input 
+                                type="number" 
+                                id="countInput" 
+                                class="terminal-input"
+                                min="1" 
+                                max="20" 
+                                value="10"
+                                style="width: 100px;"
+                            >
+                            <span style="margin-left: 10px; color: var(--cyber-dim);">[RANGE: 1-20]</span>
+                        </div>
+                    </div>
+
+                    <!-- Extensions Selection -->
+                    <div class="form-section" id="extensionsSection">
+                        <div class="section-label">>>> TLD_TARGETS:</div>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="extensions" value=".com" checked class="checkbox-input">
+                                <span>.com</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="extensions" value=".net" class="checkbox-input">
+                                <span>.net</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="extensions" value=".org" class="checkbox-input">
+                                <span>.org</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="extensions" value=".io" class="checkbox-input">
+                                <span>.io</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Execute Button -->
+                    <div class="form-section">
+                        <button type="submit" id="executeButton" class="terminal-button button-primary">
+                            <span id="executeText">INITIATE SCAN</span>
+                            <span id="executeSpinner" class="spinner hidden">◢</span>
+                        </button>
+                        <button type="button" id="clearButton" class="terminal-button">CLEAR_BUFFER</button>
+                    </div>
+                </form>
+
+                <!-- Loading Section -->
+                <div class="loading-section" id="loadingSection">
+                    <div class="section-label">>>> SCAN_STATUS:</div>
+                    <div class="loading-bar">
+                        <div class="loading-text" id="loadingText">Initializing scan protocols...</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="spinner" id="loadingSpinner">◢</div>
+                    </div>
+                    <div id="progressDetails" style="color: var(--cyber-dim); font-size: 11px; margin-top: 5px;"></div>
+                </div>
+
+                <!-- Error Section -->
+                <div class="error-section" id="errorSection">
+                    <div class="section-label">>>> ERROR_LOG:</div>
+                    <div id="errorMessage"></div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="results-section" id="resultsSection">
+                    <div class="results-header">
+                        <div class="section-label">>>> ACQUISITION_RESULTS:</div>
+                        <div id="scanSummary" style="color: var(--cyber-dim); margin-top: 10px;"></div>
+                    </div>
+
+                    <!-- Available Domains -->
+                    <div id="availableSection">
+                        <div style="color: var(--cyber-green); margin: 15px 0 10px 0; border-left: 3px solid var(--cyber-green); padding-left: 10px; text-shadow: 0 0 10px var(--cyber-green);">
+                            AVAILABLE TARGETS [<span id="availableCount">0</span>]
+                        </div>
+                        <div class="domain-list" id="availableList"></div>
+                    </div>
+
+                    <!-- Taken Domains -->
+                    <div id="takenSection">
+                        <div style="color: var(--cyber-red); margin: 15px 0 10px 0; border-left: 3px solid var(--cyber-red); padding-left: 10px; text-shadow: 0 0 10px var(--cyber-red);">
+                            OCCUPIED TARGETS [<span id="takenCount">0</span>]
+                        </div>
+                        <div class="domain-list" id="takenList"></div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="form-section">
+                        <button type="button" id="exportButton" class="terminal-button">EXPORT_DATA</button>
+                        <button type="button" id="copyButton" class="terminal-button">COPY_TARGETS</button>
+                        <button type="button" id="newScanButton" class="terminal-button">NEW_SCAN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Network Monitor Panel -->
+        <div class="panel network-panel">
+            <div class="panel-title">NETWORK DIAGNOSTIC</div>
+            <div class="panel-content data-scroll">
+                <div class="network-diagnostic">
+                    <div>REMOTE HOST: <span class="network-address">api.openai.com</span></div>
+                    <div>STATUS: <span style="color: var(--cyber-green);">ACTIVE</span></div>
+                    <div>LATENCY: <span id="latency">42ms</span></div>
+                    <div>PACKETS: <span id="packets">1247</span></div>
+                </div>
+                
+                <div class="hex-dump">
+                    <div><span class="hex-address">0x0000</span><span class="hex-data">47 4F 42 4C 49 4E</span><span class="hex-ascii">GOBLIN</span></div>
+                    <div><span class="hex-address">0x0006</span><span class="hex-data">20 47 4C 4F 42 45</span><span class="hex-ascii"> GLOBE</span></div>
+                    <div><span class="hex-address">0x000C</span><span class="hex-data">20 44 4F 4D 41 49</span><span class="hex-ascii"> DOMAI</span></div>
+                    <div><span class="hex-address">0x0012</span><span class="hex-data">4E 20 53 43 41 4E</span><span class="hex-ascii">N SCAN</span></div>
+                    <div><span class="hex-address">0x0018</span><span class="hex-data">4E 45 52 20 76 34</span><span class="hex-ascii">NER v4</span></div>
+                    <div><span class="hex-address">0x001E</span><span class="hex-data">2E 32 2E 31 00 00</span><span class="hex-ascii">.2.1..</span></div>
+                </div>
+
+                <div class="network-diagnostic">
+                    <div>DNS SERVERS:</div>
+                    <div class="network-address">8.8.8.8</div>
+                    <div class="network-address">1.1.1.1</div>
+                    <div class="network-address">208.67.222.222</div>
+                </div>
+
+                <div class="network-diagnostic">
+                    <div>WHOIS ENDPOINTS:</div>
+                    <div class="network-address">whois.verisign-grs.com</div>
+                    <div class="network-address">whois.pir.org</div>
+                    <div class="network-address">whois.afilias.net</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Panel -->
+        <div class="panel footer-panel">
+            <div class="panel-title">COMMAND REFERENCE</div>
+            <div class="panel-content">
+                <div class="help-text">
+                    <span class="help-command">CTRL+ENTER</span> Execute Scan | 
+                    <span class="help-command">CTRL+C</span> Copy Available | 
+                    <span class="help-command">CTRL+S</span> Export Data | 
+                    <span class="help-command">CTRL+R</span> Reset Terminal |
+                    <span class="help-command">F1-F10</span> Function Keys | 
+                    <span style="color: var(--cyber-green);">PROTOCOL:</span> DNS+WHOIS verification
+                </div>
+            </div>
         </div>
     </div>
 

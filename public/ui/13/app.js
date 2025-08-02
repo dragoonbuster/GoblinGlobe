@@ -1,653 +1,759 @@
-// DOM Elements
-const form = document.getElementById('generateForm');
-const generateButton = document.getElementById('generateButton');
-const buttonText = document.getElementById('buttonText');
-const buttonSpinner = document.getElementById('buttonSpinner');
-const loading = document.getElementById('loading');
-const loadingMessage = document.getElementById('loadingMessage');
-const progressBar = document.getElementById('progressBar');
-const progressFill = document.getElementById('progressFill');
-const progressText = document.getElementById('progressText');
-const results = document.getElementById('results');
-const error = document.getElementById('error');
-const availableList = document.getElementById('availableList');
-const takenList = document.getElementById('takenList');
-const exportBtn = document.getElementById('exportBtn');
-const copyAllBtn = document.getElementById('copyAllBtn');
-const newSearchBtn = document.getElementById('newSearchBtn');
-const toastContainer = document.getElementById('toastContainer');
+// Educational 90s CD-ROM Style Goblin Globe Domain Finder
+// Fun and educational domain learning adventure with Professor Goblin!
 
-// Global state
+// Global variables for the learning experience
 let currentResults = { available: [], taken: [] };
-let currentSummary = {};
+let searchInProgress = false;
+let learningScore = 0;
+let factsShown = 0;
 
-// Initialize event listeners
-form.addEventListener('submit', handleFormSubmit);
-exportBtn.addEventListener('click', handleExport);
-copyAllBtn.addEventListener('click', handleCopyAll);
-newSearchBtn.addEventListener('click', handleNewSearch);
+// Educational messages and facts
+const educationalFacts = [
+    "The first domain name ever registered was symbolics.com on March 15, 1985!",
+    "Domain names can only use letters, numbers, and hyphens - no spaces allowed!",
+    "The most expensive domain ever sold was cars.com for $872 million!",
+    "There are over 1,500 different domain extensions like .com, .net, and .org!",
+    "Domain names aren't case sensitive - GOOGLE.COM is the same as google.com!",
+    "The longest domain name has 63 characters - that's really long!",
+    "Some countries have their own special extensions like .uk for United Kingdom!",
+    "A good domain name should be easy to remember and easy to spell!"
+];
 
-// Add vaporwave keyboard shortcuts with aesthetic sound effects
-document.addEventListener('keydown', (e) => {
-  if (e.ctrlKey || e.metaKey) {
-    switch (e.key) {
-      case 'Enter':
-        if (!generateButton.disabled) {
-          playAestheticSound('activate');
-          form.dispatchEvent(new Event('submit'));
-        }
-        break;
-      case 'c':
-        if (currentResults.available.length > 0) {
-          e.preventDefault();
-          playAestheticSound('copy');
-          handleCopyAll();
-        }
-        break;
-      case 's':
-        if (currentResults.available.length > 0) {
-          e.preventDefault();
-          playAestheticSound('save');
-          handleExport();
-        }
-        break;
-      case 'r':
-        e.preventDefault();
-        playAestheticSound('reset');
-        handleNewSearch();
-        break;
-    }
-  }
+const loadingMessages = [
+    "🌟 Professor Goblin is working his magic... 🌟",
+    "📚 Searching through the magical domain library... 📚",
+    "🔮 Consulting the crystal ball of domains... 🔮",
+    "🎯 Focusing the learning laser on great domains... 🎯",
+    "🎨 Painting a picture of perfect domains... 🎨",
+    "🧪 Mixing up a potion of awesome domain names... 🧪",
+    "🌈 Creating a rainbow of domain possibilities... 🌈",
+    "⭐ Gathering stardust for magical domains... ⭐"
+];
+
+const loadingDetails = [
+    "Searching through the magical domain library...",
+    "Consulting the wise domain spirits...",
+    "Mixing creativity with technology...",
+    "Checking availability with magic...",
+    "Calculating awesomeness scores...",
+    "Adding sparkles to the results...",
+    "Making sure everything is perfect...",
+    "Almost ready with your domains!"
+];
+
+// Initialize the educational system
+document.addEventListener('DOMContentLoaded', function() {
+    initializeEducationalFeatures();
+    startLearningAnimations();
+    showRandomFact();
+    
+    // Set up form submission
+    document.getElementById('domainForm').addEventListener('submit', handleFormSubmit);
+    
+    // Show random educational facts
+    setInterval(showRandomFact, 30000);
+    
+    console.log('🎓 Professor Goblin\'s Learning System Ready for Adventure! 🎓');
 });
 
-// Aesthetic sound effects (using Web Audio API)
-function playAestheticSound(type) {
-  try {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
+// Initialize educational features
+function initializeEducationalFeatures() {
+    // Add helpful tooltips
+    addEducationalTooltips();
     
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+    // Initialize encouraging interactions
+    initializeEncouragement();
     
-    // Different retro sounds for different actions
-    switch (type) {
-      case 'activate':
-        oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(880, audioContext.currentTime + 0.1);
-        break;
-      case 'copy':
-        oscillator.frequency.setValueAtTime(660, audioContext.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(330, audioContext.currentTime + 0.1);
-        break;
-      case 'save':
-        oscillator.frequency.setValueAtTime(220, audioContext.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(440, audioContext.currentTime + 0.15);
-        break;
-      case 'reset':
-        oscillator.frequency.setValueAtTime(880, audioContext.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(220, audioContext.currentTime + 0.2);
-        break;
-      case 'error':
-        oscillator.frequency.setValueAtTime(150, audioContext.currentTime);
-        oscillator.type = 'sawtooth';
-        break;
-      case 'success':
-        oscillator.frequency.setValueAtTime(523, audioContext.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(784, audioContext.currentTime + 0.1);
-        oscillator.frequency.exponentialRampToValueAtTime(1047, audioContext.currentTime + 0.2);
-        break;
-    }
-    
-    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3);
-    
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.3);
-  } catch (err) {
-    // Silently fail if Web Audio API is not supported
-    console.log('Audio not supported or user gesture required');
-  }
+    // Set up learning tracking
+    initializeLearningTracking();
 }
 
-// Add glitch effect to elements
-function addGlitchEffect(element) {
-  element.classList.add('glitch');
-  element.setAttribute('data-text', element.textContent);
-  
-  setTimeout(() => {
-    element.classList.remove('glitch');
-  }, 2000);
+// Add educational tooltips
+function addEducationalTooltips() {
+    const tooltips = [
+        { id: 'prompt', text: 'This is where you tell Professor Goblin about your website idea! Be creative and descriptive!' },
+        { id: 'count', text: 'More suggestions give you more options to choose from! It\'s like having more flavors of ice cream!' },
+        { selector: 'input[name="extensions"]', text: 'Domain extensions are like different types of addresses - each one has its own special purpose!' }
+    ];
+    
+    tooltips.forEach(tooltip => {
+        const elements = tooltip.id ? 
+            [document.getElementById(tooltip.id)] : 
+            document.querySelectorAll(tooltip.selector);
+        
+        elements.forEach(element => {
+            if (element) {
+                element.title = tooltip.text;
+                element.addEventListener('focus', () => {
+                    showEncouragement('Great choice! ' + tooltip.text);
+                });
+            }
+        });
+    });
 }
 
-async function handleFormSubmit(e) {
-  e.preventDefault();
-  
-  // Get form data
-  const prompt = document.getElementById('prompt').value.trim();
-  const count = parseInt(document.getElementById('count').value);
-  const extensions = Array.from(document.querySelectorAll('input[name="extensions"]:checked'))
-    .map(cb => cb.value);
-  
-  // Validation with aesthetic feedback
-  if (!prompt) {
-    playAestheticSound('error');
-    showToast('Please enter a domain description', 'error');
-    return;
-  }
-  
-  if (extensions.length === 0) {
-    playAestheticSound('error');
-    showToast('Please select at least one extension', 'error');
-    return;
-  }
-  
-  // Aesthetic activation sound
-  playAestheticSound('activate');
-  
-  // Start loading state with vaporwave flair
-  setLoadingState(true);
-  showProgressStep('Initializing neural networks...', 1, 3, 10);
-  
-  try {
-    const response = await fetch('/api/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ prompt, count, extensions })
+// Initialize encouraging interactions
+function initializeEncouragement() {
+    const form = document.getElementById('domainForm');
+    const inputs = form.querySelectorAll('input, textarea, select');
+    
+    inputs.forEach(input => {
+        input.addEventListener('focus', () => {
+            if (Math.random() < 0.3) { // 30% chance
+                const encouragements = [
+                    "You're doing great! Keep going!",
+                    "I love your curiosity!",
+                    "This is going to be awesome!",
+                    "You're such a good learner!",
+                    "Professor Goblin is proud of you!"
+                ];
+                showEncouragement(encouragements[Math.floor(Math.random() * encouragements.length)]);
+            }
+        });
+    });
+}
+
+// Initialize learning tracking
+function initializeLearningTracking() {
+    // Track user interactions for learning analytics
+    document.addEventListener('click', () => {
+        learningScore += 1;
     });
     
-    showProgressStep('Scanning the digital realm...', 2, 3, 50);
+    document.addEventListener('keypress', () => {
+        learningScore += 0.5;
+    });
+}
+
+// Show educational encouragement
+function showEncouragement(message) {
+    const encouragement = document.createElement('div');
+    encouragement.style.position = 'fixed';
+    encouragement.style.top = '20px';
+    encouragement.style.right = '20px';
+    encouragement.style.background = 'linear-gradient(45deg, #ff69b4, #ffd700)';
+    encouragement.style.color = '#4b0082';
+    encouragement.style.padding = '15px 20px';
+    encouragement.style.borderRadius = '20px';
+    encouragement.style.border = '3px solid #ff1493';
+    encouragement.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+    encouragement.style.zIndex = '10000';
+    encouragement.style.fontFamily = '"Comic Sans MS", cursive';
+    encouragement.style.fontWeight = 'bold';
+    encouragement.style.fontSize = '14px';
+    encouragement.style.maxWidth = '300px';
+    encouragement.style.animation = 'bounce 0.5s ease';
+    encouragement.textContent = message;
     
-    const data = await response.json();
+    document.body.appendChild(encouragement);
     
-    if (!response.ok) {
-      throw new Error(data.error || `HTTP ${response.status}`);
+    setTimeout(() => {
+        encouragement.style.opacity = '0';
+        encouragement.style.transform = 'translateY(-20px)';
+        encouragement.style.transition = 'all 0.5s ease';
+        setTimeout(() => {
+            if (document.body.contains(encouragement)) {
+                document.body.removeChild(encouragement);
+            }
+        }, 500);
+    }, 3000);
+}
+
+// Show random educational facts
+function showRandomFact() {
+    if (factsShown < educationalFacts.length) {
+        const fact = educationalFacts[factsShown];
+        factsShown++;
+        
+        const factBox = document.createElement('div');
+        factBox.style.position = 'fixed';
+        factBox.style.bottom = '20px';
+        factBox.style.left = '20px';
+        factBox.style.background = 'linear-gradient(135deg, #ffeaa7, #fab1a0)';
+        factBox.style.border = '3px dashed #e17055';
+        factBox.style.borderRadius = '15px';
+        factBox.style.padding = '20px';
+        factBox.style.maxWidth = '350px';
+        factBox.style.zIndex = '10000';
+        factBox.style.fontFamily = '"Comic Sans MS", cursive';
+        factBox.style.fontSize = '13px';
+        factBox.style.color = '#2e2e2e';
+        factBox.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+        factBox.style.animation = 'slideIn 0.5s ease';
+        
+        factBox.innerHTML = `
+            <div style="font-weight: bold; color: #d63031; margin-bottom: 10px; font-size: 16px;">
+                💡 Fun Fact!
+            </div>
+            <div>${fact}</div>
+            <button onclick="this.parentElement.remove()" 
+                    style="background: #00b894; color: white; border: none; border-radius: 10px; padding: 5px 10px; margin-top: 10px; cursor: pointer; font-family: inherit;">
+                Cool! 😊
+            </button>
+        `;
+        
+        document.body.appendChild(factBox);
+        
+        // Auto-remove after 10 seconds
+        setTimeout(() => {
+            if (document.body.contains(factBox)) {
+                factBox.style.opacity = '0';
+                factBox.style.transform = 'translateX(-100%)';
+                factBox.style.transition = 'all 0.5s ease';
+                setTimeout(() => {
+                    if (document.body.contains(factBox)) {
+                        document.body.removeChild(factBox);
+                    }
+                }, 500);
+            }
+        }, 10000);
     }
-    
-    if (!data.success) {
-      throw new Error(data.error || 'Failed to generate domains');
-    }
-    
-    // Complete progress with style
-    showProgressStep('Synthesizing results...', 3, 3, 90);
-    
-    // Brief delay for aesthetic effect
-    await new Promise(resolve => setTimeout(resolve, 800));
-    showProgressStep('Complete! Welcome to the future.', 3, 3, 100);
-    
-    // Store results and display
-    currentResults = data.results;
-    currentSummary = data.summary;
-    
-    displayResults(data.results, data.summary);
-    playAestheticSound('success');
-    showToast(`Found ${data.results.available.length} available domains in the matrix!`, 'success');
-    
-  } catch (err) {
-    console.error('Generation error:', err);
-    playAestheticSound('error');
-    showError(getErrorMessage(err));
-    showToast('System error encountered', 'error');
-  } finally {
-    setLoadingState(false);
-  }
 }
 
-function setLoadingState(isLoading) {
-  generateButton.disabled = isLoading;
-  
-  if (isLoading) {
-    buttonText.textContent = 'Processing...';
-    buttonSpinner.classList.remove('hidden');
-    loading.classList.remove('hidden');
-    results.classList.add('hidden');
-    error.classList.add('hidden');
-    progressBar.classList.remove('hidden');
-    progressText.classList.remove('hidden');
+// Start learning animations
+function startLearningAnimations() {
+    // Animate decorative elements
+    const decorations = document.querySelectorAll('.decoration');
+    decorations.forEach((decoration, index) => {
+        decoration.style.animationDelay = (index * 0.5) + 's';
+    });
     
-    // Add glitch effect to loading message
-    setTimeout(() => {
-      if (loadingMessage) {
-        addGlitchEffect(loadingMessage);
-      }
-    }, 500);
-  } else {
-    buttonText.textContent = 'Generate Domains';
-    buttonSpinner.classList.add('hidden');
-    loading.classList.add('hidden');
-    progressBar.classList.add('hidden');
-    progressText.classList.add('hidden');
-  }
+    // Periodic sparkle effects
+    setInterval(createSparkle, 3000);
 }
 
-function showProgressStep(message, step, totalSteps, percentage) {
-  loadingMessage.textContent = message;
-  progressText.textContent = `Step ${step} of ${totalSteps}`;
-  progressFill.style.width = `${percentage}%`;
-  
-  // Add some aesthetic flair to progress updates
-  if (percentage === 100) {
-    setTimeout(() => {
-      addGlitchEffect(loadingMessage);
-    }, 200);
-  }
+// Create sparkle effects
+function createSparkle() {
+    const sparkles = ['✨', '⭐', '🌟', '💫', '⚡'];
+    const sparkle = sparkles[Math.floor(Math.random() * sparkles.length)];
+    
+    const element = document.createElement('div');
+    element.textContent = sparkle;
+    element.style.position = 'fixed';
+    element.style.fontSize = '20px';
+    element.style.zIndex = '999';
+    element.style.pointerEvents = 'none';
+    element.style.left = Math.random() * window.innerWidth + 'px';
+    element.style.top = Math.random() * window.innerHeight + 'px';
+    element.style.textShadow = '0 0 10px #ffd700';
+    
+    document.body.appendChild(element);
+    
+    // Animate sparkle
+    element.animate([
+        { transform: 'scale(0) rotate(0deg)', opacity: 1 },
+        { transform: 'scale(1.5) rotate(180deg)', opacity: 0.8 },
+        { transform: 'scale(0) rotate(360deg)', opacity: 0 }
+    ], {
+        duration: 2000,
+        easing: 'ease-out'
+    }).onfinish = () => {
+        if (document.body.contains(element)) {
+            document.body.removeChild(element);
+        }
+    };
 }
 
-function displayResults(results, summary) {
-  availableList.innerHTML = '';
-  takenList.innerHTML = '';
-  
-  if (results.available.length === 0 && results.taken.length === 0) {
-    showError('No domains materialized. Try adjusting your search parameters.');
-    return;
-  }
-  
-  // Display available domains with staggered animation
-  results.available.forEach((item, index) => {
-    const div = createDomainCard(item.domain, true, item.method, item.qualityScore, item.qualityGrade);
-    div.style.opacity = '0';
-    div.style.transform = 'translateY(20px)';
-    availableList.appendChild(div);
+// Educational alert system
+function showEducationalAlert(title, message, type = 'info') {
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    overlay.style.zIndex = '10000';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
     
-    // Staggered fade-in animation
-    setTimeout(() => {
-      div.style.transition = 'all 0.5s ease';
-      div.style.opacity = '1';
-      div.style.transform = 'translateY(0)';
-    }, index * 100);
-  });
-  
-  // Display taken domains with staggered animation
-  results.taken.forEach((item, index) => {
-    const div = createDomainCard(item.domain, false, item.method, item.qualityScore, item.qualityGrade);
-    div.style.opacity = '0';
-    div.style.transform = 'translateY(20px)';
-    takenList.appendChild(div);
+    const alertBox = document.createElement('div');
+    alertBox.style.background = 'linear-gradient(135deg, #ffffff, #f0f8ff)';
+    alertBox.style.border = '4px solid #ff69b4';
+    alertBox.style.borderRadius = '20px';
+    alertBox.style.padding = '30px';
+    alertBox.style.maxWidth = '500px';
+    alertBox.style.textAlign = 'center';
+    alertBox.style.fontFamily = '"Comic Sans MS", cursive';
+    alertBox.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.3)';
+    alertBox.style.animation = 'bounce 0.5s ease';
     
-    // Staggered fade-in animation
-    setTimeout(() => {
-      div.style.transition = 'all 0.5s ease';
-      div.style.opacity = '1';
-      div.style.transform = 'translateY(0)';
-    }, (results.available.length + index) * 100);
-  });
-  
-  // Show results section with fade-in
-  results.style.opacity = '0';
-  results.classList.remove('hidden');
-  setTimeout(() => {
-    results.style.transition = 'opacity 0.5s ease';
-    results.style.opacity = '1';
-  }, 100);
-  
-  // Smooth scroll to results
-  setTimeout(() => {
-    results.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 500);
-}
-
-function createDomainCard(domain, isAvailable, method, qualityScore = null, qualityGrade = null) {
-  const div = document.createElement('div');
-  div.className = `domain-card ${isAvailable ? 'available' : 'taken'}`;
-  
-  // Domain name with cyber styling
-  const domainName = document.createElement('div');
-  domainName.className = 'domain-name';
-  domainName.textContent = domain;
-  
-  // Meta information with retro styling
-  const metaDiv = document.createElement('div');
-  metaDiv.className = 'domain-meta';
-  
-  const methodSpan = document.createElement('span');
-  methodSpan.className = 'domain-method';
-  methodSpan.textContent = method.toUpperCase();
-  
-  const scoreSpan = document.createElement('span');
-  scoreSpan.className = 'domain-score';
-  if (qualityScore && qualityGrade) {
-    scoreSpan.textContent = `${qualityGrade.grade} ${qualityScore.overall}/100`;
-  } else {
-    scoreSpan.textContent = 'N/A';
-  }
-  
-  metaDiv.appendChild(methodSpan);
-  metaDiv.appendChild(scoreSpan);
-  
-  // Quality breakdown with cyber styling
-  let qualityDetails = null;
-  if (qualityScore && qualityScore.breakdown) {
-    qualityDetails = document.createElement('div');
-    qualityDetails.style.cssText = 'font-size: 10px; margin: 10px 0; font-family: "Inconsolata", monospace; color: #000080;';
-    qualityDetails.innerHTML = `
-      LEN: ${qualityScore.breakdown.length}/100 • 
-      MEM: ${qualityScore.breakdown.memorability}/100 • 
-      BRD: ${qualityScore.breakdown.brandability}/100 • 
-      EXT: ${qualityScore.breakdown.extension}/100 • 
-      REL: ${qualityScore.breakdown.relevance}/100
+    const mascotIcon = type === 'error' ? '😔' : type === 'success' ? '🎉' : '🧙‍♂️';
+    
+    alertBox.innerHTML = `
+        <div style="font-size: 48px; margin-bottom: 15px;">
+            ${mascotIcon}
+        </div>
+        <div style="font-size: 20px; font-weight: bold; color: #4b0082; margin-bottom: 15px;">
+            ${title}
+        </div>
+        <div style="font-size: 14px; color: #2e2e2e; line-height: 1.5; margin-bottom: 25px; white-space: pre-line;">
+            ${message}
+        </div>
+        <button onclick="this.closest('.educational-alert-overlay').remove()" 
+                style="background: linear-gradient(45deg, #32cd32, #90ee90); color: #ffffff; border: 3px solid #228b22; border-radius: 15px; padding: 12px 24px; font-family: 'Comic Sans MS', cursive; font-weight: bold; cursor: pointer; font-size: 14px;">
+            Got it! 😊
+        </button>
     `;
-  }
-  
-  // Actions with retro button styling
-  const actionsDiv = document.createElement('div');
-  actionsDiv.className = 'domain-actions';
-  
-  // Copy button with sound effect
-  const copyBtn = document.createElement('button');
-  copyBtn.className = 'btn-secondary';
-  copyBtn.textContent = 'COPY';
-  copyBtn.addEventListener('click', () => {
-    playAestheticSound('copy');
-    copyToClipboard(domain);
-    // Add visual feedback
-    const originalText = copyBtn.textContent;
-    copyBtn.textContent = 'COPIED!';
-    copyBtn.style.background = 'linear-gradient(135deg, #00ff00 0%, #008000 100%)';
+    
+    overlay.className = 'educational-alert-overlay';
+    overlay.appendChild(alertBox);
+    document.body.appendChild(overlay);
+    
+    // Auto-close after 8 seconds
     setTimeout(() => {
-      copyBtn.textContent = originalText;
-      copyBtn.style.background = '';
-    }, 1000);
-  });
-  
-  actionsDiv.appendChild(copyBtn);
-  
-  // Register link for available domains
-  if (isAvailable) {
-    const registerLink = document.createElement('a');
-    registerLink.href = `https://www.namecheap.com/domains/registration/results/?domain=${domain}`;
-    registerLink.target = '_blank';
-    registerLink.className = 'link-register';
-    registerLink.textContent = 'REGISTER';
+        if (document.body.contains(overlay)) {
+            document.body.removeChild(overlay);
+        }
+    }, 8000);
+}
+
+// Handle form submission with educational validation
+async function handleFormSubmit(e) {
+    e.preventDefault();
     
-    registerLink.addEventListener('click', () => {
-      playAestheticSound('activate');
-    });
-    
-    actionsDiv.appendChild(registerLink);
-  }
-  
-  // Assemble the card
-  div.appendChild(domainName);
-  div.appendChild(metaDiv);
-  if (qualityDetails) {
-    div.appendChild(qualityDetails);
-  }
-  div.appendChild(actionsDiv);
-  
-  // Add hover sound effect
-  div.addEventListener('mouseenter', () => {
-    // Subtle hover sound (very quiet)
-    try {
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-      
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      
-      oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-      gainNode.gain.setValueAtTime(0.02, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
-      
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 0.1);
-    } catch (err) {
-      // Silently fail
+    if (searchInProgress) {
+        showEducationalAlert('Hold on there!', 'Professor Goblin is still working on your last search!\nLet\'s wait for those results before starting a new adventure!');
+        return;
     }
-  });
-  
-  return div;
-}
-
-function handleCopyAll() {
-  if (currentResults.available.length === 0) {
-    playAestheticSound('error');
-    showToast('No available domains in memory', 'error');
-    return;
-  }
-  
-  const domains = currentResults.available.map(item => item.domain).join('\n');
-  playAestheticSound('copy');
-  copyToClipboard(domains, `Copied ${currentResults.available.length} available domains to clipboard!`);
-}
-
-function handleExport() {
-  if (currentResults.available.length === 0 && currentResults.taken.length === 0) {
-    playAestheticSound('error');
-    showToast('No data to export', 'error');
-    return;
-  }
-  
-  const timestamp = new Date().toISOString().split('T')[0];
-  const prompt = document.getElementById('prompt').value;
-  
-  // Create CSV content with aesthetic header
-  const csvContent = [
-    '# GOBLIN GLOBE - AESTHETIC DOMAIN EXPORT',
-    '# Generated on: ' + new Date().toISOString(),
-    'Domain,Status,Quality Score,Quality Grade,Method,Registrar Link',
-    ...currentResults.available.map(item => 
-      `"${item.domain}","Available","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method}","https://www.namecheap.com/domains/registration/results/?domain=${item.domain}"`
-    ),
-    ...currentResults.taken.map(item => 
-      `"${item.domain}","Taken","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method}","N/A"`
-    )
-  ].join('\n');
-  
-  // Create and download file
-  const blob = new Blob([csvContent], { type: 'text/csv' });
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.style.display = 'none';
-  a.href = url;
-  a.download = `goblin-globe-aesthetic-${timestamp}-${prompt.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.csv`;
-  document.body.appendChild(a);
-  a.click();
-  window.URL.revokeObjectURL(url);
-  document.body.removeChild(a);
-  
-  playAestheticSound('save');
-  showToast('Data exported to the mainframe!', 'success');
-}
-
-function handleNewSearch() {
-  // Clear form with animation
-  const promptField = document.getElementById('prompt');
-  const countField = document.getElementById('count');
-  
-  promptField.style.transition = 'opacity 0.3s ease';
-  promptField.style.opacity = '0.5';
-  
-  setTimeout(() => {
-    promptField.value = '';
-    countField.value = '10';
     
-    // Reset checkboxes to default (.com only)
-    document.querySelectorAll('input[name="extensions"]').forEach(cb => {
-      cb.checked = cb.value === '.com';
+    const prompt = document.getElementById('prompt').value.trim();
+    const count = parseInt(document.getElementById('count').value);
+    const extensions = Array.from(document.querySelectorAll('input[name="extensions"]:checked'))
+        .map(cb => cb.value);
+    
+    // Educational validation with friendly messages
+    if (!prompt) {
+        showEducationalAlert('Oops! Missing Information', 'Professor Goblin needs to know about your website idea!\nPlease tell me what kind of website you want to create. Be creative and have fun with it!');
+        document.getElementById('prompt').focus();
+        return;
+    }
+    
+    if (prompt.length < 10) {
+        showEducationalAlert('Tell me more!', 'Your idea sounds interesting, but Professor Goblin needs more details!\nTry describing your website idea with at least 10 characters. What makes it special?');
+        document.getElementById('prompt').focus();
+        return;
+    }
+    
+    if (extensions.length === 0) {
+        showEducationalAlert('Don\'t forget the extensions!', 'You need to choose at least one domain extension!\nThink of extensions like different types of addresses. .com is the most popular, but others are great too!');
+        return;
+    }
+    
+    // Encourage the user
+    const encouragements = [
+        'What an awesome idea! Let\'s find some great domains for you!',
+        'I love your creativity! This is going to be fun!',
+        'Professor Goblin is excited to help with your project!',
+        'Great job filling out the form! Let\'s discover some domains!'
+    ];
+    showEncouragement(encouragements[Math.floor(Math.random() * encouragements.length)]);
+    
+    await searchEducationalDomains(prompt, count, extensions);
+}
+
+// The main educational search function
+async function searchEducationalDomains(prompt, count, extensions) {
+    searchInProgress = true;
+    
+    // Show educational loading
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('statusMessage').style.display = 'none';
+    
+    let messageIndex = 0;
+    let progress = 0;
+    
+    const loadingInterval = setInterval(() => {
+        document.getElementById('loadingText').textContent = loadingMessages[messageIndex % loadingMessages.length];
+        document.getElementById('loadingDetails').textContent = loadingDetails[Math.floor(messageIndex / 1.5) % loadingDetails.length];
+        messageIndex++;
+        
+        progress += 8;
+        const progressPercent = Math.min(100, Math.floor(progress));
+        
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        
+        progressFill.style.width = progressPercent + '%';
+        progressText.textContent = progressPercent + '%';
+        
+        // Add encouraging messages at certain progress points
+        if (progressPercent === 25) {
+            showEncouragement('Great start! Professor Goblin is gathering ideas!');
+        } else if (progressPercent === 50) {
+            showEncouragement('Halfway there! The magic is working!');
+        } else if (progressPercent === 75) {
+            showEncouragement('Almost ready! The domains are looking awesome!');
+        }
+    }, 1000);
+    
+    try {
+        const response = await fetch('/api/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt, count, extensions })
+        });
+        
+        const data = await response.json();
+        
+        // Stop loading animation
+        clearInterval(loadingInterval);
+        document.getElementById('loading').style.display = 'none';
+        
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || 'Professor Goblin encountered a problem with the magic!');
+        }
+        
+        currentResults = data.results;
+        displayEducationalResults(data.results);
+        
+        // Show educational success message
+        const availableCount = data.results.available.length;
+        let successMessage = '';
+        
+        if (availableCount > 15) {
+            successMessage = `🎉 WOW! Amazing Discovery! 🎉\nProfessor Goblin found ${availableCount} available domains for you!\nThat's like finding a treasure chest full of golden domain names!\nYou're becoming a real domain explorer!`;
+        } else if (availableCount > 10) {
+            successMessage = `🌟 Fantastic Work! 🌟\nYour search discovered ${availableCount} available domains!\nThat's like finding a whole collection of magical domain stones!\nProfessor Goblin is very proud of your exploring!`;
+        } else if (availableCount > 5) {
+            successMessage = `😊 Good Job! 😊\nWe found ${availableCount} available domains together!\nThat's like finding several shiny domain gems!\nKeep learning and exploring!`;
+        } else if (availableCount > 0) {
+            successMessage = `🎯 Nice Try! 🎯\nWe discovered ${availableCount} available domains!\nThat's like finding your first domain treasure!\nEvery great explorer starts somewhere!`;
+        } else {
+            successMessage = '🤔 Learning Opportunity! 🤔\nNo available domains this time, but that\'s okay!\nThis happens sometimes, and it\'s part of learning!\nLet\'s try a different approach together!';
+        }
+        
+        showEducationalAlert('Search Complete!', successMessage, availableCount > 0 ? 'success' : 'info');
+        
+    } catch (error) {
+        clearInterval(loadingInterval);
+        document.getElementById('loading').style.display = 'none';
+        
+        // Educational error messages
+        let errorMessage = '🤖 Oops! Technical Hiccup! 🤖\n' + error.message;
+        
+        if (error.message.includes('rate limit')) {
+            errorMessage = '🐌 Slow Down, Speed Racer! 🐌\nProfessor Goblin needs a moment to catch up!\nYou\'re searching so fast that the magic needs time to recharge!\nLet\'s wait a moment and try again!';
+        } else if (error.message.includes('timeout')) {
+            errorMessage = '⏰ Taking a Little Longer! ⏰\nSometimes the best magic takes extra time!\nThe domain spirits are being extra careful with your request!\nLet\'s try again - patience makes perfect!';
+        } else if (error.message.includes('500')) {
+            errorMessage = '🔧 Professor Goblin\'s Lab Hiccup! 🔧\nOops! Something went wonky in the magical laboratory!\nDon\'t worry - our magical engineers are fixing it!\nCome back soon for more domain adventures!';
+        }
+        
+        showEducationalAlert('Learning Moment!', errorMessage, 'error');
+        showStatusMessage(errorMessage, 'error');
+    }
+    
+    searchInProgress = false;
+}
+
+// Display results in educational format
+function displayEducationalResults(results) {
+    const availableList = document.getElementById('availableList');
+    const takenList = document.getElementById('takenList');
+    
+    availableList.innerHTML = '';
+    takenList.innerHTML = '';
+    
+    // Display available domains with educational flair
+    results.available.forEach((item, index) => {
+        const domainCard = document.createElement('div');
+        domainCard.className = 'domain-card domain-available';
+        
+        const qualityScore = item.qualityScore?.overall || 'N/A';
+        const qualityGrade = item.qualityGrade?.grade || '';
+        
+        // Educational quality descriptions
+        let qualityDescription = '';
+        if (qualityScore > 80) {
+            qualityDescription = 'Excellent choice! This domain is super awesome! ⭐⭐⭐';
+        } else if (qualityScore > 60) {
+            qualityDescription = 'Great domain! This one looks really good! ⭐⭐';
+        } else if (qualityScore > 40) {
+            qualityDescription = 'Good domain! This could work well! ⭐';
+        } else {
+            qualityDescription = 'This domain is okay, but we can find better ones!';
+        }
+        
+        domainCard.innerHTML = `
+            <div class="domain-name">
+                🌟 ${item.domain}
+            </div>
+            <div class="domain-info">
+                Learning Score: ${qualityScore}/100 ${qualityGrade ? `| Grade: ${qualityGrade}` : ''}<br>
+                <span style="color: #32cd32; font-weight: bold;">${qualityDescription}</span>
+            </div>
+            <div class="domain-action">
+                <a href="https://www.namecheap.com/domains/registration/results/?domain=${item.domain}" 
+                   target="_blank" 
+                   class="register-button">
+                   🎯 Learn About Registering This Domain!
+                </a>
+            </div>
+        `;
+        
+        // Add entrance animation with educational timing
+        domainCard.style.opacity = '0';
+        domainCard.style.transform = 'translateY(20px)';
+        availableList.appendChild(domainCard);
+        
+        setTimeout(() => {
+            domainCard.style.transition = 'all 0.5s ease';
+            domainCard.style.opacity = '1';
+            domainCard.style.transform = 'translateY(0)';
+        }, index * 200); // Slower animation for educational viewing
     });
     
-    // Reset results
-    currentResults = { available: [], taken: [] };
-    results.classList.add('hidden');
-    error.classList.add('hidden');
+    // Display taken domains with learning opportunities
+    results.taken.forEach((item, index) => {
+        const domainCard = document.createElement('div');
+        domainCard.className = 'domain-card domain-taken';
+        
+        const qualityScore = item.qualityScore?.overall || 'N/A';
+        const qualityGrade = item.qualityGrade?.grade || '';
+        
+        domainCard.innerHTML = `
+            <div class="domain-name">
+                😔 ${item.domain}
+            </div>
+            <div class="domain-info">
+                Learning Score: ${qualityScore}/100 ${qualityGrade ? `| Grade: ${qualityGrade}` : ''}<br>
+                <span style="color: #ff6347;">This domain is already taken, but that's a learning opportunity!</span>
+            </div>
+            <div class="domain-action">
+                <div style="color: #666666; font-size: 12px;">
+                    💡 Learning tip: Try variations or different extensions!
+                </div>
+            </div>
+        `;
+        
+        // Add entrance animation
+        domainCard.style.opacity = '0';
+        domainCard.style.transform = 'translateY(20px)';
+        takenList.appendChild(domainCard);
+        
+        setTimeout(() => {
+            domainCard.style.transition = 'all 0.5s ease';
+            domainCard.style.opacity = '1';
+            domainCard.style.transform = 'translateY(0)';
+        }, index * 200);
+    });
     
-    promptField.style.opacity = '1';
-    promptField.focus();
+    // Hide empty sections
+    const availableSection = document.getElementById('availableSection');
+    const takenSection = document.getElementById('takenSection');
     
-    // Smooth scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (results.available.length === 0) {
+        availableSection.style.display = 'none';
+    } else {
+        availableSection.style.display = 'block';
+    }
     
-    playAestheticSound('reset');
-    showToast('System reset - Ready for new search', 'success');
-  }, 300);
+    if (results.taken.length === 0) {
+        takenSection.style.display = 'none';
+    } else {
+        takenSection.style.display = 'block';
+    }
+    
+    document.getElementById('results').style.display = 'block';
+    
+    // Educational scroll to results
+    setTimeout(() => {
+        document.getElementById('results').scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+        
+        // Show educational celebration
+        createSparkle();
+        showEncouragement('Great job! Look at all these wonderful results!');
+    }, 1000);
 }
 
-async function copyToClipboard(text, successMessage = 'Data copied to clipboard') {
-  try {
-    await navigator.clipboard.writeText(text);
-    showToast(successMessage, 'success');
-  } catch (err) {
-    // Fallback for older browsers
+// Show status messages with educational styling
+function showStatusMessage(message, type) {
+    const statusDiv = document.getElementById('statusMessage');
+    
+    statusDiv.className = `status-message status-${type}`;
+    statusDiv.innerHTML = message.replace(/\n/g, '<br>');
+    statusDiv.style.display = 'block';
+}
+
+// Copy available domains (educational style)
+function copyAvailable() {
+    if (currentResults.available.length === 0) {
+        showEducationalAlert('Nothing to Copy Yet!', 'There are no available domains to copy right now!\nLet\'s search for some awesome domains first, then you can copy them!\nProfessor Goblin is ready to help you find great domains!');
+        return;
+    }
+    
+    const domains = currentResults.available.map(item => item.domain).join('\n');
+    
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(domains).then(() => {
+            showEducationalAlert('Copy Successful!', `Fantastic! Professor Goblin copied ${currentResults.available.length} available domains for you!\n\nNow you can paste them anywhere you like - maybe in a notebook or document to save for later!\n\nGreat job learning about domains!`, 'success');
+        }).catch(() => {
+            fallbackCopy(domains);
+        });
+    } else {
+        fallbackCopy(domains);
+    }
+}
+
+function fallbackCopy(text) {
     const textArea = document.createElement('textarea');
     textArea.value = text;
     textArea.style.position = 'fixed';
-    textArea.style.left = '-999999px';
-    textArea.style.top = '-999999px';
+    textArea.style.left = '-9999px';
+    textArea.style.top = '-9999px';
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
     
     try {
-      document.execCommand('copy');
-      showToast(successMessage, 'success');
+        document.execCommand('copy');
+        showEducationalAlert('Copy Complete!', `Great! Your domains are now copied!\nYou can paste them with Ctrl+V (or Cmd+V on Mac)!\nProfessor Goblin is proud of your learning!`, 'success');
     } catch (err) {
-      showToast('Clipboard access denied', 'error');
+        showEducationalAlert('Copy Needs Help!', 'Oops! The automatic copy didn\'t work, but that\'s okay!\nYou can still select the domains with your mouse and copy them manually!\nSometimes we need to do things the old-fashioned way!');
     }
     
     document.body.removeChild(textArea);
-  }
 }
 
-function showToast(message, type = 'success', duration = 3000) {
-  const toast = document.createElement('div');
-  toast.className = `toast ${type}`;
-  
-  const messageSpan = document.createElement('span');
-  messageSpan.textContent = message;
-  
-  const closeBtn = document.createElement('button');
-  closeBtn.innerHTML = '×';
-  closeBtn.style.cssText = 'background: none; border: none; font-size: 16px; cursor: pointer; margin-left: 10px; color: inherit;';
-  closeBtn.addEventListener('click', () => {
-    playAestheticSound('copy'); // Subtle click sound
-    toast.classList.remove('show');
-    setTimeout(() => {
-      if (toast.parentElement) {
-        toast.remove();
-      }
-    }, 300);
-  });
-  
-  toast.appendChild(messageSpan);
-  toast.appendChild(closeBtn);
-  toastContainer.appendChild(toast);
-  
-  // Trigger animation
-  setTimeout(() => {
-    toast.classList.add('show');
-  }, 10);
-  
-  // Auto remove with fade out
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => {
-      if (toast.parentElement) {
-        toast.remove();
-      }
-    }, 300);
-  }, duration);
-}
-
-function showError(message) {
-  const errorP = error.querySelector('p');
-  errorP.textContent = message;
-  error.classList.remove('hidden');
-  results.classList.add('hidden');
-  
-  // Add glitch effect to error message
-  setTimeout(() => {
-    addGlitchEffect(errorP);
-  }, 100);
-}
-
-function getErrorMessage(error) {
-  const message = error.message || 'An unexpected system error occurred';
-  
-  // Provide aesthetic error messages
-  if (message.includes('rate limit') || message.includes('429')) {
-    return 'Rate limiter activated. Please wait before accessing the mainframe again.';
-  }
-  
-  if (message.includes('timeout') || message.includes('ENOTFOUND')) {
-    return 'Connection to the digital realm lost. Check your network link.';
-  }
-  
-  if (message.includes('401') || message.includes('403')) {
-    return 'Access denied. Please refresh and authenticate again.';
-  }
-  
-  if (message.includes('500')) {
-    return 'Server malfunction detected. Please try again momentarily.';
-  }
-  
-  if (message.includes('Invalid prompt')) {
-    return 'Invalid input detected. Please modify your search parameters.';
-  }
-  
-  // Return aesthetic version of original message
-  return `System error: ${message}`;
-}
-
-// Aesthetic initialization effects
-document.addEventListener('DOMContentLoaded', () => {
-  // Focus on the prompt input
-  const promptField = document.getElementById('prompt');
-  promptField.focus();
-  
-  // Add startup sound effect
-  setTimeout(() => {
-    playAestheticSound('activate');
-  }, 500);
-  
-  // Add glitch effect to title on load
-  setTimeout(() => {
-    const japaneseTitle = document.querySelector('.japanese-title');
-    if (japaneseTitle) {
-      addGlitchEffect(japaneseTitle);
+// Export to CSV (educational version)
+function exportCSV() {
+    if (currentResults.available.length === 0 && currentResults.taken.length === 0) {
+        showEducationalAlert('Nothing to Save Yet!', 'There are no domain results to save right now!\nLet\'s search for some amazing domains first!\nThen you can save all your discoveries for later!');
+        return;
     }
-  }, 1000);
-  
-  // Console aesthetic
-  console.log('╔══════════════════════════════════════╗');
-  console.log('║  ゴブリングローブ GOBLIN GLOBE        ║');
-  console.log('║  AESTHETIC DOMAIN FINDER v2.0        ║');
-  console.log('╚══════════════════════════════════════╝');
-  console.log('');
-  console.log('Keyboard Shortcuts:');
-  console.log('Ctrl+Enter: Generate domains');
-  console.log('Ctrl+C: Copy available domains');
-  console.log('Ctrl+S: Export results');
-  console.log('Ctrl+R: New search');
-  console.log('');
-  console.log('Welcome to the aesthetic realm...');
-  
-  // Add periodic background effects
-  setInterval(() => {
-    // Randomly add subtle visual effects
-    if (Math.random() < 0.1) { // 10% chance every interval
-      const cards = document.querySelectorAll('.domain-card');
-      if (cards.length > 0) {
-        const randomCard = cards[Math.floor(Math.random() * cards.length)];
-        randomCard.style.transition = 'box-shadow 0.5s ease';
-        randomCard.style.boxShadow = '0 4px 20px rgba(255, 0, 255, 0.4)';
-        setTimeout(() => {
-          randomCard.style.boxShadow = '';
-        }, 2000);
-      }
+    
+    const timestamp = new Date().toISOString().split('T')[0];
+    const prompt = document.getElementById('prompt').value.trim().replace(/[^a-z0-9]/gi, '-').toLowerCase();
+    
+    // Create educational CSV content
+    const csvContent = [
+        '# Professor Goblin\'s Domain Learning Adventure - Results!',
+        '# Date of Discovery: ' + new Date().toLocaleString(),
+        '# Your Website Idea: ' + document.getElementById('prompt').value,
+        '# Learning System: Professor Goblin\'s Educational AI',
+        '# Remember: Always ask a grown-up before registering domains!',
+        '',
+        'Domain Name,Is It Available?,Learning Score,Grade,How We Found It,Where to Learn More',
+        ...currentResults.available.map(item => 
+            `"${item.domain}","Yes - Available!","${item.qualityScore?.overall || 'Learning'}","${item.qualityGrade?.grade || 'Great'}","${item.method || 'Professor Goblin\'s Magic'}","https://www.namecheap.com/domains/registration/results/?domain=${item.domain}"`
+        ),
+        ...currentResults.taken.map(item => 
+            `"${item.domain}","No - Already Taken","${item.qualityScore?.overall || 'Learning'}","${item.qualityGrade?.grade || 'Good Try'}","${item.method || 'Professor Goblin\'s Magic'}","Learning Opportunity - Try Variations!"`
+        )
+    ].join('\n');
+    
+    // Create and download file
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `professor-goblin-domains-${timestamp}-${prompt}.csv`;
+    a.style.display = 'none';
+    
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    
+    showEducationalAlert('File Saved!', 'Excellent work! Professor Goblin saved all your domain discoveries!\nYou can find the file in your Downloads folder!\nThis is like keeping a diary of your learning adventure!\n\nKeep exploring and learning!', 'success');
+}
+
+// Start new search (educational style)
+function newSearch() {
+    if (currentResults.available.length > 0 || currentResults.taken.length > 0) {
+        if (!confirm('🔍 Start a New Learning Adventure? 🔍\n\nThis will clear your current results and start fresh!\nAre you ready to explore new domain possibilities?')) {
+            return;
+        }
     }
-  }, 5000);
+    
+    document.getElementById('prompt').value = '';
+    document.getElementById('count').value = '10';
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('statusMessage').style.display = 'none';
+    currentResults = { available: [], taken: [] };
+    
+    // Smooth educational scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Focus on prompt field with encouragement
+    setTimeout(() => {
+        const promptField = document.getElementById('prompt');
+        promptField.focus();
+        showEncouragement('Ready for a new adventure! What\'s your next great idea?');
+    }, 600);
+    
+    showEducationalAlert('New Adventure Ready!', '🎉 Perfect! Professor Goblin is ready for your next amazing idea!\nWhat kind of website would you like to create this time?\nRemember, every search is a new learning opportunity!', 'success');
+}
+
+// Reset form (educational style)
+function resetForm() {
+    if (!confirm('🔄 Reset Your Learning Form? 🔄\n\nThis will clear everything you typed and start over!\nAre you sure you want to reset?')) {
+        return;
+    }
+    
+    document.getElementById('domainForm').reset();
+    document.getElementById('count').value = '10';
+    
+    // Make sure .com is checked
+    const comCheckbox = document.querySelector('input[name="extensions"][value=".com"]');
+    if (comCheckbox) {
+        comCheckbox.checked = true;
+    }
+    
+    // Add educational visual feedback
+    const form = document.querySelector('.learning-form');
+    form.style.animation = 'pulse 0.5s ease';
+    setTimeout(() => {
+        form.style.animation = '';
+    }, 500);
+    
+    showEducationalAlert('Form Reset!', '✨ All set! Professor Goblin reset everything to the beginning!\nNow you can start fresh with a new website idea!\nWhat amazing project will you think of this time?', 'success');
+}
+
+// Quiz functionality
+function showQuizResult(isCorrect) {
+    if (isCorrect) {
+        showEducationalAlert('Correct! Great Job!', '🎉 You got it right! 🎉\nEasy to remember and type domains are the best!\nThey help people find your website quickly and easily!\nYou\'re learning so much!', 'success');
+        learningScore += 10;
+    } else {
+        showEducationalAlert('Good Try! Let\'s Learn!', '🤔 Not quite, but that\'s okay! 🤔\nThe best domains are easy to remember and type!\nLong or confusing domains make it hard for people to visit your website!\nKeep learning - you\'re doing great!');
+        learningScore += 5; // Still reward for trying
+    }
+}
+
+// Educational keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    // F1 for help
+    if (e.key === 'F1') {
+        e.preventDefault();
+        showEducationalAlert('Learning Help!', '🎓 Professor Goblin\'s Quick Help Guide! 🎓\n\n1. Describe your website idea in detail\n2. Choose how many domain suggestions you want\n3. Pick your favorite domain extensions\n4. Click the search button for magic!\n5. Copy or save any domains you like\n\nRemember: Learning is an adventure!');
+    }
+    
+    // Escape key with educational message
+    if (e.key === 'Escape' && searchInProgress) {
+        showEducationalAlert('Patience, Young Learner!', '⏰ Professor Goblin is still working his magic! ⏰\nGreat things take time to create!\nLet\'s wait for the amazing results!\nPatience is an important part of learning!');
+    }
 });
 
-// Add window button functionality for aesthetic purposes
-document.addEventListener('click', (e) => {
-  if (e.target.classList.contains('window-button')) {
-    playAestheticSound('copy');
-    e.target.style.border = '1px inset #c0c0c0';
-    setTimeout(() => {
-      e.target.style.border = '1px outset #c0c0c0';
-    }, 100);
-  }
-});
+// Random educational encouragements
+setInterval(() => {
+    if (Math.random() < 0.0015 && !searchInProgress) { // Rare encouraging messages
+        const messages = [
+            '🌟 You\'re doing amazing! Keep exploring and learning!',
+            '📚 Every domain search teaches you something new!',
+            '🎯 Professor Goblin believes in your creativity!',
+            '⭐ Learning about domains is preparing you for the future!',
+            '🎨 Your imagination makes the best websites!',
+            '🚀 Keep asking questions - that\'s how we learn!'
+        ];
+        showEncouragement(messages[Math.floor(Math.random() * messages.length)]);
+    }
+}, 45000);
+
+console.log('🎓 Professor Goblin\'s Educational Domain Adventure is ready for learning! 🎓');

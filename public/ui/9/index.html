@@ -1,481 +1,777 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>GOBLIN GLOBE - The ULTIMATE Domain Finder!!!</title>
-    <meta name="generator" content="FrontPage Express 2.0">
-    <meta name="keywords" content="domains, internet, web, goblin, globe, BEST, AWESOME, COOL, RADICAL, TUBULAR">
-    <meta name="description" content="The most AWESOME domain finder on the World Wide Web! Find cool domains with our AI-powered goblin technology!">
-    <meta name="author" content="GoblinMaster2000">
-    <meta name="copyright" content="Copyright 1999 Goblin Globe Industries">
-    <link rel="shortcut icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>goblin-globe-domains(1) - domain finder utility</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* 90s Web-Safe Colors and Fonts */
-        body {
-            background: url('data:image/gif;base64,R0lGODlhCgAKAPIAAP///8zMzJmZmWZmZjMzMwAAAAAAAAAAACH5BAEAAAUALAAAAAAKAAoAAAMlWLrc/jDKSau9OOvNu/9gKI5kaZ5oqq5s675wLM90bd94ru987//AoHBILBqPyKRyyWw6n9CodEqtWq/YrHbL7Xq/4LB4TC6bz+i0es1ut9yu9wsOi8fksvmMTqvX7Lb7DY/L5/S6/Y7P6/f8/g8QGCg4SFhoeIiYqLjI2Oj4CBkpOUlZaXmJmam5ydnp+QkaKjpKWmp6ipqqusra6voKGys7S1tre4ubq7vL2+v7CxwsPExcbHyMnKy8zNzs/AwdLT1NXW19jZ2tvc3d7f0NHi4+Tl5ufo6err7O3u7+Dh8vP09fb3+Pn6+/z9/v/w8woMCBBAsaPIgwocKFDBs6fAgxosSJFCtavIgxo8aNHDt6/AgypMiRJEuaPIkypMmTKFOqXMmypcuXMGPKnEmzps2bOHPq3Mmzp8+fQIMKHUq0qNGjSJMqXcq0qdOnUKNKnUq1qtWrWLNq3cq1q9evM7F67gkzqFCnU69OzVq2LFqzaNOiVasWrVu4cuPGnWu3btuyeufCvZv37l+8efPq5du3b9++fgMHFiyYsOHCgwcbJoAAADs=') repeat;
+        /* Unix System Terminal Styles */
+        * {
             margin: 0;
             padding: 0;
-            font-family: "Times New Roman", serif;
-            font-size: 12px;
-            color: #000000;
+            box-sizing: border-box;
         }
-        
-        /* Marquee and blinking text */
-        .blink {
-            animation: blink 1s linear infinite;
+
+        :root {
+            --unix-bg: #000000;
+            --unix-fg: #ffffff;
+            --unix-gray: #808080;
+            --unix-dark-gray: #404040;
+            --unix-light-gray: #c0c0c0;
+            --unix-green: #00ff00;
+            --unix-red: #ff0000;
+            --unix-blue: #0080ff;
+            --unix-yellow: #ffff00;
+            --unix-cyan: #00ffff;
+            --unix-selection: #004080;
         }
-        
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
+
+        body {
+            font-family: 'Inconsolata', 'JetBrains Mono', monospace;
+            background: var(--unix-bg);
+            color: var(--unix-fg);
+            margin: 0;
+            padding: 0;
+            line-height: 1.4;
+            font-size: 13px;
+            position: relative;
+            cursor: text;
         }
-        
-        .rainbow-text {
-            background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: rainbow 2s ease infinite;
+
+        /* Terminal Container */
+        .unix-terminal {
+            min-height: 100vh;
+            padding: 8px;
+            max-width: 120ch;
+            margin: 0 auto;
+        }
+
+        /* Man Page Header */
+        .man-header {
+            text-transform: uppercase;
             font-weight: bold;
-        }
-        
-        @keyframes rainbow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        /* 3D beveled effects */
-        .bevel-inset {
-            border: 2px inset #c0c0c0;
-            background-color: #c0c0c0;
-        }
-        
-        .bevel-outset {
-            border: 2px outset #c0c0c0;
-            background-color: #c0c0c0;
-        }
-        
-        .bevel-raised {
-            border-top: 2px solid #ffffff;
-            border-left: 2px solid #ffffff;
-            border-right: 2px solid #808080;
-            border-bottom: 2px solid #808080;
-            background-color: #c0c0c0;
-        }
-        
-        /* Tables for layout */
-        .main-table {
-            width: 100%;
-            border: 0;
-            cellpadding: 0;
-            cellspacing: 0;
-        }
-        
-        .header-cell {
-            background: linear-gradient(45deg, #0000ff, #ff00ff, #ff0000, #ffff00, #00ff00, #00ffff);
-            background-size: 400% 400%;
-            animation: rainbow 3s ease infinite;
             text-align: center;
-            padding: 20px;
+            border-bottom: 1px solid var(--unix-gray);
+            padding-bottom: 4px;
+            margin-bottom: 16px;
+            color: var(--unix-light-gray);
         }
-        
-        .content-cell {
-            background-color: #ffffff;
-            padding: 15px;
-            vertical-align: top;
+
+        /* ASCII Logo - Minimal Unix Style */
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8px;
+            line-height: 1;
+            color: var(--unix-fg);
+            white-space: pre;
+            margin-bottom: 16px;
+            text-align: center;
         }
-        
-        .sidebar-cell {
-            background-color: #ffff99;
-            padding: 10px;
-            width: 200px;
-            vertical-align: top;
-            border: 2px outset #c0c0c0;
+
+        /* Man Page Sections */
+        .man-section {
+            margin: 16px 0;
         }
-        
-        /* Form elements with 90s styling */
-        input[type="text"], textarea, select {
-            font-family: "Times New Roman", serif;
-            font-size: 12px;
-            border: 2px inset #c0c0c0;
-            background-color: #ffffff;
+
+        .section-header {
+            font-weight: bold;
+            color: var(--unix-light-gray);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .section-content {
+            margin-left: 8px;
+            color: var(--unix-fg);
+        }
+
+        /* System Info - Unix Style */
+        .system-info {
+            color: var(--unix-gray);
+            font-size: 11px;
+            margin-bottom: 16px;
+            font-family: monospace;
+        }
+
+        .system-info .uname-line {
+            margin: 2px 0;
+        }
+
+        .system-info .uptime {
+            color: var(--unix-light-gray);
+        }
+
+        /* Command Line Interface */
+        .command-interface {
+            margin: 16px 0;
+        }
+
+        .command-prompt {
+            display: flex;
+            align-items: flex-start;
+            margin: 8px 0;
+            font-family: monospace;
+        }
+
+        .shell-prompt {
+            color: var(--unix-green);
+            margin-right: 4px;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .command-input,
+        .unix-input,
+        .unix-textarea {
+            background: transparent;
+            border: none;
+            color: var(--unix-fg);
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            flex: 1;
+            padding: 0;
+            border-bottom: 1px dotted var(--unix-dark-gray);
+            margin-bottom: 4px;
+        }
+
+        .unix-textarea {
+            border: 1px solid var(--unix-dark-gray);
             padding: 4px;
+            min-height: 60px;
+            resize: vertical;
+            background: rgba(255, 255, 255, 0.02);
         }
-        
-        input[type="submit"], input[type="button"], button {
-            font-family: "Times New Roman", serif;
+
+        .command-input:focus,
+        .unix-input:focus,
+        .unix-textarea:focus {
+            border-color: var(--unix-gray);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .command-input::placeholder,
+        .unix-textarea::placeholder {
+            color: var(--unix-dark-gray);
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin: 12px 0;
+            padding-left: 8px;
+            border-left: 1px solid var(--unix-dark-gray);
+        }
+
+        .form-section.active {
+            border-left-color: var(--unix-gray);
+        }
+
+        .form-label {
+            color: var(--unix-light-gray);
             font-size: 12px;
-            border: 2px outset #c0c0c0;
-            background-color: #c0c0c0;
-            padding: 6px 12px;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        /* Unix Cursor */
+        .unix-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background: var(--unix-fg);
+            margin-left: 2px;
+            animation: unix-blink 1s infinite;
+        }
+
+        @keyframes unix-blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        /* Checkboxes - Unix Style */
+        .options-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 8px;
+            margin: 8px 0;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .option-item:hover {
+            color: var(--unix-light-gray);
+        }
+
+        .unix-checkbox {
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            border: 1px solid var(--unix-gray);
+            margin-right: 6px;
+            position: relative;
+            background: transparent;
             cursor: pointer;
         }
-        
-        input[type="submit"]:active, input[type="button"]:active, button:active {
-            border: 2px inset #c0c0c0;
+
+        .unix-checkbox:checked {
+            background: var(--unix-fg);
         }
-        
-        /* Horizontal rules */
-        .rainbow-hr {
-            height: 10px;
-            background: linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080);
-            border: none;
-            margin: 10px 0;
-        }
-        
-        /* Visitor counter styling */
-        .counter {
-            background-color: #000000;
-            color: #00ff00;
-            font-family: "Courier New", monospace;
-            font-size: 14px;
-            padding: 5px 10px;
-            border: 2px inset #c0c0c0;
-            display: inline-block;
-        }
-        
-        /* WordArt style heading */
-        .wordart-title {
-            font-family: Impact, Arial Black, sans-serif;
-            font-size: 48px;
-            font-weight: bold;
-            text-shadow: 
-                2px 2px 0px #000000,
-                4px 4px 4px #808080;
-            transform: perspective(200px) rotateX(15deg);
-            background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: rainbow 2s ease infinite;
-            margin: 20px 0;
-            text-align: center;
-        }
-        
-        /* Results styling */
-        .results-table {
-            width: 100%;
-            border: 2px outset #c0c0c0;
-            background-color: #ffffff;
-            cellpadding: 4;
-            cellspacing: 1;
-        }
-        
-        .results-header {
-            background-color: #0000ff;
-            color: #ffffff;
-            font-weight: bold;
-            text-align: center;
-            padding: 5px;
-        }
-        
-        .domain-available {
-            background-color: #00ff00;
-            color: #000000;
-        }
-        
-        .domain-taken {
-            background-color: #ff0000;
-            color: #ffffff;
-        }
-        
-        .loading-gif {
-            text-align: center;
-            margin: 20px 0;
-        }
-        
-        /* Animated under construction */
-        .construction {
-            display: inline-block;
-            animation: bounce 1s infinite alternate;
-        }
-        
-        @keyframes bounce {
-            from { transform: translateY(0px); }
-            to { transform: translateY(-10px); }
-        }
-        
-        /* Web ring navigation */
-        .webring {
-            background-color: #ffff00;
-            border: 2px solid #000000;
-            padding: 10px;
-            text-align: center;
-            margin: 20px 0;
-        }
-        
-        .webring a {
-            color: #0000ff;
-            text-decoration: underline;
+
+        .unix-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: -2px;
+            left: 0px;
+            color: var(--unix-bg);
+            font-size: 8px;
             font-weight: bold;
         }
-        
-        /* Status messages */
-        .status-message {
-            background-color: #c0c0c0;
-            border: 2px inset #c0c0c0;
-            padding: 10px;
-            margin: 10px 0;
-            font-family: "MS Sans Serif", sans-serif;
+
+        /* Buttons - Minimal Unix Style */
+        .unix-button {
+            background: transparent;
+            border: 1px solid var(--unix-gray);
+            color: var(--unix-fg);
+            padding: 4px 12px;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
+            margin: 4px 8px 4px 0;
+            transition: all 0.2s ease;
+        }
+
+        .unix-button:hover {
+            background: var(--unix-fg);
+            color: var(--unix-bg);
+        }
+
+        .unix-button:disabled {
+            border-color: var(--unix-dark-gray);
+            color: var(--unix-dark-gray);
+            cursor: not-allowed;
+        }
+
+        .unix-button:disabled:hover {
+            background: transparent;
+            color: var(--unix-dark-gray);
+        }
+
+        .unix-button.primary {
+            border-color: var(--unix-light-gray);
+            color: var(--unix-light-gray);
+        }
+
+        .unix-button.primary:hover {
+            background: var(--unix-light-gray);
+            color: var(--unix-bg);
+        }
+
+        /* Progress Display */
+        .progress-section {
+            margin: 16px 0;
+            display: none;
+        }
+
+        .progress-section.active {
+            display: block;
+        }
+
+        .progress-line {
+            display: flex;
+            align-items: center;
+            margin: 4px 0;
+            font-family: monospace;
             font-size: 11px;
         }
-        
-        /* Scrolling text effect */
-        .scroll-text {
-            background-color: #000080;
-            color: #ffffff;
-            padding: 5px;
-            overflow: hidden;
-            white-space: nowrap;
+
+        .progress-label {
+            min-width: 120px;
+            color: var(--unix-gray);
         }
-        
-        .scroll-text span {
+
+        .progress-bar {
+            flex: 1;
+            height: 1px;
+            background: var(--unix-dark-gray);
+            position: relative;
+            margin: 0 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--unix-fg);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-percent {
+            min-width: 30px;
+            text-align: right;
+            color: var(--unix-light-gray);
+        }
+
+        .spinner {
             display: inline-block;
-            animation: scroll 15s linear infinite;
+            animation: unix-spin 1s linear infinite;
+            margin-left: 4px;
         }
-        
-        @keyframes scroll {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+
+        @keyframes unix-spin {
+            0% { content: '|'; }
+            25% { content: '/'; }
+            50% { content: '-'; }
+            75% { content: '\\'; }
+            100% { content: '|'; }
+        }
+
+        .spinner::after {
+            content: '|';
+        }
+
+        /* Results Display */
+        .results-section {
+            margin-top: 24px;
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+            animation: unix-fade-in 0.3s ease-in;
+        }
+
+        @keyframes unix-fade-in {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .results-header {
+            color: var(--unix-light-gray);
+            font-weight: bold;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--unix-dark-gray);
+            padding-bottom: 4px;
+        }
+
+        /* Tree-style Results */
+        .domain-tree {
+            font-family: monospace;
+            font-size: 12px;
+            margin: 8px 0;
+        }
+
+        .tree-section {
+            margin: 12px 0;
+        }
+
+        .tree-header {
+            color: var(--unix-light-gray);
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .tree-item {
+            display: flex;
+            align-items: center;
+            padding: 2px 0;
+            cursor: pointer;
+            transition: background-color 0.1s ease;
+        }
+
+        .tree-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tree-item.selected {
+            background: var(--unix-selection);
+        }
+
+        .tree-prefix {
+            color: var(--unix-gray);
+            margin-right: 4px;
+            font-family: monospace;
+        }
+
+        .domain-name {
+            flex: 1;
+            color: var(--unix-fg);
+        }
+
+        .domain-status {
+            font-size: 10px;
+            padding: 1px 4px;
+            margin-left: 8px;
+        }
+
+        .status-available {
+            color: var(--unix-green);
+            border: 1px solid var(--unix-green);
+        }
+
+        .status-taken {
+            color: var(--unix-red);
+            border: 1px solid var(--unix-red);
+        }
+
+        .domain-actions {
+            display: none;
+            gap: 4px;
+            margin-left: 8px;
+        }
+
+        .tree-item:hover .domain-actions,
+        .tree-item.selected .domain-actions {
+            display: flex;
+        }
+
+        .action-link {
+            color: var(--unix-blue);
+            text-decoration: none;
+            font-size: 9px;
+            cursor: pointer;
+        }
+
+        .action-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Error Display */
+        .error-section {
+            margin: 16px 0;
+            color: var(--unix-red);
+            display: none;
+            border-left: 2px solid var(--unix-red);
+            padding-left: 8px;
+            font-size: 12px;
+        }
+
+        .error-section.active {
+            display: block;
+        }
+
+        /* Vim-style Navigation Hints */
+        .nav-hints {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--unix-bg);
+            border-top: 1px solid var(--unix-dark-gray);
+            padding: 4px 8px;
+            font-size: 10px;
+            color: var(--unix-gray);
+            font-family: monospace;
+        }
+
+        .nav-hint {
+            margin-right: 16px;
+        }
+
+        .nav-key {
+            color: var(--unix-light-gray);
+            font-weight: bold;
+        }
+
+        /* Help Section */
+        .help-section {
+            color: var(--unix-gray);
+            font-size: 11px;
+            margin-top: 24px;
+            line-height: 1.6;
+        }
+
+        .help-command {
+            color: var(--unix-light-gray);
+            font-family: monospace;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .unix-terminal {
+                padding: 4px;
+                max-width: none;
+            }
+            
+            .logo {
+                font-size: 6px;
+            }
+            
+            body {
+                font-size: 11px;
+            }
+            
+            .options-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Hidden Utility */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Selection Highlighting */
+        ::selection {
+            background: var(--unix-selection);
+            color: var(--unix-fg);
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--unix-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--unix-dark-gray);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--unix-gray);
+        }
+
+        /* Focus indicators */
+        .command-input:focus,
+        .unix-input:focus,
+        .unix-textarea:focus {
+            outline: 1px dotted var(--unix-gray);
+            outline-offset: 2px;
         }
     </style>
 </head>
 <body>
-    <!-- Main layout table -->
-    <table class="main-table">
-        <tr>
-            <td class="header-cell" colspan="2">
-                <div class="wordart-title">GOBLIN GLOBE</div>
-                <div style="color: white; font-size: 16px; font-weight: bold; text-shadow: 2px 2px 4px #000000;">
-                    THE ULTIMATE DOMAIN NAME FINDER!!!
-                </div>
-                <div class="blink" style="color: yellow; font-size: 14px; margin-top: 10px;">
-                    *** NEW AND IMPROVED! *** POWERED BY AI! ***
-                </div>
-            </td>
-        </tr>
-        
-        <tr>
-            <td class="content-cell">
-                <hr class="rainbow-hr">
-                
-                <!-- Under Construction Section -->
-                <div style="text-align: center; margin: 20px 0;">
-                    <div class="construction" style="font-size: 18px; font-weight: bold; color: #ff0000;">
-                        🚧 UNDER CONSTRUCTION 🚧
-                    </div>
-                    <div style="margin: 10px 0;">
-                        <img src="data:image/gif;base64,R0lGODlhPAA8APcAAAAAAAEBAQICAgMDAwQEBAUFBQYGBgcHBwgICAkJCQoKCgsLCwwMDA0NDQ4ODg8PDxAQEBERERISEhMTExQUFBUVFRYWFhcXFxgYGBkZGRoaGhsbGxwcHB0dHR4eHh8fHyAgICEhISIiIiMjIykpKSkpKSkpKSkpKSkpKSkpKSkpKSoqKisrKywsLC0tLS4uLi8vLzAwMDExMTIyMjMzMzQ0NDU1NTY2Njc3Nzg4ODk5OTo6Ojs7Ozw8PD09PT4+Pj8/P0BAQEFBQUJCQkNDQ0REREVFRUZGRkdHR0hISElJSUpKSktLS0xMTE1NTU5OTk9PT1BQUFFRUVJSUlNTU1RUVFVVVVZWVldXV1hYWFlZWVpaWltbW1xcXF1dXV5eXl9fX2BgYGFhYWJiYmNjY2RkZGVlZWZmZmdnZ2hoaGlpaWpqamtra2xsbG1tbW5ubm9vb3BwcHFxcXJycnNzc3R0dHV1dXZ2dnd3d3h4eHl5eXp6ent7e3x8fH19fX5+fn9/f4CAgIGBgYKCgoODg4SEhIWFhYaGhoeHh4iIiImJiYqKiouLi4yMjI2NjY6Ojo+Pj5CQkJGRkZKSkpOTk5SUlJWVlZaWlpeXl5iYmJmZmZqampubm5ycnJ2dnZ6enp+fn6CgoKGhoaKioqOjo6SkpKWlpaampqenp6ioqKmpqaqqqqurq6ysrK2tra6urq+vr7CwsLGxsbKysrOzs7S0tLW1tba2tre3t7i4uLm5ubq6uru7u7y8vL29vb6+vr+/v8DAwMHBwcLCwsPDw8TExMXFxcbGxsfHx8jIyMnJycrKysvLy8zMzM3Nzc7Ozs/Pz9DQ0NHR0dLS0tPT09TU1NXV1dbW1tfX19jY2NnZ2dra2tvb29zc3N3d3d7e3t/f3+Dg4OHh4eLi4uPj4+Tk5OXl5ebm5ufn5+jo6Onp6erq6uvr6+zs7O3t7e7u7u/v7/Dw8PHx8fLy8vPz8/T09PX19fb29vf39/j4+Pn5+fr6+vv7+/z8/P39/f7+/v///yH/C05FVFNDQVBFMi4wAwEAAAAh+QQJCgAAACwAAAAAPAA8AAAI/wABCBxIsKDBgwgTKlzIsKHDhxAjSpxIsaLFixgzatzIsaPHjyBDihxJsqTJkyhTqlzJsqXLlzBjypxJs6bNmzhz6tzJs6fPn0CDCh1KtKjRo0iTKl3KtKnTp1CjSp1KtarVq1izat3KtavXr2DDih1LtqzZs2jTql3Ltq3bt3Djyp1Lt67du3jz6t3Lt6/fv4ADCx5MuLDhw4gTK17MuLHjx5AjS55MubLly5gza97MubPnz6BDix5NurTp06hTq17NurXr17Bjy55Nu7bt27hz697Nu7fv38CDCx9OvLjx48iTK1/OvLnz59CjS59Ovbr169iza9/Ovbv37+DDi/8fT768+fPo06tfz769+/fw48ufT7++/fv48+vfz7+///8ABijggAQWaOCBCCao4IIMNujggxBGKOGEFFZo4YUYZqjhhhx26OGHIIYo4ogklmjiiSimqOKKLLbo4oswxijjjDTWaOONOOao44489ujjj0AGKeSQRBZp5JFIJqnkkkw26eSTUEYp5ZRUVmnllVhmqeWWXHbp5ZdghinmmGSWaeaZaKap5ppstunmm3DGKeecdNZp55145qnnnnz26eefgAYq6KCEFmrooYgmquiijDbq6KOQRirppJRWaumlmGaq6aacdurpp6CGKuqopJZq6qmopqrqqqy26uqrsMYq66y01mrrrbjmquuuvPbq669WCvrrsMQWa+yxyP8m6+yz0EYr7bTUVmvttdhmq+223Hbr7bfghivuuOSWa+656Kar7rrstuvuu/DGK++89NZr77345qvvvvz26++/AAcs8MAEF2zwwQgnrPDCDDfs8MMQRyzxxBRXbPHFGGes8cYcd+zxxyCHLPLIJJds8skop6zyyiy37PLLMMcs88w012zzzTjnrPPOPPfs889ABy300EQXbfTRSCet9NJMN+3001BHLfXUVFdt9dVYZ6311lx37fXXYIct9thkl2322WinrfbabLft9ttwxy333HTXbffdeOet995894333oAHLvjghBdu+OGIJ6744ow37vjjkEcu+eSUV2755ZhnrvnmnHfu+eeghy766KSXbvrpqKeu+uqst+7667DHLvvstNdu++245/8O++y456777rz37vvvwAcv/PDEF2/88cgnr/zyzDfv/PPQRy/99NRXb/312Gev/fbcd+/99+CHL/745Jdv/vnop6/++uy37/778Mcv//z012///fjnr//+/Pfv//8AGI+DAFR3wMIdJ2BAoODhCXDAAhcAuwIqUIELXI8ACvAAoZZNgAdAIGAGCMEJcqc2BZygBCVIwQlOEIMYHKAGO8jBDoJwgya04AhDeEITmvCEKFRh+0jQASRiYDIOJGEHSXhCFF5QhSl8IQVN6MEQgtCEJkxhC1sYwxfeUIYxfCEN/7fDE/rQh0IU4g6JaEQjGnGCTHShEpdo/0QnPnGKUZziFK2YxStmcYtbxGIXvdhFL34xjGQcYxnHeMYztjGNbXxjHNcYxzfOcY517GMf/xjIQA6ykIU85CEPmchELnKRj1xkIx8ZyUhOspKXzOQmOxnKUJ6ylKdM5SpbuclVvjKWs6zlLXOZy17+spjFPGYyk7nMZj4zms+sZjazuc1udnOc4SxnOcvZznqus531zGc+++nPgI6zoAc96EITutCGPjSiE63oRS+a0Y1udKQb7WhIA1rSkJ70pCc9aUpXmtKWrjSmM21pTWP60prutKc5fWlQgzrUpB61qEU96lOTetSkNjWqTX1qVae61apudatd/errrXb1q2H9alrHWta0nnWtbX3rXN861rreda97/etfBzvYwi62sY197GQru9nOfrazy41sZj/72dCOtrSnTe1qW/va2M62trfN7W57+9vgDre4x03ucpv73OhOt7rXze52u/vd8I63vOdN73rbu972vje+863vfvv73/4OuMAFPvCBE7zgBj84whOu8IYr/OEQj7jEJ07xi1v84hjPuMYzvvGOf7zjIA/5yEdO8pOjPOUqX7nKWf5ymM984jCfucxpXvOa2/zmN8+5znfO857/POhBH7rQh070ohv96EhPutKXzvSmO/3pUI+61KdO9apbvepXz7rWt871rnv969z3+tfBHvawj73sZ0+7281+drSnXe1qX7va1872/1/fOt73zve++/3vgA+84AdP+MIb/vCIT7ziF8/4xjv+8ZCPvOQnT/nKW/7ymM+85jfP+c57/vOgD73oR0/60pv+9KhPvepXz/rWu/71sI+97GdP+9rb/va4z73ud8/73vv+98APvvCHT/ziG//4yE++8pfP/OY7//nQj770p0/96lv/+tjPvva3z/3ue//74A+/+MdP/vKb//zoT7/6qa9+66v/+tjXvvfBP/7yl//86E+/+tfP/va7//3wj7/85w=" alt="Under Construction" width="60" height="60">
-                    </div>
-                    <div style="font-family: 'MS Sans Serif', sans-serif; font-size: 11px; color: #800080;">
-                        Last Updated: <span class="blink">NEVER!</span> | WebMaster: GoblinMaster2000
-                    </div>
-                </div>
-                
-                <hr class="rainbow-hr">
-                
-                <!-- Main Form -->
-                <form id="domainForm">
-                    <table border="0" width="100%">
-                        <tr>
-                            <td bgcolor="#ccccff" align="center" colspan="2">
-                                <font size="+1" color="#000080"><b>DOMAIN SEARCH WIZARD</b></font>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="150" align="right"><b>What domain do you want?</b></td>
-                            <td>
-                                <textarea id="prompt" name="prompt" rows="4" cols="40" class="bevel-inset" placeholder="Type your awesome domain idea here! Like: cool tech startup, gaming website, etc."></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="right"><b>How many domains?</b></td>
-                            <td>
-                                <select id="count" name="count" class="bevel-inset">
-                                    <option value="5">5 domains</option>
-                                    <option value="10" selected>10 domains</option>
-                                    <option value="15">15 domains</option>
-                                    <option value="20">20 domains</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="right"><b>Extensions:</b></td>
-                            <td>
-                                <input type="checkbox" name="extensions" value=".com" checked> .com
-                                <input type="checkbox" name="extensions" value=".net"> .net
-                                <input type="checkbox" name="extensions" value=".org"> .org
-                                <input type="checkbox" name="extensions" value=".io"> .io
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" align="center" style="padding-top: 15px;">
-                                <input type="submit" value="FIND MY DOMAINS!!!" style="font-size: 14px; font-weight: bold;">
-                                <input type="button" value="RESET FORM" onclick="resetForm()">
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-                
-                <!-- Loading Animation -->
-                <div id="loading" class="loading-gif" style="display: none;">
-                    <div style="font-size: 16px; font-weight: bold; color: #ff0000; margin-bottom: 10px;">
-                        <span class="blink">SEARCHING THE INTERNET...</span>
-                    </div>
-                    <div style="font-family: 'Courier New', monospace; background-color: #000000; color: #00ff00; padding: 10px; border: 2px inset #c0c0c0; display: inline-block;">
-                        <div id="loadingText">INITIALIZING AI GOBLIN BRAIN...</div>
-                        <div style="margin-top: 5px;">
-                            <span id="progressBar">████████████████████</span> <span id="progressPercent">0%</span>
+    <div class="unix-terminal">
+        <!-- Man Page Header -->
+        <div class="man-header">
+            GOBLIN-GLOBE-DOMAINS(1) User Commands GOBLIN-GLOBE-DOMAINS(1)
+        </div>
+
+        <!-- ASCII Logo -->
+        <div class="logo">
+ ██████╗  ██████╗ ██████╗ ██╗     ██╗███╗   ██╗     ██████╗ ██╗      ██████╗ ██████╗ ███████╗
+██╔════╝ ██╔═══██╗██╔══██╗██║     ██║████╗  ██║    ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔════╝
+██║  ███╗██║   ██║██████╔╝██║     ██║██╔██╗ ██║    ██║  ███╗██║     ██║   ██║██████╔╝█████╗  
+██║   ██║██║   ██║██╔══██╗██║     ██║██║╚██╗██║    ██║   ██║██║     ██║   ██║██╔══██╗██╔══╝  
+╚██████╔╝╚██████╔╝██████╔╝███████╗██║██║ ╚████║    ╚██████╔╝███████╗╚██████╔╝██████╔╝███████╗
+ ╚═════╝  ╚═════╝ ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝     ╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚══════╝
+        </div>
+
+        <!-- System Info -->
+        <div class="system-info">
+            <div class="uname-line">user@goblin-globe:~$ uname -a</div>
+            <div class="uname-line">Linux goblin-globe 5.15.0-generic #42-Ubuntu SMP x86_64 GNU/Linux</div>
+            <div class="uname-line">user@goblin-globe:~$ uptime</div>
+            <div class="uname-line uptime" id="systemUptime"></div>
+        </div>
+
+        <!-- Name Section -->
+        <div class="man-section">
+            <div class="section-header">NAME</div>
+            <div class="section-content">
+                goblin-globe-domains - intelligent domain name discovery and availability checker
+            </div>
+        </div>
+
+        <!-- Synopsis Section -->
+        <div class="man-section">
+            <div class="section-header">SYNOPSIS</div>
+            <div class="section-content">
+                <strong>goblin-globe-domains</strong> [<strong>-c</strong> <em>count</em>] [<strong>-e</strong> <em>extensions</em>] <em>description</em>
+            </div>
+        </div>
+
+        <!-- Description Section -->
+        <div class="man-section">
+            <div class="section-header">DESCRIPTION</div>
+            <div class="section-content">
+                Generate and check domain name availability based on concept descriptions.
+                Uses AI-powered generation with DNS and WHOIS verification.
+            </div>
+        </div>
+
+        <!-- Options Section -->
+        <div class="man-section">
+            <div class="section-header">OPTIONS</div>
+            <div class="section-content">
+                <form id="terminalForm">
+                    <!-- Description Input -->  
+                    <div class="form-section active" id="promptSection">
+                        <div class="form-label">description</div>
+                        <div class="command-prompt">
+                            <span class="shell-prompt">$</span>
+                            <textarea 
+                                id="promptInput" 
+                                class="unix-textarea"
+                                placeholder="Enter domain concept description..."
+                                rows="3"
+                            ></textarea>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Status Message -->
-                <div id="statusMessage" class="status-message" style="display: none;"></div>
-                
-                <!-- Results -->
-                <div id="results" style="display: none;">
-                    <hr class="rainbow-hr">
-                    <div style="text-align: center; margin: 20px 0;">
-                        <font size="+2" color="#008000"><b>YOUR DOMAIN RESULTS!!!</b></font>
+
+                    <!-- Count Option -->
+                    <div class="form-section" id="countSection">
+                        <div class="form-label">-c, --count=NUM</div>
+                        <div class="command-prompt">
+                            <span class="shell-prompt">$</span>
+                            <input 
+                                type="number" 
+                                id="countInput" 
+                                class="unix-input"
+                                min="1" 
+                                max="20" 
+                                value="10"
+                                style="width: 60px;"
+                            >
+                            <span style="margin-left: 8px; color: var(--unix-gray); font-size: 11px;">number of domains to generate (1-20)</span>
+                        </div>
                     </div>
-                    
-                    <!-- Available Domains -->
-                    <div id="availableSection">
-                        <table class="results-table" width="100%">
-                            <tr class="results-header">
-                                <td colspan="3">
-                                    <font size="+1">✅ AVAILABLE DOMAINS ✅</font>
-                                </td>
-                            </tr>
-                            <tbody id="availableList">
-                            </tbody>
-                        </table>
+
+                    <!-- Extensions Option -->
+                    <div class="form-section" id="extensionsSection">
+                        <div class="form-label">-e, --extensions=LIST</div>
+                        <div class="options-group">
+                            <label class="option-item">
+                                <input type="checkbox" name="extensions" value=".com" checked class="unix-checkbox">
+                                <span>.com</span>
+                            </label>
+                            <label class="option-item">
+                                <input type="checkbox" name="extensions" value=".net" class="unix-checkbox">
+                                <span>.net</span>
+                            </label>
+                            <label class="option-item">
+                                <input type="checkbox" name="extensions" value=".org" class="unix-checkbox">
+                                <span>.org</span>
+                            </label>
+                            <label class="option-item">
+                                <input type="checkbox" name="extensions" value=".io" class="unix-checkbox">
+                                <span>.io</span>
+                            </label>
+                        </div>
                     </div>
-                    
-                    <br>
-                    
-                    <!-- Taken Domains -->
-                    <div id="takenSection">
-                        <table class="results-table" width="100%">
-                            <tr class="results-header">
-                                <td colspan="3">
-                                    <font size="+1">❌ TAKEN DOMAINS ❌</font>
-                                </td>
-                            </tr>
-                            <tbody id="takenList">
-                            </tbody>
-                        </table>
+
+                    <!-- Execute Commands -->
+                    <div class="form-section">
+                        <button type="submit" id="executeButton" class="unix-button primary">
+                            <span id="executeText">execute</span>
+                            <span id="executeSpinner" class="spinner hidden"></span>
+                        </button>
+                        <button type="button" id="clearButton" class="unix-button">clear</button>
                     </div>
-                    
-                    <!-- Export Options -->
-                    <div style="text-align: center; margin: 20px 0;">
-                        <input type="button" value="COPY ALL AVAILABLE" onclick="copyAvailable()">
-                        <input type="button" value="EXPORT TO CSV" onclick="exportCSV()">
-                        <input type="button" value="NEW SEARCH" onclick="newSearch()">
+                </form>
+            </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section" id="progressSection">
+            <div class="section-header">EXECUTION</div>
+            <div class="section-content">
+                <div class="progress-line">
+                    <div class="progress-label" id="progressLabel">initializing...</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
                     </div>
+                    <div class="progress-percent" id="progressPercent">0%</div>
                 </div>
-                
-                <hr class="rainbow-hr">
-                
-                <!-- Fun 90s Footer -->
-                <div style="text-align: center; margin: 20px 0;">
-                    <div class="scroll-text">
-                        <span>*** GOBLIN GLOBE IS THE BEST DOMAIN FINDER ON THE WORLD WIDE WEB! *** TELL YOUR FRIENDS! *** BOOKMARK THIS PAGE! *** GEOCITIES APPROVED! ***</span>
-                    </div>
+                <div id="progressDetails" style="color: var(--unix-gray); font-size: 10px; margin-top: 4px;"></div>
+            </div>
+        </div>
+
+        <!-- Error Section -->
+        <div class="error-section" id="errorSection">
+            <div id="errorMessage"></div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection">
+            <div class="section-header">OUTPUT</div>
+            <div class="section-content">
+                <div id="scanSummary" style="color: var(--unix-gray); margin-bottom: 12px; font-size: 11px;"></div>
+
+                <!-- Available Domains Tree -->
+                <div class="tree-section" id="availableSection">
+                    <div class="tree-header">available [<span id="availableCount">0</span>]</div>
+                    <div class="domain-tree" id="availableTree"></div>
                 </div>
-                
-                <!-- 90s Web Standards Compliance -->
-                <div style="text-align: center; margin: 20px 0; font-size: 10px;">
-                    <div style="margin-bottom: 10px;">
-                        <img src="data:image/gif;base64,R0lGODlhHgAOAPcAAP///wAAAP8AAP//AP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAAQALAAAAAAYAA4AAAhKAAkIHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmypMmTKFOqXMmypcuXHlHKnEmzps2bOHPq3Mmzp8+fQIMKBQQAOw==" alt="Made with Notepad" width="30" height="14">
-                        <img src="data:image/gif;base64,R0lGODlhHgAOAPcAAP///wAAAP8AAP//AP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAAQALAAAAAAYAA4AAAhKAAkIHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmypMmTKFOqXMmypcuXHlHKnEmzps2bOHPq3Mmzp8+fQIMKBQQAOw==" alt="HTML 3.2 Compatible" width="30" height="14">
-                        <img src="data:image/gif;base64,R0lGODlhHgAOAPcAAP///wAAAP8AAP//AP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAAQALAAAAAAYAA4AAAhKAAkIHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmypMmTKFOqXCmypcuXHlHKnEmzps2bOHPq3Mmzp8+fQIMKBQQAOw==" alt="Netscape Now!" width="30" height="14">
-                    </div>
-                    <div style="color: #666666;">
-                        This site is optimized for <b>Netscape Navigator 4.0</b> and <b>Internet Explorer 4.0</b><br>
-                        Best viewed at 800x600 resolution with thousands of colors<br>
-                        <a href="http://www.netscape.com/" style="color: #0000ff;">Get Netscape</a> | 
-                        <a href="http://www.microsoft.com/ie/" style="color: #0000ff;">Get Internet Explorer</a>
-                    </div>
+
+                <!-- Taken Domains Tree -->
+                <div class="tree-section" id="takenSection">
+                    <div class="tree-header">taken [<span id="takenCount">0</span>]</div>
+                    <div class="domain-tree" id="takenTree"></div>
                 </div>
-                
-                <!-- Last Updated -->
-                <div style="text-align: center; font-size: 9px; color: #666666; margin: 10px 0;">
-                    Page last updated: <span class="blink">RIGHT NOW!</span> | 
-                    Created with: ❤️ and FrontPage Express | 
-                    Hosted by: GeoCities (RIP)
+
+                <!-- Action Commands -->
+                <div class="form-section">
+                    <button type="button" id="exportButton" class="unix-button">export</button>
+                    <button type="button" id="copyButton" class="unix-button">copy</button>
+                    <button type="button" id="newScanButton" class="unix-button">new</button>
                 </div>
-                
-            </td>
-            
-            <!-- Sidebar -->
-            <td class="sidebar-cell">
-                <!-- Visitor Counter -->
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <div style="font-size: 12px; font-weight: bold; margin-bottom: 5px;">VISITOR COUNTER:</div>
-                    <div class="counter" id="visitorCounter">001337</div>
-                    <div style="font-size: 10px; margin-top: 5px;">You are visitor #<span class="blink">1337</span>!</div>
+            </div>
+        </div>
+
+        <!-- Examples Section -->
+        <div class="man-section">
+            <div class="section-header">EXAMPLES</div>
+            <div class="section-content">
+                <div style="font-family: monospace; color: var(--unix-gray); font-size: 11px;">
+                    <div>$ goblin-globe-domains "tech startup"</div>
+                    <div>$ goblin-globe-domains -c 15 -e .com,.io "ai platform"</div>
+                    <div>$ goblin-globe-domains --count=5 "creative agency"</div>
                 </div>
-                
-                <!-- Random Stats -->
-                <div class="bevel-raised" style="padding: 10px; margin-bottom: 15px;">
-                    <div style="font-weight: bold; color: #800000; margin-bottom: 5px;">GOBLIN STATS:</div>
-                    <div style="font-size: 11px;">
-                        🧙‍♂️ Domains Found: <span class="rainbow-text">9,999,999</span><br>
-                        ⚡ AI Power Level: <span class="blink">MAXIMUM</span><br>
-                        🌍 Countries Served: ALL<br>
-                        📈 Success Rate: 420.69%
-                    </div>
-                </div>
-                
-                <!-- Web Ring -->
-                <div class="webring">
-                    <div style="font-weight: bold; font-size: 12px; margin-bottom: 5px;">GOBLIN WEB RING</div>
-                    <div style="font-size: 10px;">
-                        <a href="#">← Previous</a> |
-                        <a href="#">Random</a> |
-                        <a href="#">Next →</a>
-                    </div>
-                </div>
-                
-                <!-- Awards -->
-                <div style="text-align: center; margin: 15px 0;">
-                    <div style="font-weight: bold; font-size: 11px; margin-bottom: 5px;">AWARDS WON:</div>
-                    <div style="font-size: 20px;">🏆🥇⭐</div>
-                    <div style="font-size: 9px; margin-top: 3px;">
-                        Best Website 1999<br>
-                        Coolest Site Award<br>
-                        Webby Winner
-                    </div>
-                </div>
-                
-                <!-- Guestbook -->
-                <div class="bevel-raised" style="padding: 8px; margin: 15px 0;">
-                    <div style="font-weight: bold; font-size: 11px; margin-bottom: 5px; color: #000080;">SIGN MY GUESTBOOK!</div>
-                    <div style="font-size: 9px;">
-                        <a href="#" style="color: #800080;">Click here to sign!</a><br>
-                        Last entry: "OMG this site rocks!" - CoolDude98
-                    </div>
-                </div>
-                
-                <!-- Best Viewed In -->
-                <div style="text-align: center; margin: 15px 0; font-size: 9px;">
-                    <div style="font-weight: bold;">BEST VIEWED IN:</div>
-                    <div>Netscape Navigator 4.0</div>
-                    <div>800x600 resolution</div>
-                    <div>16-bit color</div>
-                </div>
-                
-                <!-- Email Link -->
-                <div style="text-align: center; margin: 15px 0; font-size: 10px;">
-                    <div class="blink">📧 EMAIL THE WEBMASTER!</div>
-                    <a href="mailto:goblinmaster@hotmail.com" style="color: #0000ff;">goblinmaster@hotmail.com</a>
-                </div>
-            </td>
-        </tr>
-    </table>
-    
+            </div>
+        </div>
+
+        <!-- Help Section -->
+        <div class="help-section">
+            <div class="section-header">KEYBOARD NAVIGATION</div>
+            <div class="section-content">
+                <div><span class="help-command">Tab</span> - navigate fields</div>
+                <div><span class="help-command">Ctrl+Enter</span> - execute scan</div>
+                <div><span class="help-command">Ctrl+C</span> - copy available domains</div>
+                <div><span class="help-command">Ctrl+S</span> - export results</div>
+                <div><span class="help-command">Ctrl+R</span> - reset form</div>
+                <div><span class="help-command">j/k</span> - navigate results (vim-style)</div>
+                <div><span class="help-command">Enter</span> - select domain</div>
+                <div><span class="help-command">q</span> - quit/clear</div>
+            </div>
+        </div>
+
+        <!-- Author Section -->
+        <div class="man-section">
+            <div class="section-header">AUTHOR</div>
+            <div class="section-content">
+                Written by Goblin Globe Systems
+            </div>
+        </div>
+
+        <!-- Copyright Section -->
+        <div class="man-section">
+            <div class="section-header">COPYRIGHT</div>
+            <div class="section-content">
+                Copyright © 2024 Goblin Globe Systems. License: MIT
+            </div>
+        </div>
+    </div>
+
+    <!-- Vim-style Navigation Hints -->
+    <div class="nav-hints">
+        <span class="nav-hint"><span class="nav-key">Ctrl+Enter</span> execute</span>
+        <span class="nav-hint"><span class="nav-key">j/k</span> navigate</span>
+        <span class="nav-hint"><span class="nav-key">Enter</span> select</span>
+        <span class="nav-hint"><span class="nav-key">Ctrl+C</span> copy</span>
+        <span class="nav-hint"><span class="nav-key">Ctrl+S</span> export</span>
+        <span class="nav-hint"><span class="nav-key">q</span> quit</span>
+    </div>
+
     <script src="app.js"></script>
 </body>
 </html>

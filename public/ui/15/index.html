@@ -3,203 +3,328 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goblin Globe</title>
+    <title>GOBLIN GLOBE - Gothic Cathedral Domain Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700;900&family=Almendra:ital,wght@0,400;0,700;1,400;1,700&family=Griffy&family=Blackletter&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap');
-        
-        /* Reset and base styles */
+        /* Gothic Cathedral Extravaganza */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html {
-            font-size: 16px;
-            line-height: 1.6;
+        :root {
+            --gothic-purple: #2F1B69;
+            --dark-purple: #1A0E3A;
+            --deep-red: #8B0000;
+            --crimson: #DC143C;
+            --cathedral-gold: #B8860B;
+            --gothic-silver: #C0C0C0;
+            --parchment: #F5DEB3;
+            --stone-gray: #696969;
+            --midnight-blue: #191970;
+            --shadow-black: #0A0A0A;
+            --cathedral-shadow: 0 12px 40px rgba(26, 14, 58, 0.8);
+            --crimson-glow: 0 0 25px rgba(220, 20, 60, 0.7);
+            --gothic-shimmer: 0 0 20px rgba(184, 134, 11, 0.6);
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            color: #2d3e2e;
-            background: linear-gradient(135deg, #f4f7f3 0%, #e8f2e4 50%, #ddebd6 100%);
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            font-family: 'Cinzel', serif;
+            background: linear-gradient(135deg, 
+                var(--shadow-black) 0%, 
+                var(--dark-purple) 15%, 
+                var(--gothic-purple) 35%, 
+                var(--midnight-blue) 60%, 
+                var(--deep-red) 85%, 
+                var(--shadow-black) 100%);
+            background-attachment: fixed;
+            color: var(--parchment);
             overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
         }
 
-        /* Organic background pattern */
         body::before {
             content: '';
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-opacity='0.03'%3E%3Cpath d='M12 22c8-4 16-4 24 0s16 12 16 20-8 16-16 20-16 4-24 0-16-12-16-20 8-16 16-20zm0 40c8-4 16-4 24 0s16 12 16 20-8 16-16 20-16 4-24 0-16-12-16-20 8-16 16-20z' fill='%23558b5a'/%3E%3C/g%3E%3C/svg%3E") repeat;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(220, 20, 60, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(47, 27, 105, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 10%, rgba(184, 134, 11, 0.1) 0%, transparent 40%);
             pointer-events: none;
             z-index: -1;
         }
 
-        /* Container with organic shape */
-        .container {
+        /* Gothic ornamental elements */
+        .gothic-ornament {
+            position: fixed;
+            font-size: 3rem;
+            color: var(--deep-red);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatGothic 12s ease-in-out infinite;
+        }
+
+        .gothic-ornament:nth-child(1) { top: 5%; left: 3%; animation-delay: 0s; }
+        .gothic-ornament:nth-child(2) { top: 12%; right: 6%; animation-delay: 4s; }
+        .gothic-ornament:nth-child(3) { bottom: 20%; left: 8%; animation-delay: 8s; }
+        .gothic-ornament:nth-child(4) { bottom: 8%; right: 10%; animation-delay: 12s; }
+
+        @keyframes floatGothic {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.4; }
+            50% { transform: translateY(-30px) rotate(-5deg); opacity: 0.8; }
+        }
+
+        /* Main cathedral container */
+        .cathedral-container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 40px;
             position: relative;
         }
 
-        /* Organic header design */
-        .header {
-            text-align: center;
-            margin: 3rem 0 4rem;
-            position: relative;
-        }
-
-        .header::before {
+        .cathedral-container::before {
             content: '';
             position: absolute;
-            top: -20px;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 8px solid var(--cathedral-gold);
+            border-image: linear-gradient(45deg, var(--cathedral-gold), var(--gothic-silver), var(--cathedral-gold)) 1;
+            clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 30px 100%, 0 calc(100% - 30px));
+            box-shadow: 
+                inset 0 0 50px rgba(220, 20, 60, 0.2),
+                0 0 50px rgba(184, 134, 11, 0.3);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Gothic Header */
+        .gothic-header {
+            text-align: center;
+            margin: 60px 0 80px 0;
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .gothic-header::before {
+            content: '✠ ✧ ✠ ✧ ✠ ✧ ✠ ✧ ✠ ✧ ✠ ✧ ✠';
+            position: absolute;
+            top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(circle, rgba(133, 170, 128, 0.2) 0%, transparent 70%);
-            border-radius: 60% 40% 70% 30%;
-            animation: floating 6s ease-in-out infinite;
+            font-size: 1.8rem;
+            color: var(--cathedral-gold);
+            animation: gothicFlicker 4s ease-in-out infinite;
         }
 
-        .title {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(3rem, 8vw, 5rem);
-            font-weight: 400;
-            font-style: italic;
-            color: #2d4a32;
-            text-shadow: 2px 2px 4px rgba(133, 170, 128, 0.3);
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: #5a7c5e;
-            font-weight: 300;
-            opacity: 0.9;
-        }
-
-        /* Organic form container */
-        .form-container {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(245, 251, 243, 0.95));
-            border-radius: 50px 30px 50px 30px;
-            padding: 3rem;
-            margin: 0 auto 4rem;
-            max-width: 800px;
-            box-shadow: 
-                0 20px 40px rgba(133, 170, 128, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.8);
-            position: relative;
-            border: 2px solid rgba(133, 170, 128, 0.2);
-        }
-
-        .form-container::before {
-            content: '';
+        .gothic-header::after {
+            content: '✧ ✠ ✧ ✠ ✧ ✠ ✧ ✠ ✧ ✠ ✧ ✠ ✧';
             position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            background: linear-gradient(45deg, #85aa80, #7ba876, #6b9c6f);
-            border-radius: 55px 35px 55px 35px;
-            z-index: -1;
-            opacity: 0.3;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.8rem;
+            color: var(--deep-red);
+            animation: gothicFlicker 4s ease-in-out infinite reverse;
         }
 
-        /* Organic form elements */
-        .form-group {
-            margin-bottom: 2.5rem;
+        @keyframes gothicFlicker {
+            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            25% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+            50% { opacity: 0.8; transform: translateX(-50%) scale(1.02); }
+        }
+
+        .goblin-globe-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 4.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, 
+                var(--cathedral-gold) 0%, 
+                var(--gothic-silver) 25%, 
+                var(--parchment) 50%, 
+                var(--deep-red) 75%, 
+                var(--cathedral-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 3px 3px 8px rgba(139, 0, 0, 0.8);
+            letter-spacing: 0.15em;
+            margin: 20px 0;
             position: relative;
+            animation: gothicGlow 6s ease-in-out infinite;
         }
 
-        .form-label {
-            display: block;
-            font-size: 0.95rem;
-            font-weight: 500;
-            margin-bottom: 0.8rem;
-            color: #3d5040;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        @keyframes gothicGlow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(184, 134, 11, 0.8)); }
+            50% { filter: drop-shadow(0 0 35px rgba(220, 20, 60, 1)); }
         }
 
-        .form-input,
-        .form-textarea {
-            width: 100%;
-            padding: 1.2rem 1.5rem;
-            border: 2px solid rgba(133, 170, 128, 0.3);
-            border-radius: 25px;
-            background: rgba(255, 255, 255, 0.9);
-            font-family: inherit;
-            font-size: 1.1rem;
-            color: #2d3e2e;
-            outline: none;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        .cathedral-subtitle {
+            font-family: 'Almendra', serif;
+            font-size: 2rem;
+            font-style: italic;
+            color: var(--gothic-silver);
+            margin-top: 20px;
+            text-shadow: 2px 2px 6px rgba(139, 0, 0, 0.8);
+        }
+
+        /* Gothic Form Cathedral */
+        .gothic-form-cathedral {
+            background: linear-gradient(135deg, 
+                rgba(47, 27, 105, 0.4) 0%, 
+                rgba(139, 0, 0, 0.3) 50%, 
+                rgba(26, 14, 58, 0.4) 100%);
+            border: 6px solid var(--cathedral-gold);
+            clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px));
+            padding: 60px;
+            margin: 40px 0;
+            position: relative;
+            box-shadow: var(--cathedral-shadow), inset 0 0 40px rgba(220, 20, 60, 0.15);
             backdrop-filter: blur(10px);
         }
 
-        .form-input:focus,
-        .form-textarea:focus {
-            border-color: #85aa80;
-            background: rgba(255, 255, 255, 1);
+        .gothic-form-cathedral::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            background: linear-gradient(45deg, var(--cathedral-gold), var(--deep-red), var(--cathedral-gold));
+            clip-path: polygon(0 0, calc(100% - 42px) 0, 100% 42px, 100% 100%, 42px 100%, 0 calc(100% - 42px));
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        .gothic-corners {
+            position: absolute;
+            font-size: 3.5rem;
+            color: var(--deep-red);
+            opacity: 0.8;
+        }
+
+        .gothic-corners.top-left { top: -25px; left: -25px; }
+        .gothic-corners.top-right { top: -25px; right: -25px; }
+        .gothic-corners.bottom-left { bottom: -25px; left: -25px; }
+        .gothic-corners.bottom-right { bottom: -25px; right: -25px; }
+
+        /* Illuminated Form Elements */
+        .cathedral-form-group {
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .illuminated-label {
+            font-family: 'UnifrakturMaguntia', cursive;
+            font-size: 1.6rem;
+            color: var(--cathedral-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 20px;
+            display: block;
+            text-shadow: 2px 2px 6px rgba(139, 0, 0, 0.8);
+            position: relative;
+        }
+
+        .illuminated-label::after {
+            content: '✠';
+            margin-left: 15px;
+            color: var(--deep-red);
+            animation: crossFlicker 3s ease-in-out infinite;
+        }
+
+        @keyframes crossFlicker {
+            0%, 100% { opacity: 0.7; transform: scale(1) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.2) rotate(5deg); }
+        }
+
+        .parchment-input,
+        .parchment-textarea {
+            width: 100%;
+            padding: 25px 30px;
+            border: 4px solid var(--cathedral-gold);
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+            background: linear-gradient(135deg, 
+                rgba(245, 222, 179, 0.95) 0%, 
+                rgba(192, 192, 192, 0.9) 100%);
+            font-family: 'Almendra', serif;
+            font-size: 1.2rem;
+            color: var(--shadow-black);
+            outline: none;
+            transition: all 0.4s ease;
+            box-shadow: inset 0 4px 15px rgba(26, 14, 58, 0.3);
+        }
+
+        .parchment-input:focus,
+        .parchment-textarea:focus {
+            border-color: var(--deep-red);
+            background: linear-gradient(135deg, 
+                rgba(245, 222, 179, 1) 0%, 
+                rgba(192, 192, 192, 0.95) 100%);
             box-shadow: 
-                0 0 0 3px rgba(133, 170, 128, 0.2),
-                0 8px 25px rgba(133, 170, 128, 0.15);
-            transform: translateY(-2px);
+                inset 0 4px 15px rgba(26, 14, 58, 0.3),
+                0 0 30px rgba(220, 20, 60, 0.8);
+            transform: scale(1.02);
         }
 
-        .form-textarea {
+        .parchment-textarea {
             resize: vertical;
-            min-height: 120px;
-            border-radius: 25px 25px 15px 25px;
+            min-height: 150px;
+            font-family: 'Almendra', serif;
         }
 
-        .form-number {
-            width: 120px;
+        .illuminated-number-input {
+            width: 150px;
+            text-align: center;
+            font-weight: 600;
         }
 
-        /* Organic checkbox design */
-        .checkbox-group {
-            display: flex;
-            gap: 2rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
+        /* Gothic Checkbox Cathedral */
+        .checkbox-cathedral {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 25px;
         }
 
-        .checkbox-item {
+        .gothic-checkbox-item {
             display: flex;
             align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, 
+                rgba(220, 20, 60, 0.15) 0%, 
+                rgba(47, 27, 105, 0.15) 100%);
+            border: 3px solid var(--deep-red);
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
             cursor: pointer;
-            position: relative;
-            padding: 0.8rem 1.2rem;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.5);
             transition: all 0.3s ease;
-            border: 2px solid transparent;
+            position: relative;
         }
 
-        .checkbox-item:hover {
-            background: rgba(133, 170, 128, 0.1);
-            border-color: rgba(133, 170, 128, 0.3);
-            transform: translateY(-2px);
+        .gothic-checkbox-item:hover {
+            border-color: var(--cathedral-gold);
+            background: linear-gradient(135deg, 
+                rgba(220, 20, 60, 0.25) 0%, 
+                rgba(47, 27, 105, 0.25) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(220, 20, 60, 0.4);
         }
 
-        .checkbox-input {
-            width: 20px;
-            height: 20px;
-            margin-right: 0.8rem;
-            border: 2px solid #85aa80;
-            border-radius: 50%;
-            background: transparent;
+        .cathedral-checkbox {
+            width: 25px;
+            height: 25px;
+            margin-right: 15px;
+            border: 3px solid var(--cathedral-gold);
+            clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px));
+            background: var(--parchment);
             cursor: pointer;
             position: relative;
             -webkit-appearance: none;
@@ -208,647 +333,747 @@
             transition: all 0.3s ease;
         }
 
-        .checkbox-input:checked {
-            background: linear-gradient(135deg, #85aa80, #7ba876);
-            border-color: #6b9c6f;
+        .cathedral-checkbox:checked {
+            background: linear-gradient(135deg, var(--deep-red), var(--crimson));
+            border-color: var(--cathedral-gold);
             transform: scale(1.1);
         }
 
-        .checkbox-input:checked::after {
-            content: '';
+        .cathedral-checkbox:checked::after {
+            content: '✠';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 0 3px rgba(0,0,0,0.3);
+            color: var(--parchment);
+            font-weight: 900;
+            font-size: 14px;
         }
 
-        .checkbox-label {
-            font-size: 1rem;
-            font-weight: 400;
-            color: #2d3e2e;
-            cursor: pointer;
-        }
-
-        /* Organic button design */
-        .btn-primary {
-            background: linear-gradient(135deg, #85aa80 0%, #7ba876 50%, #6b9c6f 100%);
-            color: white;
-            border: none;
-            padding: 1.2rem 3rem;
-            font-family: inherit;
+        .checkbox-extension-label {
+            font-family: 'Cinzel', serif;
             font-size: 1.1rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-weight: 600;
+            color: var(--parchment);
             cursor: pointer;
-            border-radius: 30px 15px 30px 15px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-shadow: 2px 2px 4px rgba(139, 0, 0, 0.6);
+        }
+
+        /* Gothic Submit Button */
+        .cathedral-submit-button {
+            background: linear-gradient(135deg, 
+                var(--deep-red) 0%, 
+                var(--crimson) 25%, 
+                var(--cathedral-gold) 50%, 
+                var(--deep-red) 75%, 
+                var(--crimson) 100%);
+            color: var(--parchment);
+            border: 6px solid var(--cathedral-gold);
+            padding: 25px 60px;
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+            position: relative;
+            margin-top: 40px;
             display: inline-flex;
             align-items: center;
-            gap: 0.8rem;
-            margin-top: 1.5rem;
-            box-shadow: 
-                0 8px 25px rgba(133, 170, 128, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            position: relative;
+            gap: 20px;
+            box-shadow: var(--cathedral-shadow);
             overflow: hidden;
         }
 
-        .btn-primary::before {
+        .cathedral-submit-button::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(245, 222, 179, 0.4), 
+                transparent);
+            transition: left 0.6s ease;
         }
 
-        .btn-primary:hover::before {
+        .cathedral-submit-button:hover::before {
             left: 100%;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-3px) scale(1.02);
+        .cathedral-submit-button:hover {
+            transform: translateY(-5px) scale(1.05);
             box-shadow: 
-                0 15px 35px rgba(133, 170, 128, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+                var(--cathedral-shadow),
+                0 15px 40px rgba(220, 20, 60, 0.6);
+            border-color: var(--parchment);
         }
 
-        .btn-primary:active {
-            transform: translateY(-1px) scale(0.98);
-        }
-
-        .btn-primary:disabled {
-            background: linear-gradient(135deg, #a8a8a8, #999999);
+        .cathedral-submit-button:disabled {
+            opacity: 0.6;
             cursor: not-allowed;
             transform: none;
-            box-shadow: 0 4px 15px rgba(168, 168, 168, 0.3);
         }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.9);
-            color: #2d3e2e;
-            border: 2px solid #85aa80;
-            padding: 0.8rem 1.5rem;
-            font-family: inherit;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            border-radius: 20px 8px 20px 8px;
-            transition: all 0.3s ease;
-            margin-right: 1rem;
-            margin-bottom: 1rem;
-            backdrop-filter: blur(10px);
+        .button-text {
+            position: relative;
+            z-index: 2;
         }
 
-        .btn-secondary:hover {
-            background: #85aa80;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(133, 170, 128, 0.3);
+        /* Gothic Spinner */
+        .cathedral-spinner {
+            width: 25px;
+            height: 25px;
+            border: 3px solid rgba(220, 20, 60, 0.3);
+            border-top: 3px solid var(--deep-red);
+            clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px));
+            animation: cathedralSpin 1s linear infinite;
         }
 
-        /* Organic spinner */
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid transparent;
-            border-top: 2px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
+        @keyframes cathedralSpin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        /* Organic loading design */
-        .loading-container {
+        /* Gothic Loading Cathedral */
+        .loading-cathedral {
             text-align: center;
-            padding: 4rem 0;
-            margin: 2rem 0;
+            padding: 80px 0;
+            background: linear-gradient(135deg, 
+                rgba(47, 27, 105, 0.3) 0%, 
+                rgba(139, 0, 0, 0.2) 100%);
+            border: 4px solid var(--cathedral-gold);
+            clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 30px 100%, 0 calc(100% - 30px));
+            margin: 60px 0;
+            position: relative;
+            backdrop-filter: blur(5px);
         }
 
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 2rem;
+        .loading-cathedral::before {
+            content: '✠ ✧ ✠ ✧ ✠ ✧ ✠ ✧ ✠ ✧ ✠ ✧ ✠';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--shadow-black);
+            padding: 0 30px;
+            color: var(--cathedral-gold);
+            font-size: 1.4rem;
+            animation: gothicRotation 8s ease-in-out infinite;
+        }
+
+        @keyframes gothicRotation {
+            0%, 100% { transform: translateX(-50%) rotate(0deg); }
+            50% { transform: translateX(-50%) rotate(-2deg); }
+        }
+
+        .gothic-loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 6px solid rgba(220, 20, 60, 0.2);
+            border-top: 6px solid var(--deep-red);
+            border-right: 6px solid var(--cathedral-gold);
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+            animation: gothicSpin 2s ease-in-out infinite;
+            margin: 0 auto 40px;
             position: relative;
         }
 
-        .loading-spinner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 3px solid rgba(133, 170, 128, 0.2);
-            border-top: 3px solid #85aa80;
-            border-radius: 60% 40% 70% 30%;
-            animation: organicSpin 2s linear infinite;
-        }
-
-        .loading-spinner::after {
+        .gothic-loading-spinner::before {
             content: '';
             position: absolute;
             top: 10px;
             left: 10px;
-            width: calc(100% - 20px);
-            height: calc(100% - 20px);
-            border: 2px solid rgba(107, 156, 111, 0.3);
-            border-bottom: 2px solid #6b9c6f;
-            border-radius: 40% 60% 30% 70%;
-            animation: organicSpin 1.5s linear infinite reverse;
+            right: 10px;
+            bottom: 10px;
+            border: 3px solid rgba(220, 20, 60, 0.3);
+            border-top: 3px solid var(--cathedral-gold);
+            clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px));
+            animation: gothicSpin 1.5s ease-in-out infinite reverse;
         }
 
-        @keyframes organicSpin {
-            0% { 
-                transform: rotate(0deg);
-                border-radius: 60% 40% 70% 30%;
-            }
-            25% { 
-                border-radius: 40% 60% 50% 70%;
-            }
-            50% { 
-                transform: rotate(180deg);
-                border-radius: 70% 30% 60% 40%;
-            }
-            75% { 
-                border-radius: 30% 70% 40% 60%;
-            }
-            100% { 
-                transform: rotate(360deg);
-                border-radius: 60% 40% 70% 30%;
-            }
+        @keyframes gothicSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        /* Organic progress bar */
-        .progress-container {
+        .loading-message {
+            font-family: 'Almendra', serif;
+            font-size: 1.8rem;
+            font-style: italic;
+            color: var(--cathedral-gold);
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 6px rgba(139, 0, 0, 0.8);
+        }
+
+        /* Gothic Progress Bar */
+        .progress-cathedral {
             width: 100%;
-            height: 8px;
-            background: rgba(133, 170, 128, 0.2);
-            margin: 2rem 0;
-            border-radius: 20px;
+            height: 14px;
+            background: linear-gradient(135deg, 
+                rgba(47, 27, 105, 0.4) 0%, 
+                rgba(139, 0, 0, 0.4) 100%);
+            border: 3px solid var(--cathedral-gold);
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+            margin: 30px 0;
             overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #85aa80, #7ba876, #6b9c6f);
-            width: 0%;
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 20px;
             position: relative;
         }
 
-        .progress-bar::after {
+        .progress-sanctum {
+            height: 100%;
+            background: linear-gradient(135deg, 
+                var(--deep-red) 0%, 
+                var(--cathedral-gold) 50%, 
+                var(--crimson) 100%);
+            width: 0%;
+            transition: width 0.6s ease;
+            clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-sanctum::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            animation: shimmer 2s infinite;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(245, 222, 179, 0.6), 
+                transparent);
+            animation: progressShimmer 2s ease-in-out infinite;
         }
 
-        @keyframes shimmer {
+        @keyframes progressShimmer {
             0% { transform: translateX(-100%); }
             100% { transform: translateX(100%); }
         }
 
-        /* Organic results section */
-        .results-section {
-            margin-top: 4rem;
-        }
-
-        .results-header {
-            margin-bottom: 3rem;
+        .progress-text {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            color: var(--gothic-silver);
             text-align: center;
+            margin-top: 15px;
+            text-shadow: 2px 2px 4px rgba(139, 0, 0, 0.6);
         }
 
-        .results-actions {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
-
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            color: #2d4a32;
-            margin-bottom: 2rem;
-            text-align: center;
+        /* Results Cathedral */
+        .results-cathedral {
+            margin-top: 80px;
+            background: linear-gradient(135deg, 
+                rgba(47, 27, 105, 0.2) 0%, 
+                rgba(139, 0, 0, 0.2) 100%);
+            border: 6px solid var(--cathedral-gold);
+            clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px));
+            padding: 60px;
             position: relative;
+            backdrop-filter: blur(8px);
         }
 
-        .section-title::after {
-            content: '';
+        .results-cathedral::before {
+            content: '⛪ CATHEDRAL DOMAIN DISCOVERIES ⛪';
             position: absolute;
-            bottom: -10px;
+            top: -25px;
             left: 50%;
             transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, #85aa80, #7ba876);
-            border-radius: 2px;
+            background: var(--shadow-black);
+            color: var(--cathedral-gold);
+            padding: 12px 40px;
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            border: 3px solid var(--cathedral-gold);
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+            text-shadow: 2px 2px 6px rgba(139, 0, 0, 0.8);
         }
 
-        /* Organic domain grid */
-        .domain-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
+        .results-actions-court {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
-        /* Organic domain cards that grow like plants */
-        .domain-card {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 252, 247, 0.9));
-            border: 2px solid rgba(133, 170, 128, 0.3);
-            border-radius: 25px 15px 25px 15px;
-            padding: 2rem;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        .court-action-button {
+            background: linear-gradient(135deg, 
+                rgba(220, 20, 60, 0.2) 0%, 
+                rgba(47, 27, 105, 0.2) 100%);
+            color: var(--cathedral-gold);
+            border: 3px solid var(--deep-red);
+            padding: 15px 30px;
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
             position: relative;
-            backdrop-filter: blur(10px);
             overflow: hidden;
-            transform: scale(0.9);
-            opacity: 0;
-            animation: growIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
-        .domain-card::before {
+        .court-action-button:hover {
+            background: linear-gradient(135deg, 
+                var(--deep-red) 0%, 
+                var(--crimson) 100%);
+            color: var(--parchment);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(220, 20, 60, 0.4);
+        }
+
+        .domain-section-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--cathedral-gold);
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 3px 3px 8px rgba(139, 0, 0, 0.8);
+            position: relative;
+        }
+
+        .domain-section-title::before,
+        .domain-section-title::after {
+            content: '✠';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: var(--deep-red);
+            animation: sectionTitleGlow 5s ease-in-out infinite;
+        }
+
+        .domain-section-title::before { left: -60px; }
+        .domain-section-title::after { right: -60px; }
+
+        @keyframes sectionTitleGlow {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Gothic Domain Grid */
+        .cathedral-domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .domain-cathedral-card {
+            background: linear-gradient(135deg, 
+                rgba(245, 222, 179, 0.95) 0%, 
+                rgba(192, 192, 192, 0.9) 100%);
+            border: 4px solid var(--cathedral-gold);
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+            padding: 35px;
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: var(--cathedral-shadow);
+            overflow: hidden;
+        }
+
+        .domain-cathedral-card::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #85aa80, #7ba876, #6b9c6f, #85aa80);
-            border-radius: 27px 17px 27px 17px;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, 
+                var(--deep-red), 
+                var(--cathedral-gold), 
+                var(--crimson), 
+                var(--deep-red));
+            clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
             z-index: -1;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
-        .domain-card:hover {
-            transform: translateY(-8px) rotate(1deg);
+        .domain-cathedral-card:hover::before {
+            opacity: 1;
+        }
+
+        .domain-cathedral-card:hover {
+            transform: translateY(-8px) scale(1.02);
             box-shadow: 
-                0 20px 40px rgba(133, 170, 128, 0.25),
-                0 0 0 1px rgba(133, 170, 128, 0.1);
-            border-color: #85aa80;
+                var(--cathedral-shadow),
+                0 20px 50px rgba(220, 20, 60, 0.4);
         }
 
-        .domain-card:hover::before {
-            opacity: 0.3;
+        .domain-cathedral-card.available {
+            border-color: var(--cathedral-gold);
         }
 
-        .domain-card.available {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(240, 250, 238, 0.9));
+        .domain-cathedral-card.taken {
+            border-color: var(--stone-gray);
+            background: linear-gradient(135deg, 
+                rgba(105, 105, 105, 0.2) 0%, 
+                rgba(169, 169, 169, 0.2) 100%);
+            opacity: 0.8;
         }
 
-        .domain-card.available::after {
-            content: '🌱';
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.5rem;
-            opacity: 0.7;
-        }
-
-        .domain-card.taken {
-            background: linear-gradient(145deg, rgba(245, 245, 245, 0.9), rgba(240, 240, 240, 0.8));
-            border-color: rgba(133, 170, 128, 0.2);
-        }
-
-        .domain-card.taken::after {
-            content: '🍂';
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.5rem;
-            opacity: 0.5;
-        }
-
-        @keyframes growIn {
-            0% {
-                transform: scale(0.8) translateY(20px);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.05) translateY(-5px);
-                opacity: 0.8;
-            }
-            100% {
-                transform: scale(1) translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .domain-name {
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-            font-size: 1.3rem;
-            font-weight: 500;
-            margin-bottom: 1rem;
-            color: #2d4a32;
+        .domain-name-cathedral {
+            font-family: 'Griffy', cursive;
+            font-size: 1.8rem;
+            color: var(--shadow-black);
+            margin-bottom: 20px;
             word-break: break-all;
+            text-shadow: 1px 1px 3px rgba(139, 0, 0, 0.3);
+            position: relative;
         }
 
-        .domain-meta {
+        .domain-meta-court {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(133, 170, 128, 0.2);
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, 
+                rgba(220, 20, 60, 0.1) 0%, 
+                rgba(47, 27, 105, 0.1) 100%);
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+            border: 1px solid var(--deep-red);
         }
 
-        .domain-method {
-            font-size: 0.8rem;
+        .domain-method-badge {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #5a7c5e;
-            background: rgba(133, 170, 128, 0.1);
-            padding: 0.3rem 0.8rem;
-            border-radius: 12px;
+            letter-spacing: 0.1em;
+            color: var(--parchment);
+            background: linear-gradient(135deg, 
+                var(--deep-red) 0%, 
+                var(--crimson) 100%);
+            padding: 8px 15px;
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
         }
 
-        .domain-score {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: #2d4a32;
+        .domain-score-cathedral {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--cathedral-gold);
+            text-shadow: 2px 2px 4px rgba(139, 0, 0, 0.6);
         }
 
-        .domain-actions {
+        .domain-actions-court {
             display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
+            gap: 15px;
+            margin-top: 25px;
         }
 
-        .link-register {
-            background: linear-gradient(135deg, #85aa80, #7ba876);
-            color: white;
-            text-decoration: none;
-            padding: 0.8rem 1.5rem;
-            font-size: 0.9rem;
-            font-weight: 500;
+        .cathedral-action-button {
+            background: linear-gradient(135deg, 
+                var(--deep-red) 0%, 
+                var(--crimson) 100%);
+            color: var(--parchment);
+            border: 3px solid var(--cathedral-gold);
+            padding: 12px 25px;
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-radius: 15px 8px 15px 8px;
+            letter-spacing: 0.05em;
+            cursor: pointer;
             transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
             flex: 1;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(133, 170, 128, 0.3);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
         }
 
-        .link-register:hover {
-            background: linear-gradient(135deg, #6b9c6f, #5a8a5f);
+        .cathedral-action-button:hover {
+            background: linear-gradient(135deg, 
+                var(--cathedral-gold) 0%, 
+                var(--gothic-silver) 100%);
+            color: var(--shadow-black);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(133, 170, 128, 0.4);
+            box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
         }
 
-        /* Organic error message */
-        .error-message {
-            background: linear-gradient(145deg, rgba(255, 245, 245, 0.95), rgba(255, 240, 240, 0.9));
-            border: 2px solid rgba(220, 120, 120, 0.5);
-            border-radius: 25px 15px 25px 15px;
-            padding: 2rem;
-            margin: 3rem 0;
-            color: #8b4545;
+        .register-cathedral-link {
+            background: linear-gradient(135deg, 
+                var(--gothic-purple) 0%, 
+                var(--midnight-blue) 100%);
+            color: var(--parchment);
+            text-decoration: none;
+            display: inline-block;
             text-align: center;
-            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
 
-        /* Organic toast notifications */
-        .toast-container {
+        .register-cathedral-link:hover {
+            background: linear-gradient(135deg, 
+                var(--cathedral-gold) 0%, 
+                var(--gothic-silver) 100%);
+            color: var(--shadow-black);
+        }
+
+        /* Error Cathedral */
+        .error-cathedral {
+            background: linear-gradient(135deg, 
+                rgba(220, 20, 60, 0.2) 0%, 
+                rgba(139, 0, 0, 0.2) 100%);
+            border: 4px solid var(--deep-red);
+            clip-path: polygon(0 0, calc(100% - 25px) 0, 100% 25px, 100% 100%, 25px 100%, 0 calc(100% - 25px));
+            padding: 40px;
+            margin: 60px 0;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+
+        .error-cathedral::before {
+            content: '⚠ CATHEDRAL DECREE ⚠';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--shadow-black);
+            color: var(--deep-red);
+            padding: 8px 25px;
+            font-family: 'Cinzel Decorative', serif;
+            font-weight: 700;
+            border: 3px solid var(--deep-red);
+            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+        }
+
+        .error-message-cathedral {
+            font-family: 'Almendra', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--parchment);
+            text-shadow: 2px 2px 6px rgba(139, 0, 0, 0.8);
+        }
+
+        /* Toast Cathedral */
+        .toast-court {
             position: fixed;
-            top: 2rem;
-            right: 2rem;
-            z-index: 1000;
+            top: 30px;
+            right: 30px;
+            z-index: 2000;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 20px;
         }
 
-        .toast {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 252, 247, 0.9));
-            border: 2px solid rgba(133, 170, 128, 0.4);
-            border-radius: 20px 10px 20px 10px;
-            padding: 1rem 1.5rem;
-            min-width: 300px;
-            font-size: 0.9rem;
-            color: #2d3e2e;
-            transform: translateX(120%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(15px);
-            box-shadow: 0 8px 25px rgba(133, 170, 128, 0.2);
+        .cathedral-toast {
+            background: linear-gradient(135deg, 
+                rgba(245, 222, 179, 0.95) 0%, 
+                rgba(192, 192, 192, 0.9) 100%);
+            border: 4px solid var(--cathedral-gold);
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+            padding: 20px 30px;
+            min-width: 350px;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            color: var(--shadow-black);
+            box-shadow: var(--cathedral-shadow);
+            transform: translateX(100%);
+            transition: transform 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .toast.show {
+        .cathedral-toast.show {
             transform: translateX(0);
         }
 
-        .toast.success {
-            border-color: #85aa80;
-            background: linear-gradient(145deg, rgba(240, 250, 238, 0.95), rgba(235, 245, 233, 0.9));
+        .cathedral-toast.success {
+            border-color: var(--cathedral-gold);
         }
 
-        .toast.error {
-            border-color: rgba(220, 120, 120, 0.5);
-            background: linear-gradient(145deg, rgba(255, 245, 245, 0.95), rgba(255, 240, 240, 0.9));
-            color: #8b4545;
+        .cathedral-toast.error {
+            border-color: var(--deep-red);
+            color: var(--deep-red);
         }
 
-        /* Floating animation for decorative elements */
-        @keyframes floating {
-            0%, 100% { 
-                transform: translateX(-50%) translateY(0px) rotate(0deg);
-            }
-            25% { 
-                transform: translateX(-50%) translateY(-10px) rotate(5deg);
-            }
-            50% { 
-                transform: translateX(-50%) translateY(-5px) rotate(-3deg);
-            }
-            75% { 
-                transform: translateX(-50%) translateY(-15px) rotate(2deg);
-            }
+        .cathedral-toast::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                transparent, 
+                rgba(220, 20, 60, 0.1), 
+                transparent);
+            animation: toastShimmer 3s ease-in-out infinite;
         }
 
-        /* Utility classes */
+        @keyframes toastShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Utility Classes */
         .hidden {
-            display: none;
+            display: none !important;
         }
 
         .text-center {
             text-align: center;
         }
 
-        /* Responsive design */
+        /* Responsive Cathedral Design */
         @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
+            .cathedral-container {
+                padding: 20px;
             }
 
-            .form-container {
-                padding: 2rem;
-                border-radius: 30px 20px 30px 20px;
+            .goblin-globe-title {
+                font-size: 3.5rem;
             }
 
-            .checkbox-group {
-                flex-direction: column;
-                gap: 1rem;
+            .cathedral-subtitle {
+                font-size: 1.6rem;
             }
 
-            .domain-grid {
+            .gothic-form-cathedral {
+                padding: 40px 20px;
+            }
+
+            .checkbox-cathedral {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
             }
 
-            .results-actions {
+            .cathedral-domain-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-actions-court {
                 flex-direction: column;
-                align-items: center;
             }
 
-            .btn-secondary {
-                margin-right: 0;
-            }
-
-            .toast-container {
-                left: 1rem;
-                right: 1rem;
-                top: 1rem;
-            }
-
-            .toast {
-                min-width: auto;
+            .cathedral-toast {
+                min-width: 300px;
             }
         }
-
-        /* Add staggered animation delays for cards */
-        .domain-card:nth-child(1) { animation-delay: 0.1s; }
-        .domain-card:nth-child(2) { animation-delay: 0.2s; }
-        .domain-card:nth-child(3) { animation-delay: 0.3s; }
-        .domain-card:nth-child(4) { animation-delay: 0.4s; }
-        .domain-card:nth-child(5) { animation-delay: 0.5s; }
-        .domain-card:nth-child(6) { animation-delay: 0.6s; }
-        .domain-card:nth-child(7) { animation-delay: 0.7s; }
-        .domain-card:nth-child(8) { animation-delay: 0.8s; }
-        .domain-card:nth-child(9) { animation-delay: 0.9s; }
-        .domain-card:nth-child(10) { animation-delay: 1.0s; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Organic Header -->
-        <div class="header">
-            <h1 class="title">Goblin Globe</h1>
-            <p class="subtitle">Domain names that grow naturally from your ideas</p>
+    <!-- Floating Gothic Ornaments -->
+    <div class="gothic-ornament">⚰</div>
+    <div class="gothic-ornament">✠</div>
+    <div class="gothic-ornament">⛪</div>
+    <div class="gothic-ornament">✧</div>
+
+    <div class="cathedral-container">
+        <!-- Gothic Header -->
+        <div class="gothic-header">
+            <h1 class="goblin-globe-title">GOBLIN GLOBE</h1>
+            <p class="cathedral-subtitle">Gothic Cathedral Domain Sanctum</p>
         </div>
 
-        <!-- Organic Form -->
-        <div class="form-container">
+        <!-- Gothic Form Cathedral -->
+        <div class="gothic-form-cathedral">
+            <div class="gothic-corners top-left">✠</div>
+            <div class="gothic-corners top-right">✠</div>
+            <div class="gothic-corners bottom-left">✠</div>
+            <div class="gothic-corners bottom-right">✠</div>
+
             <form id="generateForm">
-                <div class="form-group">
-                    <label for="prompt" class="form-label">Describe Your Vision</label>
+                <div class="cathedral-form-group">
+                    <label for="prompt" class="illuminated-label">Domain Vision</label>
                     <textarea 
                         id="prompt" 
-                        class="form-textarea"
-                        placeholder="Let your ideas bloom into domain names..."
+                        class="parchment-textarea"
+                        placeholder="Inscribe thy sacred domain concept upon this digital parchment..."
                         required
                     ></textarea>
                 </div>
                 
-                <div class="form-group">
-                    <label for="count" class="form-label">Seeds to Plant</label>
+                <div class="cathedral-form-group">
+                    <label for="count" class="illuminated-label">Quantity of Domains</label>
                     <input 
                         type="number" 
                         id="count" 
-                        class="form-input form-number" 
+                        class="parchment-input illuminated-number-input" 
                         min="1" 
                         max="20" 
                         value="10"
                     >
                 </div>
                 
-                <div class="form-group">
-                    <label class="form-label">Domain Varieties</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="extensions" value=".com" checked class="checkbox-input">
-                            <span class="checkbox-label">.com</span>
+                <div class="cathedral-form-group">
+                    <label class="illuminated-label">Sacred Extensions</label>
+                    <div class="checkbox-cathedral">
+                        <label class="gothic-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".com" checked class="cathedral-checkbox">
+                            <span class="checkbox-extension-label">.com</span>
                         </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="extensions" value=".net" class="checkbox-input">
-                            <span class="checkbox-label">.net</span>
+                        <label class="gothic-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".net" class="cathedral-checkbox">
+                            <span class="checkbox-extension-label">.net</span>
                         </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="extensions" value=".org" class="checkbox-input">
-                            <span class="checkbox-label">.org</span>
+                        <label class="gothic-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".org" class="cathedral-checkbox">
+                            <span class="checkbox-extension-label">.org</span>
                         </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="extensions" value=".io" class="checkbox-input">
-                            <span class="checkbox-label">.io</span>
+                        <label class="gothic-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".io" class="cathedral-checkbox">
+                            <span class="checkbox-extension-label">.io</span>
                         </label>
                     </div>
                 </div>
                 
-                <button type="submit" id="generateButton" class="btn-primary">
-                    <span id="buttonText">Cultivate Domains</span>
-                    <div id="buttonSpinner" class="spinner hidden"></div>
+                <button type="submit" id="generateButton" class="cathedral-submit-button">
+                    <span id="buttonText" class="button-text">Manifest Domains</span>
+                    <div id="buttonSpinner" class="cathedral-spinner hidden"></div>
                 </button>
             </form>
         </div>
 
-        <!-- Organic Loading -->
-        <div id="loading" class="loading-container hidden">
-            <div class="loading-spinner"></div>
-            <p id="loadingMessage" class="subtitle">Nurturing your domain garden...</p>
-            <div id="progressBar" class="progress-container hidden">
-                <div id="progressFill" class="progress-bar"></div>
+        <!-- Loading Cathedral -->
+        <div id="loading" class="loading-cathedral hidden">
+            <div class="gothic-loading-spinner"></div>
+            <p id="loadingMessage" class="loading-message">Consulting the cathedral archives...</p>
+            <div id="progressBar" class="progress-cathedral hidden">
+                <div id="progressFill" class="progress-sanctum"></div>
             </div>
-            <p id="progressText" class="text-center hidden">Growing stage 1 of 3</p>
+            <p id="progressText" class="progress-text hidden">Cathedral Process 1 of 3</p>
         </div>
 
-        <!-- Organic Error -->
-        <div id="error" class="error-message hidden">
-            <p></p>
+        <!-- Error Cathedral -->
+        <div id="error" class="error-cathedral hidden">
+            <p class="error-message-cathedral"></p>
         </div>
 
-        <!-- Organic Results -->
-        <div id="results" class="results-section hidden">
-            <div class="results-header">
-                <div class="results-actions">
-                    <button id="exportBtn" class="btn-secondary">Harvest CSV</button>
-                    <button id="copyAllBtn" class="btn-secondary">Gather Available</button>
-                    <button id="newSearchBtn" class="btn-secondary">Plant New Seeds</button>
-                </div>
+        <!-- Results Cathedral -->
+        <div id="results" class="results-cathedral hidden">
+            <div class="results-actions-court">
+                <button id="exportBtn" class="court-action-button">Export Scroll</button>
+                <button id="copyAllBtn" class="court-action-button">Copy Available</button>
+                <button id="newSearchBtn" class="court-action-button">New Quest</button>
             </div>
             
-            <div class="mb-60">
-                <h2 class="section-title">Ready to Bloom</h2>
-                <div id="availableList" class="domain-grid"></div>
+            <div>
+                <h2 class="domain-section-title">Available Domains</h2>
+                <div id="availableList" class="cathedral-domain-grid"></div>
             </div>
             
-            <div class="mb-60">
-                <h2 class="section-title">Already Rooted</h2>
-                <div id="takenList" class="domain-grid"></div>
+            <div>
+                <h2 class="domain-section-title">Taken Domains</h2>
+                <div id="takenList" class="cathedral-domain-grid"></div>
             </div>
         </div>
 
-        <!-- Toast Container -->
-        <div id="toastContainer" class="toast-container"></div>
+        <!-- Toast Court -->
+        <div id="toastContainer" class="toast-court"></div>
     </div>
 
     <script src="app.js"></script>

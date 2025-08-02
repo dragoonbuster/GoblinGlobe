@@ -1,568 +1,639 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goblin Globe - Domain Names</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>~*~ GOBLIN GLOBE ANGELFIRE DOMAIN FINDER ~*~</title>
+    <meta name="generator" content="Angelfire HTML Editor">
+    <meta name="keywords" content="angelfire, tripod, domains, geocities, starfield, space, cosmic, galaxy">
+    <meta name="description" content="Welcome to my AWESOME space-themed domain finder! Journey through the cosmos to find your perfect domain!">
+    <meta name="author" content="SpaceGoblin99">
     <style>
-        :root {
-            --white: #ffffff;
-            --cream: #faf9f7;
-            --beige: #f5f1eb;
-            --light-wood: #e8ddd4;
-            --warm-gray: #9b8b7a;
-            --dark-gray: #5a524a;
-            --charcoal: #2d2a26;
-            --sage: #89967a;
-            --forest: #5f6b52;
-        }
-
-        * {
+        /* Angelfire/Tripod Starfield Theme */
+        body {
+            background: #000000 url('data:image/gif;base64,R0lGODlhZABkAPcAAAAAAAEBAQICAgMDAwQEBAUFBQYGBgcHBwgICAkJCQoKCgsLCwwMDA0NDQ4ODg8PDxAQEBERERISEhMTExQUFBUVFRYWFhcXFxgYGBkZGRoaGhsbGxwcHB0dHR4eHh8fHyAgICEhISIiIiMjIyQkJCUlJSYmJicnJygvLyhoKSqqqistLS0uLS4vLy8wMDAxMTEyMjIzMzM0NDQ1NTU2NjY3Nzc4ODg5OTk6Ojo7Ozs8PDw9PT0+Pj4/Pz9AQEBBQUFCQkJDQ0NEREBERUVGRkVGRUdHR0hISElJSUpKSktLS0xMTE1NTU5OTk9PT1BQUFFRUVJSUlNTU1RUVFVVVVZWVldXV1hYWFlZWVpaWltbW1xcXF1dXV5eXl9fX2BgYGFhYWJiYmNjY2RkZGVlZWZmZmdnZ2hoaGlpaWpqamtra2xsbG1tbW5ubm9vb3BwcHFxcXJycnNzc3R0dHV1dXZ2dnd3d3h4eHl5eXp6ent7e3x8fH19fX5+fn9/f4CAgIGBgYKCgoODg4SEhIWFhYaGhoeHh4iIiImJiYqKiouLi4yMjI2NjY6Ojo+Pj5CQkJGRkZKSkpOTk5SUlJWVlZaWlpeXl5iYmJmZmZqampubm5ycnJ2dnZ6enp+fn6CgoKGhoaKioqOjo6SkpKWlpaampqenp6ioqKmpqaqqqqurq6ysrK2tra6urq+vr7CwsLGxsbKysrOzs7S0tLW1tba2tre3t7i4uLm5ubq6uru7u7y8vL29vb6+vr+/v8DAwMHBwcLCwsPDw8TExMXFxcbGxsfHx8jIyMnJycrKysvLy8zMzM3Nzc7Ozs/Pz9DQ0NHR0dLS0tPT09TU1NXV1dbW1tfX19jY2NnZ2dra2tvb29zc3N3d3d7e3t/f3+Dg4OHh4eLi4uPj4+Tk5OXl5ebm5ufn5+jo6Onp6erq6uvr6+zs7O3t7e7u7u/v7/Dw8PHx8fLy8vPz8/T09PX19fb29vf39/j4+Pn5+fr6+vv7+/z8/P39/f7+/v///yH/C05FVFNDQVBFMi4wAwEAAAAh+QQJCgAAACwAAAAAZABkAAAI/wABCBxIsKDBgwgTKlzIsKHDhxAjSpxIsaLFixgzatzIsaPHjyBDihxJsqTJkyhTqlzJsqXLlzBjypxJs6bNmzhz6tzJs6fPn0CDCh1KtKjRo0iTKl3KtKnTp1CjSp1KtarVq1izat3KtavXr2DDih1LtqzZs2jTql3Ltq3bt3Djyp1Lt67du3jz6t3Lt6/fv4ADCx5MuLDhw4gTK17MuLHjx5AjS55MubLly5gza97MubPnz6BDix5NurTp06hTq17NurXr17Bjy55Nu7bt27hz697Nu7fv38CDCx9OvLjx48iTK1/OvLnz59CjS59Ovbr169iza9/Ovbv37+DDix9Pvrz58+jTq1/Pvr379/Djy59Pv779+/jz69/Pv7///wAGKOCABBZo4IEIJqjgggw26OCDEEYo4YQUVmjhhRhmqOGGHHbo4YcghijiiCSWaOKJKKao4oostujiiy7GKOOMNNZo44045qjjjjz26OOPQAYp5JBEFmnkkUgmqeSSTDbp5JNQRinllFRWaeWVWGap5ZZcdunll2CGKeaYZJZp5plopqnmmmw26eabcMYp55x01mnnnXjmqeeefPbp5594Vqnoo5BGKumklFZq6aWYZqrpppx26umnoIYq6qiklmrqqaimquqqrLbq6qutvgrrrLTWauutuOaq6668Turrs9DGKuu01FZr7bXYZqvtttx26+234IYr7rjklmvuueimq+667Lbr7rvwxivvvPTWa++9+Oar77789uvvvwAHLPDABBds8MEIJ6zwwgw37PDDEEcs8cQUV2zxxRhnrPHGHHfs8ccghyzyyCSXbPLJKKes8sost+zyyzDHLPPMNNds880456zzzjz3zHPPPgct9NBEtyz00FBHLfXUVFdt9dVYZ6311lx37fXXYIct9thkl2322WinrfbabLft9ttwxy333HTXbffdeOet99589+3334AHLvjghBdu+OGIJ6744ow37vjjkEcu+eSUV2755ZhnrvnmnHfu+eeghy766KSXbvrpqKeu+uqst+7667DHLvvstNdu++245+3667DHLvvstNdu++249+7777DHLvvstNdu++245+3667DHLvvstNdu++2456777rz37vvvwAcv/PDEF2/88cgnr/zyzDfv/PPQRy/99NRXb/312Gev/fbcd+/99+CHL/745Jdv/vnop6/++uy37/778Mcv//z012///fjnr//+/Pfv//8AGMACGRCBC1xgAxs4wQY+sIIVvCAGM6jBDnIwhCMsYQlPiMIUqnCFLXyhC2MYwxnOsIY1vCEOc6jDHvIwiEMsYhGPiMQkKnGJTXwiEqkYRS3+UYtc7KIXv+jFMIoxjGNs4hjNaMY0qlGNanwjG+HIRjjCsY50tKMd7+jFO+oxj3vkYx/9+Ec/glKQhTwkIhGJSEYykpKVtKQlNWnJTnrSk6JUJSlNeUpQotKUqVwlKFOpyljOcpa1vCUud+nLX/KymMUMpjGPiUxkKnOZzGwmM5/JTGhC85rSzGY0t+nNbQqznNs8ZzjTuc52tvOd6WwnNu+pzoOys57z1Gc8xylPfuqzn//MJz4DKlCBDtSf/jxoQBVKUIMeFKEKdShD/elQgST0oQ2NSEQnelGKYlSjGtVoRQ/K0Y129KMgNahHTapSkn40pColaElPqtKUslSlGqUpTG1q05vm9KY7zSlOa+pTngqVqD09qlGTulSjKnWpUGUqVJMq1aRO9apUrWpVo3pVqm5Vq1T1KlOlqlStklWraLVqU7+61a529apgDatYo4rWr4Y1rWNNq1nXela1stWtcKUrXN+K16rqVa9/3ate8crXweJVsIc97GERa9jCQjaxj3UsZCNr2cRmlrKZzSxoN/tZzHLWs6a1rGU9G1rOqva0pn2tameL29zq9re35K1rh7tawbZ2sso17nOh+9zsTne612Wuc5tL3epSl7nQfS5vt8vb507Wu9OtbnS9K932Zre7y92udqd73eZu17rf5a52wztd8IKXu9qtr3ade93tflcjj6DBJBjRnz9gIRAFKsQhFsGHQRzCEI2AxCU0kYlAZEIToZjEJkpRCEvEohGnuMUkTrGKYgzjEK0YRC9a8YhEJKIVfwgCFnPQhOEVYQc7KMEPhnGEH9TgCk/owRGiEIQfHOEKV9jCFgKRgy604QpJ6AEUshCFKFShClvIwhaycIIudGEMY+jCGLIwhjGcIQ1piEMd4tCCFZwhDXe4Qx/2sIdABCIQiwhEIirRiU+EYhSpOEUqWpGKWNwiJiqhiUx0ohOnSEUqXhGLU8wiF8EYxjGS0YxlNOMZzdhGNbLRjW984xvhCMc4ynGOdrzjHfGIxz32sY9+/CMgBynIQhIykYhcJCMf6chIStKSlrykJS+JyUtmUpOZ3OQmOdnJTnIylKEcJSlLWUpTmtKUqDwlKk+pyVSmcpWpXOUqVdnKVq7ylbCs5S1xictc6nKXurwlL3vZ21725S9/Ccxh/nCE/wAAOw==') repeat;
             margin: 0;
             padding: 0;
+            font-family: "Times New Roman", serif;
+            color: #ffffff;
+            overflow-x: auto;
+        }
+        
+        /* Starfield animation */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: #000011 url('data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==');
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        /* Frameset styling */
+        .main-frame {
+            width: 100%;
+            min-height: 100vh;
+            border: 0;
+        }
+        
+        .nav-frame {
+            width: 180px;
+            background: linear-gradient(45deg, #000066, #000099, #0000cc);
+            border: 2px inset #666666;
+            padding: 10px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
             box-sizing: border-box;
         }
-
-        body {
-            font-family: 'Noto Sans', sans-serif;
-            font-weight: 300;
-            background-color: var(--cream);
-            color: var(--charcoal);
-            line-height: 1.6;
+        
+        .content-frame {
+            margin-left: 200px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
             min-height: 100vh;
         }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 80px 40px;
-        }
-
-        .header {
+        
+        /* Angelfire-style title */
+        .angelfire-title {
             text-align: center;
-            margin-bottom: 120px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ffff;
+            text-shadow: 2px 2px 4px #000000, 0 0 10px #00ffff;
+            margin: 20px 0;
+            animation: glow 2s ease-in-out infinite alternate;
         }
-
-        .brand {
-            font-size: 2.5rem;
-            font-weight: 300;
-            color: var(--charcoal);
-            letter-spacing: 0.2em;
-            margin-bottom: 24px;
-            line-height: 1.2;
+        
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px #000000, 0 0 10px #00ffff; }
+            to { text-shadow: 2px 2px 4px #000000, 0 0 20px #00ffff, 0 0 30px #00ffff; }
         }
-
-        .subtitle {
-            font-size: 0.875rem;
-            color: var(--warm-gray);
-            font-weight: 300;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .form-container {
-            background-color: var(--white);
-            border: 1px solid var(--light-wood);
-            padding: 60px;
-            margin-bottom: 80px;
-            transition: all 0.3s ease;
-        }
-
-        .form-container:hover {
-            border-color: var(--warm-gray);
-        }
-
-        .form-group {
-            margin-bottom: 48px;
-        }
-
-        .form-group:last-child {
-            margin-bottom: 0;
-        }
-
-        .label {
-            display: block;
-            font-size: 0.875rem;
-            color: var(--dark-gray);
-            font-weight: 400;
-            margin-bottom: 16px;
-            letter-spacing: 0.05em;
-        }
-
-        .input {
+        
+        /* Flame dividers */
+        .flame-divider {
+            height: 30px;
+            background: url('data:image/gif;base64,R0lGODlhyAAeAPcAAP////v7+/n5+ff39/X19fPz8/Hx8e/v7+3t7evr6+np6efn5+Xl5ePj4+Hh4d/f39zc3NnZ2dfX19TU1NLS0tDQ0M7OzszMzMnJycfHx8XFxcPDw8HBwb+/v729vbu7u7m5ube3t7W1tbOzs7Gxsa+vr62tra2traKioqCgoJ6enp2dnZubm5mZmZiYmJaWlpSUlJKSkpCQkI6OjoyMjIqKioiIiIaGhoSEhIKCgoCAgH5+fnx8fHp6enh4eHZ2dnR0dHJycnBwcG5ubmxsbGpqamhoaGZmZmRkZGJiYmBgYF5eXlxcXFpaWlhYWFZWVlRUVFJSUlBQUE5OTkxMTEpKSkhISEZGRkREREJCQkBAQD4+Pjw8PDo6Ojg4ODY2NjQ0NDIyMjAwMC4uLiwsLCoqKigvKSYmJiQkJCIiIiAgIB4eHhwcHBoaGhgYGBYWFhQUFBISEhAQEA4ODgwMDAoKCggICAYGBgQEBAICAgAAAP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAMAALAAAAADIABwAAAj/AIEJHEiwoMGDCBMqXMiwoUOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmypMmTKFOqXMmypcuXMGPKnEmzps2bOHPq3Mmzp8+fQIMKHUq0qNGjSJMqXcq0qdOnUKNKnUq1qtWrWLNq3cq1q9evYMOKHUu2rNmzaNOqXcu2rdu3cOPKnUu3rt27ePPq3cu3r9+/gAMLHky4sOHDiBMrXsy4sePHkCNLnky5suXLmDNr3sy5s+fPoEOLHk26tOnTqFOrXs26tevXsGPLnk27tu3buHPr3s27t+/fwIMLH068uPHjyJMrX868ufPn0KNLn069uvXr2LNr3869u/fv4MOL/x9Pvrz58+jTq1/Pvr379/Djy59Pv779+/jz69/Pv7///wAGKOCABBZo4IEIJqjgggw26OCDEEYo4YQUVmjhhRhmqOGGHHbo4YcghijiiCSWaOKJKKao4oostujiizDGKOOMNNZo44045qjjjjz26OOPQAYp5JBEFmnkkUgmqeSSTDbp5JNQRinllFRWaeWVWGap5ZZcdunll2CGKeaYZJZp5plopqnmmmw26eabcMYp55x01mnnnXjmqeeefPbp5598Vqnoo5BGKumklFZq6aWYZqrpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vurrs9BGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667LZr7rJQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667LZr7rJQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZr7bXYZqvtttw26+234IYr7rjklmvuueimm+667Lbr7rJQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667LZr7rJQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rJQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rJQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rJQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rJQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rlQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rlQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rlQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rlQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rlQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rlQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZ67bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rlQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vuos9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rlQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rlQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rlQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rlQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rlQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rlQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rlQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rlQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimm+667Lbr7rlQRinpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuukAAAAAsACH5BAEAAMAALAAAAADIABwAAAj/AIEJHUiwoEWECBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmypMmTKFOqXMmypcuXMGPKnEmzps2bOHPq3Kmzp8+fQIMKHUq0qNGjSJMqXcq0qdOnUKNKnUq1qtWrWLNq3cq1q9evYMOKHUu2rNmzaNOqXcu2rdu3cOPKnUu3rt27ePPq3cu3r9+/gAMLHky4sOHDiBMrXsy4sePHkCNLnky5suXLmDNr3sy5s+fPoEOLHk26tOnTqFOrXs26tevXsGPLnk27tu3buHPr3s27t+/fwIMLH068uPHjyJMrX868ufPn0KNLn069uvXr2LNr3869u/fv4MOL/x9Pvrz58+jTq1/Pvr379/Djy59Pv779+/jz69/Pv7///wAGKOCABBZo4IEIJqjgggw26OCDEEYo4YQUVmjhhRhmqOGGHHbo4YcghijiiCSWaOKJKKao4oostujiizDGKOOMNNZo44045qjjjjz26OOPQAYp5JBEFmnkkUgmqeSSTDbp5JNQRinllFRWaeWVWGap5ZZcdunll2CGKeaYZJZp5plopqnmmmw26eabcMYp55x01mnnnXjmqeeefPbp5598Vqnoo5BGKumklFZq6aWYZqrpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vurrs9DGKuutu0467bXYZqvtttx26+234Iar7rjklmvuueimq+667Lbr7rJQRirpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vurrs9DGKuu01FZr7bXYZqvtttx26+234Iar7rjklmvuueimq+667Lbr7rJQRirpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurO9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667Lbr7rJQRirpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667Lbr7rJQRirpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VulO9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667Lbr7rJQRirpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667Lbr7rlQRirpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667Lbr7rlQRirpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667Lbr7rlQRirpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667Lbr7rlQRirpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667Lbr7rlQRirpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667Lbr7rlQRirpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667Lbr7rlQRirpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667Lbr7rlQRirpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu014lZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667Lbr7rlQRirpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667Lbr7rlQRirpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667Nbr7rlQRirpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668Vqnrr9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667Lbr7rlhgrpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvuueimq+667Lg7rlhhrpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvueei9q+667Lg7rlhhrpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvueei9q+667LK7rlhhrpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvueei9q+667LK7rlhhrpppx26umnoIYq6qiklmrqqaimquqqrLbq6qowxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvtttw26+234Iar7rjklmvueei9q+667LK7rlhhrpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXWZqvtttw26+234Iar7rjklmvueei9q+667LK7rlhhrpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurI9DGKuu01FZr7bXYZqvlttw26+234Iar7rjklmvueei9q+667LK7rlhhrpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurF9DGKuu01FZr7bFWZqvlttw26+234Iar7rjklmvueei9q+667LK7rlhhrpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq6668VurF9DGK...'); // Animated flame pattern
             width: 100%;
             border: none;
-            border-bottom: 1px solid var(--light-wood);
-            background-color: transparent;
-            padding: 16px 0;
-            font-size: 1rem;
-            font-family: inherit;
-            color: var(--charcoal);
-            transition: border-color 0.3s ease;
+            margin: 15px 0;
+            animation: flicker 1.5s infinite alternate;
         }
-
-        .input:focus {
-            outline: none;
-            border-bottom-color: var(--sage);
+        
+        @keyframes flicker {
+            0% { filter: hue-rotate(0deg) brightness(1); }
+            50% { filter: hue-rotate(15deg) brightness(1.2); }
+            100% { filter: hue-rotate(30deg) brightness(0.9); }
         }
-
-        .textarea {
-            resize: vertical;
-            min-height: 80px;
-            padding-top: 8px;
+        
+        /* Odometer visitor counter */
+        .odometer-counter {
+            background: #000000;
+            color: #00ff00;
+            font-family: "Courier New", monospace;
+            font-size: 18px;
+            padding: 8px 15px;
+            border: 3px inset #333333;
+            display: inline-block;
+            letter-spacing: 2px;
+            box-shadow: 0 0 10px #00ff00;
         }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: start;
+        
+        .odometer-digit {
+            display: inline-block;
+            animation: roll 0.5s ease-in-out;
         }
-
-        .number-input {
-            width: 80px;
+        
+        @keyframes roll {
+            0% { transform: rotateX(0deg); }
+            50% { transform: rotateX(90deg); }
+            100% { transform: rotateX(0deg); }
         }
-
-        .checkbox-group {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
+        
+        /* MIDI player interface */
+        .midi-player {
+            background: linear-gradient(45deg, #333333, #666666);
+            border: 2px outset #888888;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 5px;
         }
-
-        .checkbox-item {
+        
+        .midi-controls {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .midi-button {
+            background: linear-gradient(45deg, #cccccc, #999999);
+            border: 2px outset #bbbbbb;
+            padding: 5px 10px;
+            font-size: 12px;
             cursor: pointer;
-            font-size: 0.875rem;
-            color: var(--dark-gray);
+            font-family: "MS Sans Serif", sans-serif;
         }
-
-        .checkbox {
-            width: 16px;
-            height: 16px;
-            border: 1px solid var(--warm-gray);
-            background-color: transparent;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.2s ease;
+        
+        .midi-button:active {
+            border: 2px inset #bbbbbb;
         }
-
-        .checkbox:checked {
-            background-color: var(--sage);
-            border-color: var(--sage);
-        }
-
-        .checkbox:checked::after {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 5px;
-            width: 4px;
-            height: 8px;
-            border: solid var(--white);
-            border-width: 0 1px 1px 0;
-            transform: rotate(45deg);
-        }
-
-        .submit-button {
-            width: 100%;
-            background-color: var(--sage);
-            color: var(--white);
-            border: none;
-            padding: 20px 0;
-            font-size: 0.875rem;
-            font-weight: 400;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 40px;
-            font-family: inherit;
-        }
-
-        .submit-button:hover:not(:disabled) {
-            background-color: var(--forest);
-        }
-
-        .submit-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 60px 0;
-            color: var(--warm-gray);
-        }
-
-        .loading.visible {
-            display: block;
-        }
-
-        .spinner {
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--light-wood);
-            border-top-color: var(--sage);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 16px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .results {
-            display: none;
-        }
-
-        .results.visible {
-            display: block;
-        }
-
-        .results-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .results-title {
-            font-size: 1.5rem;
-            font-weight: 300;
-            color: var(--charcoal);
-            margin-bottom: 16px;
-        }
-
-        .results-count {
-            font-size: 0.875rem;
-            color: var(--warm-gray);
-            letter-spacing: 0.05em;
-        }
-
-        .actions {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-bottom: 60px;
-            flex-wrap: wrap;
-        }
-
-        .action-button {
-            background-color: transparent;
-            border: 1px solid var(--warm-gray);
-            color: var(--dark-gray);
-            padding: 12px 24px;
-            font-size: 0.75rem;
-            font-weight: 400;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-
-        .action-button:hover {
-            border-color: var(--sage);
-            color: var(--sage);
-        }
-
-        .section {
-            margin-bottom: 80px;
-        }
-
-        .section:last-child {
-            margin-bottom: 0;
-        }
-
-        .section-title {
-            font-size: 1rem;
-            font-weight: 400;
-            color: var(--dark-gray);
-            margin-bottom: 32px;
-            text-align: center;
-            letter-spacing: 0.05em;
-        }
-
-        .domain-grid {
-            display: grid;
-            gap: 16px;
-        }
-
-        .domain-card {
-            background-color: var(--white);
-            border: 1px solid var(--light-wood);
-            padding: 32px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .domain-card:hover {
-            border-color: var(--warm-gray);
-        }
-
-        .domain-card.available {
-            border-left: 4px solid var(--sage);
-        }
-
-        .domain-card.taken {
-            border-left: 4px solid var(--warm-gray);
-        }
-
-        .domain-name {
-            font-size: 1.25rem;
-            font-weight: 400;
-            color: var(--charcoal);
-            margin-bottom: 16px;
-            font-family: 'Courier New', monospace;
-        }
-
-        .domain-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .domain-method {
-            font-size: 0.75rem;
-            color: var(--warm-gray);
-            background-color: var(--beige);
-            padding: 4px 12px;
-            letter-spacing: 0.05em;
-        }
-
-        .domain-score {
-            font-size: 0.75rem;
-            color: var(--dark-gray);
-            font-weight: 400;
-        }
-
-        .domain-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 24px;
-        }
-
-        .domain-button {
+        
+        .midi-display {
+            background: #000000;
+            color: #00ff00;
+            font-family: "Courier New", monospace;
+            padding: 5px 10px;
+            font-size: 11px;
             flex: 1;
-            background-color: transparent;
-            border: 1px solid var(--warm-gray);
-            color: var(--dark-gray);
-            padding: 8px 16px;
-            font-size: 0.75rem;
-            font-weight: 400;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-
-        .domain-button.primary {
-            background-color: var(--sage);
-            border-color: var(--sage);
-            color: var(--white);
-        }
-
-        .domain-button:hover {
-            border-color: var(--sage);
-            color: var(--sage);
-        }
-
-        .domain-button.primary:hover {
-            background-color: var(--forest);
-            border-color: var(--forest);
-        }
-
-        .copy-button {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            background: none;
-            border: none;
-            color: var(--warm-gray);
-            cursor: pointer;
-            padding: 8px;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .domain-card:hover .copy-button {
-            opacity: 1;
-        }
-
-        .copy-button:hover {
-            color: var(--sage);
-        }
-
-        .error {
-            display: none;
-            background-color: var(--white);
-            border: 1px solid var(--light-wood);
-            border-left: 4px solid var(--warm-gray);
-            padding: 32px;
             text-align: center;
-            color: var(--dark-gray);
-            margin-bottom: 40px;
         }
-
-        .error.visible {
-            display: block;
-        }
-
-        .toast {
+        
+        /* Scrolling status bar */
+        .status-bar {
             position: fixed;
-            top: 40px;
-            right: 40px;
-            background-color: var(--white);
-            border: 1px solid var(--light-wood);
-            border-left: 4px solid var(--sage);
-            padding: 16px 24px;
-            font-size: 0.875rem;
-            color: var(--dark-gray);
-            transform: translateX(100%);
-            opacity: 0;
-            transition: all 0.3s ease;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #000080;
+            color: #ffffff;
+            padding: 5px;
+            font-size: 12px;
             z-index: 1000;
-            max-width: 300px;
+            overflow: hidden;
+            white-space: nowrap;
         }
-
-        .toast.visible {
-            transform: translateX(0);
-            opacity: 1;
+        
+        .status-scroll {
+            display: inline-block;
+            animation: statusScroll 20s linear infinite;
         }
-
-        .toast.error {
-            border-left-color: var(--warm-gray);
+        
+        @keyframes statusScroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
         }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 40px 20px;
-            }
-
-            .form-container {
-                padding: 40px 24px;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 24px;
-            }
-
-            .brand {
-                font-size: 2rem;
-            }
-
-            .actions {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .action-button {
-                min-width: 200px;
-            }
+        
+        /* Navigation styles */
+        .nav-section {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(0, 0, 100, 0.3);
+            border: 1px solid #0066cc;
+        }
+        
+        .nav-title {
+            color: #ffff00;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px #000000;
+        }
+        
+        .nav-link {
+            display: block;
+            color: #00ffff;
+            text-decoration: underline;
+            font-size: 12px;
+            margin: 5px 0;
+            text-shadow: 1px 1px 1px #000000;
+        }
+        
+        .nav-link:hover {
+            color: #ffffff;
+            text-shadow: 0 0 5px #00ffff;
+        }
+        
+        /* Form styling */
+        .space-form {
+            background: rgba(0, 0, 50, 0.8);
+            border: 2px solid #0066ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
+        }
+        
+        .space-input, .space-textarea, .space-select {
+            background: #000033;
+            color: #ffffff;
+            border: 2px inset #0066cc;
+            padding: 8px;
+            font-family: "Times New Roman", serif;
+            font-size: 12px;
+        }
+        
+        .space-button {
+            background: linear-gradient(45deg, #0066ff, #003399);
+            color: #ffffff;
+            border: 2px outset #0066ff;
+            padding: 8px 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px #000000;
+        }
+        
+        .space-button:hover {
+            box-shadow: 0 0 10px #0066ff;
+        }
+        
+        .space-button:active {
+            border: 2px inset #0066ff;
+        }
+        
+        /* Results styling */
+        .cosmic-results {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #00ffff;
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+        
+        .results-header {
+            background: linear-gradient(45deg, #000066, #0000aa);
+            color: #00ffff;
+            text-align: center;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px #000000;
+        }
+        
+        .domain-row {
+            padding: 10px 15px;
+            border-bottom: 1px solid #003366;
+            font-family: "Courier New", monospace;
+        }
+        
+        .domain-available {
+            background: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+        }
+        
+        .domain-taken {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff6666;
+        }
+        
+        /* Loading animation */
+        .cosmic-loading {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #ffff00;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.3);
+        }
+        
+        .loading-text {
+            color: #ffff00;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .progress-bar {
+            background: #000000;
+            border: 2px inset #333333;
+            height: 20px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            animation: progressShine 2s infinite;
+        }
+        
+        @keyframes progressShine {
+            0% { box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.5); }
+            50% { box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.8); }
+            100% { box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.5); }
+        }
+        
+        /* Animated GIF placeholders */
+        .animated-gif {
+            display: inline-block;
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Hit counter styling */
+        .hit-counter {
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #ffff00;
+        }
+        
+        .counter-text {
+            color: #ffff00;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        /* Web ring styling */
+        .webring {
+            background: linear-gradient(45deg, #660066, #990099);
+            border: 2px solid #ff00ff;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            border-radius: 10px;
+        }
+        
+        .webring-title {
+            color: #ff00ff;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px #000000;
+        }
+        
+        .webring-nav {
+            color: #ffffff;
+            font-size: 12px;
+        }
+        
+        .webring-nav a {
+            color: #ffff00;
+            text-decoration: underline;
+            margin: 0 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1 class="brand">Goblin Globe</h1>
-            <p class="subtitle">Domain Discovery</p>
-        </header>
-
-        <div class="form-container">
-            <form id="generateForm">
-                <div class="form-group">
-                    <label class="label" for="prompt">Describe your domain idea</label>
-                    <textarea 
-                        id="prompt" 
-                        class="input textarea"
-                        placeholder="combine two random animals like fishbunny"
-                        required
-                    ></textarea>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="label" for="count">Number of suggestions</label>
-                        <input 
-                            type="number" 
-                            id="count" 
-                            class="input number-input"
-                            min="1" 
-                            max="20" 
-                            value="10"
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label class="label">Extensions to check</label>
-                        <div class="checkbox-group">
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="extensions" value=".com" checked class="checkbox">
-                                .com
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="extensions" value=".net" class="checkbox">
-                                .net
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="extensions" value=".org" class="checkbox">
-                                .org
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="extensions" value=".io" class="checkbox">
-                                .io
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <button type="submit" class="submit-button" id="generateButton">
-                    <span id="buttonText">Generate Domains</span>
-                </button>
-            </form>
+    <!-- Starfield background -->
+    <div class="starfield" id="starfield"></div>
+    
+    <!-- Navigation Frame -->
+    <div class="nav-frame">
+        <div class="nav-section">
+            <div class="nav-title">~*~ NAVIGATION ~*~</div>
+            <a href="#home" class="nav-link">🏠 Home</a>
+            <a href="#search" class="nav-link">🔍 Domain Search</a>
+            <a href="#about" class="nav-link">ℹ️ About</a>
+            <a href="#guestbook" class="nav-link">📝 Guestbook</a>
+            <a href="#links" class="nav-link">🔗 Cool Links</a>
         </div>
-
-        <div id="loading" class="loading">
-            <div class="spinner"></div>
-            <div id="loadingMessage">Generating domain ideas...</div>
+        
+        <div class="nav-section">
+            <div class="nav-title">~*~ STATS ~*~</div>
+            <div class="hit-counter">
+                <div class="counter-text">VISITOR COUNT:</div>
+                <div class="odometer-counter" id="visitorCounter">000001337</div>
+                <div style="color: #00ffff; font-size: 10px; margin-top: 5px;">
+                    You are visitor #<span id="currentVisitor">1337</span>!
+                </div>
+            </div>
         </div>
-
-        <div id="error" class="error"></div>
-
-        <div id="results" class="results">
-            <div class="results-header">
-                <h2 class="results-title">Domain Results</h2>
-                <p class="results-count" id="resultsCount">Found domains</p>
+        
+        <div class="nav-section">
+            <div class="nav-title">~*~ MUSIC ~*~</div>
+            <div class="midi-player">
+                <div class="midi-controls">
+                    <button class="midi-button" onclick="toggleMidi()">▶️</button>
+                    <button class="midi-button" onclick="stopMidi()">⏹️</button>
+                    <button class="midi-button" onclick="nextTrack()">⏭️</button>
+                </div>
+                <div class="midi-display" id="midiDisplay">
+                    ♪ Now Playing: space_theme.mid ♪
+                </div>
+                <div style="color: #cccccc; font-size: 10px; text-align: center;">
+                    Volume: ████████░░ 80%
+                </div>
             </div>
-
-            <div class="actions">
-                <button id="exportBtn" class="action-button">Export Results</button>
-                <button id="copyAllBtn" class="action-button">Copy Available</button>
-                <button id="newSearchBtn" class="action-button">New Search</button>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-title">~*~ AWARDS ~*~</div>
+            <div style="text-align: center; color: #ffff00;">
+                <div class="animated-gif">🏆</div>
+                <div style="font-size: 10px; margin-top: 5px;">
+                    Best Angelfire Site 1999<br>
+                    Cool Site of the Day<br>
+                    Tripod Top Pick
+                </div>
             </div>
-
-            <div class="section" id="availableSection">
-                <h3 class="section-title">Available Domains</h3>
-                <div id="availableList" class="domain-grid"></div>
-            </div>
-
-            <div class="section" id="takenSection">
-                <h3 class="section-title">Taken Domains</h3>
-                <div id="takenList" class="domain-grid"></div>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-title">~*~ WEB RING ~*~</div>
+            <div class="webring">
+                <div class="webring-title">COSMIC DOMAIN RING</div>
+                <div class="webring-nav">
+                    <a href="#">← Prev</a> |
+                    <a href="#">Random</a> |
+                    <a href="#">Next →</a>
+                </div>
             </div>
         </div>
     </div>
-
-    <div id="toastContainer"></div>
-
+    
+    <!-- Main Content Frame -->
+    <div class="content-frame">
+        <div class="angelfire-title">
+            ✨ WELCOME TO GOBLIN GLOBE ✨<br>
+            <span style="font-size: 16px;">The Ultimate Cosmic Domain Finder!</span>
+        </div>
+        
+        <div class="flame-divider"></div>
+        
+        <div style="text-align: center; margin: 20px 0;">
+            <div style="color: #00ffff; font-size: 14px; font-weight: bold;">
+                <span class="animated-gif">🌟</span> JOURNEY THROUGH CYBERSPACE <span class="animated-gif">🌟</span>
+            </div>
+            <div style="color: #ffff00; font-size: 12px; margin-top: 10px;">
+                Find your perfect domain name with our AI-powered cosmic technology!
+            </div>
+        </div>
+        
+        <div class="flame-divider"></div>
+        
+        <!-- Domain Search Form -->
+        <div class="space-form" id="searchForm">
+            <div style="text-align: center; color: #00ffff; font-size: 18px; font-weight: bold; margin-bottom: 20px;">
+                🚀 DOMAIN SEARCH PORTAL 🚀
+            </div>
+            
+            <form id="domainForm">
+                <table width="100%" cellspacing="10">
+                    <tr>
+                        <td style="color: #ffffff; font-weight: bold;" width="200">
+                            What cosmic domain do you seek?
+                        </td>
+                        <td>
+                            <textarea id="prompt" class="space-textarea" rows="4" cols="40" 
+                                placeholder="Enter your stellar domain concept... (e.g., space gaming site, cosmic blog, etc.)"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color: #ffffff; font-weight: bold;">
+                            Number of domains to generate:
+                        </td>
+                        <td>
+                            <select id="count" class="space-select">
+                                <option value="5">5 domains</option>
+                                <option value="10" selected>10 domains</option>
+                                <option value="15">15 domains</option>
+                                <option value="20">20 domains</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color: #ffffff; font-weight: bold;">
+                            Domain extensions:
+                        </td>
+                        <td style="color: #ffffff;">
+                            <input type="checkbox" name="extensions" value=".com" checked> .com
+                            <input type="checkbox" name="extensions" value=".net"> .net
+                            <input type="checkbox" name="extensions" value=".org"> .org
+                            <input type="checkbox" name="extensions" value=".io"> .io
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center; padding-top: 20px;">
+                            <button type="submit" class="space-button" style="font-size: 16px; padding: 12px 24px;">
+                                🚀 LAUNCH SEARCH 🚀
+                            </button>
+                            <button type="button" class="space-button" onclick="resetForm()">
+                                🔄 RESET
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        
+        <!-- Loading Animation -->
+        <div id="loading" class="cosmic-loading" style="display: none;">
+            <div class="loading-text" id="loadingText">
+                ⭐ SCANNING THE COSMOS FOR DOMAINS... ⭐
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div style="color: #00ffff; margin-top: 10px;">
+                <span id="progressPercent">0%</span> Complete
+            </div>
+            <div style="color: #ffff00; font-size: 12px; margin-top: 10px;" id="loadingDetails">
+                Initializing cosmic AI...
+            </div>
+        </div>
+        
+        <!-- Results -->
+        <div id="results" style="display: none;">
+            <div class="flame-divider"></div>
+            
+            <div class="cosmic-results">
+                <div class="results-header">
+                    ✨ YOUR COSMIC DOMAIN RESULTS ✨
+                </div>
+                
+                <!-- Available Domains -->
+                <div id="availableSection">
+                    <div style="background: rgba(0, 255, 0, 0.2); padding: 15px; text-align: center;">
+                        <div style="color: #00ff00; font-size: 16px; font-weight: bold;">
+                            🌟 AVAILABLE DOMAINS 🌟
+                        </div>
+                    </div>
+                    <div id="availableList"></div>
+                </div>
+                
+                <!-- Taken Domains -->
+                <div id="takenSection">
+                    <div style="background: rgba(255, 0, 0, 0.2); padding: 15px; text-align: center;">
+                        <div style="color: #ff6666; font-size: 16px; font-weight: bold;">
+                            💫 TAKEN DOMAINS 💫
+                        </div>
+                    </div>
+                    <div id="takenList"></div>
+                </div>
+            </div>
+            
+            <!-- Export Options -->
+            <div style="text-align: center; margin: 20px 0;">
+                <button class="space-button" onclick="copyAvailable()">
+                    📋 COPY AVAILABLE
+                </button>
+                <button class="space-button" onclick="exportCSV()">
+                    💾 EXPORT CSV
+                </button>
+                <button class="space-button" onclick="newSearch()">
+                    🔍 NEW SEARCH
+                </button>
+            </div>
+        </div>
+        
+        <div class="flame-divider"></div>
+        
+        <!-- Footer -->
+        <div style="text-align: center; margin: 30px 0; color: #cccccc;">
+            <div style="margin-bottom: 10px;">
+                <span class="animated-gif">⭐</span>
+                <span style="color: #00ffff;">Created with love on Angelfire</span>
+                <span class="animated-gif">⭐</span>
+            </div>
+            <div style="font-size: 11px;">
+                Best viewed in Netscape Navigator 4.0+ at 800x600 resolution<br>
+                This page is optimized for 16-bit color displays<br>
+                <span style="color: #ffff00;">Last updated: Never! Always under construction!</span>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin: 20px 0;">
+            <div class="animated-gif" style="font-size: 20px;">🚧</div>
+            <div style="color: #ff0000; font-weight: bold; animation: pulse 1s infinite;">
+                UNDER CONSTRUCTION
+            </div>
+            <div class="animated-gif" style="font-size: 20px;">🚧</div>
+        </div>
+    </div>
+    
+    <!-- Scrolling Status Bar -->
+    <div class="status-bar">
+        <div class="status-scroll">
+            Welcome to Goblin Globe! ✨ The best domain finder in the galaxy! ✨ 
+            Don't forget to sign our guestbook! ✨ 
+            Check out our awards! ✨ 
+            This site is Angelfire approved! ✨ 
+            Now playing: space_theme.mid ✨ 
+        </div>
+    </div>
+    
     <script src="app.js"></script>
 </body>
 </html>

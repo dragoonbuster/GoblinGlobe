@@ -3,1138 +3,618 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goblin Globe</title>
+    <title>GOBLIN GLOBE - 8-Bit Domain Finder</title>
     <style>
-        /* Reset and base styles */
+        @font-face {
+            font-family: 'PixelFont';
+            src: url('data:font/truetype;charset=utf-8;base64,') format('truetype');
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
-        html {
-            font-size: 16px;
-            line-height: 1.5;
-        }
-
+        
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            font-weight: 400;
-            color: #5A6B83;
-            background: #E0E5EC;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            min-height: 100vh;
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(45deg, #1a1a2e 25%, #16213e 25%, #16213e 50%, #1a1a2e 50%, #1a1a2e 75%, #16213e 75%);
+            background-size: 8px 8px;
+            color: #00ff00;
+            overflow-x: hidden;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
         }
-
-        /* Neumorphic Color System */
-        :root {
-            --neuro-base: #E0E5EC;
-            --neuro-shadow: #A3B1C6;
-            --neuro-highlight: #FFFFFF;
-            --neuro-text: #5A6B83;
-            --neuro-text-dark: #3E4B5C;
-            --neuro-text-light: #8B9BB8;
-            --neuro-accent: #667A94;
-            --neuro-success: #88C999;
-            --neuro-warning: #F4C2A1;
-            --neuro-error: #F2A1A1;
+        
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            background: linear-gradient(
+                transparent 0%,
+                rgba(0, 255, 0, 0.03) 50%,
+                transparent 100%
+            );
+            background-size: 100% 2px;
+            animation: scanline 0.1s linear infinite;
+            z-index: 1000;
         }
-
-        /* Neumorphic Mixins */
-        .neuro-raised {
-            background: var(--neuro-base);
-            box-shadow: 
-                8px 8px 16px var(--neuro-shadow),
-                -8px -8px 16px var(--neuro-highlight);
-            border-radius: 16px;
+        
+        @keyframes scanline {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 2px; }
         }
-
-        .neuro-pressed {
-            background: var(--neuro-base);
-            box-shadow: 
-                inset 6px 6px 12px var(--neuro-shadow),
-                inset -6px -6px 12px var(--neuro-highlight);
-            border-radius: 16px;
-        }
-
-        .neuro-flat {
-            background: linear-gradient(145deg, #EAEEF7, #D6DBE8);
-            border-radius: 16px;
-        }
-
-        .neuro-floating {
-            background: var(--neuro-base);
-            box-shadow: 
-                12px 12px 24px var(--neuro-shadow),
-                -12px -12px 24px var(--neuro-highlight);
-            border-radius: 20px;
-        }
-
-        /* Container and Grid */
+        
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 0 40px;
+            padding: 20px;
         }
-
-        .main-surface {
-            min-height: 100vh;
-            padding: 60px 0;
-            background: var(--neuro-base);
-        }
-
-        /* Typography with embossed effect */
-        .title-embossed {
-            font-size: 48px;
-            font-weight: 300;
-            letter-spacing: -0.02em;
-            color: var(--neuro-text);
-            text-shadow: 
-                2px 2px 4px var(--neuro-shadow),
-                -1px -1px 2px var(--neuro-highlight);
-            margin-bottom: 20px;
+        
+        .pixel-header {
             text-align: center;
-        }
-
-        .subtitle {
-            font-size: 18px;
-            font-weight: 400;
-            color: var(--neuro-text-light);
-            text-align: center;
-            margin-bottom: 60px;
-            text-shadow: 
-                1px 1px 2px var(--neuro-shadow),
-                -1px -1px 2px var(--neuro-highlight);
-        }
-
-        .section-title {
-            font-size: 24px;
-            font-weight: 500;
-            color: var(--neuro-text-dark);
             margin-bottom: 30px;
-            text-shadow: 
-                1px 1px 2px var(--neuro-shadow),
-                -1px -1px 2px var(--neuro-highlight);
-        }
-
-        /* Form Elements with Soft Neumorphism */
-        .form-section {
-            max-width: 600px;
-            margin: 0 auto 60px;
-            padding: 40px;
-        }
-
-        .form-group {
-            margin-bottom: 30px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 12px;
-            color: var(--neuro-text-dark);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            text-shadow: 
-                1px 1px 2px var(--neuro-highlight),
-                -1px -1px 1px var(--neuro-shadow);
-        }
-
-        .form-textarea,
-        .form-input {
-            width: 100%;
-            padding: 20px 24px;
-            font-family: inherit;
-            font-size: 16px;
-            font-weight: 400;
-            color: var(--neuro-text);
-            background: var(--neuro-base);
-            border: none;
-            outline: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            resize: none;
-        }
-
-        .form-textarea {
-            min-height: 120px;
-            font-family: inherit;
-        }
-
-        .form-input {
-            width: 100px;
-        }
-
-        .form-textarea:focus,
-        .form-input:focus {
-            box-shadow: 
-                inset 8px 8px 16px var(--neuro-shadow),
-                inset -8px -8px 16px var(--neuro-highlight),
-                0 0 0 2px var(--neuro-accent);
-        }
-
-        .form-textarea::placeholder,
-        .form-input::placeholder {
-            color: var(--neuro-text-light);
-        }
-
-        /* Checkbox Group with Soft Design */
-        .checkbox-group {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 16px;
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            padding: 12px 20px;
-            border-radius: 12px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
         }
-
-        .checkbox-item:hover {
-            transform: translateY(-1px);
-            box-shadow: 
-                6px 6px 12px var(--neuro-shadow),
-                -6px -6px 12px var(--neuro-highlight);
+        
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ff6b35;
+            text-shadow: 2px 2px 0px #000, 4px 4px 0px #333;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            animation: glow 2s ease-in-out infinite alternate;
         }
-
-        .checkbox-input {
-            width: 20px;
-            height: 20px;
-            margin-right: 12px;
-            border-radius: 6px;
-            cursor: pointer;
+        
+        @keyframes glow {
+            from { text-shadow: 2px 2px 0px #000, 4px 4px 0px #333, 0 0 10px #ff6b35; }
+            to { text-shadow: 2px 2px 0px #000, 4px 4px 0px #333, 0 0 20px #ff6b35, 0 0 30px #ff6b35; }
+        }
+        
+        .goblin-sprite {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: #4a90e2;
+            border: 2px solid #000;
             position: relative;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin: 0 10px;
+            animation: bounce 1s ease-in-out infinite;
         }
-
-        .checkbox-input:checked {
-            background: linear-gradient(135deg, var(--neuro-accent), var(--neuro-text));
-            box-shadow: 
-                inset 2px 2px 4px rgba(0,0,0,0.1),
-                inset -2px -2px 4px rgba(255,255,255,0.2);
-        }
-
-        .checkbox-input:checked::after {
+        
+        .goblin-sprite::before {
             content: '';
             position: absolute;
-            top: 3px;
-            left: 7px;
-            width: 4px;
-            height: 8px;
-            border: solid #FFFFFF;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
+            top: 6px;
+            left: 8px;
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            border: 1px solid #000;
         }
-
-        .checkbox-label {
+        
+        .goblin-sprite::after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            border: 1px solid #000;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        
+        .pixel-panel {
+            background: #0f3460;
+            border: 4px solid #00ff00;
+            border-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"><rect width="8" height="8" fill="%2300ff00"/><rect x="2" y="2" width="4" height="4" fill="%230f3460"/></svg>') 4;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 0 2px #000, 0 0 0 6px #00ff00;
+        }
+        
+        .pixel-form {
+            display: grid;
+            gap: 16px;
+        }
+        
+        .pixel-label {
+            color: #00ff00;
             font-size: 14px;
-            font-weight: 500;
-            color: var(--neuro-text);
-            cursor: pointer;
-            text-shadow: 
-                1px 1px 2px var(--neuro-highlight),
-                -1px -1px 1px var(--neuro-shadow);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            text-shadow: 1px 1px 0px #000;
         }
-
-        /* Soft Pressed Button Effect */
-        .btn-primary {
-            display: inline-flex;
+        
+        .pixel-input {
+            background: #000;
+            border: 3px solid #00ff00;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            padding: 12px;
+            width: 100%;
+            outline: none;
+            transition: all 0.2s;
+        }
+        
+        .pixel-input:focus {
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 2px #ff6b35, inset 0 0 10px rgba(255, 107, 53, 0.2);
+            color: #ff6b35;
+        }
+        
+        .pixel-textarea {
+            background: #000;
+            border: 3px solid #00ff00;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            padding: 12px;
+            width: 100%;
+            height: 80px;
+            resize: none;
+            outline: none;
+            transition: all 0.2s;
+        }
+        
+        .pixel-textarea:focus {
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 2px #ff6b35, inset 0 0 10px rgba(255, 107, 53, 0.2);
+            color: #ff6b35;
+        }
+        
+        .controls-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .extensions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .pixel-checkbox {
+            display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 20px 40px;
-            font-family: inherit;
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--neuro-text);
-            background: var(--neuro-base);
-            border: none;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-shadow: 
-                1px 1px 2px var(--neuro-highlight),
-                -1px -1px 1px var(--neuro-shadow);
+            user-select: none;
+        }
+        
+        .pixel-checkbox input {
+            display: none;
+        }
+        
+        .checkbox-sprite {
+            width: 16px;
+            height: 16px;
+            background: #000;
+            border: 2px solid #00ff00;
+            margin-right: 8px;
             position: relative;
-            overflow: hidden;
         }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 
-                10px 10px 20px var(--neuro-shadow),
-                -10px -10px 20px var(--neuro-highlight);
+        
+        .pixel-checkbox input:checked + .checkbox-sprite {
+            background: #00ff00;
         }
-
-        .btn-primary:active {
-            transform: translateY(0);
-            box-shadow: 
-                inset 4px 4px 8px var(--neuro-shadow),
-                inset -4px -4px 8px var(--neuro-highlight);
+        
+        .pixel-checkbox input:checked + .checkbox-sprite::after {
+            content: '✓';
+            position: absolute;
+            top: -2px;
+            left: 1px;
+            color: #000;
+            font-size: 12px;
+            font-weight: bold;
         }
-
-        .btn-primary:disabled {
-            opacity: 0.6;
+        
+        .pixel-button {
+            background: linear-gradient(180deg, #ff6b35 0%, #e55a2b 100%);
+            border: 3px solid #000;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 16px 24px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.1s;
+            text-shadow: 1px 1px 0px #000;
+            box-shadow: 0 4px 0 #b8441f, 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .pixel-button:hover {
+            transform: translateY(1px);
+            box-shadow: 0 3px 0 #b8441f, 0 3px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .pixel-button:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #b8441f, 0 0 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .pixel-button:disabled {
+            background: #666;
             cursor: not-allowed;
             transform: none;
+            box-shadow: 0 4px 0 #444, 0 4px 8px rgba(0, 0, 0, 0.3);
         }
-
-        .btn-secondary {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 24px;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--neuro-text);
-            background: var(--neuro-base);
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-shadow: 
-                1px 1px 2px var(--neuro-highlight),
-                -1px -1px 1px var(--neuro-shadow);
-            margin: 6px;
+        
+        .loading-panel {
+            text-align: center;
+            padding: 40px;
         }
-
-        .btn-secondary:hover {
-            transform: translateY(-1px);
-            box-shadow: 
-                6px 6px 12px var(--neuro-shadow),
-                -6px -6px 12px var(--neuro-highlight);
-        }
-
-        .btn-secondary:active {
-            transform: translateY(0);
-            box-shadow: 
-                inset 3px 3px 6px var(--neuro-shadow),
-                inset -3px -3px 6px var(--neuro-highlight);
-        }
-
-        /* Loading Spinner with Soft Effect */
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid transparent;
-            border-top: 2px solid var(--neuro-accent);
-            border-radius: 50%;
+        
+        .loading-sprite {
+            width: 48px;
+            height: 48px;
+            background: #ff6b35;
+            border: 3px solid #000;
+            margin: 0 auto 20px;
             animation: spin 1s linear infinite;
         }
-
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        /* Progress Bar with Soft Design */
-        .progress-container {
+        
+        .progress-bar {
             width: 100%;
-            height: 8px;
-            background: var(--neuro-base);
-            box-shadow: 
-                inset 4px 4px 8px var(--neuro-shadow),
-                inset -4px -4px 8px var(--neuro-highlight);
-            border-radius: 20px;
+            height: 16px;
+            background: #000;
+            border: 2px solid #00ff00;
             margin: 20px 0;
             overflow: hidden;
         }
-
-        .progress-bar {
+        
+        .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--neuro-accent), var(--neuro-text));
+            background: linear-gradient(90deg, #00ff00 0%, #ff6b35 100%);
             width: 0%;
             transition: width 0.3s ease;
-            border-radius: 20px;
-            box-shadow: 
-                2px 2px 4px rgba(0,0,0,0.1),
-                -1px -1px 2px rgba(255,255,255,0.2);
+            animation: progressGlow 1s ease-in-out infinite alternate;
         }
-
-        /* Results as Soft Floating Cards */
-        .results-section {
-            margin-top: 80px;
+        
+        @keyframes progressGlow {
+            from { box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.5); }
+            to { box-shadow: inset 0 0 20px rgba(255, 107, 53, 0.8); }
         }
-
-        .results-actions {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 40px;
+        
+        .results-panel {
+            margin-top: 20px;
         }
-
-        .domain-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 24px;
-            margin-bottom: 60px;
-        }
-
-        .domain-card {
-            padding: 24px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .domain-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 
-                16px 16px 32px var(--neuro-shadow),
-                -16px -16px 32px var(--neuro-highlight);
-        }
-
-        .domain-card.available {
-            background: linear-gradient(135deg, var(--neuro-base), #E8EDF5);
-        }
-
-        .domain-card.taken {
-            background: linear-gradient(135deg, var(--neuro-base), #DDE2E9);
-            opacity: 0.8;
-        }
-
-        .domain-name {
-            font-family: 'JetBrains Mono', 'Monaco', 'Menlo', monospace;
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--neuro-text-dark);
-            margin-bottom: 12px;
-            word-break: break-all;
-            text-shadow: 
-                1px 1px 2px var(--neuro-highlight),
-                -1px -1px 1px var(--neuro-shadow);
-        }
-
-        .domain-meta {
+        
+        .results-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
-
-        .domain-method {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--neuro-text-light);
+        
+        .pixel-badge {
+            background: #ff6b35;
+            color: #fff;
+            border: 2px solid #000;
             padding: 4px 8px;
-            border-radius: 6px;
-            background: var(--neuro-base);
-            box-shadow: 
-                inset 2px 2px 4px var(--neuro-shadow),
-                inset -2px -2px 4px var(--neuro-highlight);
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 0px #000;
         }
-
-        .domain-score {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--neuro-text-dark);
-            text-shadow: 
-                1px 1px 2px var(--neuro-highlight),
-                -1px -1px 1px var(--neuro-shadow);
-        }
-
-        .domain-actions {
-            display: flex;
+        
+        .domain-grid {
+            display: grid;
             gap: 12px;
-            margin-top: 20px;
         }
-
-        .link-register {
-            flex: 1;
-            text-align: center;
-            padding: 12px 20px;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--neuro-text);
-            text-decoration: none;
-            background: var(--neuro-base);
-            border-radius: 12px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 
-                4px 4px 8px var(--neuro-shadow),
-                -4px -4px 8px var(--neuro-highlight);
-            text-shadow: 
-                1px 1px 2px var(--neuro-highlight),
-                -1px -1px 1px var(--neuro-shadow);
+        
+        .domain-card {
+            background: #0f3460;
+            border: 3px solid;
+            padding: 16px;
+            position: relative;
+            transition: all 0.2s;
         }
-
-        .link-register:hover {
+        
+        .domain-card.available {
+            border-color: #00ff00;
+            box-shadow: 0 0 0 1px #000, 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+        
+        .domain-card.taken {
+            border-color: #ff4757;
+            box-shadow: 0 0 0 1px #000, 0 0 10px rgba(255, 71, 87, 0.3);
+        }
+        
+        .domain-card:hover {
             transform: translateY(-2px);
-            box-shadow: 
-                6px 6px 12px var(--neuro-shadow),
-                -6px -6px 12px var(--neuro-highlight);
-            color: var(--neuro-accent);
+            box-shadow: 0 0 0 1px #000, 0 4px 15px rgba(0, 255, 0, 0.4);
         }
-
-        .link-register:active {
-            transform: translateY(0);
-            box-shadow: 
-                inset 3px 3px 6px var(--neuro-shadow),
-                inset -3px -3px 6px var(--neuro-highlight);
+        
+        .domain-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 8px;
+            font-family: 'Courier New', monospace;
+            text-shadow: 1px 1px 0px #000;
         }
-
-        /* Loading Container with Soft Design */
-        .loading-container {
-            text-align: center;
-            padding: 60px 40px;
-            margin: 40px auto;
-            max-width: 400px;
-        }
-
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--neuro-base);
-            border-top: 3px solid var(--neuro-accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-            box-shadow: 
-                4px 4px 8px var(--neuro-shadow),
-                -4px -4px 8px var(--neuro-highlight);
-        }
-
-        .loading-message {
-            font-size: 16px;
-            color: var(--neuro-text);
-            margin-bottom: 16px;
-            text-shadow: 
-                1px 1px 2px var(--neuro-highlight),
-                -1px -1px 1px var(--neuro-shadow);
-        }
-
-        .progress-text {
-            font-size: 14px;
-            color: var(--neuro-text-light);
-            text-shadow: 
-                1px 1px 2px var(--neuro-highlight),
-                -1px -1px 1px var(--neuro-shadow);
-        }
-
-        /* Error Messages with Soft Design */
-        .error-message {
-            padding: 24px;
-            margin: 40px auto;
-            max-width: 600px;
-            color: var(--neuro-error);
-            background: linear-gradient(135deg, var(--neuro-base), #F5E8E8);
-            border-radius: 16px;
-            box-shadow: 
-                8px 8px 16px var(--neuro-shadow),
-                -8px -8px 16px var(--neuro-highlight);
-            text-shadow: 
-                1px 1px 2px var(--neuro-highlight),
-                -1px -1px 1px var(--neuro-shadow);
-        }
-
-        /* Toast Notifications with Soft Design */
-        .toast-container {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            z-index: 1000;
+        
+        .domain-info {
             display: flex;
-            flex-direction: column;
-            gap: 12px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
         }
-
+        
+        .quality-score {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .score-badge {
+            background: #ff6b35;
+            color: #fff;
+            border: 2px solid #000;
+            padding: 2px 6px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .mini-button {
+            background: #4a90e2;
+            border: 2px solid #000;
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 6px 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.1s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .mini-button:hover {
+            background: #357abd;
+            transform: translateY(-1px);
+        }
+        
+        .mini-button.register {
+            background: #2ed573;
+        }
+        
+        .mini-button.register:hover {
+            background: #1dd65a;
+        }
+        
+        .error-panel {
+            background: #ff4757;
+            border: 3px solid #000;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 1px 1px 0px #000;
+        }
+        
         .toast {
-            padding: 16px 20px;
-            min-width: 300px;
-            font-size: 14px;
-            background: var(--neuro-base);
-            border-radius: 12px;
-            box-shadow: 
-                8px 8px 16px var(--neuro-shadow),
-                -8px -8px 16px var(--neuro-highlight);
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #0f3460;
+            border: 3px solid #00ff00;
+            color: #00ff00;
+            padding: 12px 16px;
+            font-weight: bold;
+            z-index: 1001;
             transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            color: var(--neuro-text);
-            text-shadow: 
-                1px 1px 2px var(--neuro-highlight),
-                -1px -1px 1px var(--neuro-shadow);
+            transition: transform 0.3s ease;
+            max-width: 300px;
         }
-
+        
         .toast.show {
             transform: translateX(0);
         }
-
+        
         .toast.success {
-            background: linear-gradient(135deg, var(--neuro-base), #E8F5EA);
-            color: var(--neuro-success);
+            border-color: #2ed573;
+            color: #2ed573;
         }
-
+        
         .toast.error {
-            background: linear-gradient(135deg, var(--neuro-base), #F5E8E8);
-            color: var(--neuro-error);
+            border-color: #ff4757;
+            color: #ff4757;
         }
-
-        /* Utility Classes */
+        
+        .toast.warning {
+            border-color: #ffa502;
+            color: #ffa502;
+        }
+        
         .hidden {
-            display: none;
+            display: none !important;
         }
-
-        .text-center {
-            text-align: center;
-        }
-
-        /* Organic Transitions */
-        * {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Responsive Design with Soft Approach */
+        
         @media (max-width: 768px) {
             .container {
-                padding: 0 20px;
+                padding: 10px;
             }
-
-            .title-embossed {
-                font-size: 36px;
+            
+            .title {
+                font-size: 24px;
             }
-
-            .form-section {
-                padding: 30px 20px;
-            }
-
-            .checkbox-group {
-                flex-direction: column;
-                align-items: center;
-                gap: 16px;
-            }
-
-            .domain-grid {
+            
+            .controls-row {
                 grid-template-columns: 1fr;
             }
-
-            .results-actions {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .domain-actions {
-                flex-direction: column;
+            
+            .extensions-grid {
+                grid-template-columns: 1fr 1fr;
             }
         }
-
-        /* Subtle Hover Effects for Interactive Elements */
-        .interactive:hover {
-            filter: brightness(1.02);
+        
+        .credits {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            font-size: 12px;
         }
-
-        /* Focus States with Soft Glow */
-        .btn-primary:focus,
-        .btn-secondary:focus,
-        .form-textarea:focus,
-        .form-input:focus {
-            outline: none;
-            box-shadow: 
-                inset 6px 6px 12px var(--neuro-shadow),
-                inset -6px -6px 12px var(--neuro-highlight),
-                0 0 0 3px rgba(102, 122, 148, 0.3);
+        
+        .pixel-divider {
+            height: 8px;
+            background: repeating-linear-gradient(
+                90deg,
+                #00ff00 0px,
+                #00ff00 8px,
+                transparent 8px,
+                transparent 16px
+            );
+            margin: 20px 0;
+            border: 2px solid #000;
         }
     </style>
 </head>
 <body>
-    <div class="main-surface">
-        <div class="container">
-            <!-- Embossed Header -->
-            <div class="text-center">
-                <h1 class="title-embossed">Goblin Globe</h1>
-                <p class="subtitle">Domain name finder with mathematical precision</p>
-            </div>
-
-            <!-- Soft Form Surface -->
-            <div class="form-section neuro-raised">
-                <form id="generateForm">
-                    <div class="form-group">
-                        <label for="prompt" class="form-label">Domain Description</label>
-                        <textarea 
-                            id="prompt" 
-                            class="form-textarea neuro-pressed"
-                            placeholder="Describe your domain concept..."
-                            required
-                        ></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="count" class="form-label">Quantity</label>
+    <div class="scanlines"></div>
+    
+    <div class="container">
+        <div class="pixel-header">
+            <div class="goblin-sprite"></div>
+            <h1 class="title">GOBLIN GLOBE</h1>
+            <div class="goblin-sprite"></div>
+            <p style="color: #4a90e2; font-weight: bold; margin-top: 10px;">8-BIT DOMAIN FINDER</p>
+        </div>
+        
+        <div class="pixel-panel">
+            <form id="generateForm" class="pixel-form">
+                <div>
+                    <label class="pixel-label">Quest Description</label>
+                    <textarea 
+                        id="prompt" 
+                        class="pixel-textarea"
+                        placeholder="Describe your domain quest... e.g. 'combine magical creatures like dragonwolf'"
+                        required
+                    ></textarea>
+                </div>
+                
+                <div class="controls-row">
+                    <div>
+                        <label class="pixel-label">Spell Count</label>
                         <input 
                             type="number" 
                             id="count" 
-                            class="form-input neuro-pressed" 
+                            class="pixel-input"
                             min="1" 
                             max="20" 
                             value="10"
                         >
                     </div>
                     
-                    <div class="form-group">
-                        <label class="form-label">Extensions</label>
-                        <div class="checkbox-group">
-                            <label class="checkbox-item neuro-flat">
-                                <input type="checkbox" name="extensions" value=".com" checked class="checkbox-input neuro-pressed">
-                                <span class="checkbox-label">.com</span>
+                    <div>
+                        <label class="pixel-label">Magic Extensions</label>
+                        <div class="extensions-grid">
+                            <label class="pixel-checkbox">
+                                <input type="checkbox" name="extensions" value=".com" checked>
+                                <div class="checkbox-sprite"></div>
+                                .com
                             </label>
-                            <label class="checkbox-item neuro-flat">
-                                <input type="checkbox" name="extensions" value=".net" class="checkbox-input neuro-pressed">
-                                <span class="checkbox-label">.net</span>
+                            <label class="pixel-checkbox">
+                                <input type="checkbox" name="extensions" value=".net">
+                                <div class="checkbox-sprite"></div>
+                                .net
                             </label>
-                            <label class="checkbox-item neuro-flat">
-                                <input type="checkbox" name="extensions" value=".org" class="checkbox-input neuro-pressed">
-                                <span class="checkbox-label">.org</span>
+                            <label class="pixel-checkbox">
+                                <input type="checkbox" name="extensions" value=".org">
+                                <div class="checkbox-sprite"></div>
+                                .org
                             </label>
-                            <label class="checkbox-item neuro-flat">
-                                <input type="checkbox" name="extensions" value=".io" class="checkbox-input neuro-pressed">
-                                <span class="checkbox-label">.io</span>
+                            <label class="pixel-checkbox">
+                                <input type="checkbox" name="extensions" value=".io">
+                                <div class="checkbox-sprite"></div>
+                                .io
                             </label>
                         </div>
                     </div>
-                    
-                    <div class="text-center">
-                        <button type="submit" id="generateButton" class="btn-primary neuro-raised">
-                            <span id="buttonText">Generate Domains</span>
-                            <div id="buttonSpinner" class="spinner hidden"></div>
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Soft Loading State -->
-            <div id="loading" class="loading-container neuro-floating hidden">
-                <div class="loading-spinner"></div>
-                <p id="loadingMessage" class="loading-message">Generating domain ideas...</p>
-                <div id="progressBar" class="progress-container hidden">
-                    <div id="progressFill" class="progress-bar"></div>
-                </div>
-                <p id="progressText" class="progress-text hidden">Step 1 of 3</p>
-            </div>
-
-            <!-- Soft Error Container -->
-            <div id="error" class="error-message hidden">
-                <p></p>
-            </div>
-
-            <!-- Soft Results Section -->
-            <div id="results" class="results-section hidden">
-                <div class="results-actions">
-                    <button id="exportBtn" class="btn-secondary neuro-raised">Export CSV</button>
-                    <button id="copyAllBtn" class="btn-secondary neuro-raised">Copy Available</button>
-                    <button id="newSearchBtn" class="btn-secondary neuro-raised">New Search</button>
                 </div>
                 
-                <div>
-                    <h2 class="section-title">Available</h2>
-                    <div id="availableList" class="domain-grid"></div>
-                </div>
-                
-                <div>
-                    <h2 class="section-title">Taken</h2>
-                    <div id="takenList" class="domain-grid"></div>
+                <button type="submit" id="generateButton" class="pixel-button">
+                    <span id="buttonText">CAST SPELL</span>
+                </button>
+            </form>
+        </div>
+        
+        <div id="loading" class="pixel-panel loading-panel hidden">
+            <div class="loading-sprite"></div>
+            <div class="pixel-label" id="loadingMessage">Casting magical spells...</div>
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+            <div id="progressText" class="pixel-label">Quest Step 1 of 3</div>
+        </div>
+        
+        <div id="results" class="results-panel hidden">
+            <div class="pixel-divider"></div>
+            
+            <div class="results-header">
+                <h2 class="pixel-label" style="font-size: 18px;">TREASURE FOUND!</h2>
+                <div style="display: flex; gap: 12px;">
+                    <button id="exportBtn" class="mini-button">Export</button>
+                    <button id="copyAllBtn" class="mini-button">Copy All</button>
+                    <button id="newSearchBtn" class="mini-button">New Quest</button>
                 </div>
             </div>
-
-            <!-- Soft Toast Container -->
-            <div id="toastContainer" class="toast-container"></div>
+            
+            <div id="availableSection" class="hidden">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+                    <h3 class="pixel-label" style="color: #00ff00;">Available Domains</h3>
+                    <span id="availableCount" class="pixel-badge">0</span>
+                </div>
+                <div id="availableList" class="domain-grid"></div>
+            </div>
+            
+            <div id="takenSection" class="hidden" style="margin-top: 30px;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+                    <h3 class="pixel-label" style="color: #ff4757;">Taken Domains</h3>
+                    <span id="takenCount" class="pixel-badge">0</span>
+                </div>
+                <div id="takenList" class="domain-grid"></div>
+            </div>
+        </div>
+        
+        <div id="error" class="error-panel hidden"></div>
+        
+        <div class="credits">
+            <div class="pixel-divider"></div>
+            <p>GOBLIN GLOBE v1.0 - Powered by 8-bit Magic</p>
+            <p>Use WASD keys for retro navigation</p>
         </div>
     </div>
-
-    <script>
-        // DOM Elements
-        const form = document.getElementById('generateForm');
-        const generateButton = document.getElementById('generateButton');
-        const buttonText = document.getElementById('buttonText');
-        const buttonSpinner = document.getElementById('buttonSpinner');
-        const loading = document.getElementById('loading');
-        const loadingMessage = document.getElementById('loadingMessage');
-        const progressBar = document.getElementById('progressBar');
-        const progressFill = document.getElementById('progressFill');
-        const progressText = document.getElementById('progressText');
-        const results = document.getElementById('results');
-        const error = document.getElementById('error');
-        const availableList = document.getElementById('availableList');
-        const takenList = document.getElementById('takenList');
-        const exportBtn = document.getElementById('exportBtn');
-        const copyAllBtn = document.getElementById('copyAllBtn');
-        const newSearchBtn = document.getElementById('newSearchBtn');
-        const toastContainer = document.getElementById('toastContainer');
-
-        // Global state
-        let currentResults = { available: [], taken: [] };
-        let currentSummary = {};
-
-        // Initialize event listeners
-        form.addEventListener('submit', handleFormSubmit);
-        exportBtn.addEventListener('click', handleExport);
-        copyAllBtn.addEventListener('click', handleCopyAll);
-        newSearchBtn.addEventListener('click', handleNewSearch);
-
-        // Add keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey || e.metaKey) {
-                switch (e.key) {
-                    case 'Enter':
-                        if (!generateButton.disabled) {
-                            form.dispatchEvent(new Event('submit'));
-                        }
-                        break;
-                    case 'c':
-                        if (currentResults.available.length > 0) {
-                            e.preventDefault();
-                            handleCopyAll();
-                        }
-                        break;
-                    case 's':
-                        if (currentResults.available.length > 0) {
-                            e.preventDefault();
-                            handleExport();
-                        }
-                        break;
-                    case 'r':
-                        e.preventDefault();
-                        handleNewSearch();
-                        break;
-                }
-            }
-        });
-
-        async function handleFormSubmit(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const prompt = document.getElementById('prompt').value.trim();
-            const count = parseInt(document.getElementById('count').value);
-            const extensions = Array.from(document.querySelectorAll('input[name="extensions"]:checked'))
-                .map(cb => cb.value);
-            
-            // Validation
-            if (!prompt) {
-                showToast('Please enter a prompt', 'error');
-                return;
-            }
-            
-            if (extensions.length === 0) {
-                showToast('Please select at least one extension', 'error');
-                return;
-            }
-            
-            // Start loading state
-            setLoadingState(true);
-            showProgressStep('Generating domain ideas...', 1, 3, 10);
-            
-            try {
-                const response = await fetch('/api/generate', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ prompt, count, extensions })
-                });
-                
-                showProgressStep('Checking domain availability...', 2, 3, 50);
-                
-                const data = await response.json();
-                
-                if (!response.ok) {
-                    throw new Error(data.error || `HTTP ${response.status}`);
-                }
-                
-                if (!data.success) {
-                    throw new Error(data.error || 'Failed to generate domains');
-                }
-                
-                // Complete progress
-                showProgressStep('Analyzing results...', 3, 3, 90);
-                
-                // Brief delay to show completion
-                await new Promise(resolve => setTimeout(resolve, 500));
-                showProgressStep('Complete!', 3, 3, 100);
-                
-                // Store results and display
-                currentResults = data.results;
-                currentSummary = data.summary;
-                
-                displayResults(data.results, data.summary);
-                showToast(`Found ${data.results.available.length} available domains!`, 'success');
-                
-            } catch (err) {
-                console.error('Generation error:', err);
-                showError(getErrorMessage(err));
-                showToast('Failed to generate domains', 'error');
-            } finally {
-                setLoadingState(false);
-            }
-        }
-
-        function setLoadingState(isLoading) {
-            generateButton.disabled = isLoading;
-            
-            if (isLoading) {
-                buttonText.textContent = 'Generating...';
-                buttonSpinner.classList.remove('hidden');
-                loading.classList.remove('hidden');
-                results.classList.add('hidden');
-                error.classList.add('hidden');
-                progressBar.classList.remove('hidden');
-                progressText.classList.remove('hidden');
-            } else {
-                buttonText.textContent = 'Generate Domains';
-                buttonSpinner.classList.add('hidden');
-                loading.classList.add('hidden');
-                progressBar.classList.add('hidden');
-                progressText.classList.add('hidden');
-            }
-        }
-
-        function showProgressStep(message, step, totalSteps, percentage) {
-            loadingMessage.textContent = message;
-            progressText.textContent = `Step ${step} of ${totalSteps}`;
-            progressFill.style.width = `${percentage}%`;
-        }
-
-        function displayResults(results, summary) {
-            availableList.innerHTML = '';
-            takenList.innerHTML = '';
-            
-            if (results.available.length === 0 && results.taken.length === 0) {
-                showError('No domains were generated. Please try a different prompt.');
-                return;
-            }
-            
-            // Display available domains
-            results.available.forEach(item => {
-                const div = createDomainCard(item.domain, true, item.method, item.qualityScore, item.qualityGrade);
-                availableList.appendChild(div);
-            });
-            
-            // Display taken domains
-            results.taken.forEach(item => {
-                const div = createDomainCard(item.domain, false, item.method, item.qualityScore, item.qualityGrade);
-                takenList.appendChild(div);
-            });
-            
-            // Show results section
-            results.classList.remove('hidden');
-            
-            // Scroll to results
-            results.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        function createDomainCard(domain, isAvailable, method, qualityScore = null, qualityGrade = null) {
-            const div = document.createElement('div');
-            div.className = `domain-card neuro-floating ${isAvailable ? 'available' : 'taken'}`;
-            
-            // Domain name
-            const domainName = document.createElement('div');
-            domainName.className = 'domain-name';
-            domainName.textContent = domain;
-            
-            // Domain meta
-            const domainMeta = document.createElement('div');
-            domainMeta.className = 'domain-meta';
-            
-            const methodSpan = document.createElement('span');
-            methodSpan.className = 'domain-method';
-            methodSpan.textContent = method;
-            
-            const scoreSpan = document.createElement('span');
-            scoreSpan.className = 'domain-score';
-            if (qualityScore && qualityGrade) {
-                scoreSpan.textContent = `${qualityGrade.grade} (${qualityScore.overall}/100)`;
-            } else {
-                scoreSpan.textContent = 'No score';
-            }
-            
-            domainMeta.appendChild(methodSpan);
-            domainMeta.appendChild(scoreSpan);
-            
-            div.appendChild(domainName);
-            div.appendChild(domainMeta);
-            
-            // Actions for available domains
-            if (isAvailable) {
-                const actions = document.createElement('div');
-                actions.className = 'domain-actions';
-                
-                const registerLink = document.createElement('a');
-                registerLink.href = `https://www.namecheap.com/domains/registration/results/?domain=${domain}`;
-                registerLink.target = '_blank';
-                registerLink.className = 'link-register';
-                registerLink.textContent = 'Register Domain';
-                
-                const copyBtn = document.createElement('button');
-                copyBtn.className = 'btn-secondary neuro-raised';
-                copyBtn.textContent = 'Copy';
-                copyBtn.style.flex = 'none';
-                copyBtn.addEventListener('click', () => copyToClipboard(domain));
-                
-                actions.appendChild(registerLink);
-                actions.appendChild(copyBtn);
-                div.appendChild(actions);
-            }
-            
-            return div;
-        }
-
-        function handleCopyAll() {
-            if (currentResults.available.length === 0) {
-                showToast('No available domains to copy', 'error');
-                return;
-            }
-            
-            const domains = currentResults.available.map(item => item.domain).join('\n');
-            copyToClipboard(domains, `Copied ${currentResults.available.length} available domains!`);
-        }
-
-        function handleExport() {
-            if (currentResults.available.length === 0 && currentResults.taken.length === 0) {
-                showToast('No results to export', 'error');
-                return;
-            }
-            
-            const timestamp = new Date().toISOString().split('T')[0];
-            const prompt = document.getElementById('prompt').value;
-            
-            // Create CSV content
-            const csvContent = [
-                'Domain,Status,Quality Score,Quality Grade,Method,Registrar Link',
-                ...currentResults.available.map(item => 
-                    `"${item.domain}","Available","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method}","https://www.namecheap.com/domains/registration/results/?domain=${item.domain}"`
-                ),
-                ...currentResults.taken.map(item => 
-                    `"${item.domain}","Taken","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method}","N/A"`
-                )
-            ].join('\n');
-            
-            // Create and download file
-            const blob = new Blob([csvContent], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = `domain-search-${timestamp}-${prompt.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-            
-            showToast('Results exported successfully!', 'success');
-        }
-
-        function handleNewSearch() {
-            // Clear form
-            document.getElementById('prompt').value = '';
-            document.getElementById('count').value = '10';
-            
-            // Reset results
-            currentResults = { available: [], taken: [] };
-            results.classList.add('hidden');
-            error.classList.add('hidden');
-            
-            // Focus on prompt input
-            document.getElementById('prompt').focus();
-            
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            
-            showToast('Ready for new search!', 'success');
-        }
-
-        async function copyToClipboard(text, successMessage = 'Copied to clipboard!') {
-            try {
-                await navigator.clipboard.writeText(text);
-                showToast(successMessage, 'success');
-            } catch (err) {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                textArea.style.position = 'fixed';
-                textArea.style.left = '-999999px';
-                textArea.style.top = '-999999px';
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                
-                try {
-                    document.execCommand('copy');
-                    showToast(successMessage, 'success');
-                } catch (err) {
-                    showToast('Failed to copy to clipboard', 'error');
-                }
-                
-                document.body.removeChild(textArea);
-            }
-        }
-
-        function showToast(message, type = 'info', duration = 3000) {
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.textContent = message;
-            
-            toastContainer.appendChild(toast);
-            
-            // Trigger animation
-            setTimeout(() => {
-                toast.classList.add('show');
-            }, 10);
-            
-            // Auto remove
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => {
-                    if (toast.parentElement) {
-                        toast.remove();
-                    }
-                }, 400);
-            }, duration);
-        }
-
-        function showError(message) {
-            error.querySelector('p').textContent = message;
-            error.classList.remove('hidden');
-            results.classList.add('hidden');
-        }
-
-        function getErrorMessage(error) {
-            const message = error.message || 'An unexpected error occurred';
-            
-            // Provide user-friendly error messages
-            if (message.includes('rate limit') || message.includes('429')) {
-                return 'Too many requests. Please wait a moment and try again.';
-            }
-            
-            if (message.includes('timeout') || message.includes('ENOTFOUND')) {
-                return 'Connection timeout. Please check your internet connection and try again.';
-            }
-            
-            if (message.includes('401') || message.includes('403')) {
-                return 'Authentication error. Please refresh the page and try again.';
-            }
-            
-            if (message.includes('500')) {
-                return 'Server error. Please try again in a few moments.';
-            }
-            
-            if (message.includes('Invalid prompt')) {
-                return 'Your prompt contains invalid content. Please try a different description.';
-            }
-            
-            // Return the original message if no specific case matches
-            return message;
-        }
-    </script>
+    
+    <script src="app.js"></script>
 </body>
 </html>

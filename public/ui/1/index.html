@@ -3,276 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goblin Globe</title>
+    <title>GOBLIN GLOBE - Terminal Interface</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&family=Source+Code+Pro:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* Reset and base styles */
+        /* Terminal Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html {
-            font-size: 16px;
-            line-height: 1.5;
+        :root {
+            --terminal-bg: #000000;
+            --terminal-text: #00FF00;
+            --terminal-amber: #FFA500;
+            --terminal-red: #FF0000;
+            --terminal-blue: #0080FF;
+            --terminal-dim: #008000;
+            --terminal-cursor: #00FF00;
+            --scanline-opacity: 0.05;
         }
 
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            font-weight: 400;
-            color: #000;
-            background-color: #fff;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        /* Grid system - based on 24-column grid */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 60px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(24, 1fr);
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-
-        .col-12 {
-            grid-column: span 12;
-        }
-
-        .col-8 {
-            grid-column: span 8;
-        }
-
-        .col-6 {
-            grid-column: span 6;
-        }
-
-        .col-24 {
-            grid-column: span 24;
-        }
-
-        /* Typography hierarchy */
-        .type-1 {
-            font-size: 48px;
-            font-weight: 300;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-        }
-
-        .type-2 {
-            font-size: 32px;
-            font-weight: 400;
-            line-height: 1.2;
-        }
-
-        .type-3 {
-            font-size: 24px;
-            font-weight: 400;
-            line-height: 1.3;
-        }
-
-        .type-4 {
-            font-size: 18px;
-            font-weight: 400;
+            font-family: 'Fira Code', 'Source Code Pro', 'Monaco', 'Menlo', monospace;
+            background: var(--terminal-bg);
+            color: var(--terminal-text);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
             line-height: 1.4;
-        }
-
-        .type-5 {
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 1.5;
-        }
-
-        .type-6 {
             font-size: 14px;
-            font-weight: 400;
-            line-height: 1.4;
+            position: relative;
         }
 
-        .type-mono {
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-            font-size: 16px;
-            font-weight: 400;
-        }
-
-        /* Spacing system */
-        .mb-15 { margin-bottom: 15px; }
-        .mb-30 { margin-bottom: 30px; }
-        .mb-60 { margin-bottom: 60px; }
-        .mb-90 { margin-bottom: 90px; }
-
-        .mt-30 { margin-top: 30px; }
-        .mt-60 { margin-top: 60px; }
-
-        .p-30 { padding: 30px; }
-        .p-45 { padding: 45px; }
-
-        /* Form elements */
-        .form-group {
-            margin-bottom: 45px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 14px;
-            font-weight: 400;
-            margin-bottom: 15px;
-            color: #000;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .form-input,
-        .form-textarea {
+        /* CRT Monitor Effects */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 20px 0;
-            border: none;
-            border-bottom: 2px solid #000;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 0, var(--scanline-opacity)) 2px,
+                rgba(0, 255, 0, var(--scanline-opacity)) 4px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.3) 100%);
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Terminal Container */
+        .terminal {
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ASCII Art Logo */
+        .logo {
+            font-family: 'Source Code Pro', monospace;
+            font-weight: 700;
+            font-size: 10px;
+            line-height: 1;
+            color: var(--terminal-text);
+            text-shadow: 0 0 10px var(--terminal-text);
+            margin-bottom: 20px;
+            white-space: pre;
+            animation: logoGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            0% { text-shadow: 0 0 10px var(--terminal-text); }
+            100% { text-shadow: 0 0 20px var(--terminal-text), 0 0 30px var(--terminal-text); }
+        }
+
+        /* System Info */
+        .system-info {
+            color: var(--terminal-dim);
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+
+        .system-info .timestamp {
+            color: var(--terminal-amber);
+        }
+
+        /* Command Prompt */
+        .prompt-line {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .prompt-prefix {
+            color: var(--terminal-amber);
+            margin-right: 8px;
+            font-weight: 500;
+        }
+
+        .command-input {
             background: transparent;
+            border: none;
+            color: var(--terminal-text);
             font-family: inherit;
-            font-size: 18px;
-            font-weight: 300;
-            color: #000;
+            font-size: inherit;
             outline: none;
-            transition: border-color 0.2s ease;
+            flex: 1;
+            padding: 0;
+            text-shadow: 0 0 8px var(--terminal-text);
         }
 
-        .form-input:focus,
-        .form-textarea:focus {
-            border-bottom-color: #FF0000;
+        .command-input::placeholder {
+            color: var(--terminal-dim);
         }
 
-        .form-textarea {
+        /* Cursor */
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: var(--terminal-cursor);
+            margin-left: 2px;
+            animation: blink 1s infinite;
+            box-shadow: 0 0 8px var(--terminal-cursor);
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin: 20px 0;
+            border-left: 2px solid var(--terminal-dim);
+            padding-left: 15px;
+        }
+
+        .form-section.active {
+            border-left-color: var(--terminal-text);
+            animation: sectionPulse 2s infinite;
+        }
+
+        @keyframes sectionPulse {
+            0%, 100% { border-left-color: var(--terminal-text); }
+            50% { border-left-color: var(--terminal-amber); }
+        }
+
+        .section-label {
+            color: var(--terminal-amber);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        /* Input Fields */
+        .terminal-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--terminal-dim);
+            color: var(--terminal-text);
+            font-family: inherit;
+            font-size: inherit;
+            padding: 8px 0;
+            width: 100%;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .terminal-input:focus {
+            border-bottom-color: var(--terminal-text);
+            text-shadow: 0 0 8px var(--terminal-text);
+        }
+
+        .terminal-textarea {
+            background: transparent;
+            border: 1px solid var(--terminal-dim);
+            color: var(--terminal-text);
+            font-family: inherit;
+            font-size: inherit;
+            padding: 10px;
+            width: 100%;
+            min-height: 80px;
             resize: vertical;
-            min-height: 120px;
+            outline: none;
+            transition: all 0.3s ease;
         }
 
-        .form-number {
-            width: 120px;
+        .terminal-textarea:focus {
+            border-color: var(--terminal-text);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
         }
 
-        /* Checkbox group */
+        /* Checkboxes */
         .checkbox-group {
             display: flex;
-            gap: 45px;
-            margin-top: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
         }
 
         .checkbox-item {
             display: flex;
             align-items: center;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            color: var(--terminal-amber);
         }
 
         .checkbox-input {
-            width: 20px;
-            height: 20px;
-            margin-right: 15px;
-            border: 2px solid #000;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border: 1px solid var(--terminal-text);
+            margin-right: 8px;
+            position: relative;
             background: transparent;
             cursor: pointer;
-            position: relative;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
         }
 
         .checkbox-input:checked {
-            background: #FF0000;
-            border-color: #FF0000;
+            background: var(--terminal-text);
+            box-shadow: 0 0 8px var(--terminal-text);
         }
 
         .checkbox-input:checked::after {
-            content: '';
+            content: 'X';
             position: absolute;
-            top: 2px;
-            left: 6px;
-            width: 6px;
-            height: 10px;
-            border: solid #fff;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
+            top: -2px;
+            left: 2px;
+            color: var(--terminal-bg);
+            font-size: 10px;
+            font-weight: bold;
         }
 
-        .checkbox-label {
-            font-size: 16px;
-            font-weight: 400;
-            color: #000;
-            cursor: pointer;
-        }
-
-        /* Button */
-        .btn-primary {
-            background: #000;
-            color: #fff;
-            border: none;
-            padding: 25px 60px;
+        /* Buttons */
+        .terminal-button {
+            background: transparent;
+            border: 1px solid var(--terminal-text);
+            color: var(--terminal-text);
+            padding: 10px 20px;
             font-family: inherit;
-            font-size: 16px;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
+            font-size: inherit;
             cursor: pointer;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 15px;
-            margin-top: 30px;
+            transition: all 0.3s ease;
+            margin: 10px 5px 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-primary:hover {
-            background: #FF0000;
+        .terminal-button:hover {
+            background: var(--terminal-text);
+            color: var(--terminal-bg);
+            box-shadow: 0 0 15px var(--terminal-text);
         }
 
-        .btn-primary:disabled {
-            background: #ccc;
+        .terminal-button:disabled {
+            border-color: var(--terminal-dim);
+            color: var(--terminal-dim);
             cursor: not-allowed;
         }
 
-        .btn-secondary {
+        .terminal-button:disabled:hover {
             background: transparent;
-            color: #000;
-            border: 2px solid #000;
-            padding: 20px 45px;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            color: var(--terminal-dim);
+            box-shadow: none;
+        }
+
+        .button-primary {
+            border-color: var(--terminal-amber);
+            color: var(--terminal-amber);
+        }
+
+        .button-primary:hover {
+            background: var(--terminal-amber);
+            color: var(--terminal-bg);
+            box-shadow: 0 0 15px var(--terminal-amber);
+        }
+
+        /* Loading Animation */
+        .loading-section {
+            margin: 30px 0;
+            display: none;
+        }
+
+        .loading-section.active {
+            display: block;
+        }
+
+        .loading-bar {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .loading-text {
             margin-right: 15px;
-            margin-bottom: 15px;
+            min-width: 200px;
         }
 
-        .btn-secondary:hover {
-            background: #000;
-            color: #fff;
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--terminal-dim);
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-red {
-            background: #FF0000;
-            color: #fff;
-            border: 2px solid #FF0000;
+        .progress-fill {
+            height: 100%;
+            background: var(--terminal-text);
+            width: 0%;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px var(--terminal-text);
         }
 
-        .btn-red:hover {
-            background: #000;
-            border-color: #000;
-        }
-
-        /* Loading spinner */
         .spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid transparent;
-            border-top: 2px solid #fff;
-            border-radius: 50%;
+            display: inline-block;
+            margin-left: 10px;
             animation: spin 1s linear infinite;
         }
 
@@ -281,339 +354,313 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Progress bar */
-        .progress-container {
-            width: 100%;
-            height: 2px;
-            background: #f0f0f0;
-            margin: 30px 0;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: #FF0000;
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        /* Results section */
+        /* Results Section */
         .results-section {
-            margin-top: 90px;
+            margin-top: 40px;
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+            animation: terminalFadeIn 0.5s ease-in;
+        }
+
+        @keyframes terminalFadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .results-header {
-            margin-bottom: 60px;
+            color: var(--terminal-amber);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--terminal-dim);
+            padding-bottom: 10px;
         }
 
-        .results-actions {
+        .domain-list {
+            margin: 20px 0;
+        }
+
+        .domain-item {
             display: flex;
-            gap: 15px;
-            margin-bottom: 60px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dotted var(--terminal-dim);
+            transition: all 0.3s ease;
         }
 
-        .domain-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
-            margin-bottom: 90px;
-        }
-
-        .domain-card {
-            border: 2px solid #000;
-            padding: 30px;
-            background: #fff;
-            transition: all 0.2s ease;
-        }
-
-        .domain-card:hover {
-            border-color: #FF0000;
-        }
-
-        .domain-card.available {
-            background: #fff;
-        }
-
-        .domain-card.taken {
-            background: #f8f8f8;
-            border-color: #ccc;
+        .domain-item:hover {
+            background: rgba(0, 255, 0, 0.05);
+            padding-left: 10px;
         }
 
         .domain-name {
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-            font-size: 20px;
-            font-weight: 400;
-            margin-bottom: 15px;
-            word-break: break-all;
-        }
-
-        .domain-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .domain-method {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #666;
-        }
-
-        .domain-score {
-            font-size: 14px;
             font-weight: 500;
+            text-shadow: 0 0 5px var(--terminal-text);
+        }
+
+        .domain-status {
+            font-size: 12px;
+            padding: 2px 8px;
+            border: 1px solid;
+        }
+
+        .status-available {
+            color: var(--terminal-text);
+            border-color: var(--terminal-text);
+            background: rgba(0, 255, 0, 0.1);
+        }
+
+        .status-taken {
+            color: var(--terminal-red);
+            border-color: var(--terminal-red);
+            background: rgba(255, 0, 0, 0.1);
         }
 
         .domain-actions {
             display: flex;
-            gap: 15px;
-            margin-top: 30px;
+            gap: 10px;
+            align-items: center;
         }
 
-        .link-register {
-            background: #FF0000;
-            color: #fff;
-            text-decoration: none;
-            padding: 15px 30px;
-            font-size: 14px;
+        .action-button {
+            background: transparent;
+            border: 1px solid var(--terminal-blue);
+            color: var(--terminal-blue);
+            padding: 4px 8px;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            transition: all 0.2s ease;
-            flex: 1;
-            text-align: center;
         }
 
-        .link-register:hover {
-            background: #000;
+        .action-button:hover {
+            background: var(--terminal-blue);
+            color: var(--terminal-bg);
         }
 
-        /* Error and loading states */
-        .error-message {
-            background: #fff;
-            border: 2px solid #FF0000;
-            padding: 30px;
-            margin: 60px 0;
-            color: #000;
-        }
-
-        .loading-container {
-            text-align: center;
-            padding: 90px 0;
-        }
-
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 2px solid #f0f0f0;
-            border-top: 2px solid #FF0000;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 30px;
-        }
-
-        /* Toast notifications */
-        .toast-container {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .toast {
-            background: #fff;
-            border: 2px solid #000;
-            padding: 20px 30px;
-            min-width: 300px;
-            font-size: 14px;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast.success {
-            border-color: #FF0000;
-            background: #fff;
-        }
-
-        .toast.error {
-            border-color: #FF0000;
-            background: #fff;
-            color: #FF0000;
-        }
-
-        /* Utility classes */
-        .hidden {
+        /* Error Messages */
+        .error-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid var(--terminal-red);
+            background: rgba(255, 0, 0, 0.1);
+            color: var(--terminal-red);
             display: none;
         }
 
-        .text-red {
-            color: #FF0000;
+        .error-section.active {
+            display: block;
+            animation: errorFlash 0.5s ease-in;
         }
 
-        .text-center {
-            text-align: center;
+        @keyframes errorFlash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
 
-        .text-left {
-            text-align: left;
+        /* Typing Animation */
+        .typing-text {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid var(--terminal-cursor);
+            animation: typing 2s steps(40, end), blink-cursor 0.75s step-end infinite;
         }
 
-        /* Responsive adjustments */
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-cursor {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--terminal-cursor); }
+        }
+
+        /* Help Text */
+        .help-text {
+            color: var(--terminal-dim);
+            font-size: 11px;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+
+        .help-command {
+            color: var(--terminal-amber);
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .container {
-                padding: 0 30px;
+            .terminal {
+                padding: 10px;
             }
-
-            .grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
+            
+            .logo {
+                font-size: 8px;
             }
-
-            .col-12,
-            .col-8,
-            .col-6,
-            .col-24 {
-                grid-column: 1;
+            
+            body {
+                font-size: 12px;
             }
-
-            .type-1 {
-                font-size: 36px;
-            }
-
-            .type-2 {
-                font-size: 24px;
-            }
-
+            
             .checkbox-group {
                 flex-direction: column;
-                gap: 20px;
+                gap: 8px;
             }
+        }
 
-            .domain-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .results-actions {
-                flex-direction: column;
-            }
-
-            .btn-secondary {
-                margin-right: 0;
-            }
+        /* Hidden Utility */
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="grid mt-60">
-            <div class="col-24">
-                <h1 class="type-1 mb-15">Goblin Globe</h1>
-                <p class="type-5">Domain name finder with mathematical precision</p>
-            </div>
+    <div class="terminal">
+        <!-- ASCII Art Logo -->
+        <div class="logo">
+ ██████╗  ██████╗ ██████╗ ██╗     ██╗███╗   ██╗     ██████╗ ██╗      ██████╗ ██████╗ ███████╗
+██╔════╝ ██╔═══██╗██╔══██╗██║     ██║████╗  ██║    ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔════╝
+██║  ███╗██║   ██║██████╔╝██║     ██║██╔██╗ ██║    ██║  ███╗██║     ██║   ██║██████╔╝█████╗  
+██║   ██║██║   ██║██╔══██╗██║     ██║██║╚██╗██║    ██║   ██║██║     ██║   ██║██╔══██╗██╔══╝  
+╚██████╔╝╚██████╔╝██████╔╝███████╗██║██║ ╚████║    ╚██████╔╝███████╗╚██████╔╝██████╔╝███████╗
+ ╚═════╝  ╚═════╝ ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝     ╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚══════╝
+                                                                                               
         </div>
 
-        <!-- Form -->
-        <div class="grid">
-            <div class="col-12">
-                <form id="generateForm">
-                    <div class="form-group">
-                        <label for="prompt" class="form-label">Domain Description</label>
-                        <textarea 
-                            id="prompt" 
-                            class="form-textarea"
-                            placeholder="Describe your domain concept..."
-                            required
-                        ></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="count" class="form-label">Quantity</label>
-                        <input 
-                            type="number" 
-                            id="count" 
-                            class="form-input form-number" 
-                            min="1" 
-                            max="20" 
-                            value="10"
-                        >
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Extensions</label>
-                        <div class="checkbox-group">
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="extensions" value=".com" checked class="checkbox-input">
-                                <span class="checkbox-label">.com</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="extensions" value=".net" class="checkbox-input">
-                                <span class="checkbox-label">.net</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="extensions" value=".org" class="checkbox-input">
-                                <span class="checkbox-label">.org</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="extensions" value=".io" class="checkbox-input">
-                                <span class="checkbox-label">.io</span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <button type="submit" id="generateButton" class="btn-primary">
-                        <span id="buttonText">Generate Domains</span>
-                        <div id="buttonSpinner" class="spinner hidden"></div>
-                    </button>
-                </form>
-            </div>
+        <!-- System Info -->
+        <div class="system-info">
+            <div>DOMAIN FINDER v2.0.0 - Terminal Interface</div>
+            <div>System: <span class="timestamp" id="systemTime"></span></div>
+            <div>Status: <span style="color: var(--terminal-text);">READY</span></div>
+            <div>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
         </div>
 
-        <!-- Loading -->
-        <div id="loading" class="loading-container hidden">
-            <div class="loading-spinner"></div>
-            <p id="loadingMessage" class="type-4 mb-30">Generating domain ideas...</p>
-            <div id="progressBar" class="progress-container hidden">
-                <div id="progressFill" class="progress-bar"></div>
-            </div>
-            <p id="progressText" class="type-6 hidden">Step 1 of 3</p>
-        </div>
-
-        <!-- Error -->
-        <div id="error" class="error-message hidden">
-            <p class="type-4"></p>
-        </div>
-
-        <!-- Results -->
-        <div id="results" class="results-section hidden">
-            <div class="results-header">
-                <div class="results-actions">
-                    <button id="exportBtn" class="btn-secondary">Export CSV</button>
-                    <button id="copyAllBtn" class="btn-secondary">Copy Available</button>
-                    <button id="newSearchBtn" class="btn-secondary">New Search</button>
+        <!-- Main Command Interface -->
+        <form id="terminalForm">
+            <!-- Prompt Description -->
+            <div class="form-section active" id="promptSection">
+                <div class="section-label">&gt; DOMAIN_DESCRIPTION:</div>
+                <div class="prompt-line">
+                    <span class="prompt-prefix">$</span>
+                    <textarea 
+                        id="promptInput" 
+                        class="terminal-textarea"
+                        placeholder="Enter domain concept description..."
+                        rows="3"
+                    ></textarea>
                 </div>
             </div>
-            
-            <div class="mb-60">
-                <h2 class="type-2 mb-30">Available</h2>
-                <div id="availableList" class="domain-grid"></div>
+
+            <!-- Count Selection -->
+            <div class="form-section" id="countSection">
+                <div class="section-label">&gt; GENERATION_COUNT:</div>
+                <div class="prompt-line">
+                    <span class="prompt-prefix">$</span>
+                    <input 
+                        type="number" 
+                        id="countInput" 
+                        class="terminal-input"
+                        min="1" 
+                        max="20" 
+                        value="10"
+                        style="width: 100px;"
+                    >
+                    <span style="margin-left: 10px; color: var(--terminal-dim);">[1-20]</span>
+                </div>
             </div>
-            
-            <div class="mb-60">
-                <h2 class="type-2 mb-30">Taken</h2>
-                <div id="takenList" class="domain-grid"></div>
+
+            <!-- Extensions Selection -->
+            <div class="form-section" id="extensionsSection">
+                <div class="section-label">&gt; DOMAIN_EXTENSIONS:</div>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="extensions" value=".com" checked class="checkbox-input">
+                        <span>.com</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="extensions" value=".net" class="checkbox-input">
+                        <span>.net</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="extensions" value=".org" class="checkbox-input">
+                        <span>.org</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="extensions" value=".io" class="checkbox-input">
+                        <span>.io</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Execute Button -->
+            <div class="form-section">
+                <button type="submit" id="executeButton" class="terminal-button button-primary">
+                    <span id="executeText">EXECUTE SCAN</span>
+                    <span id="executeSpinner" class="spinner hidden">⣾</span>
+                </button>
+                <button type="button" id="clearButton" class="terminal-button">CLEAR</button>
+            </div>
+        </form>
+
+        <!-- Loading Section -->
+        <div class="loading-section" id="loadingSection">
+            <div class="section-label">&gt; SYSTEM_STATUS:</div>
+            <div class="loading-bar">
+                <div class="loading-text" id="loadingText">Initializing scan...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="spinner" id="loadingSpinner">⣾</div>
+            </div>
+            <div id="progressDetails" style="color: var(--terminal-dim); font-size: 12px; margin-top: 5px;"></div>
+        </div>
+
+        <!-- Error Section -->
+        <div class="error-section" id="errorSection">
+            <div class="section-label">&gt; ERROR_LOG:</div>
+            <div id="errorMessage"></div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection">
+            <div class="results-header">
+                <div class="section-label">&gt; SCAN_RESULTS:</div>
+                <div id="scanSummary" style="color: var(--terminal-dim); margin-top: 10px;"></div>
+            </div>
+
+            <!-- Available Domains -->
+            <div id="availableSection">
+                <div style="color: var(--terminal-text); margin: 20px 0 10px 0; border-left: 3px solid var(--terminal-text); padding-left: 10px;">
+                    AVAILABLE DOMAINS [<span id="availableCount">0</span>]
+                </div>
+                <div class="domain-list" id="availableList"></div>
+            </div>
+
+            <!-- Taken Domains -->
+            <div id="takenSection">
+                <div style="color: var(--terminal-red); margin: 20px 0 10px 0; border-left: 3px solid var(--terminal-red); padding-left: 10px;">
+                    TAKEN DOMAINS [<span id="takenCount">0</span>]
+                </div>
+                <div class="domain-list" id="takenList"></div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="form-section">
+                <button type="button" id="exportButton" class="terminal-button">EXPORT_DATA</button>
+                <button type="button" id="copyButton" class="terminal-button">COPY_AVAILABLE</button>
+                <button type="button" id="newScanButton" class="terminal-button">NEW_SCAN</button>
             </div>
         </div>
 
-        <!-- Toast Container -->
-        <div id="toastContainer" class="toast-container"></div>
+        <!-- Help Text -->
+        <div class="help-text">
+            <div>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+            <div>COMMANDS: <span class="help-command">CTRL+ENTER</span> Execute | <span class="help-command">CTRL+C</span> Copy | <span class="help-command">CTRL+S</span> Export | <span class="help-command">CTRL+R</span> Reset</div>
+            <div>STATUS: Domain availability checked via DNS lookup with WHOIS fallback</div>
+            <div>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+        </div>
     </div>
 
     <script src="app.js"></script>

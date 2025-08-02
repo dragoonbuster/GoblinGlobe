@@ -1,16 +1,18 @@
-// Terminal Interface for Goblin Globe Domain Finder
-class TerminalInterface {
+// Cyberdeck Hacker Terminal Interface for Goblin Globe Domain Finder
+class CyberdeckTerminalInterface {
     constructor() {
         this.currentResults = { available: [], taken: [] };
         this.isLoading = false;
-        this.spinnerChars = ['⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷'];
+        this.spinnerChars = ['◢', '◣', '◤', '◥'];
         this.spinnerIndex = 0;
         this.spinnerInterval = null;
+        this.networkUpdateInterval = null;
         
         this.initializeElements();
         this.setupEventListeners();
         this.startSystemTime();
-        this.initializeTerminal();
+        this.initializeCyberdeck();
+        this.startNetworkMonitor();
     }
 
     initializeElements() {
@@ -49,6 +51,11 @@ class TerminalInterface {
 
         // System elements
         this.systemTime = document.getElementById('systemTime');
+        this.cpuUsage = document.getElementById('cpuUsage');
+        this.memUsage = document.getElementById('memUsage');
+        this.domainCount = document.getElementById('domainCount');
+        this.latency = document.getElementById('latency');
+        this.packets = document.getElementById('packets');
     }
 
     setupEventListeners() {
@@ -96,15 +103,40 @@ class TerminalInterface {
         setInterval(updateTime, 1000);
     }
 
-    initializeTerminal() {
-        // Add typing effect to help text
-        this.typeMessage("Terminal interface initialized. Ready for domain scanning.", 50);
+    initializeCyberdeck() {
+        // Initialize cyberdeck systems
+        this.typeCyberMessage("Cyberdeck terminal initialized. All systems nominal.", 50);
         
         // Focus on prompt input
         setTimeout(() => {
             this.promptInput.focus();
             this.activateSection('promptSection');
         }, 1000);
+    }
+
+    startNetworkMonitor() {
+        // Simulate network activity updates
+        this.networkUpdateInterval = setInterval(() => {
+            // Update CPU usage (simulate fluctuation)
+            const cpu = Math.floor(Math.random() * 30) + 40;
+            this.cpuUsage.textContent = `${cpu}%`;
+            this.cpuUsage.className = cpu > 80 ? 'status-value critical' : cpu > 60 ? 'status-value warning' : 'status-value';
+
+            // Update memory usage
+            const mem = Math.floor(Math.random() * 20) + 60;
+            this.memUsage.textContent = `${mem}%`;
+            this.memUsage.className = mem > 85 ? 'status-value critical' : mem > 70 ? 'status-value warning' : 'status-value';
+
+            // Update latency
+            const latency = Math.floor(Math.random() * 50) + 20;
+            this.latency.textContent = `${latency}ms`;
+            this.latency.style.color = latency > 100 ? 'var(--cyber-red)' : latency > 50 ? 'var(--cyber-orange)' : 'var(--cyber-green)';
+
+            // Update packet count
+            const packets = parseInt(this.packets.textContent) + Math.floor(Math.random() * 10) + 1;
+            this.packets.textContent = packets;
+
+        }, 2000);
     }
 
     activateSection(sectionId) {
@@ -133,13 +165,13 @@ class TerminalInterface {
         
         // Validation
         if (!prompt) {
-            this.showError('ERROR: Domain description required');
+            this.showError('ERROR: Target description required for domain acquisition');
             this.promptInput.focus();
             return;
         }
         
         if (extensions.length === 0) {
-            this.showError('ERROR: At least one extension must be selected');
+            this.showError('ERROR: At least one TLD target must be selected');
             return;
         }
         
@@ -154,12 +186,12 @@ class TerminalInterface {
             this.hideResults();
             
             // Step 1: Initialize
-            this.updateProgress('Initializing domain scan...', 0);
+            this.updateProgress('Initializing cyberdeck protocols...', 0);
             await this.delay(500);
             
             // Step 2: Generate domains
-            this.updateProgress('Generating domain ideas...', 10);
-            this.updateProgressDetails('Connecting to AI generation service...');
+            this.updateProgress('Accessing domain generation networks...', 10);
+            this.updateProgressDetails('Establishing secure connection to AI networks...');
             
             const response = await fetch('/api/generate', {
                 method: 'POST',
@@ -168,27 +200,27 @@ class TerminalInterface {
             });
             
             // Step 3: Check availability
-            this.updateProgress('Checking domain availability...', 50);
-            this.updateProgressDetails('Performing DNS lookups and WHOIS queries...');
+            this.updateProgress('Executing domain reconnaissance...', 50);
+            this.updateProgressDetails('Running DNS queries and WHOIS lookups...');
             
             const data = await response.json();
             
             if (!response.ok) {
-                throw new Error(data.error || `HTTP ${response.status}`);
+                throw new Error(data.error || `SYSTEM ERROR ${response.status}`);
             }
             
             if (!data.success) {
-                throw new Error(data.error || 'Scan failed');
+                throw new Error(data.error || 'Domain acquisition scan failed');
             }
             
             // Step 4: Process results
-            this.updateProgress('Processing scan results...', 90);
-            this.updateProgressDetails('Analyzing domain quality and availability...');
+            this.updateProgress('Processing acquisition data...', 90);
+            this.updateProgressDetails('Analyzing target availability and quality metrics...');
             await this.delay(500);
             
             // Step 5: Complete
-            this.updateProgress('Scan complete!', 100);
-            this.updateProgressDetails('Results ready for display');
+            this.updateProgress('Scan sequence complete!', 100);
+            this.updateProgressDetails('Results compiled and ready for review');
             await this.delay(1000);
             
             // Store and display results
@@ -196,7 +228,7 @@ class TerminalInterface {
             this.displayResults(data.results, data.summary);
             
         } catch (error) {
-            console.error('Scan error:', error);
+            console.error('Cyberdeck scan error:', error);
             this.showError(`SCAN_ERROR: ${this.formatErrorMessage(error.message)}`);
         } finally {
             this.setLoadingState(false);
@@ -214,7 +246,7 @@ class TerminalInterface {
             this.startSpinner();
         } else {
             this.executeButton.disabled = false;
-            this.executeText.textContent = 'EXECUTE SCAN';
+            this.executeText.textContent = 'INITIATE SCAN';
             this.executeSpinner.classList.add('hidden');
             this.loadingSection.classList.remove('active');
             this.stopSpinner();
@@ -239,7 +271,7 @@ class TerminalInterface {
             if (this.executeSpinner && !this.executeSpinner.classList.contains('hidden')) {
                 this.executeSpinner.textContent = this.spinnerChars[this.spinnerIndex];
             }
-        }, 100);
+        }, 150);
     }
 
     stopSpinner() {
@@ -255,6 +287,7 @@ class TerminalInterface {
         // Update counts
         this.availableCount.textContent = results.available.length;
         this.takenCount.textContent = results.taken.length;
+        this.domainCount.textContent = results.available.length + results.taken.length;
         
         // Update summary
         const totalScanned = results.available.length + results.taken.length;
@@ -263,7 +296,8 @@ class TerminalInterface {
         this.scanSummary.innerHTML = `
             TOTAL_SCANNED: ${totalScanned} | 
             AVAILABLE: ${results.available.length} (${availablePercent}%) | 
-            TAKEN: ${results.taken.length} (${100 - availablePercent}%)
+            OCCUPIED: ${results.taken.length} (${100 - availablePercent}%) |
+            STATUS: ACQUISITION_READY
         `;
         
         // Display available domains
@@ -286,8 +320,8 @@ class TerminalInterface {
             this.resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 300);
         
-        // Terminal notification
-        this.typeMessage(`Scan complete. Found ${results.available.length} available domains.`);
+        // Cyberdeck notification
+        this.typeCyberMessage(`Domain acquisition scan complete. ${results.available.length} targets available for acquisition.`);
     }
 
     createDomainElement(item, isAvailable) {
@@ -300,7 +334,7 @@ class TerminalInterface {
         
         const statusSpan = document.createElement('span');
         statusSpan.className = `domain-status ${isAvailable ? 'status-available' : 'status-taken'}`;
-        statusSpan.textContent = isAvailable ? 'AVAILABLE' : 'TAKEN';
+        statusSpan.textContent = isAvailable ? 'AVAILABLE' : 'OCCUPIED';
         
         const actionsDiv = document.createElement('div');
         actionsDiv.className = 'domain-actions';
@@ -317,7 +351,7 @@ class TerminalInterface {
         if (isAvailable) {
             const registerBtn = document.createElement('button');
             registerBtn.className = 'action-button';
-            registerBtn.textContent = 'REGISTER';
+            registerBtn.textContent = 'ACQUIRE';
             registerBtn.addEventListener('click', () => {
                 window.open(`https://www.namecheap.com/domains/registration/results/?domain=${item.domain}`, '_blank');
             });
@@ -327,8 +361,8 @@ class TerminalInterface {
         // Quality score display
         if (item.qualityScore && item.qualityGrade) {
             const qualitySpan = document.createElement('span');
-            qualitySpan.style.color = 'var(--terminal-dim)';
-            qualitySpan.style.fontSize = '11px';
+            qualitySpan.style.color = 'var(--cyber-dim)';
+            qualitySpan.style.fontSize = '10px';
             qualitySpan.textContent = `[${item.qualityGrade.grade}: ${item.qualityScore.overall}/100]`;
             actionsDiv.appendChild(qualitySpan);
         }
@@ -348,7 +382,7 @@ class TerminalInterface {
     showError(message) {
         this.errorMessage.textContent = message;
         this.errorSection.classList.add('active');
-        this.typeMessage(`ERROR: ${message}`);
+        this.typeCyberMessage(`SYSTEM ERROR: ${message}`);
     }
 
     hideError() {
@@ -372,8 +406,9 @@ class TerminalInterface {
         this.hideResults();
         this.promptInput.focus();
         this.activateSection('promptSection');
+        this.domainCount.textContent = '0';
         
-        this.typeMessage('Form cleared. Ready for new scan.');
+        this.typeCyberMessage('Buffer cleared. Cyberdeck ready for new domain acquisition.');
     }
 
     newScan() {
@@ -385,17 +420,17 @@ class TerminalInterface {
         const availableDomains = this.currentResults.available.map(item => item.domain);
         
         if (availableDomains.length === 0) {
-            this.typeMessage('ERROR: No available domains to copy');
+            this.typeCyberMessage('ERROR: No available targets to copy to buffer');
             return;
         }
         
         await this.copyToClipboard(availableDomains.join('\n'));
-        this.typeMessage(`Copied ${availableDomains.length} available domains to clipboard`);
+        this.typeCyberMessage(`Copied ${availableDomains.length} available targets to system clipboard`);
     }
 
     exportResults() {
         if (this.currentResults.available.length === 0 && this.currentResults.taken.length === 0) {
-            this.typeMessage('ERROR: No results to export');
+            this.typeCyberMessage('ERROR: No acquisition data to export');
             return;
         }
         
@@ -409,7 +444,7 @@ class TerminalInterface {
                 `"${item.domain}","Available","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method}","https://www.namecheap.com/domains/registration/results/?domain=${item.domain}"`
             ),
             ...this.currentResults.taken.map(item => 
-                `"${item.domain}","Taken","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method}","N/A"`
+                `"${item.domain}","Occupied","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method}","N/A"`
             )
         ].join('\n');
         
@@ -419,13 +454,13 @@ class TerminalInterface {
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = url;
-        a.download = `goblin-globe-scan-${timestamp}-${prompt}.csv`;
+        a.download = `cyberdeck-domain-scan-${timestamp}-${prompt}.csv`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
         
-        this.typeMessage('Results exported successfully');
+        this.typeCyberMessage('Acquisition data exported to secure storage');
     }
 
     async copyToClipboard(text) {
@@ -473,29 +508,36 @@ class TerminalInterface {
                     break;
             }
         }
+        
+        // Function key handling
+        if (e.key.startsWith('F') && e.key.length <= 3) {
+            e.preventDefault();
+            const funcKey = e.key.substring(1);
+            this.typeCyberMessage(`Function key F${funcKey} activated - Feature not implemented`);
+        }
     }
 
-    typeMessage(message, speed = 30) {
-        // This could be enhanced to show messages in a terminal log area
-        console.log(`[GOBLIN_GLOBE] ${message}`);
+    typeCyberMessage(message, speed = 30) {
+        // Enhanced cyberdeck-style message display
+        console.log(`[CYBERDECK] ${message}`);
     }
 
     formatErrorMessage(message) {
-        // Format error messages for terminal display
+        // Format error messages for cyberdeck display
         if (message.includes('rate limit') || message.includes('429')) {
-            return 'Rate limit exceeded. Wait before retrying.';
+            return 'Network rate limiting detected. Implement backoff protocol.';
         }
         
         if (message.includes('timeout') || message.includes('ENOTFOUND')) {
-            return 'Connection timeout. Check network and retry.';
+            return 'Network connection timeout. Check uplink status.';
         }
         
         if (message.includes('401') || message.includes('403')) {
-            return 'Authentication failed. Refresh and retry.';
+            return 'Authentication failure. Verify access credentials.';
         }
         
         if (message.includes('500')) {
-            return 'Server error. Retry in a few moments.';
+            return 'Remote server malfunction. Retry acquisition sequence.';
         }
         
         return message;
@@ -506,14 +548,13 @@ class TerminalInterface {
     }
 }
 
-// Initialize terminal interface when DOM is loaded
+// Initialize cyberdeck terminal interface when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new TerminalInterface();
+    new CyberdeckTerminalInterface();
 });
 
-// Add some terminal easter eggs
+// Cyberdeck easter eggs and function key handling
 document.addEventListener('keydown', (e) => {
-    // Konami code or other terminal commands could be added here
     if (e.key === 'F12') {
         console.log(`
  ██████╗  ██████╗ ██████╗ ██╗     ██╗███╗   ██╗     ██████╗ ██╗      ██████╗ ██████╗ ███████╗
@@ -523,8 +564,9 @@ document.addEventListener('keydown', (e) => {
 ╚██████╔╝╚██████╔╝██████╔╝███████╗██║██║ ╚████║    ╚██████╔╝███████╗╚██████╔╝██████╔╝███████╗
  ╚═════╝  ╚═════╝ ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝     ╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚══════╝
 
-Welcome to the Goblin Globe Terminal Interface!
-Domain scanning with mathematical precision.
+Welcome to the Goblin Globe Cyberdeck Interface!
+Domain acquisition through advanced hacker protocols.
+All your domains are belong to us.
         `);
     }
 });

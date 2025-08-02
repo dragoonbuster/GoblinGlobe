@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goblin Globe - Memphis Style</title>
+    <title>GOBLIN GLOBE - Matrix Terminal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Roboto:wght@400;700;900&display=swap');
-        
-        /* Reset and Memphis base */
+        /* Matrix Rain Terminal Styles */
         * {
             margin: 0;
             padding: 0;
@@ -15,375 +16,464 @@
         }
 
         :root {
-            --pink: #FF4081;
-            --yellow: #FFEB3B;
-            --turquoise: #1DE9B6;
-            --black: #212121;
-            --white: #FAFAFA;
-            --purple: #9C27B0;
-            --orange: #FF9800;
-            --cyan: #00E5FF;
+            --matrix-bg: #000000;
+            --matrix-green: #00ff41;
+            --matrix-dark-green: #008f11;
+            --matrix-bright: #9cff9c;
+            --matrix-dim: #003d0e;
+            --matrix-red: #ff0000;
+            --matrix-cursor: #00ff41;
+            --glitch-1: #ff00ff;
+            --glitch-2: #00ffff;
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(45deg, var(--yellow) 0%, var(--cyan) 50%, var(--pink) 100%);
-            min-height: 100vh;
+            font-family: 'Share Tech Mono', 'Courier Prime', monospace;
+            background: var(--matrix-bg);
+            color: var(--matrix-green);
+            margin: 0;
+            padding: 0;
             overflow-x: hidden;
+            line-height: 1.2;
+            font-size: 13px;
             position: relative;
         }
 
-        /* Animated Background Elements */
-        .bg-shapes {
+        /* Matrix Rain Background */
+        .matrix-rain {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
             pointer-events: none;
-        }
-
-        .shape {
-            position: absolute;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .shape:nth-child(2n) {
-            animation-delay: -2s;
-        }
-
-        .shape:nth-child(3n) {
-            animation-delay: -4s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
-        .circle {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: var(--turquoise);
-            top: 10%;
-            left: 80%;
-        }
-
-        .triangle {
-            width: 0;
-            height: 0;
-            border-left: 30px solid transparent;
-            border-right: 30px solid transparent;
-            border-bottom: 52px solid var(--pink);
-            top: 20%;
-            left: 10%;
-        }
-
-        .square {
-            width: 50px;
-            height: 50px;
-            background: var(--purple);
-            transform: rotate(45deg);
-            top: 60%;
-            right: 15%;
-        }
-
-        .zigzag {
-            width: 100px;
-            height: 20px;
-            background: linear-gradient(135deg, var(--orange) 25%, transparent 25%), 
-                        linear-gradient(225deg, var(--orange) 25%, transparent 25%);
-            background-size: 20px 20px;
-            top: 40%;
-            left: 5%;
-        }
-
-        .dots {
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle, var(--yellow) 20%, transparent 20%);
-            background-size: 20px 20px;
-            top: 70%;
-            right: 30%;
-        }
-
-        .squiggle {
-            width: 120px;
-            height: 40px;
-            background: var(--turquoise);
-            border-radius: 50px;
-            top: 15%;
-            right: 40%;
-            transform: scaleY(0.3);
-        }
-
-        /* Container and Layout */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            position: relative;
             z-index: 1;
+            opacity: 0.15;
         }
 
-        /* Title - Memphis Style */
-        .title-container {
-            text-align: center;
-            margin-bottom: 60px;
-            position: relative;
-        }
-
-        .main-title {
-            font-family: 'Fredoka One', cursive;
-            font-size: clamp(3rem, 8vw, 6rem);
-            color: var(--black);
-            text-shadow: 4px 4px 0 var(--pink), 8px 8px 0 var(--yellow);
-            margin: 20px 0;
-            letter-spacing: -2px;
-            transform: rotate(-2deg);
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: var(--black);
-            background: var(--white);
-            padding: 10px 20px;
-            border: 4px solid var(--black);
-            display: inline-block;
-            transform: rotate(1deg);
-            font-weight: 700;
-        }
-
-        /* Form Styling */
-        .form-container {
-            background: var(--white);
-            border: 6px solid var(--black);
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 40px;
-            position: relative;
-            transform: rotate(-1deg);
-            box-shadow: 10px 10px 0 var(--pink);
-        }
-
-        .form-container::before {
-            content: '';
+        .matrix-column {
             position: absolute;
-            top: -10px;
-            right: -10px;
-            width: 40px;
-            height: 40px;
-            background: var(--yellow);
-            border-radius: 50%;
-            border: 4px solid var(--black);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            line-height: 14px;
+            color: var(--matrix-green);
+            white-space: pre;
+            animation: matrix-fall linear infinite;
         }
 
-        .form-container::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: -15px;
-            width: 0;
-            height: 0;
-            border-left: 25px solid transparent;
-            border-right: 25px solid transparent;
-            border-top: 43px solid var(--turquoise);
-            border: 4px solid var(--black);
+        @keyframes matrix-fall {
+            0% {
+                transform: translateY(-100%);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
         }
 
-        .form-group {
-            margin-bottom: 30px;
+        /* Terminal Container */
+        .terminal {
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Glitch Effects */
+        .glitch {
             position: relative;
         }
 
-        .form-label {
-            display: block;
-            font-size: 1.1rem;
-            font-weight: 900;
-            color: var(--black);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .form-input,
-        .form-textarea {
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 15px 20px;
-            border: 4px solid var(--black);
-            background: var(--yellow);
-            font-family: inherit;
-            font-size: 1rem;
+            height: 100%;
+        }
+
+        .glitch::before {
+            animation: glitch-1 0.5s infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            animation: glitch-2 0.5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-1 {
+            0% {
+                color: var(--glitch-1);
+                transform: translate(-1px, 1px);
+            }
+            20% {
+                color: var(--glitch-1);
+                transform: translate(1px, -1px);
+            }
+            40% {
+                color: var(--glitch-1);
+                transform: translate(-1px, -1px);
+            }
+            60% {
+                color: var(--glitch-1);
+                transform: translate(1px, 1px);
+            }
+            80% {
+                color: var(--glitch-1);
+                transform: translate(-1px, 1px);
+            }
+            100% {
+                color: var(--glitch-1);
+                transform: translate(1px, -1px);
+            }
+        }
+
+        @keyframes glitch-2 {
+            0% {
+                color: var(--glitch-2);
+                transform: translate(1px, -1px);
+            }
+            20% {
+                color: var(--glitch-2);
+                transform: translate(-1px, 1px);
+            }
+            40% {
+                color: var(--glitch-2);
+                transform: translate(1px, 1px);
+            }
+            60% {
+                color: var(--glitch-2);
+                transform: translate(-1px, -1px);
+            }
+            80% {
+                color: var(--glitch-2);
+                transform: translate(1px, -1px);
+            }
+            100% {
+                color: var(--glitch-2);
+                transform: translate(-1px, 1px);
+            }
+        }
+
+        /* Matrix ASCII Art Logo */
+        .logo {
+            font-family: 'Courier Prime', monospace;
             font-weight: 700;
-            color: var(--black);
-            border-radius: 0;
+            font-size: 8px;
+            line-height: 1;
+            color: var(--matrix-green);
+            text-shadow: 0 0 10px var(--matrix-green), 0 0 20px var(--matrix-green);
+            margin-bottom: 20px;
+            white-space: pre;
+            animation: matrix-glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes matrix-glow {
+            0% { 
+                text-shadow: 0 0 10px var(--matrix-green);
+                color: var(--matrix-green);
+            }
+            50% {
+                text-shadow: 0 0 20px var(--matrix-green), 0 0 30px var(--matrix-green);
+                color: var(--matrix-bright);
+            }
+            100% { 
+                text-shadow: 0 0 15px var(--matrix-green), 0 0 25px var(--matrix-green);
+                color: var(--matrix-green);
+            }
+        }
+
+        /* System Info */
+        .system-info {
+            color: var(--matrix-dark-green);
+            margin-bottom: 20px;
+            font-size: 11px;
+            text-shadow: 0 0 5px var(--matrix-dark-green);
+        }
+
+        .system-info .timestamp {
+            color: var(--matrix-bright);
+            text-shadow: 0 0 5px var(--matrix-bright);
+        }
+
+        .neo-prefix {
+            color: var(--matrix-green);
+            text-shadow: 0 0 8px var(--matrix-green);
+            font-weight: bold;
+        }
+
+        /* Command Interface */
+        .prompt-line {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .prompt-prefix {
+            color: var(--matrix-bright);
+            margin-right: 8px;
+            font-weight: 700;
+            text-shadow: 0 0 8px var(--matrix-bright);
+            min-width: 20px;
+        }
+
+        .command-input,
+        .terminal-input,
+        .terminal-textarea {
+            background: transparent;
+            border: none;
+            color: var(--matrix-green);
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            flex: 1;
+            padding: 0;
+            text-shadow: 0 0 8px var(--matrix-green);
+            border-bottom: 1px solid var(--matrix-dim);
             transition: all 0.3s ease;
         }
 
-        .form-input:focus,
-        .form-textarea:focus {
-            outline: none;
-            background: var(--cyan);
-            box-shadow: 0 0 0 4px var(--pink);
-            transform: scale(1.02);
-        }
-
-        .form-textarea {
+        .terminal-textarea {
+            border: 1px solid var(--matrix-dim);
+            padding: 10px;
+            min-height: 80px;
             resize: vertical;
-            min-height: 120px;
+            background: rgba(0, 255, 65, 0.05);
         }
 
-        .form-number {
-            width: 120px;
+        .command-input:focus,
+        .terminal-input:focus,
+        .terminal-textarea:focus {
+            border-color: var(--matrix-green);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+            text-shadow: 0 0 12px var(--matrix-green);
         }
 
-        /* Checkbox Group */
+        .command-input::placeholder,
+        .terminal-textarea::placeholder {
+            color: var(--matrix-dim);
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin: 20px 0;
+            border-left: 2px solid var(--matrix-dim);
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .form-section.active {
+            border-left-color: var(--matrix-green);
+            animation: matrix-section-pulse 1.5s infinite;
+        }
+
+        @keyframes matrix-section-pulse {
+            0%, 100% { 
+                border-left-color: var(--matrix-green);
+                box-shadow: -5px 0 10px rgba(0, 255, 65, 0.2);
+            }
+            50% { 
+                border-left-color: var(--matrix-bright);
+                box-shadow: -5px 0 20px rgba(0, 255, 65, 0.4);
+            }
+        }
+
+        .section-label {
+            color: var(--matrix-bright);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px var(--matrix-bright);
+        }
+
+        /* Matrix Cursor */
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: var(--matrix-cursor);
+            margin-left: 2px;
+            animation: matrix-blink 1s infinite;
+            box-shadow: 0 0 15px var(--matrix-cursor);
+        }
+
+        @keyframes matrix-blink {
+            0%, 50% { 
+                opacity: 1;
+                box-shadow: 0 0 15px var(--matrix-cursor);
+            }
+            51%, 100% { 
+                opacity: 0;
+                box-shadow: none;
+            }
+        }
+
+        /* Checkboxes */
         .checkbox-group {
             display: flex;
-            gap: 20px;
             flex-wrap: wrap;
-            margin-top: 15px;
+            gap: 15px;
+            margin-top: 10px;
         }
 
         .checkbox-item {
             display: flex;
             align-items: center;
             cursor: pointer;
-            background: var(--pink);
-            padding: 10px 15px;
-            border: 3px solid var(--black);
-            border-radius: 25px;
             transition: all 0.3s ease;
-            font-weight: 700;
+            position: relative;
         }
 
         .checkbox-item:hover {
-            transform: scale(1.1) rotate(2deg);
-            background: var(--turquoise);
+            color: var(--matrix-bright);
+            text-shadow: 0 0 8px var(--matrix-bright);
         }
 
         .checkbox-input {
-            width: 0;
-            height: 0;
-            opacity: 0;
-        }
-
-        .checkbox-input:checked + .checkbox-label {
-            color: var(--white);
-        }
-
-        .checkbox-input:checked + .checkbox-label::before {
-            background: var(--yellow);
-            border-color: var(--white);
-        }
-
-        .checkbox-label {
-            color: var(--black);
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-transform: uppercase;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border: 1px solid var(--matrix-green);
+            margin-right: 8px;
             position: relative;
-            padding-left: 30px;
+            background: transparent;
+            cursor: pointer;
         }
 
-        .checkbox-label::before {
+        .checkbox-input:checked {
+            background: var(--matrix-green);
+            box-shadow: 0 0 15px var(--matrix-green);
+        }
+
+        .checkbox-input:checked::after {
+            content: '●';
+            position: absolute;
+            top: -3px;
+            left: 1px;
+            color: var(--matrix-bg);
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* Matrix Buttons */
+        .terminal-button {
+            background: transparent;
+            border: 1px solid var(--matrix-green);
+            color: var(--matrix-green);
+            padding: 10px 20px;
+            font-family: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 5px 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 0 8px var(--matrix-green);
+        }
+
+        .terminal-button::before {
             content: '';
             position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 20px;
-            height: 20px;
-            border: 3px solid var(--black);
-            background: var(--white);
-            border-radius: 50%;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.4), transparent);
+            transition: left 0.5s;
         }
 
-        .checkbox-input:checked + .checkbox-label::after {
-            content: '✓';
-            position: absolute;
-            left: 4px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--black);
-            font-weight: 900;
-            font-size: 0.8rem;
+        .terminal-button:hover {
+            background: var(--matrix-green);
+            color: var(--matrix-bg);
+            box-shadow: 0 0 20px var(--matrix-green);
+            text-shadow: none;
         }
 
-        /* Buttons */
-        .btn-primary {
-            background: var(--pink);
-            color: var(--white);
-            border: 4px solid var(--black);
-            padding: 20px 40px;
-            font-family: inherit;
-            font-size: 1.2rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            transform: rotate(1deg);
-            box-shadow: 6px 6px 0 var(--black);
+        .terminal-button:hover::before {
+            left: 100%;
         }
 
-        .btn-primary:hover {
-            background: var(--turquoise);
-            transform: rotate(-1deg) scale(1.05);
-            box-shadow: 8px 8px 0 var(--black);
-        }
-
-        .btn-primary:disabled {
-            background: #ccc;
+        .terminal-button:disabled {
+            border-color: var(--matrix-dim);
+            color: var(--matrix-dim);
             cursor: not-allowed;
-            transform: none;
+            text-shadow: none;
         }
 
-        .btn-secondary {
-            background: var(--yellow);
-            color: var(--black);
-            border: 3px solid var(--black);
-            padding: 12px 25px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .button-primary {
+            border-color: var(--matrix-bright);
+            color: var(--matrix-bright);
+            text-shadow: 0 0 8px var(--matrix-bright);
+        }
+
+        .button-primary:hover {
+            background: var(--matrix-bright);
+            color: var(--matrix-bg);
+            box-shadow: 0 0 25px var(--matrix-bright);
+        }
+
+        /* Loading Animation - Matrix Style */
+        .loading-section {
+            margin: 30px 0;
+            display: none;
+        }
+
+        .loading-section.active {
+            display: block;
+        }
+
+        .loading-bar {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .loading-text {
             margin-right: 15px;
-            margin-bottom: 15px;
-            border-radius: 20px;
+            min-width: 200px;
+            text-shadow: 0 0 8px var(--matrix-green);
         }
 
-        .btn-secondary:hover {
-            background: var(--purple);
-            color: var(--white);
-            transform: rotate(2deg);
-        }
-
-        /* Loading State */
-        .loading-container {
-            text-align: center;
-            padding: 60px 0;
-            background: var(--white);
-            border: 6px solid var(--black);
-            border-radius: 30px;
-            margin: 40px 0;
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: var(--matrix-dim);
             position: relative;
-            transform: rotate(1deg);
+            overflow: hidden;
+            border: 1px solid var(--matrix-green);
         }
 
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 6px solid var(--yellow);
-            border-top: 6px solid var(--pink);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 30px;
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--matrix-green), var(--matrix-bright));
+            width: 0%;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 15px var(--matrix-green);
+            animation: matrix-progress-pulse 1s infinite;
+        }
+
+        @keyframes matrix-progress-pulse {
+            0%, 100% { 
+                box-shadow: 0 0 15px var(--matrix-green);
+            }
+            50% { 
+                box-shadow: 0 0 25px var(--matrix-green), 0 0 35px var(--matrix-green);
+            }
+        }
+
+        .spinner {
+            display: inline-block;
+            margin-left: 10px;
+            animation: spin 0.8s linear infinite;
+            color: var(--matrix-bright);
+            text-shadow: 0 0 10px var(--matrix-bright);
         }
 
         @keyframes spin {
@@ -391,401 +481,349 @@
             100% { transform: rotate(360deg); }
         }
 
-        .loading-message {
-            font-size: 1.3rem;
-            font-weight: 900;
-            color: var(--black);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            width: 100%;
-            height: 12px;
-            background: var(--black);
-            margin: 30px 0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--pink), var(--yellow), var(--turquoise));
-            width: 0%;
-            transition: width 0.3s ease;
-            border-radius: 10px;
-        }
-
         /* Results Section */
         .results-section {
-            margin-top: 60px;
+            margin-top: 40px;
+            display: none;
         }
 
-        .results-actions {
+        .results-section.active {
+            display: block;
+            animation: matrix-fade-in 0.8s ease-in;
+        }
+
+        @keyframes matrix-fade-in {
+            0% { 
+                opacity: 0; 
+                transform: translateY(20px) scale(0.95);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .results-header {
+            color: var(--matrix-bright);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--matrix-dim);
+            padding-bottom: 10px;
+            text-shadow: 0 0 10px var(--matrix-bright);
+        }
+
+        .domain-list {
+            margin: 20px 0;
+        }
+
+        .domain-item {
             display: flex;
-            gap: 15px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-
-        .section-title {
-            font-family: 'Fredoka One', cursive;
-            font-size: 2.5rem;
-            color: var(--black);
-            margin-bottom: 30px;
-            text-shadow: 3px 3px 0 var(--yellow);
-            transform: rotate(-1deg);
-        }
-
-        .domain-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-
-        .domain-card {
-            background: var(--white);
-            border: 5px solid var(--black);
-            padding: 25px;
-            position: relative;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dotted var(--matrix-dim);
             transition: all 0.3s ease;
-            border-radius: 15px;
         }
 
-        .domain-card:hover {
-            transform: scale(1.02) rotate(1deg);
-            box-shadow: 8px 8px 0 var(--pink);
-        }
-
-        .domain-card.available {
-            background: var(--turquoise);
-        }
-
-        .domain-card.available::before {
-            content: '✓';
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            width: 40px;
-            height: 40px;
-            background: var(--yellow);
-            border: 4px solid var(--black);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 1.2rem;
-        }
-
-        .domain-card.taken {
-            background: var(--pink);
-        }
-
-        .domain-card.taken::before {
-            content: '✗';
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            width: 40px;
-            height: 40px;
-            background: var(--orange);
-            border: 4px solid var(--black);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 1.2rem;
-            color: var(--white);
+        .domain-item:hover {
+            background: rgba(0, 255, 65, 0.1);
+            padding-left: 10px;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
         }
 
         .domain-name {
-            font-family: 'Courier New', monospace;
-            font-size: 1.3rem;
-            font-weight: 900;
-            margin-bottom: 15px;
-            word-break: break-all;
-            color: var(--black);
-            background: var(--yellow);
-            padding: 8px 12px;
-            border: 2px solid var(--black);
-            display: inline-block;
-        }
-
-        .domain-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .domain-method {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--black);
             font-weight: 700;
-            background: var(--white);
-            padding: 4px 8px;
-            border: 2px solid var(--black);
-            border-radius: 10px;
+            text-shadow: 0 0 8px var(--matrix-green);
         }
 
-        .domain-score {
-            font-size: 1rem;
-            font-weight: 900;
-            color: var(--black);
+        .domain-status {
+            font-size: 11px;
+            padding: 3px 8px;
+            border: 1px solid;
+            text-transform: uppercase;
+        }
+
+        .status-available {
+            color: var(--matrix-green);
+            border-color: var(--matrix-green);
+            background: rgba(0, 255, 65, 0.15);
+            text-shadow: 0 0 8px var(--matrix-green);
+        }
+
+        .status-taken {
+            color: var(--matrix-red);
+            border-color: var(--matrix-red);
+            background: rgba(255, 0, 0, 0.15);
+            text-shadow: 0 0 8px var(--matrix-red);
         }
 
         .domain-actions {
             display: flex;
             gap: 10px;
-            margin-top: 20px;
+            align-items: center;
         }
 
-        .link-register {
-            background: var(--purple);
-            color: var(--white);
-            text-decoration: none;
-            padding: 12px 20px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .action-button {
+            background: transparent;
+            border: 1px solid var(--matrix-green);
+            color: var(--matrix-green);
+            padding: 4px 8px;
+            font-size: 9px;
+            cursor: pointer;
             transition: all 0.3s ease;
-            flex: 1;
-            text-align: center;
-            border: 3px solid var(--black);
-            border-radius: 20px;
+            text-transform: uppercase;
+            font-family: inherit;
         }
 
-        .link-register:hover {
-            background: var(--orange);
-            transform: scale(1.05);
+        .action-button:hover {
+            background: var(--matrix-green);
+            color: var(--matrix-bg);
+            box-shadow: 0 0 15px var(--matrix-green);
         }
 
         /* Error Messages */
-        .error-message {
-            background: var(--pink);
-            border: 5px solid var(--black);
-            padding: 30px;
-            margin: 40px 0;
-            color: var(--white);
-            font-weight: 700;
-            border-radius: 20px;
-            transform: rotate(-1deg);
-        }
-
-        /* Toast Notifications */
-        .toast-container {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .toast {
-            background: var(--white);
-            border: 4px solid var(--black);
-            padding: 20px 25px;
-            min-width: 300px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            border-radius: 15px;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast.success {
-            background: var(--turquoise);
-        }
-
-        .toast.error {
-            background: var(--pink);
-            color: var(--white);
-        }
-
-        /* Utility Classes */
-        .hidden {
+        .error-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid var(--matrix-red);
+            background: rgba(255, 0, 0, 0.1);
+            color: var(--matrix-red);
             display: none;
+            text-shadow: 0 0 8px var(--matrix-red);
         }
 
-        .text-center {
-            text-align: center;
+        .error-section.active {
+            display: block;
+            animation: matrix-error-flash 0.5s ease-in;
+        }
+
+        @keyframes matrix-error-flash {
+            0%, 100% { 
+                opacity: 1; 
+                border-color: var(--matrix-red);
+            }
+            50% { 
+                opacity: 0.7; 
+                border-color: var(--glitch-1);
+            }
+        }
+
+        /* Help Text */
+        .help-text {
+            color: var(--matrix-dim);
+            font-size: 10px;
+            margin-top: 20px;
+            line-height: 1.6;
+            text-shadow: 0 0 5px var(--matrix-dim);
+        }
+
+        .help-command {
+            color: var(--matrix-bright);
+            text-shadow: 0 0 5px var(--matrix-bright);
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .container {
-                padding: 20px 15px;
+            .terminal {
+                padding: 10px;
             }
-
-            .main-title {
-                font-size: 3rem;
+            
+            .logo {
+                font-size: 6px;
             }
-
-            .form-container {
-                padding: 25px;
-                transform: none;
+            
+            body {
+                font-size: 11px;
             }
-
+            
             .checkbox-group {
                 flex-direction: column;
-                gap: 10px;
-            }
-
-            .domain-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .results-actions {
-                flex-direction: column;
-            }
-
-            .btn-secondary {
-                margin-right: 0;
+                gap: 8px;
             }
         }
 
-        /* Fun Animations */
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        /* Hidden Utility */
+        .hidden {
+            display: none !important;
         }
 
-        .pulse {
-            animation: pulse 2s ease-in-out infinite;
+        /* Matrix Morphing ASCII */
+        .morphing-ascii {
+            animation: matrix-morph 3s infinite;
         }
 
-        @keyframes wiggle {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(2deg); }
-            75% { transform: rotate(-2deg); }
-        }
-
-        .wiggle:hover {
-            animation: wiggle 0.5s ease-in-out;
+        @keyframes matrix-morph {
+            0%, 100% { 
+                transform: scaleY(1) scaleX(1);
+                filter: brightness(1);
+            }
+            25% { 
+                transform: scaleY(1.05) scaleX(0.98);
+                filter: brightness(1.2);
+            }
+            50% { 
+                transform: scaleY(0.95) scaleX(1.02);
+                filter: brightness(0.9);
+            }
+            75% { 
+                transform: scaleY(1.02) scaleX(0.99);
+                filter: brightness(1.1);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Animated Background Shapes -->
-    <div class="bg-shapes">
-        <div class="shape circle"></div>
-        <div class="shape triangle"></div>
-        <div class="shape square"></div>
-        <div class="shape zigzag"></div>
-        <div class="shape dots"></div>
-        <div class="shape squiggle"></div>
-    </div>
+    <!-- Matrix Rain Background -->
+    <div class="matrix-rain" id="matrixRain"></div>
 
-    <div class="container">
-        <!-- Header -->
-        <div class="title-container">
-            <h1 class="main-title pulse">GOBLIN GLOBE</h1>
-            <p class="subtitle wiggle">Domain Finder Extraordinaire!</p>
+    <div class="terminal">
+        <!-- Matrix ASCII Art Logo -->
+        <div class="logo morphing-ascii glitch" data-text="
+ ██████╗  ██████╗ ██████╗ ██╗     ██╗███╗   ██╗     ██████╗ ██╗      ██████╗ ██████╗ ███████╗
+██╔════╝ ██╔═══██╗██╔══██╗██║     ██║████╗  ██║    ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔════╝
+██║  ███╗██║   ██║██████╔╝██║     ██║██╔██╗ ██║    ██║  ███╗██║     ██║   ██║██████╔╝█████╗  
+██║   ██║██║   ██║██╔══██╗██║     ██║██║╚██╗██║    ██║   ██║██║     ██║   ██║██╔══██╗██╔══╝  
+╚██████╔╝╚██████╔╝██████╔╝███████╗██║██║ ╚████║    ╚██████╔╝███████╗╚██████╔╝██████╔╝███████╗
+ ╚═════╝  ╚═════╝ ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝     ╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚══════╝">
+ ██████╗  ██████╗ ██████╗ ██╗     ██╗███╗   ██╗     ██████╗ ██╗      ██████╗ ██████╗ ███████╗
+██╔════╝ ██╔═══██╗██╔══██╗██║     ██║████╗  ██║    ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔════╝
+██║  ███╗██║   ██║██████╔╝██║     ██║██╔██╗ ██║    ██║  ███╗██║     ██║   ██║██████╔╝█████╗  
+██║   ██║██║   ██║██╔══██╗██║     ██║██║╚██╗██║    ██║   ██║██║     ██║   ██║██╔══██╗██╔══╝  
+╚██████╔╝╚██████╔╝██████╔╝███████╗██║██║ ╚████║    ╚██████╔╝███████╗╚██████╔╝██████╔╝███████╗
+ ╚═════╝  ╚═════╝ ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝     ╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚══════╝
         </div>
 
-        <!-- Form -->
-        <div class="form-container wiggle">
-            <form id="generateForm">
-                <div class="form-group">
-                    <label for="prompt" class="form-label">What's Your Domain Dream?</label>
+        <!-- System Info -->
+        <div class="system-info">
+            <div><span class="neo-prefix">NEO@ZION:</span> Matrix Domain Scanner v3.0.1 - Reality Breach Protocol</div>
+            <div><span class="neo-prefix">UPTIME:</span> <span class="timestamp" id="systemTime"></span></div>
+            <div><span class="neo-prefix">STATUS:</span> <span style="color: var(--matrix-green);">CONNECTED TO THE MATRIX</span></div>
+            <div>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+        </div>
+
+        <!-- Main Command Interface -->
+        <form id="terminalForm">
+            <!-- Prompt Description -->
+            <div class="form-section active" id="promptSection">
+                <div class="section-label">&gt; REALITY.SCAN_TARGET:</div>
+                <div class="prompt-line">
+                    <span class="prompt-prefix">&gt;</span>
                     <textarea 
-                        id="prompt" 
-                        class="form-textarea"
-                        placeholder="Tell us about your awesome project..."
-                        required
+                        id="promptInput" 
+                        class="terminal-textarea"
+                        placeholder="Enter domain concept to breach into reality..."
+                        rows="3"
                     ></textarea>
                 </div>
-                
-                <div class="form-group">
-                    <label for="count" class="form-label">How Many Ideas?</label>
+            </div>
+
+            <!-- Count Selection -->
+            <div class="form-section" id="countSection">
+                <div class="section-label">&gt; MATRIX.GENERATION_DEPTH:</div>
+                <div class="prompt-line">
+                    <span class="prompt-prefix">&gt;</span>
                     <input 
                         type="number" 
-                        id="count" 
-                        class="form-input form-number" 
+                        id="countInput" 
+                        class="terminal-input"
                         min="1" 
                         max="20" 
                         value="10"
+                        style="width: 100px;"
                     >
+                    <span style="margin-left: 10px; color: var(--matrix-dim);">[DEPTH: 1-20]</span>
                 </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Pick Your Extensions</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item wiggle">
-                            <input type="checkbox" name="extensions" value=".com" checked class="checkbox-input">
-                            <span class="checkbox-label">.com</span>
-                        </label>
-                        <label class="checkbox-item wiggle">
-                            <input type="checkbox" name="extensions" value=".net" class="checkbox-input">
-                            <span class="checkbox-label">.net</span>
-                        </label>
-                        <label class="checkbox-item wiggle">
-                            <input type="checkbox" name="extensions" value=".org" class="checkbox-input">
-                            <span class="checkbox-label">.org</span>
-                        </label>
-                        <label class="checkbox-item wiggle">
-                            <input type="checkbox" name="extensions" value=".io" class="checkbox-input">
-                            <span class="checkbox-label">.io</span>
-                        </label>
-                    </div>
+            </div>
+
+            <!-- Extensions Selection -->
+            <div class="form-section" id="extensionsSection">
+                <div class="section-label">&gt; DIGITAL.EXTENSIONS:</div>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="extensions" value=".com" checked class="checkbox-input">
+                        <span>.com</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="extensions" value=".net" class="checkbox-input">
+                        <span>.net</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="extensions" value=".org" class="checkbox-input">
+                        <span>.org</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="extensions" value=".io" class="checkbox-input">
+                        <span>.io</span>
+                    </label>
                 </div>
-                
-                <button type="submit" id="generateButton" class="btn-primary wiggle">
-                    <span id="buttonText">Generate Magic!</span>
-                    <div id="buttonSpinner" class="spinner hidden"></div>
+            </div>
+
+            <!-- Execute Button -->
+            <div class="form-section">
+                <button type="submit" id="executeButton" class="terminal-button button-primary">
+                    <span id="executeText">BREACH REALITY</span>
+                    <span id="executeSpinner" class="spinner hidden">⣾</span>
                 </button>
-            </form>
+                <button type="button" id="clearButton" class="terminal-button">CLEAR MATRIX</button>
+            </div>
+        </form>
+
+        <!-- Loading Section -->
+        <div class="loading-section" id="loadingSection">
+            <div class="section-label">&gt; MATRIX.STATUS:</div>
+            <div class="loading-bar">
+                <div class="loading-text" id="loadingText">Initializing breach...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="spinner" id="loadingSpinner">⣾</div>
+            </div>
+            <div id="progressDetails" style="color: var(--matrix-dim); font-size: 11px; margin-top: 5px;"></div>
         </div>
 
-        <!-- Loading -->
-        <div id="loading" class="loading-container hidden">
-            <div class="loading-spinner"></div>
-            <p id="loadingMessage" class="loading-message">Cooking Up Domains...</p>
-            <div id="progressBar" class="progress-container hidden">
-                <div id="progressFill" class="progress-bar"></div>
-            </div>
-            <p id="progressText" class="hidden">Step 1 of 3</p>
+        <!-- Error Section -->
+        <div class="error-section" id="errorSection">
+            <div class="section-label">&gt; SYSTEM.ERROR_LOG:</div>
+            <div id="errorMessage"></div>
         </div>
 
-        <!-- Error -->
-        <div id="error" class="error-message hidden">
-            <p></p>
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection">
+            <div class="results-header">
+                <div class="section-label">&gt; BREACH.RESULTS:</div>
+                <div id="scanSummary" style="color: var(--matrix-dim); margin-top: 10px;"></div>
+            </div>
+
+            <!-- Available Domains -->
+            <div id="availableSection">
+                <div style="color: var(--matrix-green); margin: 20px 0 10px 0; border-left: 3px solid var(--matrix-green); padding-left: 10px; text-shadow: 0 0 10px var(--matrix-green);">
+                    AVAILABLE REALITY [<span id="availableCount">0</span>]
+                </div>
+                <div class="domain-list" id="availableList"></div>
+            </div>
+
+            <!-- Taken Domains -->
+            <div id="takenSection">
+                <div style="color: var(--matrix-red); margin: 20px 0 10px 0; border-left: 3px solid var(--matrix-red); padding-left: 10px; text-shadow: 0 0 10px var(--matrix-red);">
+                    OCCUPIED REALITY [<span id="takenCount">0</span>]
+                </div>
+                <div class="domain-list" id="takenList"></div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="form-section">
+                <button type="button" id="exportButton" class="terminal-button">EXPORT_DATA</button>
+                <button type="button" id="copyButton" class="terminal-button">COPY_AVAILABLE</button>
+                <button type="button" id="newScanButton" class="terminal-button">NEW_BREACH</button>
+            </div>
         </div>
 
-        <!-- Results -->
-        <div id="results" class="results-section hidden">
-            <div class="results-actions">
-                <button id="exportBtn" class="btn-secondary wiggle">Export CSV</button>
-                <button id="copyAllBtn" class="btn-secondary wiggle">Copy Available</button>
-                <button id="newSearchBtn" class="btn-secondary wiggle">New Search</button>
-            </div>
-            
-            <div>
-                <h2 class="section-title">Available Domains</h2>
-                <div id="availableList" class="domain-grid"></div>
-            </div>
-            
-            <div>
-                <h2 class="section-title">Taken Domains</h2>
-                <div id="takenList" class="domain-grid"></div>
-            </div>
+        <!-- Help Text -->
+        <div class="help-text">
+            <div>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+            <div>MATRIX COMMANDS: <span class="help-command">CTRL+ENTER</span> Execute Breach | <span class="help-command">CTRL+C</span> Copy Reality | <span class="help-command">CTRL+S</span> Export Data | <span class="help-command">CTRL+R</span> Reset Matrix</div>
+            <div>PROTOCOL: Domain availability verified through digital reality layers</div>
+            <div>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
         </div>
-
-        <!-- Toast Container -->
-        <div id="toastContainer" class="toast-container"></div>
     </div>
 
     <script src="app.js"></script>

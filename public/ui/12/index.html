@@ -1,870 +1,661 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goblin Globe</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>XTREME GOBLIN GLOBE!!! - RADICAL DOMAIN FINDER TO THE MAX!!!</title>
+    <meta name="generator" content="Geocities Page Builder XTREME Edition">
+    <meta name="keywords" content="XTREME, RADICAL, AWESOME, DOMAINS, SKATEBOARDING, SNOWBOARDING, BMX, EXTREME SPORTS">
+    <meta name="description" content="The most RADICAL domain finder on the web! Get XTREME with your domain search!">
+    <meta name="author" content="XtremeWebMaster99">
     <style>
-        /* Bauhaus-inspired Design System */
-        :root {
-            /* Primary Bauhaus colors */
-            --color-red: #FF0000;
-            --color-yellow: #FFFF00; 
-            --color-blue: #0000FF;
-            --color-black: #000000;
-            --color-white: #FFFFFF;
-            --color-gray: #808080;
-            
-            /* Typography - Futura-inspired font stack */
-            --font-primary: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-            
-            /* Grid system */
-            --grid-unit: 24px;
-            --grid-gap: calc(var(--grid-unit) * 1);
-            
-            /* Geometric proportions */
-            --golden-ratio: 1.618;
-        }
-
-        /* Reset */
-        * {
+        /* XTREME 90s Sports Styling */
+        body {
+            background: #000000 url('data:image/gif;base64,R0lGODlhZABkAPcAAP///wAA/wD//wAAAP//AP8A/wD/AP8AAP//AAAA/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//wAAAP//AP8A/wD/AP8AAAAAAP8A/wD//QAAAAAH5BAEKAAAALAAAAAAZABkAAAH/4AAgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7/AAMKHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmypMmTKFOqXMmypcuXMGPKnEmzps2bOHPq3Mmzp8+fQIMKHUq0qNGjSJMqXcq0qdOnUKNKnUq1qtWrWLNq3cq1q9evYMOKHUu2rNmzaNOqXcu2rdu3cOPKnUu3rt27ePPq3cu3r9+/gAMLHky4sOHDiBMrXsy4sePHkCNLnky5suXLmDNr3sy5s+fPoEOLHk26tOnTqFOrXs26tevXsGPLnk27tu3buHPr3s27t+/fwIMLH068uPHjyJMrX868ufPn0KNLn069uvXr2LNr3869u/fv4MOLHy++vPnz6NOrX8++vfv38OPLn0+/vv37+PPr38+/v///gAQWaOCBCCao4IIMNujggxBGKOGEFFZo4YUYZqjhhhx26OGHIIYo4ogklmjiiSimqOKKLLbo4oswxijjjDTWaOONOOao44489ujjj0AGKeSQRBZp5JFIJqnkkkw26eSTUEYp5ZRUVmnllVhmqeWWXHbp5ZdghinmmGSWaeaZaKap5ppstunmm3DGKeecjMbp55+ABirooIQWauihiCaq6KKMNuroo5BGKumklFZq6aWYZqrpppx26umnoIYq6qiklmrqqaimquqqrLbq6quwxirrrLTWauutuOaq66689urrr8AGK+ywxBZr7LHIJqvsssw26+yz0EYr7bTUVmvttdhmq+223Hbr7bfghivuuOSWa+656Kar7rrstuvuu/DGK++89NZr77345qvvvvz26++/AAcs8MAEF2zwwQgnrPDCDDfs8MMQRyzxxBRXbPHFGGes8cYcd+zxxyCHLPLIJJds8skop6zyyiy37PLLMMcs88w012zzzTjnrPPOPPfs889ABy300EQXbfTRSCet9NJMN+3001BHLfXUVFdt9dVYZ6311lx37fXXYIct9thkl2322WinrfbabLft9ttwxy333HTnrffefPft999+By700EUfbfTRSCet9NJMN/3001BHLfXUVFdt9dVYZ6311lx37fXXYIct9thkl2322WinrfbabLft9ttwxy333HTXbffdeOet99589+3334AHLvjghRdu+OGIJy755JTnrffdeOet99589+3334AHLvjghRdu+OGIJy755JNnrffdeOet99589+3334AHLvjghRdu+OGIJy755IRXbffdeOet99589+3334AHLvjghRdu+OGIJy755JNn3vfefgsu+OCEF2744ognrvjijDfu+OOQRy755JRXbvnlmGeu+eacd+7556CHLvrPpJdu+umop6766qy37vrrsMcu++y012777bjnrvvuvPfu++/AB2/88cgnr/zy0Ecu/fTUV2/99dhnr/323Hfv/ffghy/++OSXb/756Kev/vnop6/++uy37/778Mcv//z012///fjnr//+/Pfv//8ADWxgAxs4wQY+sIIVvCAGM6jBDnIwhCMsYQlPiMIUqnCFLXzhC2MYwxnOsIY1vCEOc6jDHvIwiEMsYhGPiMQkKnGJTXwiEqEYRS3+UYtc7KIXv+jFMIoxjGNs4hjNaMY1qtGNWmyjG7/IxjfC8Y10fKMdG+jHPdbRj3D8YyEPich/GjKRhkwkIhm0yEQyspGNdOQkH/nISFKSkpW8ZCYzqUlOetKTnwxlKEs0ylGKkpSjLCUpPQnLLlbShVLrZSw/WUpX8nIeuhylLGdJy1ra8pbV3GUvcxlMWc5SlxfS5jOHqctnKvOZlAJoM40JTGVWk5nYtGYMrxlNbV6TmIvs5jfDyU1yKvOc6EwnOotJTnWu853wdGcNhWYOADs=') repeat;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            font-family: Impact, "Arial Black", sans-serif;
+            color: #00ff00;
+            overflow-x: auto;
         }
-
-        body {
-            font-family: var(--font-primary);
-            font-weight: 400;
-            color: var(--color-black);
-            background: var(--color-white);
-            overflow-x: hidden;
+        
+        /* XTREME container */
+        .xtreme-container {
+            background: linear-gradient(45deg, #ff0000 0%, #ffff00 25%, #00ff00 50%, #00ffff 75%, #ff00ff 100%);
+            background-size: 400% 400%;
+            animation: xtremeGradient 3s ease infinite;
+            padding: 5px;
+            margin: 10px;
+            border: 3px solid #ffff00;
+            box-shadow: 0 0 20px #ff0000, inset 0 0 20px #00ff00;
         }
-
-        /* Bauhaus Geometric Background */
-        .geometric-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            pointer-events: none;
+        
+        @keyframes xtremeGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-
-        .geometric-bg::before {
-            content: '';
-            position: absolute;
-            top: 20%;
-            right: 10%;
-            width: 200px;
-            height: 200px;
-            background: var(--color-yellow);
-            transform: rotate(45deg);
-            opacity: 0.1;
+        
+        .inner-container {
+            background: #000000;
+            padding: 20px;
+            border: 2px solid #00ffff;
         }
-
-        .geometric-bg::after {
-            content: '';
-            position: absolute;
-            bottom: 15%;
-            left: 5%;
-            width: 0;
-            height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-bottom: 260px solid var(--color-blue);
-            opacity: 0.05;
-        }
-
-        /* Main container with grid */
-        .bauhaus-container {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: var(--grid-gap);
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: calc(var(--grid-unit) * 2);
-            min-height: 100vh;
-        }
-
-        /* Header with geometric title */
-        .header {
-            grid-column: 1 / -1;
-            margin-bottom: calc(var(--grid-unit) * 2);
-            position: relative;
-        }
-
-        .title {
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 900;
-            line-height: 0.9;
+        
+        /* XTREME Title */
+        .xtreme-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: -0.02em;
-            margin-bottom: calc(var(--grid-unit) * 0.5);
-            position: relative;
+            background: linear-gradient(45deg, #ff0000, #ffff00, #00ff00, #00ffff, #ff00ff);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: xtremeGradient 2s ease infinite, xtremeShake 0.1s infinite;
+            text-shadow: 2px 2px 0px #ff0000, 4px 4px 0px #ffff00, 6px 6px 0px #00ff00;
+            margin: 20px 0;
+            transform: perspective(300px) rotateX(20deg);
         }
-
-        .title-word {
-            display: inline-block;
-            position: relative;
+        
+        @keyframes xtremeShake {
+            0% { transform: perspective(300px) rotateX(20deg) translateX(0); }
+            25% { transform: perspective(300px) rotateX(20deg) translateX(-2px); }
+            50% { transform: perspective(300px) rotateX(20deg) translateX(2px); }
+            75% { transform: perspective(300px) rotateX(20deg) translateX(-1px); }
+            100% { transform: perspective(300px) rotateX(20deg) translateX(0); }
         }
-
-        .title-word:first-child {
-            color: var(--color-red);
-        }
-
-        .title-word:last-child {
-            color: var(--color-black);
-            margin-left: calc(var(--grid-unit) * 0.5);
-        }
-
-        /* Geometric decorative elements for title */
-        .title-decoration {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background: var(--color-blue);
-            border-radius: 50%;
-            top: -10px;
-            right: -20px;
-            z-index: -1;
-        }
-
+        
         .subtitle {
-            font-size: 1.1rem;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--color-gray);
+            text-align: center;
+            font-size: 18px;
+            color: #ffff00;
+            text-shadow: 2px 2px 4px #ff0000;
+            margin-bottom: 20px;
+            animation: pulse 1s infinite;
         }
-
-        /* Form section with geometric layout */
-        .form-section {
-            grid-column: 1 / 8;
-            background: var(--color-white);
-            border: 3px solid var(--color-black);
-            padding: calc(var(--grid-unit) * 1.5);
-            position: relative;
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
         }
-
-        .form-section::before {
-            content: '';
+        
+        /* Lightning bolts */
+        .lightning {
             position: absolute;
-            top: -6px;
-            right: -6px;
-            width: 30px;
-            height: 30px;
-            background: var(--color-red);
-            z-index: 1;
+            color: #ffff00;
+            font-size: 24px;
+            animation: lightning 0.5s infinite alternate;
+            text-shadow: 0 0 10px #ffff00, 0 0 20px #ffff00, 0 0 30px #ffff00;
         }
-
-        .form-group {
-            margin-bottom: calc(var(--grid-unit) * 1.5);
+        
+        @keyframes lightning {
+            0% { opacity: 1; transform: scale(1) rotate(0deg); }
+            100% { opacity: 0.3; transform: scale(1.2) rotate(5deg); }
         }
-
-        .form-label {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 700;
+        
+        /* Grunge text effects */
+        .grunge-text {
+            font-family: Impact, "Arial Black", sans-serif;
+            font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: calc(var(--grid-unit) * 0.5);
-            color: var(--color-black);
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 0px #ff0000,
+                4px 4px 0px #ffff00,
+                -2px -2px 0px #00ffff,
+                0 0 10px #ff00ff;
+            filter: drop-shadow(0 0 5px #00ff00);
         }
-
-        .form-input {
-            width: 100%;
-            padding: calc(var(--grid-unit) * 0.75);
-            border: 2px solid var(--color-black);
-            background: var(--color-white);
-            font-family: var(--font-primary);
-            font-size: 1rem;
-            font-weight: 400;
-            color: var(--color-black);
-            outline: none;
-            transition: all 0.2s ease;
+        
+        /* Under construction signs */
+        .construction-signs {
+            text-align: center;
+            margin: 20px 0;
+            animation: bounce 1s infinite;
         }
-
-        .form-input:focus {
-            border-color: var(--color-red);
-            box-shadow: 0 0 0 2px var(--color-red);
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.1); }
         }
-
-        .form-textarea {
-            min-height: calc(var(--grid-unit) * 4);
-            resize: vertical;
-        }
-
-        .form-number {
-            width: 100px;
-        }
-
-        /* Geometric checkboxes */
-        .checkbox-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: calc(var(--grid-unit) * 0.75);
-            margin-top: calc(var(--grid-unit) * 0.5);
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            padding: calc(var(--grid-unit) * 0.5);
-            border: 2px solid transparent;
-            transition: all 0.2s ease;
-        }
-
-        .checkbox-item:hover {
-            border-color: var(--color-yellow);
-            background: rgba(255, 255, 0, 0.1);
-        }
-
-        .checkbox-input {
-            width: 20px;
-            height: 20px;
-            margin-right: calc(var(--grid-unit) * 0.5);
-            border: 2px solid var(--color-black);
-            background: var(--color-white);
-            cursor: pointer;
-            position: relative;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-
-        .checkbox-input:checked {
-            background: var(--color-blue);
-            border-color: var(--color-blue);
-        }
-
-        .checkbox-input:checked::after {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 6px;
-            width: 4px;
-            height: 8px;
-            border: solid var(--color-white);
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-        }
-
-        .checkbox-label {
-            font-size: 0.9rem;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-        }
-
-        /* Geometric button */
-        .btn-generate {
-            background: var(--color-red);
-            color: var(--color-white);
-            border: none;
-            padding: calc(var(--grid-unit) * 1) calc(var(--grid-unit) * 2);
-            font-family: var(--font-primary);
-            font-size: 1rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.2s ease;
-            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 100%, 20px 100%);
-        }
-
-        .btn-generate:hover {
-            background: var(--color-black);
-            transform: translateY(-2px);
-        }
-
-        .btn-generate:disabled {
-            background: var(--color-gray);
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-generate .spinner {
+        
+        .construction-text {
+            background: linear-gradient(45deg, #ffff00, #ff0000);
+            color: #000000;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: 3px solid #000000;
             display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid transparent;
-            border-top: 2px solid var(--color-white);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-left: calc(var(--grid-unit) * 0.5);
+            transform: rotate(-5deg);
+            box-shadow: 5px 5px 0px #ff0000;
         }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Geometric info panel */
-        .info-panel {
-            grid-column: 9 / -1;
-            background: var(--color-black);
-            color: var(--color-white);
-            padding: calc(var(--grid-unit) * 1.5);
+        
+        /* XTREME Form */
+        .xtreme-form {
+            background: linear-gradient(135deg, #330000 0%, #003300 50%, #000033 100%);
+            border: 3px solid #ffff00;
+            padding: 20px;
+            margin: 20px 0;
             position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            box-shadow: 0 0 30px #ff0000;
         }
-
-        .info-panel::before {
-            content: '';
-            position: absolute;
-            top: calc(var(--grid-unit) * 1);
-            left: calc(var(--grid-unit) * 1);
-            width: 0;
-            height: 0;
-            border-left: 30px solid transparent;
-            border-right: 30px solid transparent;
-            border-bottom: 52px solid var(--color-yellow);
-        }
-
-        .info-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: calc(var(--grid-unit) * 1);
-            color: var(--color-red);
-        }
-
-        .info-text {
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: calc(var(--grid-unit) * 1);
-        }
-
-        .info-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: calc(var(--grid-unit) * 1);
-            margin-top: calc(var(--grid-unit) * 1);
-        }
-
-        .stat-item {
+        
+        .form-header {
             text-align: center;
-            padding: calc(var(--grid-unit) * 0.75);
-            border: 2px solid var(--color-blue);
-            background: rgba(0, 0, 255, 0.1);
-        }
-
-        .stat-number {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--color-yellow);
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
+            font-size: 24px;
+            color: #ffff00;
+            text-shadow: 2px 2px 4px #ff0000;
+            margin-bottom: 20px;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-top: calc(var(--grid-unit) * 0.25);
+            font-weight: bold;
         }
-
-        /* Loading state */
-        .loading-section {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: calc(var(--grid-unit) * 3) 0;
-            display: none;
-        }
-
-        .loading-section.show {
+        
+        .form-label {
+            color: #00ffff;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 2px #000000;
+            margin-bottom: 5px;
             display: block;
         }
-
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid var(--color-gray);
-            border-top: 4px solid var(--color-red);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto calc(var(--grid-unit) * 1);
-        }
-
-        .loading-text {
-            font-size: 1.2rem;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--color-black);
-        }
-
-        .progress-container {
+        
+        .xtreme-input, .xtreme-textarea, .xtreme-select {
+            background: #000000;
+            color: #00ff00;
+            border: 2px solid #ffff00;
+            padding: 8px;
+            font-family: "Courier New", monospace;
+            font-size: 12px;
+            font-weight: bold;
             width: 100%;
-            max-width: 400px;
-            height: 8px;
-            background: var(--color-gray);
-            margin: calc(var(--grid-unit) * 1) auto;
+            box-sizing: border-box;
+            box-shadow: inset 0 0 10px #ff0000;
+        }
+        
+        .xtreme-input:focus, .xtreme-textarea:focus, .xtreme-select:focus {
+            border-color: #00ff00;
+            box-shadow: 0 0 15px #00ff00, inset 0 0 10px #ff0000;
+            outline: none;
+        }
+        
+        .xtreme-button {
+            background: linear-gradient(45deg, #ff0000, #ffff00);
+            color: #000000;
+            border: 3px solid #00ff00;
+            padding: 12px 24px;
+            font-family: Impact, "Arial Black", sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin: 10px 5px;
+            box-shadow: 0 0 15px #ff0000;
+            animation: buttonGlow 2s infinite alternate;
             position: relative;
             overflow: hidden;
         }
-
-        .progress-bar {
+        
+        @keyframes buttonGlow {
+            0% { box-shadow: 0 0 15px #ff0000, inset 0 0 15px rgba(255, 255, 0, 0.3); }
+            100% { box-shadow: 0 0 25px #ffff00, inset 0 0 25px rgba(255, 0, 0, 0.3); }
+        }
+        
+        .xtreme-button:hover {
+            transform: scale(1.05);
+            animation-duration: 0.5s;
+        }
+        
+        .xtreme-button:active {
+            transform: scale(0.95);
+        }
+        
+        .xtreme-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, #ffffff, transparent);
+            transform: rotate(45deg);
+            transition: all 0.3s;
+            opacity: 0;
+        }
+        
+        .xtreme-button:hover::before {
+            animation: shine 0.8s ease;
+        }
+        
+        @keyframes shine {
+            0% { opacity: 0; transform: translateX(-100%) rotate(45deg); }
+            50% { opacity: 0.6; }
+            100% { opacity: 0; transform: translateX(100%) rotate(45deg); }
+        }
+        
+        /* XTREME Loading */
+        .xtreme-loading {
+            background: #000000;
+            border: 3px solid #ff0000;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px #ff0000;
+        }
+        
+        .loading-title {
+            color: #ffff00;
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: xtremeShake 0.1s infinite;
+        }
+        
+        .loading-bar-container {
+            background: #330000;
+            border: 2px solid #ffff00;
+            height: 30px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .loading-bar {
+            background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00);
             height: 100%;
-            background: linear-gradient(90deg, var(--color-red), var(--color-yellow), var(--color-blue));
             width: 0%;
             transition: width 0.3s ease;
-        }
-
-        /* Results section with geometric cards */
-        .results-section {
-            grid-column: 1 / -1;
-            margin-top: calc(var(--grid-unit) * 3);
-            display: none;
-        }
-
-        .results-section.show {
-            display: block;
-        }
-
-        .results-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: calc(var(--grid-unit) * 2);
-            flex-wrap: wrap;
-            gap: calc(var(--grid-unit) * 1);
-        }
-
-        .results-title {
-            font-size: 2rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--color-black);
-        }
-
-        .results-actions {
-            display: flex;
-            gap: calc(var(--grid-unit) * 0.5);
-        }
-
-        .btn-action {
-            background: var(--color-white);
-            color: var(--color-black);
-            border: 2px solid var(--color-black);
-            padding: calc(var(--grid-unit) * 0.5) calc(var(--grid-unit) * 1);
-            font-family: var(--font-primary);
-            font-size: 0.9rem;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-action:hover {
-            background: var(--color-black);
-            color: var(--color-white);
-        }
-
-        /* Domain cards with Bauhaus shapes */
-        .domain-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: calc(var(--grid-unit) * 1);
-            margin-bottom: calc(var(--grid-unit) * 3);
-        }
-
-        .domain-card {
-            background: var(--color-white);
-            border: 3px solid var(--color-black);
-            padding: calc(var(--grid-unit) * 1.5);
             position: relative;
-            transition: all 0.2s ease;
+            animation: loadingShine 2s infinite;
         }
-
-        .domain-card.available {
-            border-color: var(--color-blue);
+        
+        @keyframes loadingShine {
+            0% { box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5); }
+            50% { box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.8); }
+            100% { box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5); }
         }
-
-        .domain-card.available::before {
-            content: '';
+        
+        .loading-text {
             position: absolute;
-            top: -6px;
-            right: -6px;
-            width: 24px;
-            height: 24px;
-            background: var(--color-blue);
-            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #000000;
+            font-weight: bold;
+            font-size: 12px;
+            text-shadow: 1px 1px 1px #ffffff;
         }
-
-        .domain-card.taken {
-            border-color: var(--color-gray);
-            background: rgba(128, 128, 128, 0.1);
+        
+        /* XTREME Results */
+        .xtreme-results {
+            background: #000000;
+            border: 3px solid #00ff00;
+            margin: 20px 0;
+            box-shadow: 0 0 30px #00ff00;
+            position: relative;
         }
-
-        .domain-card.taken::before {
-            content: '';
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            width: 0;
-            height: 0;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-bottom: 20px solid var(--color-gray);
-        }
-
-        .domain-name {
-            font-family: 'Monaco', 'Menlo', monospace;
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: calc(var(--grid-unit) * 0.75);
-            word-break: break-all;
-            color: var(--color-black);
-        }
-
-        .domain-meta {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: calc(var(--grid-unit) * 0.5);
-            margin-bottom: calc(var(--grid-unit) * 1);
-            align-items: center;
-        }
-
-        .domain-method {
-            font-size: 0.8rem;
+        
+        .results-header {
+            background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00);
+            color: #000000;
+            text-align: center;
+            padding: 15px;
+            font-size: 20px;
+            font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--color-gray);
-            background: rgba(128, 128, 128, 0.1);
-            padding: calc(var(--grid-unit) * 0.25) calc(var(--grid-unit) * 0.5);
+            text-shadow: 1px 1px 1px #ffffff;
         }
-
-        .domain-score {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--color-red);
+        
+        .domain-item {
+            padding: 15px;
+            border-bottom: 2px solid #330033;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .domain-available {
+            background: linear-gradient(135deg, #003300, #006600);
+            border-left: 5px solid #00ff00;
+        }
+        
+        .domain-taken {
+            background: linear-gradient(135deg, #330000, #660000);
+            border-left: 5px solid #ff0000;
+        }
+        
+        .domain-name {
+            font-family: "Courier New", monospace;
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffff00;
+            text-shadow: 2px 2px 4px #000000;
+            margin-bottom: 8px;
+        }
+        
+        .domain-info {
+            font-size: 12px;
+            color: #cccccc;
+            margin-bottom: 10px;
+        }
+        
+        .domain-action {
             text-align: right;
         }
-
-        .domain-actions {
-            display: flex;
-            gap: calc(var(--grid-unit) * 0.5);
-            margin-top: calc(var(--grid-unit) * 1);
-        }
-
-        .btn-copy {
-            background: var(--color-yellow);
-            color: var(--color-black);
-            border: 2px solid var(--color-black);
-            padding: calc(var(--grid-unit) * 0.5) calc(var(--grid-unit) * 1);
-            font-family: var(--font-primary);
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
-        }
-
-        .btn-copy:hover {
-            background: var(--color-red);
-            color: var(--color-white);
-        }
-
-        .btn-register {
-            background: var(--color-red);
-            color: var(--color-white);
-            border: 2px solid var(--color-red);
-            padding: calc(var(--grid-unit) * 0.5) calc(var(--grid-unit) * 1);
-            font-family: var(--font-primary);
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
+        
+        .register-link {
+            background: linear-gradient(45deg, #00aa00, #00ff00);
+            color: #000000;
+            padding: 8px 16px;
             text-decoration: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            flex: 1;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 2px solid #ffff00;
+            display: inline-block;
+            box-shadow: 0 0 10px #00ff00;
+            animation: registerGlow 1.5s infinite alternate;
+        }
+        
+        @keyframes registerGlow {
+            0% { box-shadow: 0 0 10px #00ff00; }
+            100% { box-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00; }
+        }
+        
+        .register-link:hover {
+            transform: scale(1.1);
+            animation-duration: 0.3s;
+        }
+        
+        /* Flame text effects */
+        .flame-text {
+            background: linear-gradient(45deg, #ff0000, #ff6600, #ffff00, #ff0000);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: flameText 1s ease infinite;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ff0000;
+        }
+        
+        @keyframes flameText {
+            0% { background-position: 0% 50%; filter: brightness(1); }
+            50% { background-position: 100% 50%; filter: brightness(1.3); }
+            100% { background-position: 0% 50%; filter: brightness(1); }
+        }
+        
+        /* XTREME Navigation */
+        .xtreme-nav {
+            background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00, #00ffff, #ff00ff);
+            padding: 10px;
             text-align: center;
-            clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+            border: 2px solid #ffffff;
+            margin: 10px 0;
         }
-
-        .btn-register:hover {
-            background: var(--color-black);
-            border-color: var(--color-black);
+        
+        .nav-link {
+            color: #000000;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 0 15px;
+            padding: 5px 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px outset #cccccc;
+            display: inline-block;
         }
-
-        /* Error state */
-        .error-section {
-            grid-column: 1 / -1;
-            background: var(--color-white);
-            border: 3px solid var(--color-red);
-            padding: calc(var(--grid-unit) * 2);
-            margin-top: calc(var(--grid-unit) * 2);
-            display: none;
+        
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(1.1);
+        }
+        
+        /* Radical animations */
+        .spin {
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .flip {
+            animation: flip 1s ease-in-out infinite alternate;
+        }
+        
+        @keyframes flip {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(180deg); }
+        }
+        
+        /* Status messages */
+        .status-message {
+            background: #000000;
+            border: 3px solid #ffff00;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
             position: relative;
+            overflow: hidden;
         }
-
-        .error-section.show {
-            display: block;
+        
+        .status-success {
+            border-color: #00ff00;
+            color: #00ff00;
+            box-shadow: 0 0 20px #00ff00;
         }
-
-        .error-section::before {
-            content: '';
-            position: absolute;
-            top: -6px;
-            left: -6px;
-            width: 30px;
-            height: 30px;
-            background: var(--color-red);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        
+        .status-error {
+            border-color: #ff0000;
+            color: #ff0000;
+            box-shadow: 0 0 20px #ff0000;
         }
-
-        .error-text {
-            font-size: 1.1rem;
-            color: var(--color-red);
-            font-weight: 700;
+        
+        /* Footer */
+        .xtreme-footer {
+            background: linear-gradient(45deg, #330000, #003300, #000033);
+            color: #ffff00;
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #ff0000;
+            margin-top: 30px;
         }
-
-        /* Toast notifications */
-        .toast-container {
-            position: fixed;
-            top: calc(var(--grid-unit) * 1);
-            right: calc(var(--grid-unit) * 1);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: calc(var(--grid-unit) * 0.5);
+        
+        .footer-text {
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: bold;
         }
-
-        .toast {
-            background: var(--color-white);
-            border: 2px solid var(--color-black);
-            padding: calc(var(--grid-unit) * 1);
-            min-width: 300px;
-            font-size: 0.9rem;
-            font-weight: 400;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            position: relative;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast.success {
-            border-color: var(--color-blue);
-        }
-
-        .toast.success::before {
-            content: '';
-            position: absolute;
-            top: -4px;
-            left: -4px;
-            width: 16px;
-            height: 16px;
-            background: var(--color-blue);
-            border-radius: 50%;
-        }
-
-        .toast.error {
-            border-color: var(--color-red);
-            color: var(--color-red);
-        }
-
-        .toast.error::before {
-            content: '';
-            position: absolute;
-            top: -4px;
-            left: -4px;
-            width: 0;
-            height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-bottom: 14px solid var(--color-red);
-        }
-
+        
         /* Responsive design */
         @media (max-width: 768px) {
-            .bauhaus-container {
-                grid-template-columns: 1fr;
-                padding: calc(var(--grid-unit) * 1);
+            .xtreme-title {
+                font-size: 24px;
             }
-
-            .form-section,
-            .info-panel {
-                grid-column: 1 / -1;
+            
+            .xtreme-container {
+                margin: 5px;
+                padding: 3px;
             }
-
-            .info-panel {
-                margin-top: calc(var(--grid-unit) * 2);
+            
+            .inner-container {
+                padding: 10px;
             }
-
-            .checkbox-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .results-header {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .results-actions {
-                justify-content: center;
-            }
-
-            .domain-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Hidden utility */
-        .hidden {
-            display: none !important;
         }
     </style>
 </head>
 <body>
-    <div class="geometric-bg"></div>
+    <!-- Lightning bolts positioned absolutely -->
+    <div class="lightning" style="top: 10%; left: 5%;">⚡</div>
+    <div class="lightning" style="top: 20%; right: 8%; animation-delay: 0.2s;">⚡</div>
+    <div class="lightning" style="top: 60%; left: 3%; animation-delay: 0.4s;">⚡</div>
+    <div class="lightning" style="top: 80%; right: 10%; animation-delay: 0.6s;">⚡</div>
     
-    <div class="bauhaus-container">
-        <!-- Header -->
-        <header class="header">
-            <h1 class="title">
-                <span class="title-word">
-                    Goblin
-                    <span class="title-decoration"></span>
-                </span>
-                <span class="title-word">Globe</span>
-            </h1>
-            <p class="subtitle">Domain Architecture Engine</p>
-        </header>
-
-        <!-- Form Section -->
-        <section class="form-section">
-            <form id="generateForm">
-                <div class="form-group">
-                    <label for="prompt" class="form-label">Project Vision</label>
-                    <textarea 
-                        id="prompt" 
-                        class="form-input form-textarea"
-                        placeholder="Describe your domain concept with geometric precision..."
-                        required
-                    ></textarea>
+    <div class="xtreme-container">
+        <div class="inner-container">
+            <!-- XTREME Title -->
+            <div class="xtreme-title">
+                XTREME GOBLIN GLOBE
+            </div>
+            
+            <div class="subtitle">
+                <span class="flame-text">THE MOST RADICAL DOMAIN FINDER TO THE MAX!!!</span>
+            </div>
+            
+            <!-- Navigation -->
+            <div class="xtreme-nav">
+                <a href="#home" class="nav-link">HOME</a>
+                <a href="#search" class="nav-link">SEARCH</a>
+                <a href="#radical" class="nav-link">RADICAL DOMAINS</a>
+                <a href="#xtreme" class="nav-link">XTREME ZONE</a>
+                <a href="#tubular" class="nav-link">TUBULAR LINKS</a>
+            </div>
+            
+            <!-- Under Construction -->
+            <div class="construction-signs">
+                <div class="construction-text">
+                    🚧 UNDER CONSTRUCTION - GETTING MORE XTREME! 🚧
                 </div>
-                
-                <div class="form-group">
-                    <label for="count" class="form-label">Quantity</label>
-                    <input 
-                        type="number" 
-                        id="count" 
-                        class="form-input form-number" 
-                        min="1" 
-                        max="20" 
-                        value="10"
-                    >
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Extensions</label>
-                    <div class="checkbox-grid">
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="extensions" value=".com" checked class="checkbox-input">
-                            <span class="checkbox-label">.com</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="extensions" value=".net" class="checkbox-input">
-                            <span class="checkbox-label">.net</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="extensions" value=".org" class="checkbox-input">
-                            <span class="checkbox-label">.org</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="extensions" value=".io" class="checkbox-input">
-                            <span class="checkbox-label">.io</span>
-                        </label>
+            </div>
+            
+            <!-- Main Content -->
+            <div style="margin: 30px 0;">
+                <div style="text-align: center; margin: 20px 0;">
+                    <div class="grunge-text" style="font-size: 24px; margin-bottom: 15px;">
+                        WELCOME TO THE RADICAL ZONE!
+                    </div>
+                    <div style="color: #00ffff; font-size: 16px; text-shadow: 2px 2px 4px #000000;">
+                        Get ready to find the most TUBULAR domain names on the planet!<br>
+                        Our AI is more XTREME than a 900° skateboard trick!
                     </div>
                 </div>
                 
-                <button type="submit" id="generateButton" class="btn-generate">
-                    <span id="buttonText">Generate</span>
-                    <div id="buttonSpinner" class="spinner hidden"></div>
-                </button>
-            </form>
-        </section>
-
-        <!-- Info Panel -->
-        <aside class="info-panel">
-            <h2 class="info-title">Bauhaus Methodology</h2>
-            <p class="info-text">
-                Form follows function. Each domain is constructed using geometric principles 
-                and primary color theory to achieve optimal brand architecture.
-            </p>
-            <p class="info-text">
-                Our algorithmic approach combines mathematical precision with creative vision, 
-                generating domains that embody the Bauhaus philosophy of functional beauty.
-            </p>
-            <div class="info-stats">
-                <div class="stat-item">
-                    <div class="stat-number" id="totalGenerated">0</div>
-                    <div class="stat-label">Generated</div>
+                <!-- XTREME Form -->
+                <div class="xtreme-form">
+                    <div class="form-header">
+                        🔥 XTREME DOMAIN SEARCH 🔥
+                    </div>
+                    
+                    <form id="domainForm">
+                        <div style="margin-bottom: 20px;">
+                            <label class="form-label">What's your RADICAL business idea?</label>
+                            <textarea id="prompt" class="xtreme-textarea" rows="4" 
+                                placeholder="Tell us about your XTREME business! (skateboard shop, energy drink company, extreme sports blog, etc.)"></textarea>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label class="form-label">How many RADICAL domains?</label>
+                            <select id="count" class="xtreme-select">
+                                <option value="5">5 DOMAINS</option>
+                                <option value="10" selected>10 DOMAINS</option>
+                                <option value="15">15 DOMAINS</option>
+                                <option value="20">20 DOMAINS (MEGA XTREME!)</option>
+                            </select>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label class="form-label">Choose your TUBULAR extensions:</label>
+                            <div style="color: #ffff00; margin-top: 10px;">
+                                <div><input type="checkbox" name="extensions" value=".com" checked id="ext_com"> <label for="ext_com">.com (TOTALLY RADICAL!)</label></div>
+                                <div><input type="checkbox" name="extensions" value=".net" id="ext_net"> <label for="ext_net">.net (GNARLY NETWORK!)</label></div>
+                                <div><input type="checkbox" name="extensions" value=".org" id="ext_org"> <label for="ext_org">.org (AWESOME ORG!)</label></div>
+                                <div><input type="checkbox" name="extensions" value=".io" id="ext_io"> <label for="ext_io">.io (TECH EXTREME!)</label></div>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 30px;">
+                            <button type="submit" class="xtreme-button">
+                                🚀 LAUNCH XTREME SEARCH! 🚀
+                            </button>
+                            <button type="button" class="xtreme-button" onclick="resetForm()">
+                                🔄 RESET TO THE MAX!
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="totalAvailable">0</div>
-                    <div class="stat-label">Available</div>
+                
+                <!-- Loading Animation -->
+                <div id="loading" class="xtreme-loading" style="display: none;">
+                    <div class="loading-title" id="loadingText">
+                        🔥 SEARCHING FOR RADICAL DOMAINS... 🔥
+                    </div>
+                    <div class="loading-bar-container">
+                        <div class="loading-bar" id="loadingBar"></div>
+                        <div class="loading-text" id="loadingPercent">0%</div>
+                    </div>
+                    <div style="color: #00ffff; margin-top: 15px; font-weight: bold;" id="loadingDetails">
+                        Firing up the XTREME AI engine...
+                    </div>
                 </div>
-            </div>
-        </aside>
-
-        <!-- Loading Section -->
-        <section id="loading" class="loading-section">
-            <div class="loading-spinner"></div>
-            <p id="loadingMessage" class="loading-text">Constructing geometric domains...</p>
-            <div id="progressBar" class="progress-container hidden">
-                <div id="progressFill" class="progress-bar"></div>
-            </div>
-            <p id="progressText" class="loading-text hidden">Phase 1 of 3</p>
-        </section>
-
-        <!-- Error Section -->
-        <section id="error" class="error-section">
-            <p class="error-text"></p>
-        </section>
-
-        <!-- Results Section -->
-        <section id="results" class="results-section">
-            <div class="results-header">
-                <h2 class="results-title">Domain Architecture</h2>
-                <div class="results-actions">
-                    <button id="exportBtn" class="btn-action">Export</button>
-                    <button id="copyAllBtn" class="btn-action">Copy All</button>
-                    <button id="newSearchBtn" class="btn-action">New Search</button>
+                
+                <!-- Status Messages -->
+                <div id="statusMessage" class="status-message" style="display: none;"></div>
+                
+                <!-- Results -->
+                <div id="results" style="display: none;">
+                    <!-- Available Domains -->
+                    <div id="availableSection" class="xtreme-results">
+                        <div class="results-header">
+                            ⚡ RADICAL AVAILABLE DOMAINS ⚡
+                        </div>
+                        <div id="availableList"></div>
+                    </div>
+                    
+                    <!-- Taken Domains -->
+                    <div id="takenSection" class="xtreme-results">
+                        <div class="results-header">
+                            💥 ALREADY CLAIMED DOMAINS 💥
+                        </div>
+                        <div id="takenList"></div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div style="text-align: center; margin: 30px 0;">
+                        <button class="xtreme-button" onclick="copyAvailable()">
+                            📋 COPY RADICAL DOMAINS
+                        </button>
+                        <button class="xtreme-button" onclick="exportCSV()">
+                            💾 SAVE TO THE MAX
+                        </button>
+                        <button class="xtreme-button" onclick="newSearch()">
+                            🔍 SEARCH AGAIN!
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- XTREME Info -->
+                <div style="background: linear-gradient(135deg, #660000, #006600); border: 3px solid #ffff00; padding: 20px; margin: 30px 0; text-align: center;">
+                    <div class="grunge-text" style="font-size: 20px; margin-bottom: 15px;">
+                        WHY WE'RE THE MOST XTREME!
+                    </div>
+                    <div style="color: #ffffff; font-size: 14px; line-height: 1.6;">
+                        ⚡ AI-powered domain generation that's OFF THE HOOK!<br>
+                        🔥 Real-time availability checking that's TOTALLY TUBULAR!<br>
+                        🚀 Quality scoring system that's MEGA RADICAL!<br>
+                        💥 Results faster than a BMX bike on steroids!<br>
+                        🌟 More awesome than a double backflip on a snowboard!
+                    </div>
                 </div>
             </div>
             
-            <div class="mb-60">
-                <h3 class="results-title" style="font-size: 1.5rem; margin-bottom: 24px; color: var(--color-blue);">Available Domains</h3>
-                <div id="availableList" class="domain-grid"></div>
+            <!-- Footer -->
+            <div class="xtreme-footer">
+                <div class="footer-text">
+                    <div class="spin" style="display: inline-block; margin: 0 10px;">🛹</div>
+                    XTREME GOBLIN GLOBE - RADICAL DOMAINS SINCE 1999!
+                    <div class="flip" style="display: inline-block; margin: 0 10px;">🏂</div>
+                </div>
+                <div style="margin-top: 10px; font-size: 10px;">
+                    BEST VIEWED WITH NETSCAPE NAVIGATOR WHILE LISTENING TO PUNK ROCK!<br>
+                    WARNING: WEBSITE MAY CAUSE EXTREME EXCITEMENT AND RADICAL THOUGHTS!
+                </div>
             </div>
-            
-            <div class="mb-60">
-                <h3 class="results-title" style="font-size: 1.5rem; margin-bottom: 24px; color: var(--color-gray);">Taken Domains</h3>
-                <div id="takenList" class="domain-grid"></div>
-            </div>
-        </section>
-
-        <!-- Toast Container -->
-        <div id="toastContainer" class="toast-container"></div>
+        </div>
     </div>
-
+    
     <script src="app.js"></script>
 </body>
 </html>

@@ -3,711 +3,1060 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goblin Globe</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet">
+    <title>GOBLIN GLOBE - Rococo Palace Domain Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Parisienne&family=Great+Vibes&family=Alex+Brush&family=Allura:wght@400&family=Satisfy&family=Lobster:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Material Design 3 CSS Variables for Dynamic Color */
-        :root {
-            /* Primary Color Palette */
-            --md-sys-color-primary: #6750A4;
-            --md-sys-color-on-primary: #FFFFFF;
-            --md-sys-color-primary-container: #EADDFF;
-            --md-sys-color-on-primary-container: #21005D;
-            
-            /* Secondary Color Palette */
-            --md-sys-color-secondary: #625B71;
-            --md-sys-color-on-secondary: #FFFFFF;
-            --md-sys-color-secondary-container: #E8DEF8;
-            --md-sys-color-on-secondary-container: #1D192B;
-            
-            /* Tertiary Color Palette */
-            --md-sys-color-tertiary: #7D5260;
-            --md-sys-color-on-tertiary: #FFFFFF;
-            --md-sys-color-tertiary-container: #FFD8E4;
-            --md-sys-color-on-tertiary-container: #31111D;
-            
-            /* Surface Colors */
-            --md-sys-color-surface: #FFFBFE;
-            --md-sys-color-on-surface: #1C1B1F;
-            --md-sys-color-surface-variant: #E7E0EC;
-            --md-sys-color-on-surface-variant: #49484E;
-            --md-sys-color-surface-container-lowest: #FFFFFF;
-            --md-sys-color-surface-container-low: #F7F2FA;
-            --md-sys-color-surface-container: #F3EDF7;
-            --md-sys-color-surface-container-high: #ECE6F0;
-            --md-sys-color-surface-container-highest: #E6E0E9;
-            
-            /* Background Colors */
-            --md-sys-color-background: #FFFBFE;
-            --md-sys-color-on-background: #1C1B1F;
-            
-            /* Outline Colors */
-            --md-sys-color-outline: #79767D;
-            --md-sys-color-outline-variant: #CAC4D0;
-            
-            /* Error Colors */
-            --md-sys-color-error: #BA1A1A;
-            --md-sys-color-on-error: #FFFFFF;
-            --md-sys-color-error-container: #FFDAD6;
-            --md-sys-color-on-error-container: #410002;
-            
-            /* Typography Scale */
-            --md-sys-typescale-display-large-font: 400 57px/64px Roboto, sans-serif;
-            --md-sys-typescale-display-medium-font: 400 45px/52px Roboto, sans-serif;
-            --md-sys-typescale-display-small-font: 400 36px/44px Roboto, sans-serif;
-            --md-sys-typescale-headline-large-font: 400 32px/40px Roboto, sans-serif;
-            --md-sys-typescale-headline-medium-font: 400 28px/36px Roboto, sans-serif;
-            --md-sys-typescale-headline-small-font: 400 24px/32px Roboto, sans-serif;
-            --md-sys-typescale-title-large-font: 400 22px/28px Roboto, sans-serif;
-            --md-sys-typescale-title-medium-font: 500 16px/24px Roboto, sans-serif;
-            --md-sys-typescale-title-small-font: 500 14px/20px Roboto, sans-serif;
-            --md-sys-typescale-body-large-font: 400 16px/24px Roboto, sans-serif;
-            --md-sys-typescale-body-medium-font: 400 14px/20px Roboto, sans-serif;
-            --md-sys-typescale-body-small-font: 400 12px/16px Roboto, sans-serif;
-            --md-sys-typescale-label-large-font: 500 14px/20px Roboto, sans-serif;
-            --md-sys-typescale-label-medium-font: 500 12px/16px Roboto, sans-serif;
-            --md-sys-typescale-label-small-font: 500 11px/16px Roboto, sans-serif;
-            
-            /* Shape Scale */
-            --md-sys-shape-corner-none: 0px;
-            --md-sys-shape-corner-extra-small: 4px;
-            --md-sys-shape-corner-small: 8px;
-            --md-sys-shape-corner-medium: 12px;
-            --md-sys-shape-corner-large: 16px;
-            --md-sys-shape-corner-extra-large: 28px;
-        }
-
-        /* Dark theme overrides */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --md-sys-color-primary: #D0BCFF;
-                --md-sys-color-on-primary: #381E72;
-                --md-sys-color-primary-container: #4F378B;
-                --md-sys-color-on-primary-container: #EADDFF;
-                
-                --md-sys-color-secondary: #CCC2DC;
-                --md-sys-color-on-secondary: #332D41;
-                --md-sys-color-secondary-container: #4A4458;
-                --md-sys-color-on-secondary-container: #E8DEF8;
-                
-                --md-sys-color-surface: #10131A;
-                --md-sys-color-on-surface: #E6E0E9;
-                --md-sys-color-surface-variant: #49484E;
-                --md-sys-color-on-surface-variant: #CAC4D0;
-                --md-sys-color-surface-container-lowest: #0B0E14;
-                --md-sys-color-surface-container-low: #1C1B1F;
-                --md-sys-color-surface-container: #201F26;
-                --md-sys-color-surface-container-high: #2B2930;
-                --md-sys-color-surface-container-highest: #36343B;
-                
-                --md-sys-color-background: #10131A;
-                --md-sys-color-on-background: #E6E0E9;
-                
-                --md-sys-color-outline: #938F99;
-                --md-sys-color-outline-variant: #49484E;
-            }
-        }
-
-        /* Reset and base styles */
+        /* Rococo Palace Extravaganza */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --rococo-pink: #F8BBD9;
+            --soft-pink: #FFE4E1;
+            --pastel-blue: #E6F3FF;
+            --powder-blue: #B0E0E6;
+            --rococo-gold: #FFD700;
+            --champagne: #F7E7CE;
+            --pearl-white: #FFF8DC;
+            --rose-gold: #E8B4B8;
+            --lavender: #E6E6FA;
+            --mint-cream: #F5FFFA;
+            --shell-shadow: 0 8px 32px rgba(248, 187, 217, 0.4);
+            --golden-shimmer: 0 0 20px rgba(255, 215, 0, 0.6);
+            --pearl-glow: 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
         body {
-            font: var(--md-sys-typescale-body-medium-font);
-            background-color: var(--md-sys-color-background);
-            color: var(--md-sys-color-on-background);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        /* Container and Layout */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 16px;
-        }
-
-        /* Typography Classes */
-        .display-large { font: var(--md-sys-typescale-display-large-font); }
-        .display-medium { font: var(--md-sys-typescale-display-medium-font); }
-        .display-small { font: var(--md-sys-typescale-display-small-font); }
-        .headline-large { font: var(--md-sys-typescale-headline-large-font); }
-        .headline-medium { font: var(--md-sys-typescale-headline-medium-font); }
-        .headline-small { font: var(--md-sys-typescale-headline-small-font); }
-        .title-large { font: var(--md-sys-typescale-title-large-font); }
-        .title-medium { font: var(--md-sys-typescale-title-medium-font); }
-        .title-small { font: var(--md-sys-typescale-title-small-font); }
-        .body-large { font: var(--md-sys-typescale-body-large-font); }
-        .body-medium { font: var(--md-sys-typescale-body-medium-font); }
-        .body-small { font: var(--md-sys-typescale-body-small-font); }
-        .label-large { font: var(--md-sys-typescale-label-large-font); }
-        .label-medium { font: var(--md-sys-typescale-label-medium-font); }
-        .label-small { font: var(--md-sys-typescale-label-small-font); }
-
-        /* Material Card Component */
-        .md-card {
-            background-color: var(--md-sys-color-surface-container);
-            border-radius: var(--md-sys-shape-corner-medium);
-            padding: 16px;
-            margin: 8px 0;
+            font-family: 'Dancing Script', cursive;
+            background: linear-gradient(135deg, 
+                var(--soft-pink) 0%, 
+                var(--pastel-blue) 25%, 
+                var(--pearl-white) 50%, 
+                var(--lavender) 75%, 
+                var(--mint-cream) 100%);
+            background-attachment: fixed;
+            color: #4A4A4A;
+            overflow-x: hidden;
             position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+            min-height: 100vh;
         }
 
-        .md-card:hover {
-            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.12), 0 8px 10px rgba(0, 0, 0, 0.14);
-            transform: translateY(-2px);
-        }
-
-        .md-card.filled {
-            background-color: var(--md-sys-color-surface-container-high);
-        }
-
-        .md-card.elevated {
-            background-color: var(--md-sys-color-surface-container-low);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.18);
-        }
-
-        .md-card.outlined {
-            background-color: var(--md-sys-color-surface);
-            border: 1px solid var(--md-sys-color-outline-variant);
-            box-shadow: none;
-        }
-
-        /* Material Button Components */
-        .md-button {
-            font: var(--md-sys-typescale-label-large-font);
-            border: none;
-            border-radius: var(--md-sys-shape-corner-large);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            min-height: 40px;
-            padding: 10px 24px;
-            text-decoration: none;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .md-button:disabled {
-            opacity: 0.38;
-            cursor: not-allowed;
-        }
-
-        .md-button-filled {
-            background-color: var(--md-sys-color-primary);
-            color: var(--md-sys-color-on-primary);
-        }
-
-        .md-button-filled:hover:not(:disabled) {
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.15);
-        }
-
-        .md-button-outlined {
-            background-color: transparent;
-            color: var(--md-sys-color-primary);
-            border: 1px solid var(--md-sys-color-outline);
-        }
-
-        .md-button-text {
-            background-color: transparent;
-            color: var(--md-sys-color-primary);
-        }
-
-        .md-button-tonal {
-            background-color: var(--md-sys-color-secondary-container);
-            color: var(--md-sys-color-on-secondary-container);
-        }
-
-        /* Floating Action Button */
-        .md-fab {
-            width: 56px;
-            height: 56px;
-            border-radius: var(--md-sys-shape-corner-large);
-            background-color: var(--md-sys-color-primary-container);
-            color: var(--md-sys-color-on-primary-container);
-            border: none;
-            cursor: pointer;
+        body::before {
+            content: '';
             position: fixed;
-            bottom: 16px;
-            right: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), 0 6px 10px rgba(0, 0, 0, 0.14);
-            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-            z-index: 100;
-        }
-
-        .md-fab:hover {
-            box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2), 0 16px 20px rgba(0, 0, 0, 0.14);
-            transform: scale(1.05);
-        }
-
-        .md-fab.extended {
-            width: auto;
-            padding: 16px 20px;
-            gap: 12px;
-            border-radius: var(--md-sys-shape-corner-large);
-        }
-
-        /* Material Text Field */
-        .md-text-field {
-            position: relative;
-            margin: 16px 0;
-        }
-
-        .md-text-field-input {
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 16px;
-            border: 1px solid var(--md-sys-color-outline);
-            border-radius: var(--md-sys-shape-corner-extra-small);
-            background-color: var(--md-sys-color-surface);
-            color: var(--md-sys-color-on-surface);
-            font: var(--md-sys-typescale-body-large-font);
-            outline: none;
-            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-            resize: vertical;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(248, 187, 217, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 40%, rgba(230, 243, 255, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 60% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
         }
 
-        .md-text-field-input:focus {
-            border-color: var(--md-sys-color-primary);
-            border-width: 2px;
+        /* Floating cherub and shell ornaments */
+        .rococo-ornament {
+            position: fixed;
+            font-size: 2.5rem;
+            color: var(--rococo-pink);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatRococo 10s ease-in-out infinite;
         }
 
-        .md-text-field-input::placeholder {
-            color: var(--md-sys-color-on-surface-variant);
+        .rococo-ornament:nth-child(1) { top: 8%; left: 5%; animation-delay: 0s; }
+        .rococo-ornament:nth-child(2) { top: 15%; right: 8%; animation-delay: 3s; }
+        .rococo-ornament:nth-child(3) { bottom: 25%; left: 10%; animation-delay: 6s; }
+        .rococo-ornament:nth-child(4) { bottom: 12%; right: 12%; animation-delay: 9s; }
+
+        @keyframes floatRococo {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.4; }
+            50% { transform: translateY(-25px) rotate(10deg); opacity: 0.7; }
         }
 
-        .md-text-field-label {
-            font: var(--md-sys-typescale-body-small-font);
-            color: var(--md-sys-color-on-surface-variant);
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        /* Material Checkbox */
-        .md-checkbox {
+        /* Main palace container */
+        .palace-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
             position: relative;
-            display: inline-flex;
-            align-items: center;
-            cursor: pointer;
-            user-select: none;
-            margin: 8px 0;
         }
 
-        .md-checkbox-input {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-            height: 0;
-            width: 0;
-        }
-
-        .md-checkbox-icon {
-            width: 18px;
-            height: 18px;
-            border: 2px solid var(--md-sys-color-on-surface-variant);
-            border-radius: 2px;
-            margin-right: 12px;
-            position: relative;
-            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-            background-color: transparent;
-        }
-
-        .md-checkbox-input:checked + .md-checkbox-icon {
-            background-color: var(--md-sys-color-primary);
-            border-color: var(--md-sys-color-primary);
-        }
-
-        .md-checkbox-input:checked + .md-checkbox-icon::after {
+        .palace-container::before {
             content: '';
             position: absolute;
-            left: 5px;
-            top: 1px;
-            width: 6px;
-            height: 10px;
-            border: solid var(--md-sys-color-on-primary);
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-        }
-
-        .md-checkbox-label {
-            font: var(--md-sys-typescale-body-large-font);
-            color: var(--md-sys-color-on-surface);
-        }
-
-        /* Ripple Effect */
-        .md-ripple {
-            position: absolute;
-            border-radius: 50%;
-            background-color: currentColor;
-            opacity: 0.3;
-            transform: scale(0);
-            animation: ripple 0.6s linear;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 6px solid var(--rococo-gold);
+            border-image: linear-gradient(45deg, var(--rococo-gold), var(--rose-gold), var(--champagne)) 1;
+            border-radius: 50px;
+            box-shadow: 
+                inset 0 0 40px rgba(248, 187, 217, 0.3),
+                0 0 40px rgba(255, 215, 0, 0.2);
             pointer-events: none;
+            z-index: -1;
         }
 
-        @keyframes ripple {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
+        /* Rococo Header */
+        .rococo-header {
+            text-align: center;
+            margin: 60px 0 80px 0;
+            position: relative;
+            padding: 40px 0;
         }
 
-        /* Progress Indicator */
-        .md-progress {
-            width: 100%;
-            height: 4px;
-            background-color: var(--md-sys-color-surface-container-highest);
-            border-radius: 2px;
-            overflow: hidden;
-            margin: 16px 0;
+        .rococo-header::before {
+            content: '🌸 ❀ 🌺 ❀ 🌸 ❀ 🌺 ❀ 🌸 ❀ 🌺 ❀ 🌸';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.8rem;
+            color: var(--rococo-pink);
+            animation: floralDance 4s ease-in-out infinite;
         }
 
-        .md-progress-bar {
-            height: 100%;
-            background-color: var(--md-sys-color-primary);
-            width: 0%;
-            transition: width 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        .rococo-header::after {
+            content: '🦋 ❀ 🌸 ❀ 🦋 ❀ 🌸 ❀ 🦋 ❀ 🌸 ❀ 🦋';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.8rem;
+            color: var(--powder-blue);
+            animation: floralDance 4s ease-in-out infinite reverse;
         }
 
-        .md-progress.indeterminate .md-progress-bar {
-            width: 100%;
-            animation: indeterminate 2s infinite;
+        @keyframes floralDance {
+            0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
         }
 
-        @keyframes indeterminate {
-            0% {
-                transform: translateX(-100%);
-            }
-            100% {
-                transform: translateX(100%);
-            }
+        .goblin-globe-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 5rem;
+            font-weight: 400;
+            background: linear-gradient(135deg, 
+                var(--rococo-pink) 0%, 
+                var(--rococo-gold) 25%, 
+                var(--powder-blue) 50%, 
+                var(--rose-gold) 75%, 
+                var(--rococo-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 8px rgba(248, 187, 217, 0.5);
+            letter-spacing: 0.1em;
+            margin: 20px 0;
+            position: relative;
+            animation: rococoGlow 5s ease-in-out infinite;
         }
 
-        /* Snackbar */
-        .md-snackbar {
-            position: fixed;
-            bottom: 16px;
-            left: 16px;
-            right: 16px;
-            background-color: var(--md-sys-color-surface-container);
-            color: var(--md-sys-color-on-surface);
-            padding: 16px;
-            border-radius: var(--md-sys-shape-corner-extra-small);
-            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), 0 6px 10px rgba(0, 0, 0, 0.14);
-            transform: translateY(100%);
-            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            max-width: 400px;
-            margin: 0 auto;
+        @keyframes rococoGlow {
+            0%, 100% { filter: drop-shadow(0 0 15px rgba(248, 187, 217, 0.6)); }
+            50% { filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.8)); }
         }
 
-        .md-snackbar.show {
-            transform: translateY(0);
+        .palace-subtitle {
+            font-family: 'Parisienne', cursive;
+            font-size: 2.2rem;
+            color: var(--powder-blue);
+            margin-top: 20px;
+            text-shadow: 1px 1px 3px rgba(176, 224, 230, 0.8);
         }
 
-        /* Layout */
-        .main-content {
-            padding: 24px 0;
+        /* Ornate Form Palace */
+        .rococo-form-palace {
+            background: linear-gradient(135deg, 
+                rgba(248, 187, 217, 0.2) 0%, 
+                rgba(230, 243, 255, 0.2) 50%, 
+                rgba(255, 248, 220, 0.2) 100%);
+            border: 4px solid var(--rococo-gold);
+            border-radius: 40px;
+            padding: 50px;
+            margin: 40px 0;
+            position: relative;
+            box-shadow: var(--shell-shadow), inset 0 0 30px rgba(248, 187, 217, 0.1);
+            backdrop-filter: blur(10px);
         }
 
-        .form-section {
-            max-width: 600px;
-            margin: 0 auto;
+        .rococo-form-palace::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            background: linear-gradient(45deg, var(--rococo-gold), var(--rose-gold), var(--champagne), var(--rococo-gold));
+            border-radius: 45px;
+            z-index: -1;
+            opacity: 0.6;
         }
 
-        .form-row {
-            display: flex;
-            gap: 16px;
-            align-items: flex-end;
-            flex-wrap: wrap;
+        .shell-corners {
+            position: absolute;
+            font-size: 3rem;
+            color: var(--rococo-pink);
+            opacity: 0.7;
         }
 
-        .form-row .md-text-field {
-            flex: 1;
-            min-width: 200px;
-        }
+        .shell-corners.top-left { top: -20px; left: -20px; }
+        .shell-corners.top-right { top: -20px; right: -20px; }
+        .shell-corners.bottom-left { bottom: -20px; left: -20px; }
+        .shell-corners.bottom-right { bottom: -20px; right: -20px; }
 
-        .checkbox-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin: 16px 0;
-        }
-
-        /* Results */
-        .results-section {
-            margin-top: 48px;
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 16px;
-            margin: 24px 0;
-        }
-
-        .domain-card {
+        /* Delicate Form Elements */
+        .palace-form-group {
+            margin-bottom: 50px;
             position: relative;
         }
 
-        .domain-name {
-            font-family: 'Roboto Mono', monospace;
-            font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 8px;
-            word-break: break-all;
-            color: var(--md-sys-color-on-surface);
+        .delicate-label {
+            font-family: 'Alex Brush', cursive;
+            font-size: 1.8rem;
+            color: var(--rococo-pink);
+            margin-bottom: 20px;
+            display: block;
+            text-shadow: 1px 1px 3px rgba(248, 187, 217, 0.5);
+            position: relative;
         }
 
-        .domain-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
+        .delicate-label::after {
+            content: '🌸';
+            margin-left: 15px;
+            animation: petalFloat 3s ease-in-out infinite;
         }
 
-        .domain-status {
-            font: var(--md-sys-typescale-label-small-font);
-            padding: 4px 8px;
-            border-radius: var(--md-sys-shape-corner-extra-small);
-            text-transform: uppercase;
+        @keyframes petalFloat {
+            0%, 100% { opacity: 0.7; transform: scale(1) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.1) rotate(15deg); }
         }
 
-        .domain-status.available {
-            background-color: var(--md-sys-color-tertiary-container);
-            color: var(--md-sys-color-on-tertiary-container);
+        .pearl-input,
+        .pearl-textarea {
+            width: 100%;
+            padding: 25px 30px;
+            border: 3px solid var(--rococo-gold);
+            border-radius: 25px;
+            background: linear-gradient(135deg, 
+                rgba(255, 248, 220, 0.9) 0%, 
+                rgba(245, 255, 250, 0.9) 100%);
+            font-family: 'Satisfy', cursive;
+            font-size: 1.3rem;
+            color: #5A5A5A;
+            outline: none;
+            transition: all 0.4s ease;
+            box-shadow: inset 0 4px 15px rgba(248, 187, 217, 0.2);
         }
 
-        .domain-status.taken {
-            background-color: var(--md-sys-color-error-container);
-            color: var(--md-sys-color-on-error-container);
+        .pearl-input:focus,
+        .pearl-textarea:focus {
+            border-color: var(--rococo-pink);
+            background: linear-gradient(135deg, 
+                rgba(255, 248, 220, 1) 0%, 
+                rgba(245, 255, 250, 1) 100%);
+            box-shadow: 
+                inset 0 4px 15px rgba(248, 187, 217, 0.2),
+                0 0 20px rgba(248, 187, 217, 0.6);
+            transform: scale(1.02);
         }
 
-        .domain-score {
-            font: var(--md-sys-typescale-label-medium-font);
-            color: var(--md-sys-color-on-surface-variant);
+        .pearl-textarea {
+            resize: vertical;
+            min-height: 150px;
+            font-family: 'Satisfy', cursive;
         }
 
-        .domain-actions {
-            display: flex;
-            gap: 8px;
-            justify-content: flex-end;
-        }
-
-        /* Loading States */
-        .loading-container {
+        .delicate-number-input {
+            width: 150px;
             text-align: center;
-            padding: 48px 0;
+            font-weight: 600;
         }
 
-        .loading-spinner {
-            width: 48px;
-            height: 48px;
-            border: 4px solid var(--md-sys-color-surface-container-highest);
-            border-top: 4px solid var(--md-sys-color-primary);
+        /* Ornate Checkbox Palace */
+        .checkbox-garden {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 25px;
+        }
+
+        .delicate-checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, 
+                rgba(248, 187, 217, 0.15) 0%, 
+                rgba(230, 243, 255, 0.15) 100%);
+            border: 2px solid var(--rose-gold);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .delicate-checkbox-item:hover {
+            border-color: var(--rococo-pink);
+            background: linear-gradient(135deg, 
+                rgba(248, 187, 217, 0.25) 0%, 
+                rgba(230, 243, 255, 0.25) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(248, 187, 217, 0.4);
+        }
+
+        .palace-checkbox {
+            width: 25px;
+            height: 25px;
+            margin-right: 15px;
+            border: 3px solid var(--rococo-gold);
+            border-radius: 12px;
+            background: var(--pearl-white);
+            cursor: pointer;
+            position: relative;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            transition: all 0.3s ease;
+        }
+
+        .palace-checkbox:checked {
+            background: linear-gradient(135deg, var(--rococo-pink), var(--rose-gold));
+            border-color: var(--rococo-gold);
+            transform: scale(1.1);
+        }
+
+        .palace-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: 900;
+            font-size: 14px;
+        }
+
+        .checkbox-extension-label {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #5A5A5A;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px rgba(248, 187, 217, 0.3);
+        }
+
+        /* Delicate Submit Button */
+        .palace-submit-button {
+            background: linear-gradient(135deg, 
+                var(--rococo-pink) 0%, 
+                var(--rose-gold) 25%, 
+                var(--rococo-gold) 50%, 
+                var(--champagne) 75%, 
+                var(--rococo-pink) 100%);
+            color: white;
+            border: 4px solid var(--pearl-white);
+            padding: 25px 60px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.6rem;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border-radius: 30px;
+            position: relative;
+            margin-top: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: var(--shell-shadow);
+            overflow: hidden;
+        }
+
+        .palace-submit-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.3), 
+                transparent);
+            transition: left 0.6s ease;
+        }
+
+        .palace-submit-button:hover::before {
+            left: 100%;
+        }
+
+        .palace-submit-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 
+                var(--shell-shadow),
+                0 10px 30px rgba(248, 187, 217, 0.6);
+            border-color: var(--rococo-gold);
+        }
+
+        .palace-submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .button-text {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Delicate Spinner */
+        .palace-spinner {
+            width: 25px;
+            height: 25px;
+            border: 3px solid rgba(248, 187, 217, 0.3);
+            border-top: 3px solid var(--rococo-pink);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 24px;
+            animation: palaceSpin 1s linear infinite;
         }
 
-        @keyframes spin {
+        @keyframes palaceSpin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        /* Utility Classes */
-        .hidden { display: none !important; }
-        .text-center { text-align: center; }
-        .mb-16 { margin-bottom: 16px; }
-        .mb-24 { margin-bottom: 24px; }
-        .mt-24 { margin-top: 24px; }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 16px;
-            }
-            
-            .form-row {
-                flex-direction: column;
-            }
-            
-            .form-row .md-text-field {
-                width: 100%;
-            }
-            
-            .checkbox-group {
-                flex-direction: column;
-            }
-            
-            .results-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .md-fab {
-                bottom: 24px;
-                right: 24px;
-            }
-            
-            .md-snackbar {
-                left: 16px;
-                right: 16px;
-                max-width: none;
-            }
+        /* Rococo Loading Palace */
+        .loading-palace {
+            text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(135deg, 
+                rgba(248, 187, 217, 0.2) 0%, 
+                rgba(230, 243, 255, 0.2) 100%);
+            border: 3px solid var(--rococo-gold);
+            border-radius: 30px;
+            margin: 60px 0;
+            position: relative;
+            backdrop-filter: blur(5px);
         }
 
-        /* Smooth Animations */
-        * {
-            transition: color 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
-                        background-color 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
-                        border-color 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        .loading-palace::before {
+            content: '🌸 ❀ 🦋 ❀ 🌸 ❀ 🦋 ❀ 🌸 ❀ 🦋 ❀ 🌸';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--pearl-white);
+            padding: 0 30px;
+            color: var(--rococo-pink);
+            font-size: 1.4rem;
+            animation: floralRotation 6s ease-in-out infinite;
+        }
+
+        @keyframes floralRotation {
+            0%, 100% { transform: translateX(-50%) rotate(0deg); }
+            50% { transform: translateX(-50%) rotate(2deg); }
+        }
+
+        .delicate-loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 6px solid rgba(248, 187, 217, 0.2);
+            border-top: 6px solid var(--rococo-pink);
+            border-right: 6px solid var(--powder-blue);
+            border-radius: 50%;
+            animation: delicateSpin 2s ease-in-out infinite;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+
+        .delicate-loading-spinner::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 3px solid rgba(248, 187, 217, 0.3);
+            border-top: 3px solid var(--rococo-gold);
+            border-radius: 50%;
+            animation: delicateSpin 1.5s ease-in-out infinite reverse;
+        }
+
+        @keyframes delicateSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-message {
+            font-family: 'Parisienne', cursive;
+            font-size: 1.8rem;
+            color: var(--rococo-pink);
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 3px rgba(248, 187, 217, 0.5);
+        }
+
+        /* Delicate Progress Bar */
+        .progress-palace {
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(135deg, 
+                rgba(248, 187, 217, 0.3) 0%, 
+                rgba(230, 243, 255, 0.3) 100%);
+            border: 2px solid var(--rococo-gold);
+            border-radius: 15px;
+            margin: 30px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-petals {
+            height: 100%;
+            background: linear-gradient(135deg, 
+                var(--rococo-pink) 0%, 
+                var(--rococo-gold) 50%, 
+                var(--powder-blue) 100%);
+            width: 0%;
+            transition: width 0.6s ease;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-petals::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.5), 
+                transparent);
+            animation: progressShimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes progressShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.1rem;
+            color: #5A5A5A;
+            text-align: center;
+            margin-top: 15px;
+            text-shadow: 1px 1px 2px rgba(248, 187, 217, 0.3);
+        }
+
+        /* Results Palace */
+        .results-palace {
+            margin-top: 80px;
+            background: linear-gradient(135deg, 
+                rgba(248, 187, 217, 0.1) 0%, 
+                rgba(230, 243, 255, 0.1) 100%);
+            border: 4px solid var(--rococo-gold);
+            border-radius: 30px;
+            padding: 50px;
+            position: relative;
+            backdrop-filter: blur(8px);
+        }
+
+        .results-palace::before {
+            content: '🏰 PALACE DOMAIN DISCOVERIES 🏰';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--pearl-white);
+            color: var(--rococo-pink);
+            padding: 10px 40px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.4rem;
+            border: 2px solid var(--rococo-gold);
+            border-radius: 20px;
+            text-shadow: 1px 1px 3px rgba(248, 187, 217, 0.5);
+        }
+
+        .results-actions-court {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .court-action-button {
+            background: linear-gradient(135deg, 
+                rgba(248, 187, 217, 0.2) 0%, 
+                rgba(230, 243, 255, 0.2) 100%);
+            color: var(--rococo-pink);
+            border: 2px solid var(--rococo-pink);
+            padding: 15px 30px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .court-action-button:hover {
+            background: linear-gradient(135deg, 
+                var(--rococo-pink) 0%, 
+                var(--rose-gold) 100%);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(248, 187, 217, 0.4);
+        }
+
+        .domain-section-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5rem;
+            color: var(--rococo-pink);
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(248, 187, 217, 0.5);
+            position: relative;
+        }
+
+        .domain-section-title::before,
+        .domain-section-title::after {
+            content: '🌸';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: var(--powder-blue);
+            animation: sectionTitleGlow 4s ease-in-out infinite;
+        }
+
+        .domain-section-title::before { left: -60px; }
+        .domain-section-title::after { right: -60px; }
+
+        @keyframes sectionTitleGlow {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Delicate Domain Grid */
+        .palace-domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .domain-palace-card {
+            background: linear-gradient(135deg, 
+                rgba(255, 248, 220, 0.95) 0%, 
+                rgba(245, 255, 250, 0.95) 100%);
+            border: 3px solid var(--rococo-gold);
+            border-radius: 25px;
+            padding: 35px;
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: var(--shell-shadow);
+            overflow: hidden;
+        }
+
+        .domain-palace-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                var(--rococo-pink), 
+                var(--rococo-gold), 
+                var(--powder-blue), 
+                var(--rose-gold));
+            border-radius: 27px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .domain-palace-card:hover::before {
+            opacity: 1;
+        }
+
+        .domain-palace-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                var(--shell-shadow),
+                0 15px 40px rgba(248, 187, 217, 0.4);
+        }
+
+        .domain-palace-card.available {
+            border-color: var(--rococo-gold);
+        }
+
+        .domain-palace-card.taken {
+            border-color: var(--rose-gold);
+            background: linear-gradient(135deg, 
+                rgba(232, 180, 184, 0.1) 0%, 
+                rgba(230, 230, 250, 0.1) 100%);
+            opacity: 0.8;
+        }
+
+        .domain-name-palace {
+            font-family: 'Allura', cursive;
+            font-size: 1.8rem;
+            color: #4A4A4A;
+            margin-bottom: 20px;
+            word-break: break-all;
+            text-shadow: 1px 1px 2px rgba(248, 187, 217, 0.3);
+            position: relative;
+        }
+
+        .domain-meta-court {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, 
+                rgba(248, 187, 217, 0.1) 0%, 
+                rgba(230, 243, 255, 0.1) 100%);
+            border-radius: 15px;
+            border: 1px solid var(--rose-gold);
+        }
+
+        .domain-method-badge {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, 
+                var(--rococo-pink) 0%, 
+                var(--rose-gold) 100%);
+            padding: 8px 15px;
+            border-radius: 25px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .domain-score-palace {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--powder-blue);
+            text-shadow: 1px 1px 2px rgba(176, 224, 230, 0.5);
+        }
+
+        .domain-actions-court {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .palace-action-button {
+            background: linear-gradient(135deg, 
+                var(--rococo-pink) 0%, 
+                var(--rose-gold) 100%);
+            color: white;
+            border: 2px solid var(--rococo-gold);
+            padding: 12px 25px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 15px;
+            flex: 1;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .palace-action-button:hover {
+            background: linear-gradient(135deg, 
+                var(--rococo-gold) 0%, 
+                var(--champagne) 100%);
+            color: #4A4A4A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(248, 187, 217, 0.4);
+        }
+
+        .register-palace-link {
+            background: linear-gradient(135deg, 
+                var(--powder-blue) 0%, 
+                var(--pastel-blue) 100%);
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .register-palace-link:hover {
+            background: linear-gradient(135deg, 
+                var(--rococo-gold) 0%, 
+                var(--champagne) 100%);
+            color: #4A4A4A;
+        }
+
+        /* Error Palace */
+        .error-palace {
+            background: linear-gradient(135deg, 
+                rgba(248, 187, 217, 0.2) 0%, 
+                rgba(255, 182, 193, 0.2) 100%);
+            border: 3px solid var(--rose-gold);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 60px 0;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+
+        .error-palace::before {
+            content: '🌹 PALACE DECREE 🌹';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--pearl-white);
+            color: var(--rose-gold);
+            padding: 8px 25px;
+            font-family: 'Great Vibes', cursive;
+            font-weight: 400;
+            border: 2px solid var(--rose-gold);
+            border-radius: 15px;
+        }
+
+        .error-message-palace {
+            font-family: 'Parisienne', cursive;
+            font-size: 1.5rem;
+            color: #5A5A5A;
+            text-shadow: 1px 1px 3px rgba(248, 187, 217, 0.5);
+        }
+
+        /* Toast Palace */
+        .toast-court {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .palace-toast {
+            background: linear-gradient(135deg, 
+                rgba(255, 248, 220, 0.95) 0%, 
+                rgba(245, 255, 250, 0.95) 100%);
+            border: 3px solid var(--rococo-gold);
+            border-radius: 20px;
+            padding: 20px 30px;
+            min-width: 350px;
+            font-family: 'Dancing Script', cursive;
+            font-weight: 600;
+            color: #4A4A4A;
+            box-shadow: var(--shell-shadow);
+            transform: translateX(100%);
+            transition: transform 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .palace-toast.show {
+            transform: translateX(0);
+        }
+
+        .palace-toast.success {
+            border-color: var(--rococo-pink);
+        }
+
+        .palace-toast.error {
+            border-color: var(--rose-gold);
+            color: var(--rose-gold);
+        }
+
+        .palace-toast::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                transparent, 
+                rgba(248, 187, 217, 0.1), 
+                transparent);
+            animation: toastShimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes toastShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Responsive Palace Design */
+        @media (max-width: 768px) {
+            .palace-container {
+                padding: 20px;
+            }
+
+            .goblin-globe-title {
+                font-size: 3.5rem;
+            }
+
+            .palace-subtitle {
+                font-size: 1.8rem;
+            }
+
+            .rococo-form-palace {
+                padding: 30px 20px;
+            }
+
+            .checkbox-garden {
+                grid-template-columns: 1fr;
+            }
+
+            .palace-domain-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-actions-court {
+                flex-direction: column;
+            }
+
+            .palace-toast {
+                min-width: 300px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="main-content">
-            <div class="text-center mb-24">
-                <h1 class="display-small" style="color: var(--md-sys-color-primary);">Goblin Globe</h1>
-                <p class="body-large" style="color: var(--md-sys-color-on-surface-variant);">Domain name finder with mathematical precision</p>
-            </div>
-        </header>
+    <!-- Floating Rococo Ornaments -->
+    <div class="rococo-ornament">🐚</div>
+    <div class="rococo-ornament">🌸</div>
+    <div class="rococo-ornament">🦋</div>
+    <div class="rococo-ornament">❀</div>
 
-        <!-- Form Section -->
-        <section class="form-section">
-            <div class="md-card elevated">
-                <form id="generateForm">
-                    <div class="md-text-field">
-                        <label for="prompt" class="md-text-field-label">Domain Description</label>
-                        <textarea 
-                            id="prompt" 
-                            class="md-text-field-input"
-                            placeholder="Describe your domain concept..."
-                            rows="4"
-                            required
-                        ></textarea>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="md-text-field">
-                            <label for="count" class="md-text-field-label">Quantity</label>
-                            <input 
-                                type="number" 
-                                id="count" 
-                                class="md-text-field-input" 
-                                min="1" 
-                                max="20" 
-                                value="10"
-                            >
-                        </div>
-                    </div>
-                    
-                    <div class="mb-24">
-                        <label class="md-text-field-label">Extensions</label>
-                        <div class="checkbox-group">
-                            <label class="md-checkbox">
-                                <input type="checkbox" name="extensions" value=".com" checked class="md-checkbox-input">
-                                <span class="md-checkbox-icon"></span>
-                                <span class="md-checkbox-label">.com</span>
-                            </label>
-                            <label class="md-checkbox">
-                                <input type="checkbox" name="extensions" value=".net" class="md-checkbox-input">
-                                <span class="md-checkbox-icon"></span>
-                                <span class="md-checkbox-label">.net</span>
-                            </label>
-                            <label class="md-checkbox">
-                                <input type="checkbox" name="extensions" value=".org" class="md-checkbox-input">
-                                <span class="md-checkbox-icon"></span>
-                                <span class="md-checkbox-label">.org</span>
-                            </label>
-                            <label class="md-checkbox">
-                                <input type="checkbox" name="extensions" value=".io" class="md-checkbox-input">
-                                <span class="md-checkbox-icon"></span>
-                                <span class="md-checkbox-label">.io</span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div class="text-center">
-                        <button type="submit" id="generateButton" class="md-button md-button-filled">
-                            <span class="material-symbols-rounded">search</span>
-                            <span id="buttonText">Generate Domains</span>
-                            <div id="buttonSpinner" class="loading-spinner hidden" style="width: 20px; height: 20px; margin: 0;"></div>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </section>
+    <div class="palace-container">
+        <!-- Rococo Header -->
+        <div class="rococo-header">
+            <h1 class="goblin-globe-title">Goblin Globe</h1>
+            <p class="palace-subtitle">Rococo Palace Domain Atelier</p>
+        </div>
 
-        <!-- Loading Section -->
-        <section id="loading" class="loading-container hidden">
-            <div class="loading-spinner"></div>
-            <p id="loadingMessage" class="headline-small mb-16">Generating domain ideas...</p>
-            <div id="progressBar" class="md-progress hidden">
-                <div id="progressFill" class="md-progress-bar"></div>
-            </div>
-            <p id="progressText" class="body-small hidden" style="color: var(--md-sys-color-on-surface-variant);">Step 1 of 3</p>
-        </section>
+        <!-- Rococo Form Palace -->
+        <div class="rococo-form-palace">
+            <div class="shell-corners top-left">🐚</div>
+            <div class="shell-corners top-right">🐚</div>
+            <div class="shell-corners bottom-left">🐚</div>
+            <div class="shell-corners bottom-right">🐚</div>
 
-        <!-- Results Section -->
-        <section id="results" class="results-section hidden">
-            <div class="text-center mb-24">
-                <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
-                    <button id="exportBtn" class="md-button md-button-outlined">
-                        <span class="material-symbols-rounded">download</span>
-                        Export CSV
-                    </button>
-                    <button id="copyAllBtn" class="md-button md-button-outlined">
-                        <span class="material-symbols-rounded">content_copy</span>
-                        Copy Available
-                    </button>
-                    <button id="newSearchBtn" class="md-button md-button-text">
-                        <span class="material-symbols-rounded">refresh</span>
-                        New Search
-                    </button>
+            <form id="generateForm">
+                <div class="palace-form-group">
+                    <label for="prompt" class="delicate-label">Domain Vision</label>
+                    <textarea 
+                        id="prompt" 
+                        class="pearl-textarea"
+                        placeholder="Describe your delightful domain concept with artistic flair..."
+                        required
+                    ></textarea>
                 </div>
-            </div>
-            
-            <div class="mb-24">
-                <h2 class="headline-medium mb-16" style="color: var(--md-sys-color-tertiary);">Available Domains</h2>
-                <div id="availableList" class="results-grid"></div>
-            </div>
-            
-            <div class="mb-24">
-                <h2 class="headline-medium mb-16" style="color: var(--md-sys-color-error);">Taken Domains</h2>
-                <div id="takenList" class="results-grid"></div>
-            </div>
-        </section>
+                
+                <div class="palace-form-group">
+                    <label for="count" class="delicate-label">Quantity of Domains</label>
+                    <input 
+                        type="number" 
+                        id="count" 
+                        class="pearl-input delicate-number-input" 
+                        min="1" 
+                        max="20" 
+                        value="10"
+                    >
+                </div>
+                
+                <div class="palace-form-group">
+                    <label class="delicate-label">Palace Extensions</label>
+                    <div class="checkbox-garden">
+                        <label class="delicate-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".com" checked class="palace-checkbox">
+                            <span class="checkbox-extension-label">.com</span>
+                        </label>
+                        <label class="delicate-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".net" class="palace-checkbox">
+                            <span class="checkbox-extension-label">.net</span>
+                        </label>
+                        <label class="delicate-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".org" class="palace-checkbox">
+                            <span class="checkbox-extension-label">.org</span>
+                        </label>
+                        <label class="delicate-checkbox-item">
+                            <input type="checkbox" name="extensions" value=".io" class="palace-checkbox">
+                            <span class="checkbox-extension-label">.io</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" id="generateButton" class="palace-submit-button">
+                    <span id="buttonText" class="button-text">Manifest Domains</span>
+                    <div id="buttonSpinner" class="palace-spinner hidden"></div>
+                </button>
+            </form>
+        </div>
 
-        <!-- Floating Action Button -->
-        <button id="scrollToTopFab" class="md-fab hidden" title="Scroll to top">
-            <span class="material-symbols-rounded">keyboard_arrow_up</span>
-        </button>
+        <!-- Loading Palace -->
+        <div id="loading" class="loading-palace hidden">
+            <div class="delicate-loading-spinner"></div>
+            <p id="loadingMessage" class="loading-message">Consulting the palace archives...</p>
+            <div id="progressBar" class="progress-palace hidden">
+                <div id="progressFill" class="progress-petals"></div>
+            </div>
+            <p id="progressText" class="progress-text hidden">Palace Process 1 of 3</p>
+        </div>
+
+        <!-- Error Palace -->
+        <div id="error" class="error-palace hidden">
+            <p class="error-message-palace"></p>
+        </div>
+
+        <!-- Results Palace -->
+        <div id="results" class="results-palace hidden">
+            <div class="results-actions-court">
+                <button id="exportBtn" class="court-action-button">Export Scroll</button>
+                <button id="copyAllBtn" class="court-action-button">Copy Available</button>
+                <button id="newSearchBtn" class="court-action-button">New Quest</button>
+            </div>
+            
+            <div>
+                <h2 class="domain-section-title">Available Domains</h2>
+                <div id="availableList" class="palace-domain-grid"></div>
+            </div>
+            
+            <div>
+                <h2 class="domain-section-title">Taken Domains</h2>
+                <div id="takenList" class="palace-domain-grid"></div>
+            </div>
+        </div>
+
+        <!-- Toast Court -->
+        <div id="toastContainer" class="toast-court"></div>
     </div>
-
-    <!-- Snackbar Container -->
-    <div id="snackbarContainer"></div>
 
     <script src="app.js"></script>
 </body>

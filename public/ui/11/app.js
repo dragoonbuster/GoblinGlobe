@@ -1,588 +1,624 @@
-// DOM Elements - Royal Court Interface
-const form = document.getElementById('generateForm');
-const generateButton = document.getElementById('generateButton');
-const buttonText = document.getElementById('buttonText');
-const buttonSpinner = document.getElementById('buttonSpinner');
-const loading = document.getElementById('loading');
-const loadingMessage = document.getElementById('loadingMessage');
-const progressBar = document.getElementById('progressBar');
-const progressFill = document.getElementById('progressFill');
-const progressText = document.getElementById('progressText');
-const results = document.getElementById('results');
-const error = document.getElementById('error');
-const availableList = document.getElementById('availableList');
-const takenList = document.getElementById('takenList');
-const exportBtn = document.getElementById('exportBtn');
-const copyAllBtn = document.getElementById('copyAllBtn');
-const newSearchBtn = document.getElementById('newSearchBtn');
-const toastContainer = document.getElementById('toastContainer');
+// Corporate 90s Style Goblin Globe Domain Finder
+// Professional enterprise-grade domain generation system
 
-// Global Royal State
+// Global variables for the corporate system
 let currentResults = { available: [], taken: [] };
-let currentSummary = {};
+let searchInProgress = false;
+let systemStartTime = Date.now();
 
-// Initialize Royal Event Listeners
-form.addEventListener('submit', handleFormSubmit);
-exportBtn.addEventListener('click', handleExport);
-copyAllBtn.addEventListener('click', handleCopyAll);
-newSearchBtn.addEventListener('click', handleNewSearch);
-
-// Royal Keyboard Shortcuts
-document.addEventListener('keydown', (e) => {
-  if (e.ctrlKey || e.metaKey) {
-    switch (e.key) {
-      case 'Enter':
-        if (!generateButton.disabled) {
-          form.dispatchEvent(new Event('submit'));
-        }
-        break;
-      case 'c':
-        if (currentResults.available.length > 0) {
-          e.preventDefault();
-          handleCopyAll();
-        }
-        break;
-      case 's':
-        if (currentResults.available.length > 0) {
-          e.preventDefault();
-          handleExport();
-        }
-        break;
-      case 'r':
-        e.preventDefault();
-        handleNewSearch();
-        break;
-    }
-  }
+// Initialize the corporate system
+document.addEventListener('DOMContentLoaded', function() {
+    initializeCorporateSystem();
+    updateSystemStatus();
+    
+    // Set up form submission
+    document.getElementById('domainForm').addEventListener('submit', handleFormSubmit);
+    
+    // Update system uptime periodically
+    setInterval(updateSystemStatus, 30000);
 });
 
-// Baroque Loading Messages
-const loadingMessages = [
-  'Consulting the celestial archives...',
-  'Communing with digital spirits...',
-  'Invoking ancient domain magicks...',
-  'Summoning available realms...',
-  'Divining sacred web territories...',
-  'Channeling royal domain energies...',
-  'Manifesting digital kingdoms...',
-  'Weaving ethereal web domains...',
-  'Conjuring mystical web addresses...',
-  'Awakening dormant domain powers...'
-];
+// Initialize corporate features
+function initializeCorporateSystem() {
+    // Add professional tooltips
+    addCorporateTooltips();
+    
+    // Initialize navigation hover effects
+    initializeNavigation();
+    
+    // Add professional keyboard shortcuts
+    initializeKeyboardShortcuts();
+    
+    // Log system initialization
+    console.log('Goblin Globe Corporate System v2.1 initialized successfully');
+    console.log('System start time:', new Date().toLocaleString());
+}
 
-// Royal Progress Messages
-const progressMessages = [
-  'Gathering cosmic domain essence...',
-  'Consulting the Oracle of Availability...',
-  'Assembling thy royal domain collection...'
-];
+// Add professional tooltips
+function addCorporateTooltips() {
+    const tooltipElements = [
+        { id: 'prompt', text: 'Enter a detailed description of your business or domain requirements' },
+        { id: 'count', text: 'Select the number of domain suggestions to generate' },
+        { selector: 'input[name="extensions"]', text: 'Choose appropriate top-level domains for your business' }
+    ];
+    
+    tooltipElements.forEach(element => {
+        const targets = element.id ? 
+            [document.getElementById(element.id)] : 
+            document.querySelectorAll(element.selector);
+        
+        targets.forEach(target => {
+            if (target) {
+                target.title = element.text;
+                target.style.cursor = 'help';
+            }
+        });
+    });
+}
 
+// Initialize navigation effects
+function initializeNavigation() {
+    const navCells = document.querySelectorAll('.nav-cell');
+    
+    navCells.forEach(cell => {
+        cell.addEventListener('mouseenter', function() {
+            this.style.backgroundColor = '#999999';
+        });
+        
+        cell.addEventListener('mouseleave', function() {
+            this.style.backgroundColor = '#888888';
+        });
+        
+        cell.addEventListener('mousedown', function() {
+            this.style.borderRight = '2px inset #aaaaaa';
+            this.style.borderBottom = '2px inset #aaaaaa';
+        });
+        
+        cell.addEventListener('mouseup', function() {
+            this.style.borderRight = '2px outset #aaaaaa';
+            this.style.borderBottom = '2px outset #aaaaaa';
+        });
+    });
+}
+
+// Initialize professional keyboard shortcuts
+function initializeKeyboardShortcuts() {
+    document.addEventListener('keydown', function(e) {
+        // Ctrl+Enter to submit form
+        if (e.ctrlKey && e.key === 'Enter') {
+            e.preventDefault();
+            if (!searchInProgress) {
+                document.getElementById('domainForm').dispatchEvent(new Event('submit'));
+            }
+        }
+        
+        // F1 for help
+        if (e.key === 'F1') {
+            e.preventDefault();
+            showCorporateHelp();
+        }
+        
+        // Ctrl+R for reset
+        if (e.ctrlKey && e.key === 'r') {
+            e.preventDefault();
+            resetForm();
+        }
+    });
+}
+
+// Update system status indicators
+function updateSystemStatus() {
+    const uptime = Math.floor((Date.now() - systemStartTime) / 1000);
+    const hours = Math.floor(uptime / 3600);
+    const minutes = Math.floor((uptime % 3600) / 60);
+    const seconds = uptime % 60;
+    
+    // Update sidebar with current system info
+    const uptimeDisplay = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    
+    // Update any system status displays
+    console.log(`System uptime: ${uptimeDisplay}`);
+}
+
+// Professional alert system
+function showCorporateAlert(title, message, type = 'info') {
+    // Create professional modal dialog
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    overlay.style.zIndex = '10000';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    
+    const dialog = document.createElement('div');
+    dialog.style.background = '#ffffff';
+    dialog.style.border = '2px outset #c0c0c0';
+    dialog.style.borderRadius = '0';
+    dialog.style.minWidth = '400px';
+    dialog.style.maxWidth = '600px';
+    dialog.style.boxShadow = '4px 4px 8px rgba(0, 0, 0, 0.5)';
+    
+    const titleBar = document.createElement('div');
+    titleBar.style.background = 'linear-gradient(90deg, #003366, #004488)';
+    titleBar.style.color = '#ffffff';
+    titleBar.style.padding = '8px 12px';
+    titleBar.style.fontWeight = 'bold';
+    titleBar.style.fontSize = '12px';
+    titleBar.style.textShadow = '1px 1px 1px #000000';
+    titleBar.style.display = 'flex';
+    titleBar.style.justifyContent = 'space-between';
+    titleBar.style.alignItems = 'center';
+    
+    const titleText = document.createElement('span');
+    titleText.textContent = title;
+    
+    const closeButton = document.createElement('button');
+    closeButton.textContent = '×';
+    closeButton.style.background = 'none';
+    closeButton.style.border = 'none';
+    closeButton.style.color = '#ffffff';
+    closeButton.style.fontSize = '16px';
+    closeButton.style.cursor = 'pointer';
+    closeButton.style.padding = '0';
+    closeButton.style.width = '20px';
+    closeButton.style.height = '20px';
+    
+    titleBar.appendChild(titleText);
+    titleBar.appendChild(closeButton);
+    
+    const content = document.createElement('div');
+    content.style.padding = '20px';
+    content.style.fontFamily = 'Arial, sans-serif';
+    content.style.fontSize = '12px';
+    content.style.lineHeight = '1.4';
+    content.innerHTML = message.replace(/\n/g, '<br>');
+    
+    const buttonBar = document.createElement('div');
+    buttonBar.style.padding = '10px 20px 20px 20px';
+    buttonBar.style.textAlign = 'center';
+    
+    const okButton = document.createElement('button');
+    okButton.textContent = 'OK';
+    okButton.className = 'form-button primary-button';
+    okButton.style.minWidth = '80px';
+    
+    const closeDialog = () => {
+        if (document.body.contains(overlay)) {
+            document.body.removeChild(overlay);
+        }
+    };
+    
+    closeButton.onclick = closeDialog;
+    okButton.onclick = closeDialog;
+    
+    buttonBar.appendChild(okButton);
+    
+    dialog.appendChild(titleBar);
+    dialog.appendChild(content);
+    dialog.appendChild(buttonBar);
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+    
+    // Focus the OK button
+    setTimeout(() => okButton.focus(), 100);
+}
+
+// Corporate help system
+function showCorporateHelp() {
+    const helpContent = `
+        <strong>Goblin Globe Corporate Domain Generator - Help System</strong><br><br>
+        
+        <strong>Getting Started:</strong><br>
+        1. Enter your business description in the "Business Description" field<br>
+        2. Select the desired number of domain suggestions<br>
+        3. Choose appropriate TLD extensions for your business<br>
+        4. Click "Generate Domains" to process your request<br><br>
+        
+        <strong>Keyboard Shortcuts:</strong><br>
+        • Ctrl+Enter: Submit form<br>
+        • Ctrl+R: Reset form<br>
+        • F1: Show this help dialog<br><br>
+        
+        <strong>Quality Scoring:</strong><br>
+        Our AI system rates domains on a scale of 0-100 based on:<br>
+        • Brand memorability<br>
+        • SEO potential<br>
+        • Industry relevance<br>
+        • Length and pronounceability<br><br>
+        
+        <strong>Technical Support:</strong><br>
+        For assistance, contact our enterprise support team at:<br>
+        Phone: 1-800-GOBLIN-1<br>
+        Email: support@goblinglobe.com
+    `;
+    
+    showCorporateAlert('Help - Domain Generator', helpContent);
+}
+
+// Handle form submission with corporate validation
 async function handleFormSubmit(e) {
-  e.preventDefault();
-  
-  // Get form data
-  const prompt = document.getElementById('prompt').value.trim();
-  const count = parseInt(document.getElementById('count').value);
-  const extensions = Array.from(document.querySelectorAll('input[name="extensions"]:checked'))
-    .map(cb => cb.value);
-  
-  // Royal Validation
-  if (!prompt) {
-    showRoyalToast('Thou must provide a domain vision!', 'error');
-    return;
-  }
-  
-  if (extensions.length === 0) {
-    showRoyalToast('Select at least one royal extension!', 'error');
-    return;
-  }
-  
-  // Start Royal Loading State
-  setRoyalLoadingState(true);
-  showRoyalProgressStep(progressMessages[0], 1, 3, 10);
-  
-  try {
-    const response = await fetch('/api/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ prompt, count, extensions })
+    e.preventDefault();
+    
+    if (searchInProgress) {
+        showCorporateAlert('System Busy', 'A domain generation request is currently in progress. Please wait for the current operation to complete before submitting a new request.');
+        return;
+    }
+    
+    const prompt = document.getElementById('prompt').value.trim();
+    const count = parseInt(document.getElementById('count').value);
+    const extensions = Array.from(document.querySelectorAll('input[name="extensions"]:checked'))
+        .map(cb => cb.value);
+    
+    // Corporate validation
+    if (!prompt) {
+        showCorporateAlert('Validation Error', 'Business Description is a required field. Please provide a detailed description of your business or domain requirements.');
+        document.getElementById('prompt').focus();
+        return;
+    }
+    
+    if (prompt.length < 10) {
+        showCorporateAlert('Validation Error', 'Business Description must be at least 10 characters long. Please provide more detailed information about your requirements.');
+        document.getElementById('prompt').focus();
+        return;
+    }
+    
+    if (extensions.length === 0) {
+        showCorporateAlert('Validation Error', 'At least one TLD extension must be selected. Please choose the appropriate top-level domains for your business.');
+        return;
+    }
+    
+    await processDomainRequest(prompt, count, extensions);
+}
+
+// Process domain generation request
+async function processDomainRequest(prompt, count, extensions) {
+    searchInProgress = true;
+    
+    // Show professional loading interface
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('statusMessage').style.display = 'none';
+    
+    // Corporate loading messages
+    const loadingMessages = [
+        'Initializing AI engine...',
+        'Connecting to enterprise database...',
+        'Processing business requirements...',
+        'Analyzing market trends...',
+        'Generating domain candidates...',
+        'Validating trademark conflicts...',
+        'Checking domain availability...',
+        'Calculating quality scores...',
+        'Applying business logic filters...',
+        'Compiling professional report...',
+        'Finalizing results...'
+    ];
+    
+    let messageIndex = 0;
+    let progress = 0;
+    
+    const loadingInterval = setInterval(() => {
+        document.getElementById('loadingText').textContent = 'Processing domain generation request...';
+        document.getElementById('loadingDetails').textContent = loadingMessages[messageIndex % loadingMessages.length];
+        messageIndex++;
+        
+        progress += 9;
+        const progressPercent = Math.min(100, Math.floor(progress));
+        
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        
+        progressBar.style.width = progressPercent + '%';
+        progressText.textContent = progressPercent + '%';
+        
+        if (progressPercent >= 100) {
+            progressText.textContent = 'Completing...';
+        }
+    }, 800);
+    
+    try {
+        const response = await fetch('/api/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt, count, extensions })
+        });
+        
+        const data = await response.json();
+        
+        // Stop loading animation
+        clearInterval(loadingInterval);
+        document.getElementById('loading').style.display = 'none';
+        
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || 'The domain generation service encountered an error');
+        }
+        
+        currentResults = data.results;
+        displayCorporateResults(data.results);
+        
+        // Show success message
+        const availableCount = data.results.available.length;
+        const totalCount = data.results.available.length + data.results.taken.length;
+        
+        let successMessage = `Domain generation completed successfully.\n\n`;
+        successMessage += `Results Summary:\n`;
+        successMessage += `• Total domains processed: ${totalCount}\n`;
+        successMessage += `• Available domains: ${availableCount}\n`;
+        successMessage += `• Unavailable domains: ${data.results.taken.length}\n`;
+        successMessage += `• Success rate: ${((availableCount / totalCount) * 100).toFixed(1)}%`;
+        
+        showStatusMessage(successMessage, 'success');
+        
+    } catch (error) {
+        clearInterval(loadingInterval);
+        document.getElementById('loading').style.display = 'none';
+        
+        // Corporate error handling
+        let errorTitle = 'System Error';
+        let errorMessage = error.message;
+        
+        if (error.message.includes('rate limit')) {
+            errorTitle = 'Rate Limit Exceeded';
+            errorMessage = 'The system has received too many requests. Please wait a moment before submitting another domain generation request.\n\nFor high-volume processing, please contact our enterprise sales team to discuss dedicated resource allocation.';
+        } else if (error.message.includes('timeout')) {
+            errorTitle = 'Request Timeout';
+            errorMessage = 'The domain generation request timed out due to high system load. This is typically temporary.\n\nPlease try again in a few moments. If the problem persists, contact technical support.';
+        } else if (error.message.includes('500')) {
+            errorTitle = 'Internal Server Error';
+            errorMessage = 'The domain generation service is experiencing technical difficulties. Our technical team has been automatically notified.\n\nPlease try again later or contact support if this issue persists.';
+        }
+        
+        showCorporateAlert(errorTitle, errorMessage);
+        showStatusMessage('Domain generation failed: ' + error.message, 'error');
+    }
+    
+    searchInProgress = false;
+}
+
+// Display results in corporate table format
+function displayCorporateResults(results) {
+    const availableList = document.getElementById('availableList');
+    const takenList = document.getElementById('takenList');
+    
+    availableList.innerHTML = '';
+    takenList.innerHTML = '';
+    
+    // Display available domains
+    results.available.forEach((item, index) => {
+        const row = document.createElement('tr');
+        row.className = index % 2 === 0 ? '' : 'alternate-row';
+        
+        const qualityScore = item.qualityScore?.overall || 'N/A';
+        const qualityGrade = item.qualityGrade?.grade || 'N/A';
+        
+        row.innerHTML = `
+            <td class="domain-available" style="font-family: 'Courier New', monospace; font-weight: bold;">
+                ${item.domain}
+            </td>
+            <td class="domain-available" style="text-align: center;">
+                ${qualityScore}/100
+            </td>
+            <td class="domain-available" style="text-align: center;">
+                ${qualityGrade}
+            </td>
+            <td class="domain-available" style="text-align: center;">
+                <a href="https://www.namecheap.com/domains/registration/results/?domain=${item.domain}" 
+                   target="_blank" 
+                   style="color: #003366; font-weight: bold; text-decoration: underline;">
+                    Register Now
+                </a>
+            </td>
+        `;
+        availableList.appendChild(row);
     });
     
-    showRoyalProgressStep(progressMessages[1], 2, 3, 50);
+    // Display taken domains
+    results.taken.forEach((item, index) => {
+        const row = document.createElement('tr');
+        row.className = index % 2 === 0 ? '' : 'alternate-row';
+        
+        const qualityScore = item.qualityScore?.overall || 'N/A';
+        const qualityGrade = item.qualityGrade?.grade || 'N/A';
+        
+        row.innerHTML = `
+            <td class="domain-taken" style="font-family: 'Courier New', monospace; font-weight: bold;">
+                ${item.domain}
+            </td>
+            <td class="domain-taken" style="text-align: center;">
+                ${qualityScore}/100
+            </td>
+            <td class="domain-taken" style="text-align: center;">
+                ${qualityGrade}
+            </td>
+            <td class="domain-taken" style="text-align: center;">
+                <span style="color: #660000; font-weight: bold;">Unavailable</span>
+            </td>
+        `;
+        takenList.appendChild(row);
+    });
     
-    const data = await response.json();
+    // Hide empty sections
+    const availableSection = document.getElementById('availableSection');
+    const takenSection = document.getElementById('takenSection');
     
-    if (!response.ok) {
-      throw new Error(data.error || `HTTP ${response.status}`);
+    if (results.available.length === 0) {
+        availableSection.style.display = 'none';
+    } else {
+        availableSection.style.display = 'block';
     }
     
-    if (!data.success) {
-      throw new Error(data.error || 'Failed to manifest domains');
+    if (results.taken.length === 0) {
+        takenSection.style.display = 'none';
+    } else {
+        takenSection.style.display = 'block';
     }
     
-    // Complete Royal Progress
-    showRoyalProgressStep(progressMessages[2], 3, 3, 90);
+    document.getElementById('results').style.display = 'block';
     
-    // Brief delay for dramatic effect
-    await new Promise(resolve => setTimeout(resolve, 800));
-    showRoyalProgressStep('Royal manifestation complete!', 3, 3, 100);
-    
-    // Store results and display with fanfare
-    currentResults = data.results;
-    currentSummary = data.summary;
-    
-    displayRoyalResults(data.results, data.summary);
-    showRoyalToast(`Behold! ${data.results.available.length} available domains discovered!`, 'success');
-    
-    // Add royal sparkle effect
-    createSparkleEffect();
-    
-  } catch (err) {
-    console.error('Royal domain generation error:', err);
-    showRoyalError(getRoyalErrorMessage(err));
-    showRoyalToast('The domain spirits are displeased', 'error');
-  } finally {
-    setRoyalLoadingState(false);
-  }
+    // Smooth scroll to results
+    setTimeout(() => {
+        document.getElementById('results').scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }, 200);
 }
 
-function setRoyalLoadingState(isLoading) {
-  generateButton.disabled = isLoading;
-  
-  if (isLoading) {
-    buttonText.textContent = 'Manifesting...';
-    buttonSpinner.classList.remove('hidden');
-    loading.classList.remove('hidden');
-    results.classList.add('hidden');
-    error.classList.add('hidden');
-    progressBar.classList.remove('hidden');
-    progressText.classList.remove('hidden');
+// Show status messages
+function showStatusMessage(message, type) {
+    const statusDiv = document.getElementById('statusMessage');
     
-    // Rotate loading messages for variety
-    let messageIndex = 0;
-    const messageInterval = setInterval(() => {
-      if (!isLoading) {
-        clearInterval(messageInterval);
+    statusDiv.className = `status-message status-${type}`;
+    statusDiv.innerHTML = message.replace(/\n/g, '<br>');
+    statusDiv.style.display = 'block';
+    
+    // Auto-hide after 10 seconds
+    setTimeout(() => {
+        statusDiv.style.display = 'none';
+    }, 10000);
+}
+
+// Copy available domains
+function copyAvailable() {
+    if (currentResults.available.length === 0) {
+        showCorporateAlert('No Data', 'No available domains to copy. Please generate domains first.');
         return;
-      }
-      loadingMessage.textContent = loadingMessages[messageIndex];
-      messageIndex = (messageIndex + 1) % loadingMessages.length;
-    }, 2000);
+    }
     
-  } else {
-    buttonText.textContent = 'Manifest Domains';
-    buttonSpinner.classList.add('hidden');
-    loading.classList.add('hidden');
-    progressBar.classList.add('hidden');
-    progressText.classList.add('hidden');
-  }
-}
-
-function showRoyalProgressStep(message, step, totalSteps, percentage) {
-  loadingMessage.textContent = message;
-  progressText.textContent = `Royal Process ${step} of ${totalSteps}`;
-  progressFill.style.width = `${percentage}%`;
-}
-
-function displayRoyalResults(results, summary) {
-  availableList.innerHTML = '';
-  takenList.innerHTML = '';
-  
-  if (results.available.length === 0 && results.taken.length === 0) {
-    showRoyalError('No domains were manifested. Try a different royal decree.');
-    return;
-  }
-  
-  // Display available domains with royal treatment
-  results.available.forEach((item, index) => {
-    const div = createRoyalDomainCard(item.domain, true, item.method, item.qualityScore, item.qualityGrade);
-    div.style.animationDelay = `${index * 0.1}s`;
-    div.classList.add('royal-entrance');
-    availableList.appendChild(div);
-  });
-  
-  // Display taken domains
-  results.taken.forEach((item, index) => {
-    const div = createRoyalDomainCard(item.domain, false, item.method, item.qualityScore, item.qualityGrade);
-    div.style.animationDelay = `${(results.available.length + index) * 0.1}s`;
-    div.classList.add('royal-entrance');
-    takenList.appendChild(div);
-  });
-  
-  // Show results section with fanfare
-  results.classList.remove('hidden');
-  
-  // Royal scroll to results
-  setTimeout(() => {
-    results.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 500);
-}
-
-function createRoyalDomainCard(domain, isAvailable, method, qualityScore = null, qualityGrade = null) {
-  const div = document.createElement('div');
-  div.className = `domain-throne-card ${isAvailable ? 'available' : 'taken'}`;
-  
-  // Royal domain name
-  const domainName = document.createElement('div');
-  domainName.className = 'domain-name-royal';
-  domainName.textContent = domain;
-  
-  // Royal meta information
-  const metaDiv = document.createElement('div');
-  metaDiv.className = 'domain-meta-court';
-  
-  const methodSpan = document.createElement('span');
-  methodSpan.className = 'domain-method-badge';
-  methodSpan.textContent = method;
-  
-  const scoreSpan = document.createElement('span');
-  scoreSpan.className = 'domain-score-crown';
-  if (qualityScore && qualityGrade) {
-    scoreSpan.textContent = `${qualityGrade.grade} ${qualityScore.overall}/100`;
-  } else {
-    scoreSpan.textContent = 'Unscored';
-  }
-  
-  metaDiv.appendChild(methodSpan);
-  metaDiv.appendChild(scoreSpan);
-  
-  // Royal quality breakdown (if available)
-  let qualityDetails = null;
-  if (qualityScore && qualityScore.breakdown) {
-    qualityDetails = document.createElement('div');
-    qualityDetails.style.cssText = `
-      font-family: 'Cinzel', serif;
-      font-size: 0.9rem;
-      color: var(--baroque-purple);
-      margin-bottom: 15px;
-      padding: 12px;
-      background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0.05) 100%);
-      border-radius: 8px;
-      border: 1px solid var(--deep-gold);
-    `;
-    qualityDetails.innerHTML = `
-      <strong>Royal Quality Analysis:</strong><br>
-      Length: ${qualityScore.breakdown.length}/100 • 
-      Memorability: ${qualityScore.breakdown.memorability}/100 • <br>
-      Brandability: ${qualityScore.breakdown.brandability}/100 • 
-      Extension: ${qualityScore.breakdown.extension}/100 • <br>
-      Relevance: ${qualityScore.breakdown.relevance}/100
-    `;
-  }
-  
-  // Royal actions
-  const actionsDiv = document.createElement('div');
-  actionsDiv.className = 'domain-actions-court';
-  
-  // Royal copy button
-  const copyBtn = document.createElement('button');
-  copyBtn.className = 'royal-action-button';
-  copyBtn.textContent = 'Copy Domain';
-  copyBtn.addEventListener('click', () => copyToRoyalClipboard(domain));
-  
-  actionsDiv.appendChild(copyBtn);
-  
-  // Royal register link for available domains
-  if (isAvailable) {
-    const registerLink = document.createElement('a');
-    registerLink.href = `https://www.namecheap.com/domains/registration/results/?domain=${domain}`;
-    registerLink.target = '_blank';
-    registerLink.className = 'royal-action-button register-throne-link';
-    registerLink.textContent = 'Claim Throne';
+    const domains = currentResults.available.map(item => item.domain).join('\n');
     
-    actionsDiv.appendChild(registerLink);
-  }
-  
-  // Assemble the royal card
-  div.appendChild(domainName);
-  div.appendChild(metaDiv);
-  if (qualityDetails) {
-    div.appendChild(qualityDetails);
-  }
-  div.appendChild(actionsDiv);
-  
-  return div;
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(domains).then(() => {
+            showCorporateAlert('Copy Successful', `Successfully copied ${currentResults.available.length} available domains to clipboard.\n\nYou can now paste this list into any text editor or document.`);
+        }).catch(() => {
+            fallbackCopy(domains);
+        });
+    } else {
+        fallbackCopy(domains);
+    }
 }
 
-function handleCopyAll() {
-  if (currentResults.available.length === 0) {
-    showRoyalToast('No available domains to copy to royal clipboard', 'error');
-    return;
-  }
-  
-  const domains = currentResults.available.map(item => item.domain).join('\n');
-  copyToRoyalClipboard(domains, `Copied ${currentResults.available.length} royal domains to thy clipboard!`);
-}
-
-function handleExport() {
-  if (currentResults.available.length === 0 && currentResults.taken.length === 0) {
-    showRoyalToast('No royal results to export', 'error');
-    return;
-  }
-  
-  const timestamp = new Date().toISOString().split('T')[0];
-  const prompt = document.getElementById('prompt').value;
-  
-  // Create Royal CSV content
-  const csvContent = [
-    'Domain,Status,Quality Score,Quality Grade,Method,Royal Registrar Link',
-    ...currentResults.available.map(item => 
-      `"${item.domain}","Available","${item.qualityScore?.overall || 'Unscored'}","${item.qualityGrade?.grade || 'Ungraded'}","${item.method}","https://www.namecheap.com/domains/registration/results/?domain=${item.domain}"`
-    ),
-    ...currentResults.taken.map(item => 
-      `"${item.domain}","Taken","${item.qualityScore?.overall || 'Unscored'}","${item.qualityGrade?.grade || 'Ungraded'}","${item.method}","Unavailable"`
-    )
-  ].join('\n');
-  
-  // Create and download royal scroll
-  const blob = new Blob([csvContent], { type: 'text/csv' });
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.style.display = 'none';
-  a.href = url;
-  a.download = `goblin-globe-royal-domains-${timestamp}-${prompt.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.csv`;
-  document.body.appendChild(a);
-  a.click();
-  window.URL.revokeObjectURL(url);
-  document.body.removeChild(a);
-  
-  showRoyalToast('Royal domain scroll exported successfully!', 'success');
-}
-
-function handleNewSearch() {
-  // Clear royal form
-  document.getElementById('prompt').value = '';
-  document.getElementById('count').value = '10';
-  
-  // Reset royal checkboxes to default (.com only)
-  document.querySelectorAll('input[name="extensions"]').forEach(cb => {
-    cb.checked = cb.value === '.com';
-  });
-  
-  // Reset royal results
-  currentResults = { available: [], taken: [] };
-  results.classList.add('hidden');
-  error.classList.add('hidden');
-  
-  // Focus on royal prompt input
-  document.getElementById('prompt').focus();
-  
-  // Royal scroll to top
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  
-  showRoyalToast('Ready for thy next royal quest', 'success');
-  
-  // Add sparkle effect for new search
-  createSparkleEffect();
-}
-
-async function copyToRoyalClipboard(text, successMessage = 'Copied to royal clipboard') {
-  try {
-    await navigator.clipboard.writeText(text);
-    showRoyalToast(successMessage, 'success');
-  } catch (err) {
-    // Royal fallback for older browsers
+// Fallback copy method
+function fallbackCopy(text) {
     const textArea = document.createElement('textarea');
     textArea.value = text;
     textArea.style.position = 'fixed';
-    textArea.style.left = '-999999px';
-    textArea.style.top = '-999999px';
+    textArea.style.left = '-9999px';
+    textArea.style.top = '-9999px';
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
     
     try {
-      document.execCommand('copy');
-      showRoyalToast(successMessage, 'success');
+        document.execCommand('copy');
+        showCorporateAlert('Copy Successful', `Domain list copied to clipboard using legacy method.\n\nUse Ctrl+V to paste the domains where needed.`);
     } catch (err) {
-      showRoyalToast('Failed to copy to royal clipboard', 'error');
+        showCorporateAlert('Copy Failed', 'Unable to copy to clipboard automatically.\n\nPlease manually select and copy the domain names from the results table.');
     }
     
     document.body.removeChild(textArea);
-  }
 }
 
-function showRoyalToast(message, type = 'success', duration = 4000) {
-  const toast = document.createElement('div');
-  toast.className = `royal-toast ${type}`;
-  
-  const messageSpan = document.createElement('span');
-  messageSpan.textContent = message;
-  messageSpan.style.cssText = 'position: relative; z-index: 2;';
-  
-  const closeBtn = document.createElement('button');
-  closeBtn.innerHTML = '×';
-  closeBtn.style.cssText = `
-    background: none; 
-    border: none; 
-    font-size: 24px; 
-    cursor: pointer; 
-    margin-left: 15px;
-    color: inherit;
-    font-family: 'Cinzel Decorative', serif;
-    font-weight: 700;
-    position: relative;
-    z-index: 2;
-  `;
-  closeBtn.addEventListener('click', () => {
-    toast.classList.remove('show');
-    setTimeout(() => {
-      if (toast.parentElement) {
-        toast.remove();
-      }
-    }, 400);
-  });
-  
-  toast.appendChild(messageSpan);
-  toast.appendChild(closeBtn);
-  toastContainer.appendChild(toast);
-  
-  // Trigger royal animation
-  setTimeout(() => {
-    toast.classList.add('show');
-  }, 10);
-  
-  // Auto remove with royal timing
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => {
-      if (toast.parentElement) {
-        toast.remove();
-      }
-    }, 400);
-  }, duration);
+// Export to CSV
+function exportCSV() {
+    if (currentResults.available.length === 0 && currentResults.taken.length === 0) {
+        showCorporateAlert('No Data', 'No results to export. Please generate domains first.');
+        return;
+    }
+    
+    const timestamp = new Date().toISOString().split('T')[0];
+    const prompt = document.getElementById('prompt').value.trim().replace(/[^a-z0-9]/gi, '-').toLowerCase();
+    
+    // Create professional CSV content
+    const csvContent = [
+        '# Goblin Globe Corporation - Domain Generation Report',
+        '# Generated: ' + new Date().toLocaleString(),
+        '# Business Description: ' + document.getElementById('prompt').value,
+        '# Processing System: Enterprise AI Engine v2.1',
+        '',
+        'Domain Name,Availability Status,Quality Score,Quality Grade,Generation Method,Registration URL',
+        ...currentResults.available.map(item => 
+            `"${item.domain}","Available","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method || 'AI Generation'}","https://www.namecheap.com/domains/registration/results/?domain=${item.domain}"`
+        ),
+        ...currentResults.taken.map(item => 
+            `"${item.domain}","Unavailable","${item.qualityScore?.overall || 'N/A'}","${item.qualityGrade?.grade || 'N/A'}","${item.method || 'AI Generation'}","N/A - Already Registered"`
+        )
+    ].join('\n');
+    
+    // Create and download file
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `goblin-globe-domains-${timestamp}-${prompt}.csv`;
+    a.style.display = 'none';
+    
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    
+    showCorporateAlert('Export Complete', 'Domain generation report has been exported to CSV format.\n\nThe file has been saved to your Downloads folder and is ready for use in spreadsheet applications or further processing.');
 }
 
-function showRoyalError(message) {
-  const errorP = error.querySelector('p');
-  errorP.textContent = message;
-  error.classList.remove('hidden');
-  results.classList.add('hidden');
-}
-
-function getRoyalErrorMessage(error) {
-  const message = error.message || 'The royal servers are experiencing difficulties';
-  
-  // Provide royal error messages
-  if (message.includes('rate limit') || message.includes('429')) {
-    return 'Too many royal requests. The digital servants need rest. Please wait a moment.';
-  }
-  
-  if (message.includes('timeout') || message.includes('ENOTFOUND')) {
-    return 'The royal network connection has been severed. Check thy internet connection.';
-  }
-  
-  if (message.includes('401') || message.includes('403')) {
-    return 'Access denied to the royal domain archives. Refresh thy page and try again.';
-  }
-  
-  if (message.includes('500')) {
-    return 'The royal servers are experiencing difficulties. Try again in a few moments.';
-  }
-  
-  if (message.includes('Invalid prompt')) {
-    return 'Thy domain vision contains forbidden content. Try a different royal decree.';
-  }
-  
-  // Return royal version of original message
-  return `Royal decree failed: ${message}`;
-}
-
-// Royal Sparkle Effect
-function createSparkleEffect() {
-  const sparkles = ['✦', '❈', '⚜', '✧', '❋', '✶', '❅', '✱'];
-  
-  for (let i = 0; i < 12; i++) {
-    setTimeout(() => {
-      const sparkle = document.createElement('div');
-      sparkle.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
-      sparkle.style.cssText = `
-        position: fixed;
-        font-size: ${1 + Math.random() * 2}rem;
-        color: var(--royal-gold);
-        pointer-events: none;
-        z-index: 1000;
-        left: ${Math.random() * 100}vw;
-        top: ${Math.random() * 100}vh;
-        animation: sparkleFloat 3s ease-out forwards;
-        opacity: 0;
-      `;
-      
-      document.body.appendChild(sparkle);
-      
-      setTimeout(() => {
-        if (sparkle.parentElement) {
-          sparkle.remove();
+// Start new search
+function newSearch() {
+    if (currentResults.available.length > 0 || currentResults.taken.length > 0) {
+        if (!confirm('Start New Search?\n\nThis will clear your current results. Are you sure you want to proceed?')) {
+            return;
         }
-      }, 3000);
-    }, i * 200);
-  }
+    }
+    
+    document.getElementById('prompt').value = '';
+    document.getElementById('count').value = '10';
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('statusMessage').style.display = 'none';
+    currentResults = { available: [], taken: [] };
+    
+    // Smooth scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Focus on prompt field
+    setTimeout(() => {
+        document.getElementById('prompt').focus();
+    }, 300);
+    
+    showStatusMessage('Form cleared. Ready for new domain generation request.', 'success');
 }
 
-// Add royal entrance animation keyframes
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes sparkleFloat {
-    0% {
-      opacity: 0;
-      transform: translateY(0) scale(0) rotate(0deg);
+// Reset form
+function resetForm() {
+    if (!confirm('Reset Form?\n\nThis will clear all form fields and restore default settings. Continue?')) {
+        return;
     }
-    20% {
-      opacity: 1;
-      transform: translateY(-20px) scale(1) rotate(90deg);
+    
+    document.getElementById('domainForm').reset();
+    document.getElementById('count').value = '10';
+    
+    // Make sure .com is checked
+    const comCheckbox = document.querySelector('input[name="extensions"][value=".com"]');
+    if (comCheckbox) {
+        comCheckbox.checked = true;
     }
-    100% {
-      opacity: 0;
-      transform: translateY(-100px) scale(0.5) rotate(360deg);
-    }
-  }
-  
-  @keyframes royalEntrance {
-    0% {
-      opacity: 0;
-      transform: translateY(30px) scale(0.8);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-  
-  .royal-entrance {
-    animation: royalEntrance 0.6s ease-out forwards;
-    opacity: 0;
-  }
-`;
-document.head.appendChild(style);
+    
+    showStatusMessage('Form has been reset to default values.', 'success');
+}
 
-// Initialize Royal Court on page load
-document.addEventListener('DOMContentLoaded', () => {
-  // Focus on the royal prompt input
-  document.getElementById('prompt').focus();
-  
-  // Add royal keyboard shortcut information
-  console.log('🏰 GOBLIN GLOBE - Royal Domain Finder 🏰');
-  console.log('Royal Keyboard Shortcuts:');
-  console.log('Ctrl+Enter: Manifest domains');
-  console.log('Ctrl+C: Copy available domains');
-  console.log('Ctrl+S: Export royal scroll');
-  console.log('Ctrl+R: Begin new quest');
-  
-  // Royal entrance effect
-  createSparkleEffect();
-  
-  // Add periodic ornament animation
-  setInterval(() => {
-    const ornaments = document.querySelectorAll('.baroque-ornament');
-    ornaments.forEach((ornament, index) => {
-      setTimeout(() => {
-        ornament.style.animation = 'none';
-        setTimeout(() => {
-          ornament.style.animation = 'floatOrnamentation 8s ease-in-out infinite';
-        }, 10);
-      }, index * 500);
+// Professional error logging
+window.addEventListener('error', function(e) {
+    console.error('Goblin Globe Corporate System Error:', {
+        message: e.message,
+        filename: e.filename,
+        lineno: e.lineno,
+        colno: e.colno,
+        timestamp: new Date().toISOString()
     });
-  }, 15000);
 });
+
+// Log system ready
+console.log('Goblin Globe Corporate Domain Generator ready for enterprise operations');
